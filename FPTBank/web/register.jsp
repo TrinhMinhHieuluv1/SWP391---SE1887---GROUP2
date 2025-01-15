@@ -143,7 +143,7 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-8">
                                 <div class="mil-banner-text mil-text-center">
-                                    <h1 class="mil-mb-60" style="font-family: serif">Đăng kí với FPT Bank:</h1>
+                                    <h1 class="mil-mb-60" style="font-family: serif">Đăng kí với Timi Bank:</h1>
                                 </div>
                             </div>
                         </div>
