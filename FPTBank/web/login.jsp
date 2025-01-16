@@ -13,6 +13,9 @@
         <title>JSP Page</title>
     </head>
     <body>
+         <div class="mil-preloader">
+           
+        </div>
         <h1>Hello World!</h1>
     </body>
 </html>

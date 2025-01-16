@@ -11,7 +11,7 @@
 
     <head>
 
-        <title>FPT - Finance & Banking</title>
+        <title>TIMI - Finance</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -63,10 +63,9 @@
         <div id="smooth-wrapper" class="mil-wrapper">
 
             <!-- preloader -->
-            <!--        <div class="mil-preloader">
-                        <div class="mil-load"></div>
-                        <p class="h2 mil-mb-30"><span class="mil-light mil-counter" data-number="100">100</span><span class="mil-light">%</span></p>
-                    </div>-->
+          <div class="mil-preloader">
+           
+        </div>
             <!-- preloader end -->
 
             <!-- scroll progress -->
