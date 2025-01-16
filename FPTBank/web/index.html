@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en-US">
 
 <head>
@@ -100,6 +99,23 @@
                 <div class="mil-menu-buttons">
                     <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
                     <a href="register.jsp" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
+                    <c:if test="${sessionScope.account == null}">
+                            <div class="btn-group">
+                                <button class="acc" style="margin-right: 10px"><a href="/audio/signin">Sign In</a></button>
+                                <button class="acc"><a href="/audio/signup">Sign Up</a></button>
+                            </div>
+                        </c:if>
+                        <c:if test="${sessionScope.account != null}">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <button class="dropdown-item" type="button"><a href="/audio/profile">My Profile</a></button>
+                                    <button class="dropdown-item" type="button"><a href="/audio/change_pass">Change Password</a></button>
+                                    <button class="dropdown-item" type="button"><a href="/audio/purchase">My Purchase</a></button>
+                                    <button class="dropdown-item" type="button"><a href="/audio/signout">Sign out</a></button>
+                                </div>
+                            </div>
+                        </c:if>
                 </div>
             </div>
         </div>

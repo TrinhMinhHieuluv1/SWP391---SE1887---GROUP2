@@ -11,7 +11,7 @@
 
     <head>
 
-        <title>TIMI - Finance</title>
+        <title>TIMI - Register</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,15 +35,23 @@
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
         <script>
-
+            function validateForm(event){
+                if (checkConfirmPassword()===false) {
+                    alert("Confirm password doesn't match password. Try again!");
+                    event.preventDefault();
+                }
+            }
+            
             function checkConfirmPassword() {
                 const password = document.getElementById('password').value;
                 const confirmPassword = document.getElementById('confirm-password').value;
                 const err = document.getElementById('err-confirm-password');
                 if (password !== confirmPassword) {
                     err.style.display = 'block';
+                    return false;
                 } else {
                     err.style.display = 'none';
+                    return true;
                 }
             }
 
@@ -155,8 +163,8 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-xl-5">
-                                <form action="register" method="post">
-                                    <input class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" value="${requestScope.username}" required>
+                                <form action="register" method="post" onsubmit="validateForm(event)">
+                                    <input id="username" class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" value="${requestScope.username}" required oninput="checkDuplicatedUsername()">
                                     <div style="position: relative; display: inline-block; width: 100%;">
                                         <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Password" name="password" value="${requestScope.password}" required>
                                         <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('password')"></span>
@@ -171,18 +179,17 @@
                                         <option value="" disabled selected hidden style="color: black">Gender</option>
                                         <option value="Male" ${requestScope.gender.equals("Male")?"selected":""}>Male</option>
                                         <option value="Female" ${requestScope.gender.equals("Female")?"selected":""}>Female</option>
-                                        <option value="Others" ${requestScope.gender.equals("Others")?"selected":""}>Others</option>
                                     </select>
                                     <input type="date" class="mil-input mil-up mil-mb-15" name="dob" value="${requestScope.dob}" placeholder="Date of birth">
                                     <input type="text" class="mil-input mil-up mil-mb-15" name="phone" value="${requestScope.phone}" placeholder="Phone">
-                                    <input type="text" class="mil-input mil-up mil-mb-15" name="mail" value="${requestScope.mail}" placeholder="Mail">
-                                    <p class="mil-text-xs mil-soft" style="margin-bottom: 10px">Bạn có đồng ý với <a href="#." class="mil-accent">điều khoản và quy định của chúng tôi không </a>.</p>
+                                    <input type="text" class="mil-input mil-up mil-mb-15" name="email" value="${requestScope.email}" placeholder="Email">
+                                    <input required type="checkbox"> <p class="mil-text-xs mil-soft" style="margin-bottom: 10px; display: inline">Do you agree to <a href="services.html" class="mil-accent">our terms and conditions</a>.</p>
                                     <div class="mil-up mil-mb-30">
                                         <button type="submit" class="mil-btn mil-md mil-fw">Create Account</button>
                                     </div>
                                     <p class="mil-text-xs mil-text-center mil-soft mil-mb-30">If you already have an account:</p>
                                     <div class="mil-up mil-mb-15">
-                                        <a href="/fptbank/login" class="mil-btn mil-md mil-grey mil-fw mil-mb-30">Log in</a>
+                                        <a href="/timibank/login" class="mil-btn mil-md mil-grey mil-fw mil-mb-30">Log in</a>
                                     </div>
                                 </form>
                             </div>
