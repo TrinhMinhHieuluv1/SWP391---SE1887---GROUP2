@@ -132,6 +132,7 @@
                             </li>
                         </ul>
                     </nav>
+                    
                     <div class="mil-menu-buttons">
                         <div class="mil-menu-btn">
                             <span></span>
@@ -150,7 +151,7 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-8">
                                 <div class="mil-banner-text mil-text-center">
-                                    <h1 class="mil-mb-60" style="font-family: serif">Đăng kí với Timi Bank:</h1>
+                                    <h2 class="mil-mb-60" style="font-family: serif">Đăng kí với Timi Bank</h2>
                                 </div>
                             </div>
                         </div>
