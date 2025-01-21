@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html lang="en-US">
+<%-- 
+    Document   : career-details
+    Created on : Jan 20, 2025, 12:37:23 AM
+    Author     : ADMIN
+--%>
 
-<head>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+   <head>
 
     <title>TIMI- Finance</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -53,7 +61,7 @@
         <!-- top panel end -->
         <div class="mil-top-panel">
             <div class="container">
-                <a href="index.html" class="mil-logo">
+                <a href="index.jsp" class="mil-logo">
                      <img src="img/logo1.png" alt="Plax" width="200">
                 </a>
                 <nav class="mil-top-menu">
@@ -61,44 +69,44 @@
                         <li class="mil-has-children">
                             <a href="#.">Home</a>
                             <ul>
-                                <li><a href="index.html">Mở tài khoản</a></li>
-                                <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                <li><a href="home-3.html">Type 3</a></li>
-                                <li><a href="home-4.html">Type 4</a></li>
-                                <li><a href="home-5.html">Type 5</a></li>
+                                <li><a href="index.jsp">Mở tài khoản</a></li>
+                                <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
+                                <li><a href="home-3.jsp">Type 3</a></li>
+                                <li><a href="home-4.jsp">Type 4</a></li>
+                                <li><a href="home-5.jsp">Type 5</a></li>
                                 
                             </ul>
                         </li>
                         <li>
-                            <a href="about.html">About</a>
+                            <a href="about.jsp">About</a>
                         </li>
                         <li>
-                            <a href="services.html">Services</a>
+                            <a href="services.jsp">Services</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Blog</a>
                             <ul>
-                                <li><a href="blog.html">Blog list</a></li>
-                                <li><a href="publication.html">Blog details</a></li>
+                                <li><a href="blog.jsp">Blog list</a></li>
+                                <li><a href="publication.jsp">Blog details</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="contact.html">Contact</a>
+                            <a href="contact.jsp">Contact</a>
                         </li>
                         <li class="mil-has-children mil-active">
                             <a href="#.">Pages</a>
                             <ul>
-                                <li><a href="career.html">Career</a></li>
-                                <li><a href="career-details.html">Career details</a></li>
-                                <li><a href="price.html">Pricing</a></li>
-                                <li><a href="register.html">Register</a></li>
+                                <li><a href="career.jsp">Career</a></li>
+                                <li><a href="career-details.jsp">Career details</a></li>
+                                <li><a href="price.jsp">Pricing</a></li>
+                                <li><a href="register.jsp">Register</a></li>
                                 
                             </ul>
                         </li>
                     </ul>
                 </nav>
                 <div class="mil-menu-buttons">
-                    <a href="register.html" class="mil-btn mil-sm">Log in</a>
+                    <a href="register.jsp" class="mil-btn mil-sm">Log in</a>
                     <div class="mil-menu-btn">
                         <span></span>
                     </div>
@@ -117,11 +125,11 @@
                         <div class="col-xl-8">
                             <div class="mil-banner-text mil-text-center">
                                
-                                <h2 class="mil-mb-60">Frontend Software Engineer</h2>
+                                <h2 >Frontend Software Engineer</h2>
                                 <ul class="mil-breadcrumbs mil-pub-info mil-center">
-                                    <li><a href="home-3.html">Software Engineering</a></li>
-                                    <li><a href="about.html">Office work</a></li>
-                                    <li><a href="about.html">Paris, France</a></li>
+                                    <li><a href="home-3.jsp">Software Engineering</a></li>
+                                    <li><a href="about.jsp">Office work</a></li>
+                                    <li><a href="about.jsp">Paris, France</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -156,7 +164,7 @@
                             <h4 class="mil-mb-30 mil-up">Profile:</h4>
                             <p class="mil-text-m mil-soft mil-up mil-mb-60">We are looking for an engineer passionate about frontend technology, with skills to transform creative designs into captivating user experiences. If you are passionate about innovation, collaboration and creating quality products, we want to meet you!</p>
                             <div class="mil-up">
-                                <a href="contact.html" class="mil-btn mil-m mil-add-arrow mil-add-arrow">Apply for this position</a>
+                                <a href="contact.jsp" class="mil-btn mil-m mil-add-arrow mil-add-arrow">Apply for this position</a>
                             </div>
                         </div>
                     </div>
@@ -177,19 +185,19 @@
                             <h6 class="mil-mb-60">Usefull Links</h6>
                             <ul class="mil-footer-list">
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="index.html">Home</a>
+                                    <a href="index.jsp">Home</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="about.html">About Us</a>
+                                    <a href="about.jsp">About Us</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="contact.html">Contact Us</a>
+                                    <a href="contact.jsp">Contact Us</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="services.html">Services</a>
+                                    <a href="services.jsp">Services</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="price.html">Pricing</a>
+                                    <a href="price.jsp">Pricing</a>
                                 </li>
                             </ul>
                         </div>
@@ -261,5 +269,4 @@
     <script src="js/main.js"></script>
 
 </body>
-
 </html>

@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html lang="en-US">
+<%-- 
+    Document   : home-4
+    Created on : Jan 20, 2025, 12:40:42 AM
+    Author     : ADMIN
+--%>
 
-<head>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+ <head>
 
     <title>TIMI - Finance</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -53,7 +61,7 @@
         <!-- top panel end -->
         <div class="mil-top-panel mil-dark-2">
             <div class="container">
-                <a href="index.html" class="mil-logo">
+                <a href="index.jsp" class="mil-logo">
                     <img src="img/logo-light.png" alt="Plax" width="83" height="32">
                 </a>
                 <nav class="mil-top-menu">
@@ -61,43 +69,43 @@
                         <li class="mil-has-children mil-active">
                             <a href="#.">Home</a>
                             <ul>
-                                <li><a href="index.html">Mở tài khoản</a></li>
-                                <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                <li><a href="home-3.html">Type 3</a></li>
-                                <li><a href="home-4.html">Type 4</a></li>
-                                <li><a href="home-5.html">Type 5</a></li>
+                                <li><a href="index.jsp">Mở tài khoản</a></li>
+                                <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
+                                <li><a href="home-3.jsp">Type 3</a></li>
+                                <li><a href="home-4.jsp">Type 4</a></li>
+                                <li><a href="home-5.jsp">Type 5</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="about.html">About</a>
+                            <a href="about.jsp">About</a>
                         </li>
                         <li>
-                            <a href="services.html">Services</a>
+                            <a href="services.jsp">Services</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Blog</a>
                             <ul>
-                                <li><a href="blog.html">Blog list</a></li>
-                                <li><a href="publication.html">Blog details</a></li>
+                                <li><a href="blog.jsp">Blog list</a></li>
+                                <li><a href="publication.jsp">Blog details</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="contact.html">Contact</a>
+                            <a href="contact.jsp">Contact</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Pages</a>
                             <ul>
-                                <li><a href="career.html">Career</a></li>
-                                <li><a href="career-details.html">Career details</a></li>
-                                <li><a href="price.html">Pricing</a></li>
-                                <li><a href="register.html">Register</a></li>
-                                <li><a href="coming-soon.html">Coming soon</a></li>
+                                <li><a href="career.jsp">Career</a></li>
+                                <li><a href="career-details.jsp">Career details</a></li>
+                                <li><a href="price.jsp">Pricing</a></li>
+                                <li><a href="register.jsp">Register</a></li>
+                                <li><a href="coming-soon.jsp">Coming soon</a></li>
                             </ul>
                         </li>
                     </ul>
                 </nav>
                 <div class="mil-menu-buttons">
-                    <a href="register.html" class="mil-btn mil-sm">Log in</a>
+                    <a href="register.jsp" class="mil-btn mil-sm">Log in</a>
                     <div class="mil-menu-btn">
                         <span></span>
                     </div>
@@ -120,7 +128,7 @@
                                         <img src="img/home-4/Vector.svg" alt="icon">
                                     </span>finances</h1>
                                 <div class="mil-buttons-frame">
-                                    <a href="register.html" class="mil-btn mil-md mil-add-arrow">Try demo</a>
+                                    <a href="register.jsp" class="mil-btn mil-md mil-add-arrow">Try demo</a>
                                     <a href="https://www.youtube.com/watch?v=gRhoYxy9Oss" class="mil-btn mil-md mil-transp mil-add-play has-popup-video">Watch tutorial</a>
                                 </div>
                             </div>
@@ -183,7 +191,7 @@
                             <h2 class="mil-mb-30 mil-light mil-up">Optimize finances for <br>balance</h2>
                             <p class="mil-text-l mil-dark-soft mil-mb-60 mil-up">From more precise control of your expenses to <br>effective planning of financial goals, gives you <br>the necessary tools to achieve successful</p>
                             <div class="mil-up">
-                                <a href="register.html" class="mil-btn mil-m mil-add-arrow">Learn More</a>
+                                <a href="register.jsp" class="mil-btn mil-m mil-add-arrow">Learn More</a>
                             </div>
                         </div>
                         <div class="col-xl-5 mil-mb-80">
@@ -219,7 +227,7 @@
                                 </li>
                             </ul>
                             <div class="mil-up">
-                                <a href="register.html" class="mil-btn mil-m mil-add-arrow">Learn More</a>
+                                <a href="register.jsp" class="mil-btn mil-m mil-add-arrow">Learn More</a>
                             </div>
                         </div>
                         <div class="col-xl-5 mil-mb-80">
@@ -297,7 +305,7 @@
                                     <h6 class="mil-light mil-mb-15">Plax Consumer</h6>
                                     <p class="mil-text-s mil-dark-soft mil-mb-30">Sending and receiving money in up to 5 countries</p>
                                     <h4 class="mil-light mil-mb-30">$ <span class="mil-pricing-table-price mil-light" data-year-price="0.00" data-month-price="0.00">0.00</span><span class="mil-sup-text mil-soft"> / month</span></h4>
-                                    <a href="contact.html" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
+                                    <a href="contact.jsp" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
                                     <ul class="mil-text-list mil-check mil-type-2 mil-text-s mil-dark-soft mil-mb-60">
                                         <li class="mil-dark-soft">Unlimited transactions</li>
                                         <li class="mil-dark-soft">Basic Technical Support (Email)</li>
@@ -315,7 +323,7 @@
                                     <h6 class="mil-light mil-mb-15">Plax Business</h6>
                                     <p class="mil-text-s mil-dark-soft mil-mb-30">Access to multi-currency accounts and local payments</p>
                                     <h4 class="mil-light mil-mb-30">$ <span class="mil-light mil-pricing-table-price" data-year-price="9.99" data-month-price="14.99">14.99</span><span class="mil-sup-text mil-soft"> / month</span></h4>
-                                    <a href="contact.html" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
+                                    <a href="contact.jsp" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
                                     <ul class="mil-text-list mil-check mil-type-2 mil-text-s mil-dark-soft mil-mb-60">
                                         <li>Unlimited transactions</li>
                                         <li>Basic Technical Support (Email)</li>
@@ -332,7 +340,7 @@
                                     <h6 class="mil-light mil-mb-15">Plax Enterprise</h6>
                                     <p class="mil-text-s mil-dark-soft mil-mb-30">Secure and reliable transactions at the enterprise level</p>
                                     <h4 class="mil-light mil-mb-30">$ <span class="mil-pricing-table-price mil-light" data-year-price="34.99" data-month-price="49.00">49.99</span><span class="mil-sup-text mil-soft"> / month</span></h4>
-                                    <a href="contact.html" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
+                                    <a href="contact.jsp" class="mil-btn mil-m mil-fw mil-mb-30">Choose a plan</a>
                                     <ul class="mil-text-list mil-check mil-type-2 mil-text-s mil-dark-soft mil-mb-60">
                                         <li>Unlimited transactions</li>
                                         <li>Basic Technical Support (Email)</li>
@@ -358,7 +366,7 @@
                             <div class="col-xl-7 mil-text-center">
                                 <h2 class="mil-mb-30 mil-up">Your financial peace of mind is our Total priority</h2>
                                 <p class="mil-text-m mil-soft mil-mb-60 mil-up">At Plax, we understand the importance of the security <br>and privacy of your financial data.</p>
-                                <div class="mil-up"><a href="about.html" class="mil-btn mil-md mil-add-arrow">Explore more</a></div>
+                                <div class="mil-up"><a href="about.jsp" class="mil-btn mil-md mil-add-arrow">Explore more</a></div>
                             </div>
                         </div>
                     </div>
@@ -478,7 +486,7 @@
                             <div class="col-xl-7 mil-text-center">
                                 <h2 class="mil-light mil-mb-30 mil-up">Transform your Financial Future with Plax!</h2>
                                 <p class="mil-text-l mil-light mil-mb-60 mil-up">With our intuitive and personalized tools, achieving your financial goals is within your reach. Invest in your financial success today with Plax!"</p>
-                                <div class="mil-up mil-mb-80"><a href="register.html" class="mil-btn mil-md mil-add-arrow">Try demo</a></div>
+                                <div class="mil-up mil-mb-80"><a href="register.jsp" class="mil-btn mil-md mil-add-arrow">Try demo</a></div>
                             </div>
                             <div class="mil-illustration-absolute mil-type-3 mil-up">
                                 <img src="img/home-4/5.png" alt="illustration">
@@ -566,19 +574,19 @@
                             </a>
                             <ul class="mil-footer-list mil-footer-list-2">
                                 <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                    <a href="index.html">Home</a>
+                                    <a href="index.jsp">Home</a>
                                 </li>
                                 <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                    <a href="about.html">About Us</a>
+                                    <a href="about.jsp">About Us</a>
                                 </li>
                                 <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                    <a href="contact.html">Contact Us</a>
+                                    <a href="contact.jsp">Contact Us</a>
                                 </li>
                                 <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                    <a href="services.html">Services</a>
+                                    <a href="services.jsp">Services</a>
                                 </li>
                                 <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                    <a href="price.html">Pricing</a>
+                                    <a href="price.jsp">Pricing</a>
                                 </li>
                             </ul>
                         </div>
@@ -633,5 +641,4 @@
     <script src="js/main.js"></script>
 
 </body>
-
 </html>

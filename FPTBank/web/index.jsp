@@ -1,6 +1,15 @@
-<html lang="en-US">
+<%-- 
+    Document   : index
+    Created on : Jan 20, 2025, 12:41:29 AM
+    Author     : ADMIN
+--%>
 
-<head>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+   <head>
 
     <title>TIMI - Finance</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -52,7 +61,7 @@
         <!-- top panel end -->
         <div class="mil-top-panel">
             <div class="container">
-                <a href="index.html" class="mil-logo">
+                <a href="index.jsp" class="mil-logo">
                     <img src="img/logo1.png" alt="Plax" width="200">
                 </a>
                 <nav class="mil-top-menu">
@@ -60,36 +69,36 @@
                         <li class="mil-has-children mil-active">
                             <a href="#.">Home</a>
                             <ul>
-                                <li><a href="index.html">Trang trủ</a></li>
-                                <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                <li><a href="home-3.html">Type 3</a></li>
-                                <li><a href="home-4.html">Type 4</a></li>
-                                <li><a href="home-5.html">Type 5</a></li>
+                                <li><a href="index.jsp">Trang trủ</a></li>
+                                <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
+                                <li><a href="home-3.jsp">Type 3</a></li>
+                                <li><a href="home-4.jsp">Type 4</a></li>
+                                <li><a href="home-5.jsp">Type 5</a></li>
                                 
                             </ul>
                         </li>
                         <li>
-                            <a href="about.html">About</a>
+                            <a href="about.jsp">About</a>
                         </li>
                         <li>
-                            <a href="services.html">Services</a>
+                            <a href="services.jsp">Services</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Blog</a>
                             <ul>
-                                <li><a href="blog.html">Blog list</a></li>
-                                <li><a href="publication.html">Blog details</a></li>
+                                <li><a href="blog.jsp">Blog list</a></li>
+                                <li><a href="publication.jsp">Blog details</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="contact.html">Contact</a>
+                            <a href="contact.jsp">Contact</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Pages</a>
                             <ul>
-                                <li><a href="career.html">Career</a></li>
-                                <li><a href="career-details.html">Career details</a></li>
-                                <li><a href="price.html">Pricing</a></li>
+                                <li><a href="career.jsp">Career</a></li>
+                                <li><a href="career-details.jsp">Career details</a></li>
+                                <li><a href="price.jsp">Pricing</a></li>
                                 <li><a href="register.jsp">Register</a></li>
                                 
                             </ul>
@@ -141,9 +150,9 @@
                         <div class="col-xl-6">
                             <div class="mil-banner-text">
                                 <h6 class="mil-text-gradient-2 mil-mb-20">You want to borrow money, want to invest</h6>
-                                <h1 class="mil-display mil-text-gradient-3 mil-mb-60">WELCOME TO FPT BANK</h1>
+                                <h1 class="mil-display mil-text-gradient-3 mil-mb-60">WELCOME TO TiMiBANK</h1>
                                 <div class="mil-buttons-frame">
-                                    <a href="register.html" class="mil-btn mil-md mil-add-arrow">Try</a>
+                                    <a href="register.jsp" class="mil-btn mil-md mil-add-arrow">Try</a>
                                     <a href="https://www.youtube.com/watch?v=jnUDgs3wwFA" class="mil-btn mil-md mil-light mil-add-play has-popup-video">Guide</a>
                                 </div>
                             </div>
@@ -277,7 +286,7 @@
                                 <h2 class="mil-up">Innovation and Efficiency in Every Transaction</h2>
                             </div>
                             <div class="col-xl-4 mil-mb-80 mil-up">
-                                <a href="register.html" class="mil-btn mil-m mil-add-arrow mil-adaptive-right">Learn More</a>
+                                <a href="register.jsp" class="mil-btn mil-m mil-add-arrow mil-adaptive-right">Learn More</a>
                             </div>
                         </div>
                         <div class="row">
@@ -459,19 +468,19 @@
                             <h6 class="mil-mb-60">Usefull Links</h6>
                             <ul class="mil-footer-list">
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="index.html">Home</a>
+                                    <a href="index.jsp">Home</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="about.html">About Us</a>
+                                    <a href="about.jsp">About Us</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="contact.html">Contact Us</a>
+                                    <a href="contact.jsp">Contact Us</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="services.html">Services</a>
+                                    <a href="services.jsp">Services</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="price.html">Pricing</a>
+                                    <a href="price.jsp">Pricing</a>
                                 </li>
                             </ul>
                         </div>
@@ -543,5 +552,4 @@
     <script src="js/main.js"></script>
 
 </body>
-
 </html>

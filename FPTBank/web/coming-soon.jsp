@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html lang="en-US">
+<%-- 
+    Document   : coming-soon
+    Created on : Jan 20, 2025, 12:39:41 AM
+    Author     : ADMIN
+--%>
 
-<head>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+   <head>
 
     <title>TIMI - Finance</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -100,5 +108,4 @@
     <script src="js/main.js"></script>
 
 </body>
-
 </html>

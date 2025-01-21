@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html lang="en-US">
+<%-- 
+    Document   : about
+    Created on : Jan 20, 2025, 12:34:47 AM
+    Author     : ADMIN
+--%>
 
-<head>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+   <head>
 
     <title>TIMI - Finance</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -36,7 +44,7 @@
     <div id="smooth-wrapper" class="mil-wrapper">
 
         <!-- preloader -->
-       <div class="mil-preloader">
+         <div class="mil-preloader">
            
         </div>
         <!-- preloader end -->
@@ -53,7 +61,7 @@
         <!-- top panel end -->
         <div class="mil-top-panel">
             <div class="container">
-                <a href="index.html" class="mil-logo">
+                <a href="index.jsp" class="mil-logo">
                     <img src="img/logo1.png" alt="Plax" width="200">
                 </a>
                 <nav class="mil-top-menu">
@@ -61,44 +69,44 @@
                         <li class="mil-has-children">
                             <a href="#.">Home</a>
                             <ul>
-                                <li><a href="index.html">Type 1</a></li>
-                                <li><a href="home-2.html">Type 2</a></li>
-                                <li><a href="home-3.html">Type 3</a></li>
-                                <li><a href="home-4.html">Type 4</a></li>
-                                <li><a href="home-5.html">Type 5</a></li>
+                                <li><a href="index.jsp">Mở tài khoản</a></li>
+                                <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
+                                <li><a href="home-3.jsp">Type 3</a></li>
+                                <li><a href="home-4.jsp">Type 4</a></li>
+                                <li><a href="home-5.jsp">Type 5</a></li>
                                 
                             </ul>
                         </li>
-                        <li>
-                            <a href="about.html">About</a>
-                        </li>
                         <li class="mil-active">
-                            <a href="services.html">Services</a>
+                            <a href="about.jsp">About</a>
+                        </li>
+                        <li>
+                            <a href="services.jsp">Services</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Blog</a>
                             <ul>
-                                <li><a href="blog.html">Blog list</a></li>
-                                <li><a href="publication.html">Blog details</a></li>
+                                <li><a href="blog.jsp">Blog list</a></li>
+                                <li><a href="publication.jsp">Blog details</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="contact.html">Contact</a>
+                            <a href="contact.jsp">Contact</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Pages</a>
                             <ul>
-                                <li><a href="career.html">Career</a></li>
-                                <li><a href="career-details.html">Career details</a></li>
-                                <li><a href="price.html">Pricing</a></li>
-                                <li><a href="register.html">Register</a></li>
+                                <li><a href="career.jsp">Career</a></li>
+                                <li><a href="career-details.jsp">Career details</a></li>
+                                <li><a href="price.jsp">Pricing</a></li>
+                                <li><a href="register.jsp">Register</a></li>
                                 
                             </ul>
                         </li>
                     </ul>
                 </nav>
                 <div class="mil-menu-buttons">
-                    <a href="register.html" class="mil-btn mil-sm">Log in</a>
+                    <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
                     <div class="mil-menu-btn">
                         <span></span>
                     </div>
@@ -117,10 +125,10 @@
                         <div class="col-xl-8">
                             <div class="mil-banner-text mil-text-center">
                                
-                                <h2 class="mil-mb-60">Adapted to your needs, discover what we have</h2>
+                                <h2>More than a Platform, a Financial Revolution</h2>
                                 <ul class="mil-breadcrumbs mil-center">
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="services.html">Services</a></li>
+                                    <li><a href="index.jsp">Home</a></li>
+                                    <li><a href="about.jsp">About us</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -129,62 +137,52 @@
             </div>
             <!-- banner end -->
 
-            <!-- service -->
+            <!-- features -->
             <div class="mil-features mil-p-0-80">
                 <div class="container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-xl-5 mil-mb-80">
-                            <h2 class="mil-mb-30 mil-up">Freedom to send, request money globally</h2>
-                            <p class="mil-text-m mil-soft mil-mb-30 mil-up">From sending money to friends and family to receiving payments from around the world, Plax Consumer offers you a simple and instant experience.</p>
-                            <div class="mil-up"><a href="register.html" class="mil-btn mil-m mil-add-arrow">Learn more</a></div>
+                            <h2 class="mil-mb-30 mil-up">The Vision that drives our Team</h2>
+                            <p class="mil-text-m mil-soft mil-mb-60 mil-up">Explore the foundations of Plax and how our purpose-driven start has shaped our identity. From initial challenges to realizing our vision of simplifying cross-border payments, this purposeful journey has led Plax to become a leading force in the financial revolution.</p>
+                            <ul class="mil-list-2 mil-type-2">
+                                <li>
+                                    <div class="mil-up">
+                                        <h5 class="mil-mb-15">Transformative Vision</h5>
+                                        <p class="mil-text-m mil-soft">Discover how Plax's initial vision was focused on transforming the way people transact globally.</p>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                         <div class="col-xl-6 mil-mb-80">
                             <div class="mil-image-frame mil-up">
-                                <img src="img/inner-pages/3.png" alt="image" class="mil-scale-img" data-value-1="1" data-value-2="1.2">
+                                <img src="img/inner-pages/1.png" alt="image" class="mil-scale-img" data-value-1="1" data-value-2="1.2">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- service end -->
+            <!-- features end -->
 
-            <!-- service -->
-            <div class="mil-features mil-p-0-80">
+            <!-- facts -->
+            <div class="mil-facts mil-p-0-130">
                 <div class="container">
-                    <div class="row flex-sm-row-reverse justify-content-between align-items-center">
-                        <div class="col-xl-5 mil-mb-80">
-                            <h2 class="mil-mb-30 mil-up">Instant Financial Solutions for Global Businesses</h2>
-                            <p class="mil-text-m mil-soft mil-mb-30 mil-up">From instant and secure transactions to the flexibility to adapt to global needs, Plax Enterprise offers a reliable platform to drive your company's financial growth.</p>
-                            <div class="mil-up"><a href="register.html" class="mil-btn mil-m mil-add-arrow">Learn more</a></div>
+                    <div class="row">
+                        <div class="col-xl-4 mil-sm-text-center mil-mb-30 mil-up">
+                            <p class="h1 mil-display mil-mb-15"><span class="mil-accent mil-counter" data-number="7">7</span><span class="mil-pale">M</span></p>
+                            <h5>Registered Users</h5>
                         </div>
-                        <div class="col-xl-6 mil-mb-80">
-                            <div class="mil-image-frame ml-up">
-                                <img src="img/inner-pages/4.png" alt="image" class="mil-scale-img" data-value-1="1" data-value-2="1.2">
-                            </div>
+                        <div class="col-xl-4 mil-sm-text-center mil-mb-30 mil-up">
+                            <p class="h1 mil-display mil-mb-15"><span class="mil-accent mil-counter" data-number="1.6">1.6</span><span class="mil-pale">M</span></p>
+                            <h5>Regular Users</h5>
+                        </div>
+                        <div class="col-xl-4 mil-sm-text-center mil-mb-30 mil-up">
+                            <p class="h1 mil-display mil-mb-15"><span class="mil-accent mil-counter" data-number="170">170</span><span class="mil-pale">+</span></p>
+                            <h5>Countries with our coverage</h5>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- service end -->
-
-            <!-- service -->
-            <div class="mil-features mil-p-0-80">
-                <div class="container">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-xl-5 mil-mb-80">
-                            <h2 class="mil-mb-30 mil-up">Financial Innovation, discover the Plax Virtual Card</h2>
-                            <p class="mil-text-m mil-soft mil-mb-30 mil-up">Discover how this innovative tool boosts financial well-being and provides a safe and affordable alternative for financial inclusion in the region.</p>
-                            <div class="mil-up"><a href="register.html" class="mil-btn mil-m mil-add-arrow">Learn more</a></div>
-                        </div>
-                        <div class="col-xl-6 mil-mb-80">
-                            <div class="mil-image-frame mil-up">
-                                <img src="img/inner-pages/5.png" alt="image" class="mil-scale-img" data-value-1="1" data-value-2="1.2">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- service end -->
+            <!-- facts end -->
 
             <!-- call to action -->
             <div class="mil-cta mil-up">
@@ -192,29 +190,29 @@
                     <div class="mil-out-frame mil-p-160-100">
                         <div class="row justify-content-center mil-text-center">
                             <div class="col-xl-8 mil-mb-80-adaptive-30">
-                                <h2 class="mil-up">Innovation and Efficiency in Every Transaction</h2>
+                                <h2 class="mil-up">Our Strengths: The Trust <br>Base of our users</h2>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-4 mil-mb-60">
                                 <div class="mil-icon-box">
-                                    <img src="img/inner-pages/icons/4.svg" alt="icon" class="mil-mb-30 mil-up">
-                                    <h5 class="mil-mb-20 mil-up">Simplicity in Every Step</h5>
-                                    <p class="mil-text-m mil-soft mil-up">Experience the convenience of a simplified payment process, from creating your account</p>
+                                    <img src="img/inner-pages/icons/1.svg" alt="icon" class="mil-mb-30 mil-up">
+                                    <h5 class="mil-mb-20 mil-up">Connected Global Network</h5>
+                                    <p class="mil-text-m mil-soft mil-up">Discover how our global network, spanning more than 170 countries, facilitates international transactions and connects people around the world.</p>
                                 </div>
                             </div>
                             <div class="col-xl-4 mil-mb-60">
                                 <div class="mil-icon-box">
-                                    <img src="img/inner-pages/icons/5.svg" alt="icon" class="mil-mb-30 mil-up">
-                                    <h5 class="mil-mb-20 mil-up">Guaranteed Advanced Security</h5>
-                                    <p class="mil-text-m mil-soft mil-up">We implement cutting-edge security measures to protect your financial information at all times.</p>
+                                    <img src="img/inner-pages/icons/2.svg" alt="icon" class="mil-mb-30 mil-up">
+                                    <h5 class="mil-mb-20 mil-up">Robust Security</h5>
+                                    <p class="mil-text-m mil-soft mil-up">Learn about the security standards that are at the heart of Plax, guaranteeing the protection of our users' financial and personal information.</p>
                                 </div>
                             </div>
                             <div class="col-xl-4 mil-mb-60">
                                 <div class="mil-icon-box">
-                                    <img src="img/inner-pages/icons/6.svg" alt="icon" class="mil-mb-30 mil-up">
-                                    <h5 class="mil-mb-20 mil-up">Unparalleled Efficiency</h5>
-                                    <p class="mil-text-m mil-soft mil-up">Fast, secure and reliable transactions that reflect our commitment to excellence every step of the way.</p>
+                                    <img src="img/inner-pages/icons/3.svg" alt="icon" class="mil-mb-30 mil-up">
+                                    <h5 class="mil-mb-20 mil-up">Continuous Innovation</h5>
+                                    <p class="mil-text-m mil-soft mil-up">Explore how constant innovation drives our growth, allowing us to offer advanced and accessible financial solutions.</p>
                                 </div>
                             </div>
                         </div>
@@ -222,6 +220,90 @@
                 </div>
             </div>
             <!-- call to action end -->
+
+            <!-- features -->
+            <div class="mil-features mil-p-160-80">
+                <div class="container">
+                    <div class="row flex-sm-row-reverse justify-content-between align-items-center">
+                        <div class="col-xl-6 mil-mb-80">
+                            <h2 class="mil-mb-30 mil-up">Our Values are foundations of Trust</h2>
+                            <p class="mil-text-m mil-soft mil-mb-60 mil-up">Our values, from transparency to accountability, are the foundation of our organizational culture and reflect our unwavering.</p>
+                            <ul class="mil-list-2 mil-type-2">
+                                <li>
+                                    <div class="mil-up">
+                                        <h5 class="mil-mb-15">Absolute Transparency:</h5>
+                                        <p class="mil-text-m mil-soft">Discover how transparency is ingrained in our culture, providing our users with clarity and confidence in every transaction.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="mil-up">
+                                        <h5 class="mil-mb-15">Commitment to Safety:</h5>
+                                        <p class="mil-text-m mil-soft">Explore our unwavering commitment to security, ensuring every transaction is conducted with the highest standards of protection.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xl-5 mil-mb-80">
+                            <div class="mil-image-frame mil-up">
+                                <img src="img/inner-pages/2.png" alt="image" class="mil-scale-img" data-value-1="1" data-value-2="1.2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- features end -->
+
+            <!-- team -->
+            <div class="mil-cta mil-up">
+                <div class="container">
+                    <div class="mil-out-frame mil-visible mil-image mil-p-160-130">
+                        <div class="row justify-content-center mil-text-center">
+                            <div class="col-xl-8 mil-mb-80-adaptive-30">
+                                <h2 class="mil-light mil-up">Meet Those Who Make Plax Possible</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6 col-sm-6">
+                                <div class="mil-team-card mil-mb-30 mil-up">
+                                    <div class="mil-portrait mil-mb-30">
+                                        <img src="img/inner-pages/team/1.png" alt="portrait">
+                                    </div>
+                                    <h5 class="mil-light mil-mb-15">Isabella Haugen</h5>
+                                    <p class="mil-text-xs mil-soft">CEO & Founder</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6 col-sm-6">
+                                <div class="mil-team-card mil-mb-30 mil-up">
+                                    <div class="mil-portrait mil-mb-30">
+                                        <img src="img/inner-pages/team/2.png" alt="portrait">
+                                    </div>
+                                    <h5 class="mil-light mil-mb-15">Alexandr Dahl</h5>
+                                    <p class="mil-text-xs mil-soft">Chief Technology Officer (CTO)</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6 col-sm-6">
+                                <div class="mil-team-card mil-mb-30 mil-up">
+                                    <div class="mil-portrait mil-mb-30">
+                                        <img src="img/inner-pages/team/3.png" alt="portrait">
+                                    </div>
+                                    <h5 class="mil-light mil-mb-15">Lucia Knutsen</h5>
+                                    <p class="mil-text-xs mil-soft">Director of Operations (COO)</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6 col-sm-6">
+                                <div class="mil-team-card mil-mb-30 mil-up">
+                                    <div class="mil-portrait mil-mb-30">
+                                        <img src="img/inner-pages/team/4.png" alt="portrait">
+                                    </div>
+                                    <h5 class="mil-light mil-mb-15">Carlos Martinez</h5>
+                                    <p class="mil-text-xs mil-soft">Chief Information Security Officer (CISO)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- team -->
 
             <!-- quote -->
             <div class="mil-quote mil-p-160-130">
@@ -290,19 +372,19 @@
                             <h6 class="mil-mb-60">Usefull Links</h6>
                             <ul class="mil-footer-list">
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="index.html">Home</a>
+                                    <a href="index.jsp">Home</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="about.html">About Us</a>
+                                    <a href="about.jsp">About Us</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="contact.html">Contact Us</a>
+                                    <a href="contact.jsp">Contact Us</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="services.html">Services</a>
+                                    <a href="services.jsp">Services</a>
                                 </li>
                                 <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="price.html">Pricing</a>
+                                    <a href="price.jsp">Pricing</a>
                                 </li>
                             </ul>
                         </div>
@@ -374,5 +456,4 @@
     <script src="js/main.js"></script>
 
 </body>
-
 </html>

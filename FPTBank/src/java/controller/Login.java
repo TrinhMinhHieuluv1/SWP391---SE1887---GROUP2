@@ -115,7 +115,7 @@ public class Login extends HttpServlet {
                 response.sendRedirect("/timibank/manager");
             } else if (sdao.checkSeller(username, password) != null){
                 session.setAttribute("account", cdao.checkCustomer(username, password));
-                response.sendRedirect("/timibank/index.html");
+                response.sendRedirect("/timibank/index.jsp");
             }
         }
     }

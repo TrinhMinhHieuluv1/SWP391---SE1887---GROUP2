@@ -1,5 +1,14 @@
+<%-- 
+    Document   : home-5
+    Created on : Jan 20, 2025, 12:40:57 AM
+    Author     : ADMIN
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
-<html lang="en-US">
+<html>
 
 <head>
 
@@ -53,7 +62,7 @@
         <!-- top panel end -->
         <div class="mil-top-panel mil-dark-2">
             <div class="container">
-                <a href="index.html" class="mil-logo">
+                <a href="index.jsp" class="mil-logo">
                     <img src="img/logo-color-soft.png" alt="Plax" width="83" height="32">
                 </a>
                 <nav class="mil-top-menu">
@@ -61,46 +70,46 @@
                         <li class="mil-has-children mil-active">
                             <a href="#.">Home</a>
                             <ul>
-                                <li><a href="index.html">Type 1</a></li>
-                                <li><a href="home-2.html">Type 2</a></li>
-                                <li><a href="home-3.html">Type 3</a></li>
-                                <li><a href="home-4.html">Type 4</a></li>
-                                <li><a href="home-5.html">Type 5</a></li>
-                                <li><a href="home-4.html">Type 4</a></li>
-                                <li><a href="home-5.html">Type 5</a></li>
-                                <li><a href="home-6.html">Type 6</a></li>
+                                <li><a href="index.jsp">Type 1</a></li>
+                                <li><a href="home-2.jsp">Type 2</a></li>
+                                <li><a href="home-3.jsp">Type 3</a></li>
+                                <li><a href="home-4.jsp">Type 4</a></li>
+                                <li><a href="home-5.jsp">Type 5</a></li>
+                                <li><a href="home-4.jsp">Type 4</a></li>
+                                <li><a href="home-5.jsp">Type 5</a></li>
+                                <li><a href="home-6.jsp">Type 6</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="about.html">About</a>
+                            <a href="about.jsp">About</a>
                         </li>
                         <li>
-                            <a href="services.html">Services</a>
+                            <a href="services.jsp">Services</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Blog</a>
                             <ul>
-                                <li><a href="blog.html">Blog list</a></li>
-                                <li><a href="publication.html">Blog details</a></li>
+                                <li><a href="blog.jsp">Blog list</a></li>
+                                <li><a href="publication.jsp">Blog details</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="contact.html">Contact</a>
+                            <a href="contact.jsp">Contact</a>
                         </li>
                         <li class="mil-has-children">
                             <a href="#.">Pages</a>
                             <ul>
-                                <li><a href="career.html">Career</a></li>
-                                <li><a href="career-details.html">Career details</a></li>
-                                <li><a href="price.html">Pricing</a></li>
-                                <li><a href="register.html">Register</a></li>
-                                <li><a href="coming-soon.html">Coming soon</a></li>
+                                <li><a href="career.jsp">Career</a></li>
+                                <li><a href="career-details.jsp">Career details</a></li>
+                                <li><a href="price.jsp">Pricing</a></li>
+                                <li><a href="register.jsp">Register</a></li>
+                                <li><a href="coming-soon.jsp">Coming soon</a></li>
                             </ul>
                         </li>
                     </ul>
                 </nav>
                 <div class="mil-menu-buttons">
-                    <a href="register.html" class="mil-btn mil-sm">Log in</a>
+                    <a href="register.jsp" class="mil-btn mil-sm">Log in</a>
                     <div class="mil-menu-btn">
                         <span></span>
                     </div>
@@ -123,7 +132,7 @@
                                 <div class="mil-text-l mil-light mil-mb-20">Explore the Financial Future: Welcome to</div>
                                 <h1 class="mil-display mil-light mil-mb-60">Our Online Banking</h1>
                                 <div class="mil-buttons-frame">
-                                    <a href="register.html" class="mil-btn mil-md mil-add-arrow">Check balances</a>
+                                    <a href="register.jsp" class="mil-btn mil-md mil-add-arrow">Check balances</a>
                                     <a href="https://www.youtube.com/watch?v=gRhoYxy9Oss" class="mil-btn mil-md mil-transp mil-add-play has-popup-video">Watch tutorial</a>
                                 </div>
                             </div>
@@ -146,7 +155,7 @@
                             <div class="col-xl-5 mil-mb-60">
                                 <h2 class="mil-mb-30 mil-light mil-up">Simplified Financial Operations</h2>
                                 <p class="mil-text-l mil-pale-2 mil-up mil-mb-60">We have designed our online banking platform so that you can carry out your operations easily and safely. From checking balances to making payments and transfers, everything is at your fingertips.</p>
-                                <div class="mil-up"><a href="register.html" class="mil-btn mil-m mil-add-arrow">Watch tutorial</a></div>
+                                <div class="mil-up"><a href="register.jsp" class="mil-btn mil-m mil-add-arrow">Watch tutorial</a></div>
                             </div>
                             <div class="col-xl-6">
                                 <img src="img/home-5/2.png" alt="img" style="width: 100%" class="mil-up">
@@ -212,7 +221,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="mil-up"><a href="about.html" class="mil-btn mil-m mil-add-arrow">Learn more</a></div>
+                            <div class="mil-up"><a href="about.jsp" class="mil-btn mil-m mil-add-arrow">Learn more</a></div>
                         </div>
                         <div class="col-xl-6 mil-mb-80">
                             <div class="row">
@@ -244,7 +253,7 @@
                             <div class="col-xl-7 mil-text-center">
                                 <h2 class="mil-light mil-mb-30 mil-up">Explore the Possibilities of Our Online Banking</h2>
                                 <p class="mil-text-l mil-light mil-mb-60 mil-up">Bank quickly and securely from the comfort of your home or office. From checking balances to making payments, discover all the features</p>
-                                <div class="mil-up"><a href="career.html" class="mil-btn mil-md mil-add-arrow">Explore now</a></div>
+                                <div class="mil-up"><a href="career.jsp" class="mil-btn mil-md mil-add-arrow">Explore now</a></div>
                             </div>
                         </div>
                     </div>
@@ -303,7 +312,7 @@
                         <div class="col-xl-6 mil-mb-80">
                             <h2 class="mil-mb-30 mil-light mil-up">Ease and Security in Every Transaction</h2>
                             <p class="mil-text-l mil-pale-2 mil-mb-60 mil-up">With Plax, transferring funds has never been so simple and secure. From local transfers to international payments, our platform gives you peace of mind knowing your transactions are protected. Discover a new era in bank transfers.</p>
-                            <div class="mil-up"><a href="about.html" class="mil-btn mil-m mil-add-arrow">Learn more</a></div>
+                            <div class="mil-up"><a href="about.jsp" class="mil-btn mil-m mil-add-arrow">Learn more</a></div>
                         </div>
                         <div class="col-xl-5 mil-mb-80">
                             <div class="mil-image-frame mil-up">
@@ -377,7 +386,7 @@
                         <div class="col-xl-6 mil-mb-60">
                             <h2 class="mil-light mil-mb-30 mil-up">Unlimited Mobile Connectivity: Mobile Wallet Integrations</h2>
                             <p class="mil-text-l mil-pale-2 mil-up mil-mb-60">Explore how our key integrations with leading <br>mobile wallet apps can make your transactions <br>faster and more convenient than ever.</p>
-                            <div class="mil-up"><a href="about.html" class="mil-btn mil-m mil-add-arrow">Learn More</a></div>
+                            <div class="mil-up"><a href="about.jsp" class="mil-btn mil-m mil-add-arrow">Learn More</a></div>
                         </div>
                         <div class="col-xl-6">
                             <div class="mil-brand-card mil-mb-30 mil-up">
@@ -445,19 +454,19 @@
                             <h6 class="mil-mb-60 mil-soft">Usefull Links</h6>
                             <ul class="mil-footer-list">
                                 <li class="mil-text-m mil-pale mil-mb-15">
-                                    <a href="index.html">Home</a>
+                                    <a href="index.jsp">Home</a>
                                 </li>
                                 <li class="mil-text-m mil-pale mil-mb-15">
-                                    <a href="about.html">About Us</a>
+                                    <a href="about.jsp">About Us</a>
                                 </li>
                                 <li class="mil-text-m mil-pale mil-mb-15">
-                                    <a href="contact.html">Contact Us</a>
+                                    <a href="contact.jsp">Contact Us</a>
                                 </li>
                                 <li class="mil-text-m mil-pale mil-mb-15">
-                                    <a href="services.html">Services</a>
+                                    <a href="services.jsp">Services</a>
                                 </li>
                                 <li class="mil-text-m mil-pale mil-mb-15">
-                                    <a href="price.html">Pricing</a>
+                                    <a href="price.jsp">Pricing</a>
                                 </li>
                             </ul>
                         </div>
@@ -528,5 +537,4 @@
     <script src="js/main.js"></script>
 
 </body>
-
 </html>
