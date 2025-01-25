@@ -88,13 +88,13 @@
             <!-- top panel end -->
             <div class="mil-top-panel">
                 <div class="container">
-                    <a href="index.html" class="mil-logo">
+                    <a href="/timibank/home" class="mil-logo">
                         <img src="img/logo1.png" alt="Plax" width="200">
                     </a>
                     <nav class="mil-top-menu">
                         <ul>
                             <li class="mil-has-children">
-                                <a href="#.">Home</a>
+                                <a href="/timibank/home">Home</a>
                                 <ul>
                                     <li><a href="index.html">Mở tài khoản</a></li>
                                     <li><a href="home-2.html">Gửi tiết kiệm</a></li>
@@ -132,7 +132,19 @@
                             </li>
                         </ul>
                     </nav>
-                    
+                    <nav class="mil-top-menu">
+                                <ul>
+                                    <li class="mil-has-children ">
+                                        <a href="#." class="mil-btn mil-sm">My Account</a>
+                                        <ul style="list-style-type: none">
+                                            <li><a href="/timibank/profile">My Profile</a></li>
+                                            <li><a href="/timibank/change-password">Change Password</a></li>
+                                            <li><a href="/timibank/purchase">My Purchase</a></li>
+                                            <li><a href="/timibank/logout">Log out</a></li>
+                                        </ul>
+                                    </li>   
+                                </ul>
+                            </nav>
                     <div class="mil-menu-buttons">
                         <div class="mil-menu-btn">
                             <span></span>
@@ -151,7 +163,7 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-8">
                                 <div class="mil-banner-text mil-text-center">
-                                    <h2 class="mil-mb-60" style="font-family: serif">Đăng kí với Timi Bank</h2>
+                                    <h2 class="mil-mb-60" style="font-family: serif">Register with Timi Bank</h2>
                                 </div>
                             </div>
                         </div>

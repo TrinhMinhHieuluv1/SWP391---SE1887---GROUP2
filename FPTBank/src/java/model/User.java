@@ -2,19 +2,18 @@ package model;
 
 import java.sql.Date;
 
-public class Seller {
+public class User {
     
-    private int sellerID, roleID; 
+    private int userID, roleID;
     private String username, password, name, phone, email, cccd;
-    private Date dob, createdAt, updatedAt;
-    public boolean gender, status;
+    private Date dob, createdAt;
+    private boolean gender, status;
 
-    public Seller() {
+    public User() {
     }
 
-    public Seller(int sellerID, String username, String password, String name, String phone, String email, Date dob, boolean gender, String cccd, int roleID, Date createdAt, Date updatedAt, boolean status) {
-        this.sellerID = sellerID;
-        this.roleID = roleID;
+    public User(int userID, String username, String password, String name, String phone, String email, Date dob, boolean gender, String cccd, int roleID, boolean status, Date createdAt) {
+        this.userID = userID;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -23,25 +22,17 @@ public class Seller {
         this.cccd = cccd;
         this.dob = dob;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.gender = gender;
         this.status = status;
-    }
-
-    public int getSellerID() {
-        return sellerID;
-    }
-
-    public void setSellerID(int sellerID) {
-        this.sellerID = sellerID;
-    }
-
-    public int getRoleID() {
-        return roleID;
-    }
-
-    public void setRoleID(int roleID) {
         this.roleID = roleID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getUsername() {
@@ -108,14 +99,6 @@ public class Seller {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public boolean isGender() {
         return gender;
     }
@@ -132,5 +115,12 @@ public class Seller {
         this.status = status;
     }
 
+    public int getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }
     
 }

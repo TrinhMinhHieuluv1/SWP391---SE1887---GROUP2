@@ -5,10 +5,7 @@
 
 package controller;
 
-import dal.AdminDAO;
-import dal.CustomerDAO;
-import dal.ManagerDAO;
-import dal.SellerDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.User;
 
 /**
  *
@@ -85,11 +83,9 @@ public class Login extends HttpServlet {
         Cookie cusername = new Cookie("cusername", username);
         Cookie cpassword = new Cookie("cpassword", password);
         Cookie crem = new Cookie("crem", rem);
-        AdminDAO adao = new AdminDAO();
-        ManagerDAO mdao = new ManagerDAO();
-        SellerDAO sdao = new SellerDAO();
-        CustomerDAO cdao = new CustomerDAO();
-        if (adao.checkAdmin(username, password)==null && mdao.checkManager(username, password)==null && sdao.checkSeller(username, password)==null && cdao.checkCustomer(username, password)==null){
+        UserDAO udao = new UserDAO();
+        User account = udao.checkAuthen(username, password);
+        if (account == null){
             String err = "Username or password is incorrect. Please try again!";
             request.setAttribute("err", err);
             request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -107,15 +103,23 @@ public class Login extends HttpServlet {
             response.addCookie(cpassword);
             response.addCookie(crem);
             HttpSession session = request.getSession();
-            if (adao.checkAdmin(username, password) != null){
-                session.setAttribute("account", adao.checkAdmin(username, password));
-                response.sendRedirect("/timibank/admin");
-            } else if (mdao.checkManager(username, password) != null){
-                session.setAttribute("account", mdao.checkManager(username, password));
-                response.sendRedirect("/timibank/manager");
-            } else if (sdao.checkSeller(username, password) != null){
-                session.setAttribute("account", cdao.checkCustomer(username, password));
-                response.sendRedirect("/timibank/index.html");
+            session.setAttribute("account", account);
+            switch (account.getRoleID()) {
+                case 1:
+                    response.sendRedirect("/timibank/admin");
+                    break;
+                case 2:
+                    response.sendRedirect("/timibank/seller");
+                    break;
+                case 3:
+                    response.sendRedirect("/timibank/manager");
+                    break;
+                case 4:
+                    response.sendRedirect("/timibank/insurance_provider");
+                    break;
+                case 5: 
+                    response.sendRedirect("/timibank/home");
+                    break;
             }
         }
     }

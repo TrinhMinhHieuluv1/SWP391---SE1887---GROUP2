@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : Jan 13, 2025, 3:18:30 AM
+    Document   : changepassword
+    Created on : Jan 21, 2025, 1:00:18 AM
     Author     : HP
 --%>
 
@@ -10,7 +10,7 @@
 <html>
     <head>
 
-        <title>TIMI - Login</title>
+        <title>TIMI - Change Password</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,6 +34,43 @@
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
         <script>
+            function validateForm(event){
+                if (checkConfirmPassword()===false) {
+                    alert("Confirm password must match password. Try again!");
+                    event.preventDefault();
+                }
+                if (checkNewPassword()===false) {
+                    alert("New Password can't be same as Old Password. Try again!");
+                    event.preventDefault();
+                }                
+            }
+            
+            function checkNewPassword() {
+                const password = document.getElementById('password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const err = document.getElementById('err-new-password');
+                if (password === newPassword) {
+                    err.style.display = 'block';
+                    return false;
+                } else {
+                    err.style.display = 'none';
+                    return true;
+                }
+            }
+            
+            function checkConfirmPassword() {
+                const password = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                const err = document.getElementById('err-confirm-password');
+                if (password !== confirmPassword) {
+                    err.style.display = 'block';
+                    return false;
+                } else {
+                    err.style.display = 'none';
+                    return true;
+                }
+            }
+            
             function togglePassword(id) {
                 const passwordField = document.getElementById(id);
                 const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -128,7 +165,7 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-9">
                                 <div class="mil-banner-text mil-text-center">
-                                    <h2 class="mil-mb-80" style="font-family: serif">Log in with Timi Bank</h2>
+                                    <h2 class="mil-mb-80" style="font-family: serif">Change Password</h2>
                                 </div>
                             </div>
                         </div>
@@ -141,20 +178,25 @@
                         <div class="row justify-content-center">
                             <div class="col-xl-5">
                                 <c:set var="cookie" value="${pageContext.request.cookies}"></c:set>
-                                <form action="login" method="post" style="background: #ccffcc; padding: 30px">
-                                    <input id="username" class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" value="${cookie.cusername.value}" required oninput="checkDuplicatedUsername()">
+                                <form action="change-password" method="post" style="background: #ccffcc; padding: 30px" onsubmit="validateForm(event)">
+                                    <input id="username" class="mil-input mil-up mil-mb-15" name="username" value="${sessionScope.account.username}" required readonly>
                                     <div style="position: relative; display: inline-block; width: 100%;">
-                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Password" name="password" value="${cookie.cpassword.value}" required>
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Old Password" name="password" required>
                                         <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('password')"></span>
                                     </div>
-                                        <input type="checkbox" name="rem" value="ON" ${(cookie.crem.value == "ON")?'checked':''}>Remember me
+                                    <div style="position: relative; display: inline-block; width: 100%;">
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="new-password" type="password" placeholder="New Password" name="new-password" required oninput="checkNewPassword()">
+                                        <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('new-password')"></span>
+                                    </div>
+                                    <div id="err-new-password" style="color: red; display: none">New Password can't be same as Old Password</div>
+                                    <div style="position: relative; display: inline-block; width: 100%;">
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="confirm-password" type="password" placeholder="Confirm Password" name="confirm-password" required oninput="checkConfirmPassword()">
+                                        <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('confirm-password')"></span>
+                                    </div>
+                                    <div id="err-confirm-password" style="color: red; display: none">Confirm Password is incorrect. Try again!</div>
                                     <h5 style="color: red">${requestScope.err}</h5>
                                     <div class="mil-up mil-mb-15 mil-mt-30">
-                                        <button type="submit" class="mil-btn mil-md mil-fw">Log in</button>
-                                    </div>
-                                    <p class="mil-text-xs mil-text-center mil-soft mil-mb-15">If you do not have an account</p>
-                                    <div class="mil-up mil-mb-15">
-                                        <a href="/timibank/register" class="mil-btn mil-md mil-grey mil-fw mil-mb-30">Create Account</a>
+                                        <button type="submit" class="mil-btn mil-md mil-fw">Change Password</button>
                                     </div>
                                 </form>
                             </div>

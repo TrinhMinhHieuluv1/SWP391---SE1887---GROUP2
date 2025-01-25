@@ -60,7 +60,7 @@
             <!-- top panel end -->
             <div class="mil-top-panel">
                 <div class="container">
-                    <a href="index.html" class="mil-logo">
+                    <a href="/timibank/home" class="mil-logo">
                         <img src="img/logo1.png" alt="Plax" width="200">
                     </a>
                     <nav class="mil-top-menu">
@@ -68,7 +68,7 @@
                             <li class="mil-has-children mil-active">
                                 <a href="#.">Home</a>
                                 <ul>
-                                    <li><a href="index.html">Trang trủ</a></li>
+                                    <li><a href="/timibank/home">Trang trủ</a></li>
                                     <li><a href="home-2.html">Gửi tiết kiệm</a></li>
                                     <li><a href="home-3.html">Type 3</a></li>
                                     <li><a href="home-4.html">Type 4</a></li>
@@ -110,11 +110,19 @@
                             <a href="/timibank/register" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
                         </c:if>
                         <c:if test="${sessionScope.account != null}">
-                            <div class="btn-group">
-                                <div class="mil-has-children">
-                                    <button><a href="/timibank/logout">Log out</a></button>
-                                </div>
-                            </div>
+                            <nav class="mil-top-menu">
+                                <ul>
+                                    <li class="mil-has-children ">
+                                        <a href="#." class="mil-btn mil-sm">My Account</a>
+                                        <ul style="list-style-type: none">
+                                            <li><a href="/timibank/profile">My Profile</a></li>
+                                            <li><a href="/timibank/change-password">Change Password</a></li>
+                                            <li><a href="/timibank/purchase">My Purchase</a></li>
+                                            <li><a href="/timibank/logout">Log out</a></li>
+                                        </ul>
+                                    </li>   
+                                </ul>
+                            </nav>
                         </c:if>
                     </div>
                 </div>
