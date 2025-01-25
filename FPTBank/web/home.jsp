@@ -60,11 +60,7 @@
             <!-- top panel end -->
             <div class="mil-top-panel">
                 <div class="container">
-<<<<<<< HEAD
                     <a href="/timibank/home" class="mil-logo">
-=======
-                    <a href="index.jsp" class="mil-logo">
->>>>>>> 62a24bf698a52faed55d68b8c1589fac04fd037e
                         <img src="img/logo1.png" alt="Plax" width="200">
                     </a>
                     <nav class="mil-top-menu">
@@ -72,20 +68,12 @@
                             <li class="mil-has-children mil-active">
                                 <a href="#.">Home</a>
                                 <ul>
-<<<<<<< HEAD
+
                                     <li><a href="/timibank/home">Trang trủ</a></li>
                                     <li><a href="home-2.html">Gửi tiết kiệm</a></li>
                                     <li><a href="home-3.html">Type 3</a></li>
                                     <li><a href="home-4.html">Type 4</a></li>
                                     <li><a href="home-5.html">Type 5</a></li>
-=======
-                                    <li><a href="index.jsp">Trang trủ</a></li>
-                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.jsp">Type 3</a></li>
-                                    <li><a href="home-4.jsp">Type 4</a></li>
-                                    <li><a href="home-5.jsp">Type 5</a></li>
->>>>>>> 62a24bf698a52faed55d68b8c1589fac04fd037e
-
                                 </ul>
                             </li>
                             <li>

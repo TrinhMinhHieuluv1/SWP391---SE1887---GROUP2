@@ -88,11 +88,7 @@
             <!-- top panel end -->
             <div class="mil-top-panel">
                 <div class="container">
-<<<<<<< HEAD
                     <a href="/timibank/home" class="mil-logo">
-=======
-                    <a href="index.jsp" class="mil-logo">
->>>>>>> 62a24bf698a52faed55d68b8c1589fac04fd037e
                         <img src="img/logo1.png" alt="Plax" width="200">
                     </a>
                     <nav class="mil-top-menu">
