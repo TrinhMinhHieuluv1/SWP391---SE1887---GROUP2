@@ -67,7 +67,7 @@
             <!-- top panel end -->
             <div class="mil-top-panel">
                 <div class="container">
-                    <a href="index.html" class="mil-logo">
+                    <a href="index.jsp" class="mil-logo">
                         <img src="img/logo1.png" alt="Plax" width="200">
                     </a>
                     <nav class="mil-top-menu">
@@ -75,37 +75,37 @@
                             <li class="mil-has-children">
                                 <a href="#.">Home</a>
                                 <ul>
-                                    <li><a href="index.html">Mở tài khoản</a></li>
-                                    <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.html">Type 3</a></li>
-                                    <li><a href="home-4.html">Type 4</a></li>
-                                    <li><a href="home-5.html">Type 5</a></li>
+                                    <li><a href="index.jsp">Mở tài khoản</a></li>
+                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
+                                    <li><a href="home-3.jsp">Type 3</a></li>
+                                    <li><a href="home-4.jsp">Type 4</a></li>
+                                    <li><a href="home-5.jsp">Type 5</a></li>
 
                                 </ul>
                             </li>
                             <li>
-                                <a href="about.html">About</a>
+                                <a href="about.jsp">About</a>
                             </li>
                             <li>
-                                <a href="services.html">Services</a>
+                                <a href="services.jsp">Services</a>
                             </li>
                             <li>
                                 <a href="#.">Blog</a>
                                 <ul>
-                                    <li><a href="blog.html">Blog list</a></li>
-                                    <li><a href="publication.html">Blog details</a></li>
+                                    <li><a href="blog.jsp">Blog list</a></li>
+                                    <li><a href="publication.jsp">Blog details</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="contact.html">Contact</a>
+                                <a href="contact.jsp">Contact</a>
                             </li>
                             <li class="mil-has-children">
                                 <a href="#.">Pages</a>
                                 <ul>
-                                    <li><a href="career.html">Career</a></li>
-                                    <li><a href="career-details.html">Career details</a></li>
-                                    <li><a href="price.html">Pricing</a></li>
-                                    <li><a href="register.html">Register</a></li>
+                                    <li><a href="career.jsp">Career</a></li>
+                                    <li><a href="career-details.jsp">Career details</a></li>
+                                    <li><a href="price.jsp">Pricing</a></li>
+                                    <li><a href="register.jsp">Register</a></li>
 
                                 </ul>
                             </li>
