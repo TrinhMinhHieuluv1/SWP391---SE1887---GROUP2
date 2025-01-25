@@ -88,7 +88,11 @@
             <!-- top panel end -->
             <div class="mil-top-panel">
                 <div class="container">
+<<<<<<< HEAD
                     <a href="/timibank/home" class="mil-logo">
+=======
+                    <a href="index.jsp" class="mil-logo">
+>>>>>>> 62a24bf698a52faed55d68b8c1589fac04fd037e
                         <img src="img/logo1.png" alt="Plax" width="200">
                     </a>
                     <nav class="mil-top-menu">
@@ -96,37 +100,37 @@
                             <li class="mil-has-children">
                                 <a href="/timibank/home">Home</a>
                                 <ul>
-                                    <li><a href="index.html">Mở tài khoản</a></li>
-                                    <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.html">Type 3</a></li>
-                                    <li><a href="home-4.html">Type 4</a></li>
-                                    <li><a href="home-5.html">Type 5</a></li>
+                                    <li><a href="index.jsp">Mở tài khoản</a></li>
+                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
+                                    <li><a href="home-3.jsp">Type 3</a></li>
+                                    <li><a href="home-4.jsp">Type 4</a></li>
+                                    <li><a href="home-5.jsp">Type 5</a></li>
 
                                 </ul>
                             </li>
                             <li>
-                                <a href="about.html">About</a>
+                                <a href="about.jsp">About</a>
                             </li>
                             <li>
-                                <a href="services.html">Services</a>
+                                <a href="services.jsp">Services</a>
                             </li>
                             <li>
                                 <a href="#.">Blog</a>
                                 <ul>
-                                    <li><a href="blog.html">Blog list</a></li>
-                                    <li><a href="publication.html">Blog details</a></li>
+                                    <li><a href="blog.jsp">Blog list</a></li>
+                                    <li><a href="publication.jsp">Blog details</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="contact.html">Contact</a>
+                                <a href="contact.jsp">Contact</a>
                             </li>
                             <li class="mil-has-children">
                                 <a href="#.">Pages</a>
                                 <ul>
-                                    <li><a href="career.html">Career</a></li>
-                                    <li><a href="career-details.html">Career details</a></li>
-                                    <li><a href="price.html">Pricing</a></li>
-                                    <li><a href="register.html">Register</a></li>
+                                    <li><a href="career.jsp">Career</a></li>
+                                    <li><a href="career-details.jsp">Career details</a></li>
+                                    <li><a href="price.jsp">Pricing</a></li>
+                                    <li><a href="register.jsp">Register</a></li>
 
                                 </ul>
                             </li>
@@ -163,7 +167,11 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-8">
                                 <div class="mil-banner-text mil-text-center">
+<<<<<<< HEAD
                                     <h2 class="mil-mb-60" style="font-family: serif">Register with Timi Bank</h2>
+=======
+                                    <h2  style="font-family: serif">Đăng kí với Timi Bank</h2>
+>>>>>>> 62a24bf698a52faed55d68b8c1589fac04fd037e
                                 </div>
                             </div>
                         </div>
@@ -196,7 +204,7 @@
                                     <input type="date" class="mil-input mil-up mil-mb-15" name="dob" value="${requestScope.dob}" placeholder="Date of birth">
                                     <input type="text" class="mil-input mil-up mil-mb-15" name="phone" value="${requestScope.phone}" placeholder="Phone">
                                     <input type="text" class="mil-input mil-up mil-mb-15" name="email" value="${requestScope.email}" placeholder="Email">
-                                    <input required type="checkbox"> <p class="mil-text-xs mil-soft" style="margin-bottom: 10px; display: inline">Do you agree to <a href="services.html" class="mil-accent">our terms and conditions</a>.</p>
+                                    <input required type="checkbox"> <p class="mil-text-xs mil-soft" style="margin-bottom: 10px; display: inline">Do you agree to <a href="services.jsp" class="mil-accent">our terms and conditions</a>.</p>
                                     <div class="mil-up mil-mb-30">
                                         <button type="submit" class="mil-btn mil-md mil-fw">Create Account</button>
                                     </div>

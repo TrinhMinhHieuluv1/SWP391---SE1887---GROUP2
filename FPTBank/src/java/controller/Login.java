@@ -103,6 +103,7 @@ public class Login extends HttpServlet {
             response.addCookie(cpassword);
             response.addCookie(crem);
             HttpSession session = request.getSession();
+<<<<<<< HEAD
             session.setAttribute("account", account);
             switch (account.getRoleID()) {
                 case 1:
@@ -120,6 +121,17 @@ public class Login extends HttpServlet {
                 case 5: 
                     response.sendRedirect("/timibank/home");
                     break;
+=======
+            if (adao.checkAdmin(username, password) != null){
+                session.setAttribute("account", adao.checkAdmin(username, password));
+                response.sendRedirect("/timibank/admin");
+            } else if (mdao.checkManager(username, password) != null){
+                session.setAttribute("account", mdao.checkManager(username, password));
+                response.sendRedirect("/timibank/manager");
+            } else if (sdao.checkSeller(username, password) != null){
+                session.setAttribute("account", cdao.checkCustomer(username, password));
+                response.sendRedirect("/timibank/index.jsp");
+>>>>>>> 62a24bf698a52faed55d68b8c1589fac04fd037e
             }
         }
     }
