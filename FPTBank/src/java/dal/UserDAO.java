@@ -6,9 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import java.sql.*;
 
 public class UserDAO extends DBContext {
-
+    
     public User checkAuthen(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE Username=? AND Password=?";
         try {
@@ -17,25 +18,57 @@ public class UserDAO extends DBContext {
             st.setString(2, password);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                User userToAdd = new User(rs.getInt("UserID"),
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
-                return userToAdd;
+                return user;
             }
         } catch (SQLException e) {
         }
         return null;
     }
-
+    
+    public User getManagerForSeller(int managerID) {
+        String sql = "SELECT * FROM [User] WHERE UserID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, managerID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User manager = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        null,
+                        rs.getDate("CreatedAt"));
+                return manager;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+    
     public List<User> selectAllUser() {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM [User]";
@@ -47,13 +80,16 @@ public class UserDAO extends DBContext {
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
                 userList.add(userToAdd);
             }
@@ -61,7 +97,7 @@ public class UserDAO extends DBContext {
         }
         return userList;
     }
-
+    
     public List<User> selectAllManager() {
         List<User> managerList = new ArrayList<>();
         String sql = "SELECT * FROM [User] WHERE RoleID=3";
@@ -69,87 +105,115 @@ public class UserDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                User userToAdd = new User(rs.getInt("UserID"),
+                User manager = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        null,
                         rs.getDate("CreatedAt"));
-                managerList.add(userToAdd);
+                managerList.add(manager);
             }
         } catch (SQLException e) {
         }
         return managerList;
     }
-
+    
     public List<User> selectAllSeller() {
-        List<User> userList = new ArrayList<>();
+        List<User> sellerList = new ArrayList<>();
         String sql = "SELECT * FROM [User] WHERE RoleID=2";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                User userToAdd = new User(rs.getInt("UserID"),
+                User seller = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
-                userList.add(userToAdd);
+                sellerList.add(seller);
             }
         } catch (SQLException e) {
         }
-        return userList;
+        return sellerList;
     }
-
+    
     public void addAUser(User userToAdd) {
-        String sql = "INSERT INTO [User](Username, Password, FullName, Phone, Email, DateOfBirth, Gender, CCCD, RoleID, Status)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [User](Username, Password, FullName, Image, Phone, Email, DateOfBirth, Gender, Address, CCCD, RoleID, Status, ManageID)\n"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToAdd.getUsername());
             st.setString(2, userToAdd.getPassword());
-            st.setString(3, userToAdd.getName());
-            st.setString(4, userToAdd.getPhone());
-            st.setString(5, userToAdd.getEmail());
-            st.setDate(6, userToAdd.getDob());
-            st.setBoolean(7, userToAdd.isGender());
-            st.setString(8, userToAdd.getCccd());
-            st.setInt(9, userToAdd.getRoleID());
-            st.setInt(10, 1);
+            st.setString(3, userToAdd.getFullName());
+            st.setString(4, userToAdd.getImage());
+            st.setString(5, userToAdd.getPhone());
+            st.setString(6, userToAdd.getEmail());
+            st.setDate(7, userToAdd.getDateOfBirth());
+            st.setBoolean(8, userToAdd.isGender());
+            st.setString(9, userToAdd.getAddress());
+            st.setString(10, userToAdd.getCCCD());
+            st.setInt(11, userToAdd.getRoleID());
+            st.setBoolean(12, userToAdd.isStatus());
+            if (userToAdd.getManager() != null) {
+                st.setInt(13, userToAdd.getManager().getUserID());
+            } else {
+                st.setNull(13, Types.INTEGER);
+            }
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void updateAUserByUserID(User userToUpdate) {
+        String sql = "UPDATE [User] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, RoleID=?, Status=?, ManageID=? WHERE UserID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, userToUpdate.getPassword());
+            st.setString(2, userToUpdate.getFullName());
+            st.setString(3, userToUpdate.getImage());
+            st.setString(4, userToUpdate.getPhone());
+            st.setString(5, userToUpdate.getEmail());
+            st.setDate(6, userToUpdate.getDateOfBirth());
+            st.setBoolean(7, userToUpdate.isGender());
+            st.setString(8, userToUpdate.getAddress());
+            st.setString(9, userToUpdate.getCCCD());
+            st.setInt(10, userToUpdate.getRoleID());
+            st.setBoolean(11, userToUpdate.isStatus());
+            if (userToUpdate.getManager() != null) {
+                st.setInt(12, userToUpdate.getManager().getUserID());
+            } else {
+                st.setNull(12, Types.INTEGER);
+            }
+            st.setInt(13, userToUpdate.getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
         }
     }
     
-    public void updateAUserByUserID(User userToUpdate) {
-        String sql = "UPDATE [User] SET Password=?, FullName=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, CCCD=?, RoleID=?, Status=? WHERE UserID=?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, userToUpdate.getPassword());
-            st.setString(2, userToUpdate.getName());
-            st.setString(3, userToUpdate.getPhone());
-            st.setString(4, userToUpdate.getEmail());
-            st.setDate(5, userToUpdate.getDob());
-            st.setBoolean(6, userToUpdate.isGender());
-            st.setString(7, userToUpdate.getCccd());
-            st.setInt(8, userToUpdate.getRoleID());
-            st.setBoolean(9, userToUpdate.isStatus());
-            st.setInt(10, userToUpdate.getUserID());
-            st.executeUpdate();
-        } catch (SQLException e) {
-        }
+    public static void main(String[] args) {
+        UserDAO udao = new UserDAO();
+        User userToAdd = new User(21, "user21", "abc", "Trinh Minh Hieu", "abc", "", "", null, true, "", "1", 5, true, null, null);
+        udao.updateAUserByUserID(userToAdd);
     }
+    
 }

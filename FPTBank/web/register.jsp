@@ -132,19 +132,6 @@
                             </li>
                         </ul>
                     </nav>
-                    <nav class="mil-top-menu">
-                                <ul>
-                                    <li class="mil-has-children ">
-                                        <a href="#." class="mil-btn mil-sm">My Account</a>
-                                        <ul style="list-style-type: none">
-                                            <li><a href="/timibank/profile">My Profile</a></li>
-                                            <li><a href="/timibank/change-password">Change Password</a></li>
-                                            <li><a href="/timibank/purchase">My Purchase</a></li>
-                                            <li><a href="/timibank/logout">Log out</a></li>
-                                        </ul>
-                                    </li>   
-                                </ul>
-                            </nav>
                     <div class="mil-menu-buttons">
                         <div class="mil-menu-btn">
                             <span></span>
@@ -163,11 +150,7 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-8">
                                 <div class="mil-banner-text mil-text-center">
-<<<<<<< HEAD
                                     <h2 class="mil-mb-60" style="font-family: serif">Register with Timi Bank</h2>
-=======
-                                    <h2  style="font-family: serif">Đăng kí với Timi Bank</h2>
->>>>>>> 62a24bf698a52faed55d68b8c1589fac04fd037e
                                 </div>
                             </div>
                         </div>

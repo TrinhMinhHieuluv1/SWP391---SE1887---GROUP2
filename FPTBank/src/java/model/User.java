@@ -4,123 +4,151 @@ import java.sql.Date;
 
 public class User {
     
-    private int userID, roleID;
-    private String username, password, name, phone, email, cccd;
-    private Date dob, createdAt;
-    private boolean gender, status;
+    private int UserID, RoleID;
+    private String Username, Password, FullName, Phone, Email, CCCD, Image, Address;
+    private Date DateOfBirth, CreatedAt;
+    private boolean Gender, Status;
+    private User Manager;
 
     public User() {
     }
 
-    public User(int userID, String username, String password, String name, String phone, String email, Date dob, boolean gender, String cccd, int roleID, boolean status, Date createdAt) {
-        this.userID = userID;
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.cccd = cccd;
-        this.dob = dob;
-        this.createdAt = createdAt;
-        this.gender = gender;
-        this.status = status;
-        this.roleID = roleID;
+    public User(int UserID, String Username, String Password, String FullName, String Image, String Phone, String Email, Date DateOfBirth, boolean Gender, String Address, String CCCD, int RoleID,  boolean Status, User Manager, Date CreatedAt) {
+        this.UserID = UserID;
+        this.RoleID = RoleID;
+        this.Username = Username;
+        this.Password = Password;
+        this.FullName = FullName;
+        this.Phone = Phone;
+        this.Email = Email;
+        this.CCCD = CCCD;
+        this.Image = Image;
+        this.Address = Address;
+        this.DateOfBirth = DateOfBirth;
+        this.CreatedAt = CreatedAt;
+        this.Gender = Gender;
+        this.Status = Status;
+        this.Manager = Manager;
     }
 
     public int getUserID() {
-        return userID;
+        return UserID;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCccd() {
-        return cccd;
-    }
-
-    public void setCccd(String cccd) {
-        this.cccd = cccd;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public boolean isGender() {
-        return gender;
-    }
-
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setUserID(int UserID) {
+        this.UserID = UserID;
     }
 
     public int getRoleID() {
-        return roleID;
+        return RoleID;
     }
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
+    public void setRoleID(int RoleID) {
+        this.RoleID = RoleID;
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setUsername(String Username) {
+        this.Username = Username;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String FullName) {
+        this.FullName = FullName;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+
+    public String getCCCD() {
+        return CCCD;
+    }
+
+    public void setCCCD(String CCCD) {
+        this.CCCD = CCCD;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String Image) {
+        this.Image = Image;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String Address) {
+        this.Address = Address;
+    }
+
+    public Date getDateOfBirth() {
+        return DateOfBirth;
+    }
+
+    public void setDateOfBirth(Date DateOfBirth) {
+        this.DateOfBirth = DateOfBirth;
+    }
+
+    public Date getCreatedAt() {
+        return CreatedAt;
+    }
+
+    public void setCreatedAt(Date CreatedAt) {
+        this.CreatedAt = CreatedAt;
+    }
+
+    public boolean isGender() {
+        return Gender;
+    }
+
+    public void setGender(boolean Gender) {
+        this.Gender = Gender;
+    }
+
+    public boolean isStatus() {
+        return Status;
+    }
+
+    public void setStatus(boolean Status) {
+        this.Status = Status;
+    }
+
+    public User getManager() {
+        return Manager;
+    }
+
+    public void setManager(User Manager) {
+        this.Manager = Manager;
     }
     
 }

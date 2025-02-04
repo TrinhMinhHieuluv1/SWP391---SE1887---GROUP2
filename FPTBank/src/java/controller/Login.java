@@ -93,36 +93,42 @@ public class Login extends HttpServlet {
             request.setAttribute("err", err);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
-            if ((rem != null) && (rem.equals("ON"))) {
-                cusername.setMaxAge(60 * 60 * 24 * 7);
-                cpassword.setMaxAge(60 * 60 * 24 * 7);
-                crem.setMaxAge(60 * 60 * 24 * 7);
-            } else {
-                cusername.setMaxAge(0);
-                cpassword.setMaxAge(0);
-                crem.setMaxAge(0);
-            }
-            response.addCookie(cusername);
-            response.addCookie(cpassword);
-            response.addCookie(crem);
             HttpSession session = request.getSession();
-            session.setAttribute("account", account);
-            switch (account.getRoleID()) {
-                case 1:
-                    response.sendRedirect("/timibank/admin");
-                    break;
-                case 2:
-                    response.sendRedirect("/timibank/seller");
-                    break;
-                case 3:
-                    response.sendRedirect("/timibank/manager");
-                    break;
-                case 4:
-                    response.sendRedirect("/timibank/insurance_provider");
-                    break;
-                case 5:
-                    response.sendRedirect("/timibank/home");
-                    break;
+            if (account.isStatus()) {
+                session.setAttribute("account", account);
+                if ((rem != null) && (rem.equals("ON"))) {
+                    cusername.setMaxAge(60 * 60 * 24 * 7);
+                    cpassword.setMaxAge(60 * 60 * 24 * 7);
+                    crem.setMaxAge(60 * 60 * 24 * 7);
+                } else {
+                    cusername.setMaxAge(0);
+                    cpassword.setMaxAge(0);
+                    crem.setMaxAge(0);
+                }
+                response.addCookie(cusername);
+                response.addCookie(cpassword);
+                response.addCookie(crem);
+                switch (account.getRoleID()) {
+                    case 1:
+                        response.sendRedirect("/timibank/admin");
+                        break;
+                    case 2:
+                        response.sendRedirect("/timibank/seller");
+                        break;
+                    case 3:
+                        response.sendRedirect("/timibank/manager");
+                        break;
+                    case 4:
+                        response.sendRedirect("/timibank/insurance_provider");
+                        break;
+                    case 5:
+                        response.sendRedirect("/timibank/home");
+                        break;
+                }
+            } else {
+                String err = "Your account is inactivated. Please contact admin to activate your account!";
+                request.setAttribute("err", err);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }
     }
