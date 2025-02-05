@@ -2,6 +2,7 @@ package controller;
 
 import dal.UserDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,8 +15,8 @@ import model.User;
  *
  * @author SCN
  */
-@WebServlet(name = "FilterListUserByRoleName", urlPatterns = {"/admin/filter_roleName"})
-public class FilterListUserByRoleName extends HttpServlet {
+@WebServlet(name = "FillterListUserByStatus", urlPatterns = {"/admin/filter_byStatus"})
+public class FilterListUserByStatus extends HttpServlet {
 
     private UserDAO uDao;
 
@@ -26,8 +27,7 @@ public class FilterListUserByRoleName extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int idOfRole = Integer.parseInt(request.getParameter("id"));
+        int idOfStatus = Integer.parseInt(request.getParameter("status"));
         List<User> listUser;
 
         int page = 1; // trang đầu tiên
@@ -37,15 +37,13 @@ public class FilterListUserByRoleName extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        listUser = uDao.filterListUserByRoleName(idOfRole, page, pageSize);
-
-        int totalUsers1 = uDao.getTotalUsersAfterFilteringByRole(idOfRole);
+        listUser = uDao.filterListUserByStatus(idOfStatus, page, pageSize);
+        int totalUsers1 = uDao.getTotalUsersAfterFilteringByStatus(idOfStatus);
         int totalPages = (int) Math.ceil((double) totalUsers1 / pageSize);
 
-        
         // tính số lượng của user theo từng role
         int totalUsers2 = uDao.getTotalUsers();
-        
+
         int numOfAdmin = uDao.getTotalUsersOfEachRole("Admin");
         int numOfSeller = uDao.getTotalUsersOfEachRole("Seller");
         int numOfManager = uDao.getTotalUsersOfEachRole("Manager");
@@ -63,10 +61,12 @@ public class FilterListUserByRoleName extends HttpServlet {
         // phân trang
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("idOfRole", idOfRole);
+        request.setAttribute("statusOfUser", idOfStatus);
+        
 
         request.setAttribute("listUsers", listUser);
         request.getRequestDispatcher("ManagementUsers.jsp").forward(request, response);
+
     }
 
     @Override

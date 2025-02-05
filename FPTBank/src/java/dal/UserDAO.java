@@ -17,21 +17,54 @@ public class UserDAO extends DBContext {
             st.setString(2, password);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                User userToAdd = new User(rs.getInt("UserID"),
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
-                return userToAdd;
+                return user;
             }
         } catch (SQLException e) {
+        }
+        return null;
+    }
+
+    public User getManagerForSeller(int managerID) {
+        String sql = "SELECT * FROM [User] WHERE UserID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, managerID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User manager = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        null,
+                        rs.getDate("CreatedAt"));
+                return manager;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -53,7 +86,7 @@ public class UserDAO extends DBContext {
             }
 
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return false;
     }
@@ -69,13 +102,16 @@ public class UserDAO extends DBContext {
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
                 userList.add(userToAdd);
             }
@@ -91,19 +127,22 @@ public class UserDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                User userToAdd = new User(rs.getInt("UserID"),
+                User manager = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        null,
                         rs.getDate("CreatedAt"));
-                managerList.add(userToAdd);
+                managerList.add(manager);
             }
         } catch (SQLException e) {
         }
@@ -111,46 +150,52 @@ public class UserDAO extends DBContext {
     }
 
     public List<User> selectAllSeller() {
-        List<User> userList = new ArrayList<>();
+        List<User> sellerList = new ArrayList<>();
         String sql = "SELECT * FROM [User] WHERE RoleID=2";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                User userToAdd = new User(rs.getInt("UserID"),
+                User seller = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
-                userList.add(userToAdd);
+                sellerList.add(seller);
             }
         } catch (SQLException e) {
         }
-        return userList;
+        return sellerList;
     }
 
     public void addAUser(User userToAdd) {
-        String sql = "INSERT INTO [User](Username, Password, FullName, Phone, Email, DateOfBirth, Gender, CCCD, RoleID, Status)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [User](Username, Password, FullName, Image, Phone, Email, DateOfBirth, Gender, Address, CCCD, RoleID, Status, ManageID)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToAdd.getUsername());
             st.setString(2, userToAdd.getPassword());
-            st.setString(3, userToAdd.getName());
-            st.setString(4, userToAdd.getPhone());
-            st.setString(5, userToAdd.getEmail());
-            st.setDate(6, userToAdd.getDob());
-            st.setBoolean(7, userToAdd.isGender());
-            st.setString(8, userToAdd.getCccd());
-            st.setInt(9, userToAdd.getRoleID());
-            st.setInt(10, 1);
+            st.setString(3, userToAdd.getFullName());
+            st.setString(4, userToAdd.getImage());
+            st.setString(5, userToAdd.getPhone());
+            st.setString(6, userToAdd.getEmail());
+            st.setDate(7, userToAdd.getDateOfBirth());
+            st.setBoolean(8, userToAdd.isGender());
+            st.setString(9, userToAdd.getAddress());
+            st.setString(10, userToAdd.getCCCD());
+            st.setInt(11, userToAdd.getRoleID());
+            st.setBoolean(12, userToAdd.isStatus());
+            st.setInt(13, userToAdd.getManager().getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
         }
@@ -158,29 +203,115 @@ public class UserDAO extends DBContext {
 
     // Add users và trả lại số hàng được chèn thành công
     public int addUserReturnRow(User userToAdd) {
-        String sql = "INSERT INTO [User](Username, Password, FullName, Phone, Email, DateOfBirth, Gender, CCCD, RoleID, Status)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Kiểm tra trùng lặp Username, CCCD, Email, Phone trước khi thêm
+        if (isUsernameExists(userToAdd.getUsername())) {
+            return 2;
+        }
+
+        if (isCCCDExists(userToAdd.getCCCD())) {
+            return 3;
+        }
+
+        if (isEmailExists(userToAdd.getEmail())) {
+            return 4;
+        }
+
+        if (isPhoneExists(userToAdd.getPhone())) {
+            return 5;
+        }
+
+        // Nếu không có trùng lặp, thực hiện thêm người dùng mới
+        String sql = """
+                 INSERT INTO [User](Username, Password, FullName, Image, Phone, Email, DateOfBirth, Gender, Address, CCCD, RoleID, Status, ManageID)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToAdd.getUsername());
             st.setString(2, userToAdd.getPassword());
-            st.setString(3, userToAdd.getName());
-            st.setString(4, userToAdd.getPhone());
-            st.setString(5, userToAdd.getEmail());
-            st.setDate(6, userToAdd.getDob());
-            st.setBoolean(7, userToAdd.isGender());
-            st.setString(8, userToAdd.getCccd());
-            st.setInt(9, userToAdd.getRoleID());
-            st.setInt(10, 1);
+            st.setString(3, userToAdd.getFullName());
+            st.setString(4, userToAdd.getImage());
+            st.setString(5, userToAdd.getPhone());
+            st.setString(6, userToAdd.getEmail());
+            st.setDate(7, userToAdd.getDateOfBirth());
+            st.setBoolean(8, userToAdd.isGender());
+            st.setString(9, userToAdd.getAddress());
+            st.setString(10, userToAdd.getCCCD());
+            st.setInt(11, userToAdd.getRoleID());
+            st.setBoolean(12, userToAdd.isStatus());
 
-            int row = st.executeUpdate();
-            if (row > 0) {
-                return row;
+            // Nếu manager == null, đặt ManageID là NULL
+            if (userToAdd.getManager() != null) {
+                st.setInt(13, userToAdd.getManager().getUserID());
+            } else {
+                st.setNull(13, java.sql.Types.INTEGER);
             }
+            int row = st.executeUpdate();
+            return row;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
+    }
+
+// kiểm tra sự tồn tại của username
+    private boolean isUsernameExists(String username) {
+        String query = "SELECT COUNT(*) FROM [User] WHERE Username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // kiểm tra sự tồn tại của CCCD
+    private boolean isCCCDExists(String cccd) {
+        String query = "SELECT COUNT(*) FROM [User] WHERE CCCD = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, cccd);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // kiểm tra sự tồn tại của Email
+    private boolean isEmailExists(String email) {
+        String query = "SELECT COUNT(*) FROM [User] WHERE Email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // kiểm tra sự tồn tại của Phone
+    private boolean isPhoneExists(String phone) {
+        String query = "SELECT COUNT(*) FROM [User] WHERE Phone = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, phone);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public User getUserByUserID(int userID) {
@@ -195,13 +326,16 @@ public class UserDAO extends DBContext {
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
                 return user;
             }
@@ -218,26 +352,38 @@ public class UserDAO extends DBContext {
                      UPDATE [dbo].[User]
                         SET [Username] = ?
                            ,[FullName] = ?
+                           ,[Image] = ?
                            ,[Phone] = ?
                            ,[Email] = ?
                            ,[DateOfBirth] = ?
                            ,[Gender] = ?
+                           ,[Address] = ?
                            ,[CCCD] = ?
                            ,[RoleID] = ?
-                     
-                      WHERE UserID=?""";
+                           ,[ManageID] = ?
+                      WHERE UserID = ?""";
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToUpdate.getUsername());
-            st.setString(2, userToUpdate.getName());
-            st.setString(3, userToUpdate.getPhone());
-            st.setString(4, userToUpdate.getEmail());
-            st.setDate(5, userToUpdate.getDob());
-            st.setBoolean(6, userToUpdate.isGender());
-            st.setString(7, userToUpdate.getCccd());
-            st.setInt(8, userToUpdate.getRoleID());
-            st.setInt(9, userId);
+            st.setString(2, userToUpdate.getFullName());
+            st.setString(3, userToUpdate.getImage());
+            st.setString(4, userToUpdate.getPhone());
+            st.setString(5, userToUpdate.getEmail());
+            st.setDate(6, userToUpdate.getDateOfBirth());
+            st.setBoolean(7, userToUpdate.isGender());
+            st.setString(8, userToUpdate.getAddress());
+            st.setString(9, userToUpdate.getCCCD());
+            st.setInt(10, userToUpdate.getRoleID());
 
+            // Nếu manager == null, đặt ManageID là NULL
+            if (userToUpdate.getManager() != null) {
+                st.setInt(11, userToUpdate.getManager().getUserID());
+            } else {
+                st.setNull(11, java.sql.Types.INTEGER);
+            }
+
+            st.setInt(12, userId);
             int row = st.executeUpdate();
             if (row > 0) {
                 return row;
@@ -249,19 +395,22 @@ public class UserDAO extends DBContext {
     }
 
     public void updateAUserByUserID(User userToUpdate) {
-        String sql = "UPDATE [User] SET Password=?, FullName=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, CCCD=?, RoleID=?, Status=? WHERE UserID=?";
+        String sql = "UPDATE [User] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address, CCCD=?, RoleID=?, Status=?, ManageID=? WHERE UserID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToUpdate.getPassword());
-            st.setString(2, userToUpdate.getName());
-            st.setString(3, userToUpdate.getPhone());
-            st.setString(4, userToUpdate.getEmail());
-            st.setDate(5, userToUpdate.getDob());
-            st.setBoolean(6, userToUpdate.isGender());
-            st.setString(7, userToUpdate.getCccd());
-            st.setInt(8, userToUpdate.getRoleID());
-            st.setBoolean(9, userToUpdate.isStatus());
-            st.setInt(10, userToUpdate.getUserID());
+            st.setString(2, userToUpdate.getFullName());
+            st.setString(3, userToUpdate.getImage());
+            st.setString(4, userToUpdate.getPhone());
+            st.setString(5, userToUpdate.getEmail());
+            st.setDate(6, userToUpdate.getDateOfBirth());
+            st.setBoolean(7, userToUpdate.isGender());
+            st.setString(8, userToUpdate.getAddress());
+            st.setString(9, userToUpdate.getCCCD());
+            st.setInt(10, userToUpdate.getRoleID());
+            st.setBoolean(11, userToUpdate.isStatus());
+            st.setInt(12, userToUpdate.getManager().getUserID());
+            st.setInt(13, userToUpdate.getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
         }
@@ -299,6 +448,7 @@ public class UserDAO extends DBContext {
                         END
             OR [CCCD] LIKE ? 
             OR RoleName LIKE ? 
+            OR Address LIKE ?
             OR CONVERT(VARCHAR, CreatedAt, 120) LIKE ?
          ORDER BY [UserID] 
          OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
@@ -314,27 +464,29 @@ public class UserDAO extends DBContext {
             st.setString(8, "%" + keyword + "%");
             st.setString(9, "%" + keyword + "%");
             st.setString(10, "%" + keyword + "%");
+            st.setString(11, "%" + keyword + "%");
 
             // Thiết lập phân trang
-            st.setInt(11, (page - 1) * pageSize);
-            st.setInt(12, pageSize);
+            st.setInt(12, (page - 1) * pageSize);
+            st.setInt(13, pageSize);
 
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    User user = new User(
-                            rs.getInt("UserID"),
+                    User user = new User(rs.getInt("UserID"),
                             rs.getString("Username"),
                             rs.getString("Password"),
                             rs.getString("FullName"),
+                            rs.getString("Image"),
                             rs.getString("Phone"),
                             rs.getString("Email"),
                             rs.getDate("DateOfBirth"),
                             rs.getBoolean("Gender"),
+                            rs.getString("Address"),
                             rs.getString("CCCD"),
                             rs.getInt("RoleID"),
                             rs.getBoolean("Status"),
-                            rs.getDate("CreatedAt")
-                    );
+                            getManagerForSeller(rs.getInt("ManageID")),
+                            rs.getDate("CreatedAt"));
 
                     listUsers.add(user);
                 }
@@ -389,7 +541,7 @@ public class UserDAO extends DBContext {
 
     // Sort list user by full name ( asc / des )
     public List<User> sortListUserByFullName(String typeOfSort, int page, int pageSize) {
-       
+
         List<User> listUser = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[User] "
                 + "ORDER BY FullName "
@@ -404,20 +556,21 @@ public class UserDAO extends DBContext {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                User user = new User(
-                        rs.getInt("UserID"),
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
-                        rs.getDate("CreatedAt")
-                );
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
                 listUser.add(user);
             }
         } catch (SQLException e) {
@@ -444,20 +597,21 @@ public class UserDAO extends DBContext {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                User user = new User(
-                        rs.getInt("UserID"),
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
-                        rs.getDate("CreatedAt")
-                );
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
                 listUser.add(user);
             }
         } catch (SQLException e) {
@@ -487,20 +641,21 @@ public class UserDAO extends DBContext {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                User user = new User(
-                        rs.getInt("UserID"),
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
-                        rs.getDate("CreatedAt")
-                );
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
                 listUser.add(user);
             }
         } catch (SQLException e) {
@@ -515,9 +670,70 @@ public class UserDAO extends DBContext {
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            // Set the RoleID parameter
             stmt.setInt(1, roleId);
+            ResultSet rs = stmt.executeQuery();
 
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    // Filter list user by Status ( idOfStatus = 1 / 0 ( active / inactive )
+    public List<User> filterListUserByStatus(int idOfStatus, int page, int pageSize) {
+
+        List<User> listUser = new ArrayList<>();
+        String sql = """
+                     SELECT * 
+                     FROM [dbo].[User] 
+                     WHERE Status = ?
+                     ORDER BY [UserID]
+                     OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;""";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setInt(1, idOfStatus);
+            st.setInt(2, (page - 1) * pageSize); // Tính số dòng cần bỏ qua
+            st.setInt(3, pageSize); // Số lượng user trên mỗi trang
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                User user = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
+                listUser.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listUser;
+    }
+
+    // lấy ra tổng số user sau lọc bằng Status
+    public int getTotalUsersAfterFilteringByStatus(int idOfStatus) {
+        String sql = "SELECT count(*) FROM [dbo].[User] WHERE Status = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idOfStatus);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -553,20 +769,21 @@ public class UserDAO extends DBContext {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                User user = new User(
-                        rs.getInt("UserID"),
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
+                        rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
                         rs.getDate("DateOfBirth"),
                         rs.getBoolean("Gender"),
+                        rs.getString("Address"),
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
-                        rs.getDate("CreatedAt")
-                );
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
                 listUser.add(user);
 
             }
@@ -598,13 +815,18 @@ public class UserDAO extends DBContext {
     //tính tổng số lượng của user theo từng Role 
     public int getTotalUsersOfEachRole(String roleOfUser) {
 
-        String sql="";
+        String sql = "";
         switch (roleOfUser) {
-            case "Admin" -> sql = "select count(*) from [dbo].[User] where RoleID = '1' ";
-            case "Seller" -> sql = "select count(*) from [dbo].[User] where RoleID = '2' ";
-            case "Manager" -> sql = "select count(*) from [dbo].[User] where RoleID = '3' ";
-            case "Provider Insurance" -> sql = "select count(*) from [dbo].[User] where RoleID = '4' ";
-            case "Customer" -> sql = "select count(*) from [dbo].[User] where RoleID = '5' ";
+            case "Admin" ->
+                sql = "select count(*) from [dbo].[User] where RoleID = '1' ";
+            case "Seller" ->
+                sql = "select count(*) from [dbo].[User] where RoleID = '2' ";
+            case "Manager" ->
+                sql = "select count(*) from [dbo].[User] where RoleID = '3' ";
+            case "Provider Insurance" ->
+                sql = "select count(*) from [dbo].[User] where RoleID = '4' ";
+            case "Customer" ->
+                sql = "select count(*) from [dbo].[User] where RoleID = '5' ";
         }
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -617,6 +839,25 @@ public class UserDAO extends DBContext {
             ex.printStackTrace();
         }
         return 0;
+    }
+
+    // update status of users ( active / inactive )
+    public boolean updateStatusOfUsers(int userID, boolean statusIsChecked) {
+        String query = """
+                       UPDATE [dbo].[User]
+                          SET [Status] = ?     
+                        WHERE [UserID] = ? """;
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setBoolean(1, statusIsChecked);
+            stmt.setInt(2, userID);
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

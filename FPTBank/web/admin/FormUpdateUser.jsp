@@ -128,61 +128,69 @@
         <h3 class="fw-bold mb-3">UPDATE USER</h3>
 
         <form action="update_user" method="post">
-            
+
             <!-- User ID -->
             <div>
                 <label for="userid">User ID</label>
-                <input type="text" id="userid" name="userid" value="${user.userID}" readonly="">
+                <input type="text" id="userid" name="userid" value="${user.getUserID()}" readonly>
             </div>
-            
+
             <!-- Username -->
             <div>
                 <label for="name">User Name</label>
-                <input type="text" id="name" name="username" value="${user.username}" required>
+                <input type="text" id="name" name="username" value="${user.getUsername()}" readonly>
             </div>
-
-            <!--             Password 
-                        <div>
-                            <label for="pass">Password</label>
-                            <input type="text" id="pass" name="password" value="${user.password}" required>
-                        </div>-->
-
 
             <!-- Full Name -->
             <div>
                 <label for="full">Full Name</label>
-                <input type="text" id="full" name="fullname" value="${user.name}" required pattern="^[a-zA-Z\s]+$" title="Vui lòng nhập tên không dấu và không nhập số kí tự đặc biệt !!" 
-                       placeholder="Nguyen Van A" >
+                <input type="text" id="full" name="fullname" value="${user.getFullName()}" readonly>
             </div>
-
 
             <!-- Phone Number -->
             <div>
                 <label for="phonenum">Phone Number</label>
-                <input type="text" id="phonenum" name="phonenumber" value="${user.phone}" required pattern="[0-9]{10}" placeholder="10 digit number"  
-                       title="Vui lòng nhập đủ 10 chữ số !!" >
+                <input type="text" id="phonenum" name="phonenumber" value="${user.getPhone()}" readonly>
             </div>
 
             <!-- Email -->
             <div>
                 <label for="mail">Email</label>
-                <input type="text" id="mail" name="email" value="${user.email}" 
-                       required pattern="^[a-zA-Z0-9]+@gmail\.com$" 
-                       >
+                <input type="text" id="mail" name="email" value="${user.getEmail()}" readonly>
+            </div>
+
+            <!-- Address -->
+            <div>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" value="${user.getAddress()}" readonly>
+            </div>
+
+            <!-- Image -->
+            <div>
+                <label for="img">Image</label>
+                <input type="text" id="img" name="img" value="${user.getImage()}" readonly>
+            </div>
+
+            <!-- Manager ID -->
+
+            <div>
+                <label for="managerid">Manager ID</label>
+                <input type="text" id="managerid" name="managerid"
+                       pattern="^[0-9]+$"
+                       value="${user.getManager() != null ? user.getManager().userID : ''}"
+                       title="Vui lòng chỉ nhập số !!">
             </div>
 
             <!-- Identity Card -->
             <div>
                 <label for="card">Identity Card</label>
-                <input type="text" id="card" name="card" pattern="\d{12}" value="${user.cccd}" 
-                       title="Vui lòng nhập đúng 12 chữ số" required>
+                <input type="text" id="card" name="card" value="${user.getCCCD()}" readonly>
             </div>
-
 
             <!-- Date of Birth -->
             <div>
                 <label for="dob">Date Of Birth</label>
-                <input type="date" id="dob" name="dob" value="${user.dob}" required>
+                <input type="date" id="dob" name="dob" value="${user.getDateOfBirth()}" readonly>
             </div>
 
             <!-- Role -->
@@ -190,29 +198,25 @@
                 <label for="role">Role</label>
                 <select id="role" name="role" required>
                     <option value="" disabled >Choose Role</option>
-                    <option value="1" ${user.roleID == 1 ? 'selected' : ''}>Admin</option>
-                    <option value="2" ${user.roleID == 2 ? 'selected' : ''}>Seller</option>
-                    <option value="3" ${user.roleID == 3 ? 'selected' : ''}>Manager</option>
-                    <option value="4" ${user.roleID == 4 ? 'selected' : ''}>Provider Insurance</option>
-                    <option value="5" ${user.roleID == 5 ? 'selected' : ''}>Customer</option>
+                    <option value="1" ${user.getRoleID() == 1 ? 'selected' : ''}>Admin</option>
+                    <option value="2" ${user.getRoleID() == 2 ? 'selected' : ''}>Seller</option>
+                    <option value="3" ${user.getRoleID() == 3 ? 'selected' : ''}>Manager</option>
+                    <option value="4" ${user.getRoleID() == 4 ? 'selected' : ''}>Provider Insurance</option>
+                    <option value="5" ${user.getRoleID() == 5 ? 'selected' : ''}>Customer</option>
                 </select>
             </div>
 
             <!-- Gender -->
             <div>
                 <label for="gender">Gender</label>
-                <select id="gender" name="gender" required>
-                    <option value="" disabled >Choose Gender</option>
-                    <option value="1" ${user.gender == true ? 'selected' : ''}>Male</option>
-                    <option value="0" ${user.gender == false ? 'selected' : ''}>Female</option>
-                </select>
+                <input type="text" id="gender" name="gender" value="${user.isGender() == true ? 'Male' : 'Female'}" readonly>
             </div>
-
 
 
             <!-- Submit Button -->
             <input type="submit" value="UPDATE">
         </form>
+
     </div>
 
 
