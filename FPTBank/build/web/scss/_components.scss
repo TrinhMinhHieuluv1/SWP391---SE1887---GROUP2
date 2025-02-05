@@ -3,6 +3,11 @@
 preloader
 
 ------------------------------------------- */
+:root {
+    --mil-top-panel-height: 130px;
+}
+
+$mil-top-panel-heigh: 130px;
 
 .mil-preloader{
     position:fixed;
@@ -102,7 +107,7 @@ top panel
     top: 0;
     left: 0;
     width: 100%;
-    height: 130px;
+    height: var(--mil-top-panel-height);
     display: flex;
     align-items: center;
     transition: $t-md;
@@ -2141,7 +2146,47 @@ footer
 
 ------------------------------------------- */
 
-footer {
+.footer {
+    & .mil-footer-top {
+        overflow: hidden; /* Ẩn nội dung khi chiều cao là 0 */
+        height: auto; /* Chiều cao ban đầu */
+        transition: height 0.3s ease; /* Hiệu ứng mượt mà khi thay đổi chiều cao */
+    }
+
+    & .mil-footer-top.hidden {
+        height: 0; /* Chiều cao khi ẩn */
+    }
+
+    &--toggle--btn {
+        display: flex;
+        justify-self: flex-end;
+        padding: 10px 20px;
+        opacity: 0.9;
+
+        .text-expand, .text-collapsed {
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .icon-arrow-right:before {
+            content: "";
+            display: inline-block; /* Giữ nó nằm cùng dòng nếu cần */
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent; /* Viền trái trong suốt */
+            border-right: 6px solid transparent; /* Viền phải trong suốt */
+            border-top: 6px solid #fff; /* Màu của tam giác */
+        }
+
+        .icon-arrow-right.rotated {
+
+            transform: rotate(180deg); /* Xoay 180 độ */
+        }
+
+    }
+
+
+
 
     & .mil-footer-logo {
         display: inline-block;
@@ -2253,5 +2298,28 @@ footer {
                 color: $color-2-1;
             }
         }
+    }
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    &__prev, &__next {
+        padding: 5px 10px;
+        border: none;
+        background-color: #008000;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &.disabled {
+            background-color: #d6d6d6;
+            cursor: not-allowed;
+        }
+    }
+
+    &__icon {
+        color: #fff;
     }
 }

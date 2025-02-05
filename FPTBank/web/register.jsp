@@ -151,7 +151,14 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-8">
                                 <div class="mil-banner-text mil-text-center">
+
+                                   
+
+
+                                    
                                     <h2  style="font-family: serif">Đăng kí với Timi Bank</h2>
+
+
                                 </div>
                             </div>
                         </div>
