@@ -5,7 +5,6 @@
 
 package controller;
 
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.sql.Date;
-import model.User;
 
 /**
  *
- * @author HP
+ * @author tiend
  */
-@WebServlet(name="Register", urlPatterns={"/register"})
-public class Register extends HttpServlet {
+@WebServlet(name="CheckPin", urlPatterns={"/checkPin"})
+public class CheckPin extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +35,10 @@ public class Register extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Register</title>");  
+            out.println("<title>Servlet CheckPin</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Register at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CheckPin at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +55,6 @@ public class Register extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("register.jsp").forward(request, response);
     } 
 
     /** 
@@ -72,18 +67,37 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String name = request.getParameter("name");
-        String gender = request.getParameter("gender");
-        String dob_raw = request.getParameter("dob");
-        String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
-        Date dob = Date.valueOf(dob_raw);
-        User userToAdd = new User(0, username, password, name,"", phone, email, dob, (gender.equals("Male")),"", "", 5, true, null,null);
-        UserDAO udao = new UserDAO();
-        udao.addAUser(userToAdd);
-        response.sendRedirect("/timibank/login?fromRegister=true");
+        String pin1 = request.getParameter("pin1");
+        String pin2 = request.getParameter("pin2");
+        String pin3 = request.getParameter("pin3");
+        String pin4 = request.getParameter("pin4");
+        String pin5 = request.getParameter("pin5");
+        String pin6 = request.getParameter("pin6");
+
+        // Ghép các ký tự lại thành một chuỗi
+        String pin = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
+        String coderr = request.getParameter("code");
+        String emailr = request.getParameter("emailr");
+        try {
+        int pinInput = Integer.parseInt(pin);
+        int code = Integer.parseInt(coderr);
+        request.setAttribute("emailr", emailr);
+        if(pinInput==code){
+           System.out.println("Correct Pin");
+          request.getRequestDispatcher("changepass.jsp").forward(request, response);  
+        }else{
+            String err = "Error pin input";
+            request.setAttribute("code", code);
+            request.setAttribute("err", err);
+            request.getRequestDispatcher("pincode.jsp").forward(request, response);
+        }
+        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        
+        
     }
 
     /** 
