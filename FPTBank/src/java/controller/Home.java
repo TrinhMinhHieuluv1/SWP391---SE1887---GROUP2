@@ -17,8 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author HP
  */
-@WebServlet(name="Customer", urlPatterns={"/customer"})
-public class Customer extends HttpServlet {
+@WebServlet(name="Home", urlPatterns={"/home"})
+public class Home extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +35,10 @@ public class Customer extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Customer</title>");  
+            out.println("<title>Servlet Home</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Customer at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Home at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +55,11 @@ public class Customer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String roleErr = request.getParameter("roleErr");
+        if (roleErr != null && roleErr.equals("true")){
+            request.setAttribute("message", "You do not have permission to access this website.");
+        }
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     } 
 
     /** 

@@ -5,10 +5,7 @@
 
 package controller;
 
-import dal.AdminDAO;
-import dal.CustomerDAO;
-import dal.ManagerDAO;
-import dal.SellerDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,11 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Admin;
-import model.Customer;
-import model.Manager;
-import model.Seller;
 import java.sql.Date;
+import model.User;
 
 /**
  *
@@ -86,10 +80,10 @@ public class Register extends HttpServlet {
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         Date dob = Date.valueOf(dob_raw);
-        Customer customerToAdd = new Customer(0, username, password, name, "", phone, dob, (gender.equals("Male")), email, 0, 0, 0, 3, dob, dob, true);
-        CustomerDAO cdao = new CustomerDAO();
-        cdao.addACustomer(customerToAdd);
-        response.sendRedirect("/timibank/login?register=true");
+        User userToAdd = new User(0, username, password, name, phone, email, dob, (gender.equals("Male")), "", 5, true, null);
+        UserDAO udao = new UserDAO();
+        udao.addAUser(userToAdd);
+        response.sendRedirect("/timibank/login?fromRegister=true");
     }
 
     /** 
