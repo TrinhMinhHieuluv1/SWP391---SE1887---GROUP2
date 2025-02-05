@@ -9,7 +9,7 @@ import model.User;
 import java.sql.*;
 
 public class UserDAO extends DBContext {
-    
+
     public User checkAuthen(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE Username=? AND Password=?";
         try {
@@ -39,7 +39,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
     public User getManagerForSeller(int managerID) {
         String sql = "SELECT * FROM [User] WHERE UserID=?";
         try {
@@ -68,7 +68,47 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
+    public User selectAnUserByConditions(int UserID, String Username, String Phone, String Email) {
+        String sql = "SELECT * FROM [User] WHERE 1=1";
+        if (UserID != 0) {
+            sql = sql + " AND UserID=" + UserID;
+        }
+        if (!Username.isEmpty()) {
+            sql = sql + " AND Username='" + Username +"'";
+        }
+        if (!Phone.isEmpty()) {
+            sql = sql + " AND Phone='" + Phone + "'";
+        }
+        if (!Email.isEmpty()) {
+            sql = sql + " AND Email='" + Email + "'";
+        }
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User userToAdd = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
+                return userToAdd;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+
     public List<User> selectAllUser() {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM [User]";
@@ -97,7 +137,7 @@ public class UserDAO extends DBContext {
         }
         return userList;
     }
-    
+
     public List<User> selectAllManager() {
         List<User> managerList = new ArrayList<>();
         String sql = "SELECT * FROM [User] WHERE RoleID=3";
@@ -126,7 +166,7 @@ public class UserDAO extends DBContext {
         }
         return managerList;
     }
-    
+
     public List<User> selectAllSeller() {
         List<User> sellerList = new ArrayList<>();
         String sql = "SELECT * FROM [User] WHERE RoleID=2";
@@ -155,7 +195,7 @@ public class UserDAO extends DBContext {
         }
         return sellerList;
     }
-    
+
     public void addAUser(User userToAdd) {
         String sql = "INSERT INTO [User](Username, Password, FullName, Image, Phone, Email, DateOfBirth, Gender, Address, CCCD, RoleID, Status, ManageID)\n"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -183,7 +223,7 @@ public class UserDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
+
     public void updateAUserByUserID(User userToUpdate) {
         String sql = "UPDATE [User] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, RoleID=?, Status=?, ManageID=? WHERE UserID=?";
         try {
@@ -209,11 +249,4 @@ public class UserDAO extends DBContext {
         } catch (SQLException e) {
         }
     }
-    
-    public static void main(String[] args) {
-        UserDAO udao = new UserDAO();
-        User userToAdd = new User(21, "user21", "abc", "Trinh Minh Hieu", "abc", "", "", null, true, "", "1", 5, true, null, null);
-        udao.updateAUserByUserID(userToAdd);
-    }
-    
 }
