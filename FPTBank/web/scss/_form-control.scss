@@ -1,0 +1,59 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/style.scss to edit this template
+*/
+/*
+    Created on : Jan 30, 2025, 9:50:27 AM
+    Author     : hungk
+*/
+
+.form-control {
+    font-family: Montserrat-ExtraLight;
+    font-size: 18px;
+    
+    &__row {
+        display: flex;
+        gap: 16px;
+        
+        &--reverse {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between
+        }
+    }
+    
+    
+
+    &__input {
+        font-size: 18px;
+    }
+    
+    &__input[type="date"] {
+        appearance: none; 
+        cursor: pointer;
+    }
+    
+    .input--small {
+        padding: 10px 30px;
+        border-radius: 8px;
+    }
+
+    &__textarea {
+        resize: none;
+        font-weight: bold;
+    }
+
+    &__btn {
+        font-family: Montserrat-ExtraLight;
+        position: unset !important;
+     
+        &--green {
+            background: green !important;
+            color: #fff;
+        }
+    }
+    
+    &__icon {
+        margin-right: 8px;
+    }
+}

@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import java.sql.*;
+import model.Asset;
+import model.Customer;
+import model.Salary;
+
 
 public class UserDAO extends DBContext {
 
@@ -89,6 +94,46 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+
+        
+    public User selectAnUserByConditions(int UserID, String Username, String Phone, String Email) {
+        String sql = "SELECT * FROM [User] WHERE 1=1";
+        if (UserID != 0) {
+            sql = sql + " AND UserID=" + UserID;
+        }
+        if (!Username.isEmpty()) {
+            sql = sql + " AND Username='" + Username +"'";
+        }
+        if (!Phone.isEmpty()) {
+            sql = sql + " AND Phone='" + Phone + "'";
+        }
+        if (!Email.isEmpty()) {
+            sql = sql + " AND Email='" + Email + "'";
+        }
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User userToAdd = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
+                return userToAdd;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
     }
 
     public List<User> selectAllUser() {
@@ -180,7 +225,7 @@ public class UserDAO extends DBContext {
 
     public void addAUser(User userToAdd) {
         String sql = "INSERT INTO [User](Username, Password, FullName, Image, Phone, Email, DateOfBirth, Gender, Address, CCCD, RoleID, Status, ManageID)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToAdd.getUsername());
@@ -195,13 +240,617 @@ public class UserDAO extends DBContext {
             st.setString(10, userToAdd.getCCCD());
             st.setInt(11, userToAdd.getRoleID());
             st.setBoolean(12, userToAdd.isStatus());
-            st.setInt(13, userToAdd.getManager().getUserID());
+            if (userToAdd.getManager() != null) {
+                st.setInt(13, userToAdd.getManager().getUserID());
+            } else {
+                st.setNull(13, Types.INTEGER);
+            }
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateAUserByUserID(User userToUpdate) {
+        String sql = "UPDATE [User] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, RoleID=?, Status=?, ManageID=? WHERE UserID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, userToUpdate.getPassword());
+            st.setString(2, userToUpdate.getFullName());
+            st.setString(3, userToUpdate.getImage());
+            st.setString(4, userToUpdate.getPhone());
+            st.setString(5, userToUpdate.getEmail());
+            st.setDate(6, userToUpdate.getDateOfBirth());
+            st.setBoolean(7, userToUpdate.isGender());
+            st.setString(8, userToUpdate.getAddress());
+            st.setString(9, userToUpdate.getCCCD());
+            st.setInt(10, userToUpdate.getRoleID());
+            st.setBoolean(11, userToUpdate.isStatus());
+            if (userToUpdate.getManager() != null) {
+                st.setInt(12, userToUpdate.getManager().getUserID());
+            } else {
+                st.setNull(12, Types.INTEGER);
+            }
+            st.setInt(13, userToUpdate.getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
         }
     }
 
-    // Add users và trả lại số hàng được chèn thành công
+    public List<User> selectAllUsersByRole(int roleID) {
+        List<User> userList = new ArrayList<>();
+        String sql = "SELECT * FROM [TimiBank].[dbo].[User] WHERE RoleID = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, roleID);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                // Tạo User Manager nếu có ManageID
+                User manager = null;
+                int managerID = rs.getInt("ManageID");
+                if (!rs.wasNull()) {
+                    manager = getUserByID(managerID); // Lấy thông tin Manager từ ID
+                }
+
+                // Tạo đối tượng User từ dữ liệu
+                User userToAdd = new User(
+                        rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        manager, // Đối tượng Manager (có thể null)
+                        rs.getDate("CreatedAt")
+                );
+                userList.add(userToAdd);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Debug lỗi nếu có
+        }
+        return userList;
+    }
+
+    // Hàm lấy User theo UserID (hỗ trợ lấy Manager)
+    private User getUserByID(int userID) {
+        String sql = "SELECT * FROM [TimiBank].[dbo].[User] WHERE UserID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, userID);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        null, // Không cần đệ quy lấy tiếp Manager
+                        rs.getDate("CreatedAt")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int countUsersByRole(int roleID) {
+        int userCount = 0;
+        String sql = "SELECT COUNT(*) FROM [TimiBank].[dbo].[User] WHERE RoleID = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, roleID); // Set RoleID vào câu truy vấn
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                userCount = rs.getInt(1); // Lấy kết quả từ COUNT(*)
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Debug lỗi nếu có
+        }
+
+        return userCount;
+    }
+ public User checkUserByEmail(String email) {
+        String sql = "SELECT * FROM [User] WHERE Email = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User userToAdd = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
+                return userToAdd;
+            }
+        } catch (SQLException e) {
+        }
+
+        return null;
+    }
+
+    public List<Asset> selectAllAssets() {
+        List<Asset> assets = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT  * FROM Asset";
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet resultSet = st.executeQuery();
+
+            while (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setVerification(resultSet.getBoolean("Verification"));
+                asset.setStatus(resultSet.getBoolean("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<Salary> selectAllSalary() {
+        List<Salary> salarys = new ArrayList<>();
+        try {
+
+            String sql = "SELECT  * FROM Salary";
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet resultSet = st.executeQuery();
+
+            while (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setVerification(resultSet.getBoolean("Verification"));
+                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salarys.add(salary);
+            }
+            return salarys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Customer getUserbyCid(int customerID) {
+
+        try {
+            String sql = "Select *\n"
+                    + "from Customer c \n"
+                    + "join [User] u on u.UserID = c.UserID\n"
+                    + "where c.CustomerId =?";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, customerID);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerid(rs.getInt("CustomerId"));
+                customer.setCreditscore(rs.getInt("CreditScore"));
+                customer.setBalance(rs.getBigDecimal("Balance"));
+                User user = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
+                customer.setUser(user);
+                return customer;
+            }
+        } catch (Exception e) {
+        }
+
+        return null;
+    }
+
+    public boolean updateAsset(Asset asset) {
+        String sql = "UPDATE Asset SET CustomerId = ?, Image = ?, Description = ?, "
+                + "Value = ?, Verification = ?, Status = ?, CreatedAt = ? WHERE AssetId = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, asset.getCustomerId());
+            preparedStatement.setString(2, asset.getImage());
+            preparedStatement.setString(3, asset.getDescription());
+            preparedStatement.setBigDecimal(4, asset.getValue());
+            preparedStatement.setBoolean(5, asset.isVerification());
+            preparedStatement.setBoolean(6, asset.isStatus());
+            preparedStatement.setTimestamp(7, new java.sql.Timestamp(asset.getCreatedAt().getTime()));
+            preparedStatement.setInt(8, asset.getId());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0; // Trả về true nếu có ít nhất một hàng được cập nhật
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
+
+    public boolean updateSalary(Salary salary) {
+        String sql = "UPDATE Salary SET CustomerId = ?, Image = ?, Description = ?, "
+                + "Value = ?, Verification = ?, Status = ?, CreatedAt = ? WHERE SalaryId = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, salary.getCustomerId());
+            preparedStatement.setString(2, salary.getImage());
+            preparedStatement.setString(3, salary.getDescription());
+            preparedStatement.setBigDecimal(4, salary.getValue());
+            preparedStatement.setBoolean(5, salary.isVerification());
+            preparedStatement.setBoolean(6, salary.isStatus());
+            preparedStatement.setTimestamp(7, new java.sql.Timestamp(salary.getCreatedAt().getTime()));
+            preparedStatement.setInt(8, salary.getId());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0; // Trả về true nếu có ít nhất một hàng được cập nhật
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
+
+    public Asset getAssetById(int assetId) {
+
+        String sql = "SELECT * FROM Asset WHERE AssetId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, assetId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setVerification(resultSet.getBoolean("Verification"));
+                asset.setStatus(resultSet.getBoolean("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                return asset;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Salary getSalaryById(int id) {
+
+        String sql = "SELECT * FROM Salary WHERE SalaryId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setVerification(resultSet.getBoolean("Verification"));
+                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                return salary;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<Asset> getAssetsSortedByValue(String ascending) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT * FROM Asset ORDER BY Value " + ascending;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Asset asset = new Asset();
+                asset.setId(rs.getInt("AssetId"));
+                asset.setCustomerId(rs.getInt("CustomerId"));
+                asset.setImage(rs.getString("Image"));
+                asset.setDescription(rs.getString("Description"));
+                asset.setValue(rs.getBigDecimal("Value"));
+                asset.setVerification(rs.getBoolean("Verification"));
+                asset.setStatus(rs.getBoolean("Status"));
+                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public List<Asset> getAssetsSortedByDate(String ascending) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT * FROM Asset ORDER BY CreatedAt " + ascending;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Asset asset = new Asset();
+                asset.setId(rs.getInt("AssetId"));
+                asset.setCustomerId(rs.getInt("CustomerId"));
+                asset.setImage(rs.getString("Image"));
+                asset.setDescription(rs.getString("Description"));
+                asset.setValue(rs.getBigDecimal("Value"));
+                asset.setVerification(rs.getBoolean("Verification"));
+                asset.setStatus(rs.getBoolean("Status"));
+                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public List<Salary> getSalarySortedByDate(String ascending) throws SQLException {
+        List<Salary> salarys = new ArrayList<>();
+        String query = "SELECT * FROM Salary ORDER BY CreatedAt " + ascending;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setVerification(resultSet.getBoolean("Verification"));
+                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salarys.add(salary);
+            }
+            return salarys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public List<Asset> getAssetsByStatus(boolean status) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT * FROM Asset WHERE Status = ?";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setBoolean(1, status);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Asset asset = new Asset();
+                asset.setId(rs.getInt("AssetId"));
+                asset.setCustomerId(rs.getInt("CustomerId"));
+                asset.setImage(rs.getString("Image"));
+                asset.setDescription(rs.getString("Description"));
+                asset.setValue(rs.getBigDecimal("Value"));
+                asset.setVerification(rs.getBoolean("Verification"));
+                asset.setStatus(rs.getBoolean("Status"));
+                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public List<Salary> getSalaryByStatus(boolean status) throws SQLException {
+        List<Salary> salarys = new ArrayList<>();
+        String query = "SELECT * FROM Salary WHERE Status = ?";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setBoolean(1, status);
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setVerification(resultSet.getBoolean("Verification"));
+                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salarys.add(salary);
+            }
+            return salarys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public List<Asset> getAssetsByVerify(boolean status) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT * FROM Asset WHERE Verification = ?";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setBoolean(1, status);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Asset asset = new Asset();
+                asset.setId(rs.getInt("AssetId"));
+                asset.setCustomerId(rs.getInt("CustomerId"));
+                asset.setImage(rs.getString("Image"));
+                asset.setDescription(rs.getString("Description"));
+                asset.setValue(rs.getBigDecimal("Value"));
+                asset.setVerification(rs.getBoolean("Verification"));
+                asset.setStatus(rs.getBoolean("Status"));
+                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public List<Salary> getSalaryByVerify(boolean status) throws SQLException {
+        List<Salary> salarys = new ArrayList<>();
+        String query = "SELECT * FROM Salary WHERE Verification = ?";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setBoolean(1, status);
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setVerification(resultSet.getBoolean("Verification"));
+                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salarys.add(salary);
+            }
+            return salarys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    public List<Asset> searchAssetsByDescription(String description) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT * FROM Asset WHERE Description LIKE ?";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, "%" + description + "%");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Asset asset = new Asset();
+                asset.setId(rs.getInt("AssetId"));
+                asset.setCustomerId(rs.getInt("CustomerId"));
+                asset.setImage(rs.getString("Image"));
+                asset.setDescription(rs.getString("Description"));
+                asset.setValue(rs.getBigDecimal("Value"));
+                asset.setVerification(rs.getBoolean("Verification"));
+                asset.setStatus(rs.getBoolean("Status"));
+                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+     public List<Salary> searchSalaryByDescription(String description) throws SQLException {
+        List<Salary> salarys = new ArrayList<>();
+        String query = "SELECT * FROM Salary WHERE Description LIKE ?";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, "%" + description + "%");
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+               Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setVerification(resultSet.getBoolean("Verification"));
+                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salarys.add(salary);
+            }
+            return salarys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+
+    // duy
     public int addUserReturnRow(User userToAdd) {
         // Kiểm tra trùng lặp Username, CCCD, Email, Phone trước khi thêm
         if (isUsernameExists(userToAdd.getUsername())) {
@@ -314,7 +963,8 @@ public class UserDAO extends DBContext {
         return false;
     }
 
-    public User getUserByUserID(int userID) {
+
+     public User getUserByUserID(int userID) {
         String sql = "SELECT* FROM [dbo].[User] where [dbo].[User].UserID = ?";
 
         try {
@@ -394,42 +1044,6 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
-    public void updateAUserByUserID(User userToUpdate) {
-        String sql = "UPDATE [User] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address, CCCD=?, RoleID=?, Status=?, ManageID=? WHERE UserID=?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, userToUpdate.getPassword());
-            st.setString(2, userToUpdate.getFullName());
-            st.setString(3, userToUpdate.getImage());
-            st.setString(4, userToUpdate.getPhone());
-            st.setString(5, userToUpdate.getEmail());
-            st.setDate(6, userToUpdate.getDateOfBirth());
-            st.setBoolean(7, userToUpdate.isGender());
-            st.setString(8, userToUpdate.getAddress());
-            st.setString(9, userToUpdate.getCCCD());
-            st.setInt(10, userToUpdate.getRoleID());
-            st.setBoolean(11, userToUpdate.isStatus());
-            st.setInt(12, userToUpdate.getManager().getUserID());
-            st.setInt(13, userToUpdate.getUserID());
-            st.executeUpdate();
-        } catch (SQLException e) {
-        }
-    }
-
-    public void removeUserByUserID(int userID) {
-        String sql = """
-                     DELETE FROM [dbo].[User]
-                           WHERE [dbo].[User].UserID = ?""";
-
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, userID);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     //Tìm kiếm user dựa trên keyword dc nhập vào 
     public List<User> searchUsers(String keyword, int page, int pageSize) {
         List<User> listUsers = new ArrayList<>();
@@ -497,7 +1111,8 @@ public class UserDAO extends DBContext {
         return listUsers;
     }
 
-    // lấy ra tổng số lượng user sau khi search user by keyword
+
+     // lấy ra tổng số lượng user sau khi search user by keyword
     public int getTotalUsersAfterSearching(String keyword) {
         String sql = """
          SELECT COUNT(*) FROM [dbo].[User] 
@@ -539,7 +1154,7 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
-    // Sort list user by full name ( asc / des )
+     // Sort list user by full name ( asc / des )
     public List<User> sortListUserByFullName(String typeOfSort, int page, int pageSize) {
 
         List<User> listUser = new ArrayList<>();
@@ -579,7 +1194,7 @@ public class UserDAO extends DBContext {
         return listUser;
     }
 
-    // Sort list user by created date ( asc / des )
+     // Sort list user by created date ( asc / des )
     public List<User> sortListUserByCreatedAt(String typeOfSort, int page, int pageSize) {
         String sql;
         List<User> listUser = new ArrayList<>();
@@ -620,7 +1235,8 @@ public class UserDAO extends DBContext {
         return listUser;
     }
 
-    // Filter list user by Role name
+
+      // Filter list user by Role name
     public List<User> filterListUserByRoleName(int idOfRole, int page, int pageSize) {
 
         List<User> listUser = new ArrayList<>();
@@ -664,7 +1280,8 @@ public class UserDAO extends DBContext {
         return listUser;
     }
 
-    // lấy ra tổng số user sau lọc bằng role name
+
+     // lấy ra tổng số user sau lọc bằng role name
     public int getTotalUsersAfterFilteringByRole(int roleId) {
         String sql = "SELECT count(*) FROM [dbo].[User] WHERE RoleID = ?";
 
@@ -683,7 +1300,7 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
-    // Filter list user by Status ( idOfStatus = 1 / 0 ( active / inactive )
+     // Filter list user by Status ( idOfStatus = 1 / 0 ( active / inactive )
     public List<User> filterListUserByStatus(int idOfStatus, int page, int pageSize) {
 
         List<User> listUser = new ArrayList<>();
@@ -727,7 +1344,8 @@ public class UserDAO extends DBContext {
         return listUser;
     }
 
-    // lấy ra tổng số user sau lọc bằng Status
+
+     // lấy ra tổng số user sau lọc bằng Status
     public int getTotalUsersAfterFilteringByStatus(int idOfStatus) {
         String sql = "SELECT count(*) FROM [dbo].[User] WHERE Status = ?";
 
@@ -746,7 +1364,7 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
-    //Lấy ra list user từ trang hiện tại
+     //Lấy ra list user từ trang hiện tại
     public ArrayList<User> getListUserByPage(int page, int pageSize) {
         // page: số trang hiện tại
         // pageSize: số lượng user có trong 1 trang
@@ -794,7 +1412,8 @@ public class UserDAO extends DBContext {
         return listUser;
     }
 
-    // lấy ra tổng số user hiện đang có
+
+      // lấy ra tổng số user hiện đang có
     public int getTotalUsers() {
         String sql = "select count(*) from [User]";
 
@@ -859,5 +1478,8 @@ public class UserDAO extends DBContext {
             return false;
         }
     }
+
+
+
 
 }
