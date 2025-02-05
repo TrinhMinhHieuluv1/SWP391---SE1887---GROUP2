@@ -89,9 +89,11 @@
                                     <li><a href="publication.jsp">Blog details</a></li>
                                 </ul>
                             </li>
-                            <li>
-                                <a href="contact.jsp">Contact</a>
-                            </li>
+                            <c:if test="${sessionScope.account != null}">
+                                <li>
+                                    <a href="contact.jsp">Feedback</a>
+                                </li>
+                            </c:if>
                             <li class="mil-has-children">
                                 <a href="#.">Pages</a>
                                 <ul>
@@ -115,7 +117,7 @@
                                     <li class="mil-has-children ">
                                         <a href="#." class="mil-btn mil-sm">My Account</a>
                                         <ul style="list-style-type: none">
-                                            <li><a href="/timibank/profile">My Profile</a></li>
+                                            <li><a href="/timibank/profile.jsp">My Profile</a></li>
                                             <li><a href="/timibank/change-password">Change Password</a></li>
                                             <li><a href="/timibank/purchase">My Purchase</a></li>
                                             <li><a href="/timibank/logout">Log out</a></li>

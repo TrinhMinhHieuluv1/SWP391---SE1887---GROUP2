@@ -105,12 +105,14 @@
                         </li>
                     </ul>
                 </nav>
-                <div class="mil-menu-buttons">
-                    <a href="register.jsp" class="mil-btn mil-sm">Log in</a>
+                <c:if test="${sessionScope.account == null}">                    
+                    <div class="mil-menu-buttons">
+                    <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
                     <div class="mil-menu-btn">
                         <span></span>
                     </div>
                 </div>
+                </c:if>
             </div>
         </div>
         <!-- top panel end -->
@@ -128,7 +130,7 @@
                                 <h2 >Connect with Us: We are Here to Help You</h2>
                                 <ul class="mil-breadcrumbs mil-center">
                                     <li><a href="index.jsp">Home</a></li>
-                                    <li><a href="contact.jsp">Contact</a></li>
+                                    <li><a href="contact.jsp">Feedback</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -142,28 +144,22 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-xl-9">
-                            <form>
+                            <form action="contact" method="get">
                                 <div class="row">
                                     <div class="col-md-6 mil-mb-30">
-                                        <input class="mil-input mil-up" type="text" placeholder="Name" name="name">
+                                        <input class="mil-input mil-up" type="text" value="${sessionScope.account.fullName}"  placeholder="Name" name="FullName" readonly>
                                     </div>
                                     <div class="col-md-6 mil-mb-30">
-                                        <input class="mil-input mil-up" type="email" placeholder="Email" name="email">
+                                        <input class="mil-input mil-up" type="email" value="${sessionScope.account.email}" placeholder="Email" name="email" readonly>
                                     </div>
-                                    <div class="col-xl-12 mil-mb-30">
-                                        <input class="mil-input mil-up" type="tel" placeholder="Telephone number" name="tel">
-                                    </div>
+                                   
                                     <div class="col-xl-12 mil-mb-30 ">
                                         <textarea cols="30" rows="10" class="mil-up" placeholder="Message" name="message"></textarea>
                                     </div>
                                 </div>
-                                <div class="mil-checkbox-frame mil-mb-30 mil-up">
-                                    <div class="mil-checkbox">
-                                        <input type="checkbox" id="checkbox-1" name="checkmark" checked>
-                                        <label for="checkbox-1"></label>
-                                    </div>
-                                    <p class="mil-text-xs mil-soft">I agree that the data submitted, collected and stored *</p>
-                                </div>
+                                <% if(request.getAttribute("error")!=null)  {%>
+                                    <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error"));%></a>
+                                 <%}%>
                                 <div class="mil-up">
                                     <button type="submit" class="mil-btn mil-m">Send Message</button>
                                 </div>

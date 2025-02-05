@@ -117,9 +117,11 @@
                                     <li><a href="publication.jsp">Blog details</a></li>
                                 </ul>
                             </li>
-                            <li>
-                                <a href="contact.jsp">Contact</a>
-                            </li>
+                            <c:if test="${sessionScope.account != null}">
+                                <li>
+                                    <a href="contact.jsp">Feedback</a>
+                                </li>
+                            </c:if>
                             <li class="mil-has-children">
                                 <a href="#.">Pages</a>
                                 <ul>
