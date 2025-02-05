@@ -3,7 +3,7 @@ package model;
 import java.sql.Date;
 
 public class User {
-
+    
     private int UserID, RoleID;
     private String Username, Password, FullName, Phone, Email, CCCD, Image, Address;
     private Date DateOfBirth, CreatedAt;
@@ -13,7 +13,7 @@ public class User {
     public User() {
     }
 
-    public User(int UserID, String Username, String Password, String FullName, String Image, String Phone, String Email, Date DateOfBirth, boolean Gender, String Address, String CCCD, int RoleID, boolean Status, User Manager, Date CreatedAt) {
+    public User(int UserID, String Username, String Password, String FullName, String Image, String Phone, String Email, Date DateOfBirth, boolean Gender, String Address, String CCCD, int RoleID,  boolean Status, User Manager, Date CreatedAt) {
         this.UserID = UserID;
         this.RoleID = RoleID;
         this.Username = Username;
@@ -156,7 +156,6 @@ public class User {
         return this.UserID +"";
     }
     
-    
-    
+
 
 }
