@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import model.User;
 
-public class User1DAO extends DBContext {
+public class userDAO extends DBContext {
 
     public User checkAuthen(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE Username=? AND Password=?";
@@ -349,9 +349,5 @@ public class User1DAO extends DBContext {
         return false;
     }
 
-    public static void main(String[] args) {
-        User1DAO dao = new User1DAO();
-        System.out.println(dao.isCCCDUsedExceptUser("001204012617", 12));
-
-    }
+    
 }

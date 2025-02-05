@@ -4,7 +4,8 @@
  */
 package controller;
 
-import dal.User1DAO;
+
+import dal.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -64,7 +65,7 @@ public class UpdateImage extends HttpServlet {
         HttpSession session = request.getSession();
         String url_image = request.getParameter("image");
         int uID = (int) session.getAttribute("uid");
-        User1DAO dao = new User1DAO();
+        userDAO dao = new userDAO();
         String error = "";
         if (url_image.isEmpty()) {
             error = "Updatd Failed";

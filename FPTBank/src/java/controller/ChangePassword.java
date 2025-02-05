@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.User1DAO;
+import dal.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -77,7 +77,7 @@ public class ChangePassword extends HttpServlet {
         String username = request.getParameter("username");
         String old_password = request.getParameter("password");
         String new_password = request.getParameter("new-password");
-        User1DAO udao = new User1DAO();
+        userDAO udao = new userDAO();
         if (udao.checkAuthen(username, old_password) == null) {
             String err = "Username or password is incorrect. Please try again!";
             request.setAttribute("err", err);

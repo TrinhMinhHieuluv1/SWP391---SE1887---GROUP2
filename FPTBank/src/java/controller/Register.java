@@ -5,7 +5,7 @@
 
 package controller;
 
-import dal.User1DAO;
+import dal.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -81,7 +81,7 @@ public class Register extends HttpServlet {
         String email = request.getParameter("email");
         Date dob = Date.valueOf(dob_raw);
         User userToAdd = new User(0, username, password, name, phone, email, dob, (gender.equals("Male")), "", 5, true, null);
-        User1DAO udao = new User1DAO();
+        userDAO udao = new userDAO();
         udao.addAUser(userToAdd);
         response.sendRedirect("/timibank/login?register=true");
     }
