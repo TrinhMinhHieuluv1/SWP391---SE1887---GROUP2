@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.UserDAO;
+import dal.User1DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -66,7 +66,7 @@ public class UpdateProfile extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        UserDAO dao = new UserDAO();
+        User1DAO dao = new User1DAO();
         int uID = (int) session.getAttribute("uid");
         String fullname = request.getParameter("fullname");
         String cccd = request.getParameter("cccd");
@@ -78,7 +78,7 @@ public class UpdateProfile extends HttpServlet {
         User user = dao.getUserProfileByID(uID);
         Date dob = Date.valueOf(dob_raw);
         String error = "";
-        UserDAO udao = new UserDAO();
+        User1DAO udao = new User1DAO();
         if (isValidString(fullname) == false) {
             error = "Wrong type in fullname, only contain A-a and not null";
         } else if (isNumeric2(cccd) == false) {

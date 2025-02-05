@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import model.User;
 
-public class UserDAO extends DBContext {
+public class User1DAO extends DBContext {
 
     public User checkAuthen(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE Username=? AND Password=?";
@@ -173,10 +173,10 @@ public class UserDAO extends DBContext {
             pre.setString(1, name);
             pre.setString(2, phone);
             pre.setString(3, email);
-            pre.setDate(4, (java.sql.Date) dob);  // Giả sử dob là kiểu chuỗi (có thể sử dụng java.sql.Date nếu cần)
-            pre.setBoolean(5, gender);  // Gender là kiểu boolean
+            pre.setDate(4, (java.sql.Date) dob);  
+            pre.setBoolean(5, gender);  
             pre.setString(6, cccd);
-            pre.setString(7, address);  // Chỉ định ID khách hàng để cập nhật
+            pre.setString(7, address);  
             pre.setInt(8, uID);
             pre.executeUpdate();
         } catch (SQLException e) {
@@ -193,12 +193,12 @@ public class UserDAO extends DBContext {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Nếu có ít nhất 1 bản ghi, phone đã tồn tại
+                return rs.getInt(1) > 0; 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; // Không tìm thấy phone trùng
+        return false; 
     }
 
     public boolean isEmailUsed(String email, int userID) {
@@ -233,8 +233,8 @@ public class UserDAO extends DBContext {
                         rs.getString("Email"),
                         rs.getString("Phone"),
                         rs.getString("CCCD"),
-                        rs.getDate("DateOfBirth"), // Hoặc đổi sang Date nếu cần
-                        rs.getBoolean("Gender") // Giới tính lưu dạng boolean (true = Nam, false = Nữ)
+                        rs.getDate("DateOfBirth"), 
+                        rs.getBoolean("Gender") 
                 );
             }
         } catch (SQLException e) {
@@ -350,7 +350,7 @@ public class UserDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        UserDAO dao = new UserDAO();
+        User1DAO dao = new User1DAO();
         System.out.println(dao.isCCCDUsedExceptUser("001204012617", 12));
 
     }

@@ -11,81 +11,64 @@ import java.math.BigDecimal;
  * @author ACER
  */
 public class Customer {
-        private int customerId, creditScore;
-    private BigDecimal balance;
+    private int CustomerId, CreditScore;
+    private BigDecimal Balance;
     private User user;
 
-    public Customer(int customerId, User user, int creditScore, BigDecimal Balance) {
-        this.customerId = customerId;
-        this.user = user;
-        this.creditScore = creditScore;
-        this.balance = Balance;
-    }
-
-    public Customer(int customerId, int creditScore, BigDecimal balance, int userID) {
-        this.customerId = customerId;
-        this.creditScore = creditScore;
-        this.balance = balance;
+    public Customer(int CustomerId, int CreditScore, BigDecimal Balance, int userID) {
+        this.CustomerId = CustomerId;
+        this.CreditScore = CreditScore;
+        this.Balance = Balance;
         this.user.setUserID(userID);
     }
-    
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer(int CustomerId, User user, int CreditScore, BigDecimal Balance) {
+        this.CustomerId = CustomerId;
+        this.CreditScore = CreditScore;
+        this.Balance = Balance;
+        this.user = user;
     }
-
-    public int getCreditScore() {
-        return creditScore;
-    }
-
-    public void setCreditScore(int creditScore) {
-        this.creditScore = creditScore;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-    
     
     public Customer() {
     }
 
     public int getCustomerid() {
-        return customerId;
+        return CustomerId;
     }
 
-    public void setCustomerid(int customerId) {
-        this.customerId = customerId;
+    public void setCustomerid(int CustomerId) {
+        this.CustomerId = CustomerId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserid() {
+        return user.getUserID();
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserid(int userID) {
+        this.user.setUserID(userID);
     }
 
     public int getCreditscore() {
-        return creditScore;
+        return CreditScore;
     }
 
-    public void setCreditscore(int creditScore) {
-        this.creditScore = creditScore;
+    public void setCreditscore(int CreditScore) {
+        this.CreditScore = CreditScore;
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        return Balance;
     }
 
     public void setBalance(BigDecimal Balance) {
-        this.balance = Balance;
+        this.Balance = Balance;
     }
 
     @Override
     public String toString() {
-        return "Customer{" + "customerid=" + customerId +", creditscore=" + creditScore + ", balance=" + balance +"Use:,"+user.toString() +'}';
+        return "Customer{" + "CustomerId=" + CustomerId + ", CreditScore=" + CreditScore + ", Balance=" + Balance + ", user=" + user + '}';
     }
 
+    
     
 }

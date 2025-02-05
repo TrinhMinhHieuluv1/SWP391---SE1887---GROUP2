@@ -6,7 +6,7 @@ package controller;
 
 import dal.CustomerDAO;
 import dal.FeedbackDAO;
-import dal.UserDAO;
+import dal.User1DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -70,7 +70,7 @@ public class Contact extends HttpServlet {
         CustomerDAO cdao = new CustomerDAO();
         FeedbackDAO fdao = new FeedbackDAO();
         int cid = cdao.getCustomerIdByUserId(uid);
-        UserDAO dao = new UserDAO();
+        User1DAO dao = new User1DAO();
         String error = "";
         if (!isValidString(name)) {
             error = "Wrong type in fullname, only contain A-a and not null";

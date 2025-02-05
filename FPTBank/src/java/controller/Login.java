@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.UserDAO;
+import dal.User1DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -78,7 +78,7 @@ public class Login extends HttpServlet {
         Cookie cusername = new Cookie("cusername", username);
         Cookie cpassword = new Cookie("cpassword", password);
         Cookie crem = new Cookie("crem", rem);
-        UserDAO udao = new UserDAO();
+        User1DAO udao = new User1DAO();
         User account = udao.checkAuthen(username, password);
         if (account == null) {
             String err = "Username or password is incorrect. Please try again!";
