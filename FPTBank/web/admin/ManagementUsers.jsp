@@ -1131,13 +1131,13 @@
                                                     </a>
 
                                                     <!-- Remove -->
-                                                    <a href="remove_user?id=${u.getUserID()}" 
+<!--                                                    <a href="remove_user?id=${u.getUserID()}" 
                                                        class="btn btn-link btn-danger" 
                                                        data-bs-toggle="tooltip" 
                                                        title="Remove Account" 
                                                        data-original-title="Remove Account">
                                                         <i class="fa fa-times"></i>
-                                                    </a>
+                                                    </a>-->
                                                 </div>
                                             </td>
                                         </tr>
