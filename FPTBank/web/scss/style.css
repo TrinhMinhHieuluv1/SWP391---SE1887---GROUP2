@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* -------------------------------------------
 
 Name:       Plax
@@ -44,8 +43,6 @@ Developer:	millerDigitalDesign (https://themeforest.net/user/millerdigitaldesign
 
 --------------------------------------------*/
 @import url("https://fonts.googleapis.com/css2?family=Questrial");
-/*$font-1: 'Switzer-Variable';
-$font-2: 'Questrial',*/
 /* -------------------------------------------
 
 main
@@ -55,7 +52,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   font-size: 18px;
   font-weight: 400;
   line-height: 1.6;
@@ -87,7 +84,7 @@ typography
 
 ------------------------------------------- */
 * {
-  font-family: "Montserrat-ExtraLight", sans-serif;
+  font-family: "Questrial", sans-serif;
   color: rgb(13, 81, 82);
 }
 
@@ -104,7 +101,7 @@ h6,
 .h5,
 .h6 {
   font-weight: 600;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   line-height: 1.3;
   letter-spacing: -0.04em;
 }
@@ -121,7 +118,7 @@ h6 span,
 .h5 span,
 .h6 span {
   font-weight: 600;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   line-height: 1.3;
   letter-spacing: -0.04em;
 }
@@ -279,8 +276,10 @@ blockquote img {
   margin: 0 auto;
   width: 60px;
   height: 60px;
-  object-fit: cover;
-  object-position: top;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
   border-radius: 50%;
 }
 blockquote.mil-with-bg {
@@ -346,7 +345,8 @@ blockquote.mil-dark {
   .mil-text-gradient {
     background: linear-gradient(to right, rgb(160, 205, 205), rgb(242, 250, 250));
     color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text;
+            background-clip: text;
   }
 }
 .mil-text-gradient-2 {
@@ -357,7 +357,8 @@ blockquote.mil-dark {
   .mil-text-gradient-2 {
     background: linear-gradient(to right, rgb(13, 81, 82), rgb(3, 166, 166));
     color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text;
+            background-clip: text;
   }
 }
 .mil-text-gradient-3 {
@@ -368,7 +369,8 @@ blockquote.mil-dark {
   .mil-text-gradient-3 {
     background: linear-gradient(to right, rgb(13, 81, 82), 50%, rgba(13, 81, 82, 0.8));
     color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text;
+            background-clip: text;
   }
 }
 img,
@@ -402,7 +404,7 @@ breadcrumbs
   color: rgb(160, 205, 205);
 }
 .mil-breadcrumbs li a {
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   font-size: 14px;
   font-weight: 500;
 }
@@ -438,7 +440,7 @@ buttons
   white-space: nowrap;
   background-color: green;
   border-radius: 10px;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   font-weight: 600;
   color: rgb(255, 255, 255);
   transition: 0.2s cubic-bezier(0, 0, 0.3642, 1);
@@ -449,17 +451,6 @@ buttons
 }
 .mil-btn.mil-fw {
   width: 100%;
-}
-.mil-btn.mil-ssm {
-  padding: 0 16px;
-  height: 38px;
-}
-.mil-btn.mil-empty {
-  color: green;
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 0 16px;
-  height: 38px;
 }
 .mil-btn.mil-sm {
   padding: 0 20px;
@@ -564,7 +555,7 @@ buttons
 }
 
 .mil-link {
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -2%;
@@ -833,10 +824,6 @@ space
 preloader
 
 ------------------------------------------- */
-:root {
-  --mil-top-panel-height: 130px;
-}
-
 .mil-preloader {
   position: fixed;
   left: 0px;
@@ -929,7 +916,7 @@ top panel
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--mil-top-panel-height);
+  height: 130px;
   display: flex;
   align-items: center;
   transition: 0.4s cubic-bezier(0, 0, 0.3642, 1);
@@ -980,7 +967,7 @@ top menu
   height: 48px;
   padding: 0 15px;
   color: rgb(137, 141, 150);
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   font-weight: 600;
   letter-spacing: -2%;
   z-index: 1;
@@ -1647,7 +1634,9 @@ accordion
   color: rgb(13, 81, 82);
   padding: 30px 0;
   cursor: pointer;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1866,8 +1855,10 @@ illustrations
   width: 100%;
   height: 100%;
   position: absolute;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
   top: 0;
   left: 0;
 }
@@ -2049,8 +2040,10 @@ team
   position: absolute;
   top: 0;
   left: 0;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 
 /* -------------------------------------------
@@ -2154,8 +2147,10 @@ blog
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 .mil-blog-card .mil-descr {
   padding: 30px 30px 40px;
@@ -2174,8 +2169,10 @@ blog
   position: absolute;
   top: 0;
   left: 0;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 .mil-pub-cover.mil-inner {
   padding-bottom: 65%;
@@ -2303,8 +2300,10 @@ blog
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
   transition: 0.4s cubic-bezier(0, 0, 0.3642, 1);
 }
 .mil-next-post .mil-cover i {
@@ -2364,8 +2363,10 @@ comments
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
 }
 .mil-comments li .mil-comment .mil-comment-text {
   position: relative;
@@ -2378,7 +2379,7 @@ comments
   right: 0;
   font-weight: 600;
   font-size: 14px;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   color: green;
 }
 .mil-comments li ul {
@@ -2409,14 +2410,19 @@ form
   border: solid 1px rgba(137, 141, 150, 0.2);
   font-weight: 600;
   font-size: 14px;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   border-radius: 20px;
   padding: 0 30px;
+}
+.mil-input::-moz-placeholder {
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Switzer-Variable";
 }
 .mil-input::placeholder {
   font-weight: 600;
   font-size: 14px;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
 }
 
 textarea {
@@ -2425,10 +2431,15 @@ textarea {
   border-radius: 20px;
   padding: 30px 30px;
 }
+textarea::-moz-placeholder {
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Switzer-Variable";
+}
 textarea::placeholder {
   font-weight: 600;
   font-size: 14px;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
 }
 
 .mil-checkbox-frame {
@@ -2567,7 +2578,7 @@ price
   position: absolute;
   top: -20px;
   right: -20px;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   font-size: 12px;
   font-weight: 600;
   color: rgb(255, 255, 255);
@@ -2584,7 +2595,7 @@ price
   border-radius: 50px;
   font-size: 14px;
   font-weight: 600;
-  font-family: "Montserrat-ExtraLight";
+  font-family: "Switzer-Variable";
   margin-right: 5px;
   transition: 0.2s cubic-bezier(0, 0, 0.3642, 1);
 }
@@ -2622,90 +2633,60 @@ price
 footer
 
 ------------------------------------------- */
-.footer .mil-footer-top {
-  overflow: hidden; /* Ẩn nội dung khi chiều cao là 0 */
-  height: auto; /* Chiều cao ban đầu */
-  transition: height 0.3s ease; /* Hiệu ứng mượt mà khi thay đổi chiều cao */
-}
-.footer .mil-footer-top.hidden {
-  height: 0; /* Chiều cao khi ẩn */
-}
-.footer--toggle--btn {
-  display: flex;
-  justify-self: flex-end;
-  padding: 10px 20px;
-  opacity: 0.9;
-}
-.footer--toggle--btn .text-expand, .footer--toggle--btn .text-collapsed {
-  color: #fff;
-  margin-right: 10px;
-}
-.footer--toggle--btn .icon-arrow-right:before {
-  content: "";
-  display: inline-block; /* Giữ nó nằm cùng dòng nếu cần */
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent; /* Viền trái trong suốt */
-  border-right: 6px solid transparent; /* Viền phải trong suốt */
-  border-top: 6px solid #fff; /* Màu của tam giác */
-}
-.footer--toggle--btn .icon-arrow-right.rotated {
-  transform: rotate(180deg); /* Xoay 180 độ */
-}
-.footer .mil-footer-logo {
+footer .mil-footer-logo {
   display: inline-block;
 }
-.footer .mil-footer-list li {
+footer .mil-footer-list li {
   list-style-type: none;
 }
-.footer .mil-footer-list li a {
+footer .mil-footer-list li a {
   transition: 0.2s cubic-bezier(0, 0, 0.3642, 1);
 }
-.footer .mil-footer-list li a:hover {
+footer .mil-footer-list li a:hover {
   color: rgb(13, 81, 82);
 }
-.footer .mil-footer-list.mil-footer-list-2 {
+footer .mil-footer-list.mil-footer-list-2 {
   display: flex;
 }
-.footer .mil-footer-list.mil-footer-list-2 li {
+footer .mil-footer-list.mil-footer-list-2 li {
   margin-right: 30px;
   margin-bottom: 0;
 }
-.footer .mil-footer-list.mil-footer-list-2 li a {
+footer .mil-footer-list.mil-footer-list-2 li a {
   transition: 0.2s cubic-bezier(0, 0, 0.3642, 1);
 }
-.footer .mil-footer-list.mil-footer-list-2 li a:hover {
+footer .mil-footer-list.mil-footer-list-2 li a:hover {
   color: rgb(255, 255, 255);
 }
 @media (max-width: 768px) {
-  .footer .mil-footer-list.mil-footer-list-2 {
+  footer .mil-footer-list.mil-footer-list-2 {
     flex-direction: column;
   }
-  .footer .mil-footer-list.mil-footer-list-2 li {
+  footer .mil-footer-list.mil-footer-list-2 li {
     margin-bottom: 15px;
   }
 }
-.footer .mil-footer-bottom {
+footer .mil-footer-bottom {
   padding-top: 60px;
   padding-bottom: 60px;
   border-top: solid 1px rgba(137, 141, 150, 0.2);
 }
-.footer.mil-footer-with-bg {
+footer.mil-footer-with-bg {
   background-color: rgb(242, 250, 250);
 }
-.footer.mil-footer-with-bg .mil-footer-bottom {
+footer.mil-footer-with-bg .mil-footer-bottom {
   border-top: solid 1px rgba(137, 141, 150, 0.2);
 }
-.footer.mil-footer-dark {
+footer.mil-footer-dark {
   background-color: rgb(13, 81, 82);
 }
-.footer.mil-footer-dark .mil-footer-bottom {
+footer.mil-footer-dark .mil-footer-bottom {
   border-top: solid 1px rgba(3, 166, 166, 0.2);
 }
-.footer.mil-footer-dark-2 {
+footer.mil-footer-dark-2 {
   background-color: rgb(39, 38, 38);
 }
-.footer.mil-footer-dark-2 .mil-footer-bottom {
+footer.mil-footer-dark-2 .mil-footer-bottom {
   border-top: solid 1px rgba(137, 141, 150, 0.2);
 }
 
@@ -2739,730 +2720,4 @@ footer
 }
 .mil-subscripe-form-footer button i.mil-dark {
   color: rgb(13, 81, 82);
-}
-
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-.navigation__prev, .navigation__next {
-  padding: 5px 10px;
-  border: none;
-  background-color: #008000;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.navigation__prev.disabled, .navigation__next.disabled {
-  background-color: #d6d6d6;
-  cursor: not-allowed;
-}
-.navigation__icon {
-  color: #fff;
-}
-
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/style.scss to edit this template
-*/
-/*
-    Created on : Jan 23, 2025, 9:59:58 AM
-    Author     : hungk
-*/
-.about-banner.mil-banner {
-  padding-top: 0;
-}
-.about-footer__logo {
-  flex-shrink: 0;
-}
-.about-section__title, .about-section__desc, .about-section__sub-title {
-  font-family: sans-serif;
-  text-align: center;
-}
-.about-section__title {
-  font-size: 30px;
-  margin: 50px 0 30px;
-  cursor: context-menu;
-}
-.about-section__sub-title {
-  font-size: 16px;
-}
-.about-section__sub-title.active {
-  color: #fff;
-  background: green;
-  border-radius: 99px;
-  padding: 10px 20px;
-}
-.about-section__desc {
-  margin-left: auto;
-  margin-right: auto;
-  width: 800px;
-}
-.about-introduction__list {
-  list-style-type: none;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-.about-introduction__desc {
-  margin: 20px 0;
-  text-align: justify;
-}
-.about-introduction__more {
-  display: none;
-  margin: 0 0 20px 20px;
-}
-.about-introduction__more.show {
-  display: block;
-}
-.about-introduction__item {
-  color: #000;
-  background-color: #ccc;
-  border-radius: 99px;
-  padding: 10px 20px;
-  cursor: context-menu;
-}
-.about-introduction__item--current {
-  color: #fff;
-  background-color: green;
-}
-.about-introduction__item:hover:not(.about-introduction__item--current) {
-  color: #a1c76d;
-  background: #f8ffec;
-  cursor: pointer;
-}
-.about-introduction__content {
-  display: none;
-}
-.about-introduction__content--current {
-  display: block;
-}
-.about-history {
-  border-radius: 8px;
-  padding: 20px;
-}
-.about-history__btn-more {
-  display: block;
-  margin: auto;
-}
-.about-history .text-expand, .about-history .text-collapsed {
-  color: #074c31;
-  margin-right: 10px;
-}
-.about-history .icon-arrow-right {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid #074c31;
-  transform: rotate(0deg); /* Mặc định không xoay */
-  transition: transform 0.1s; /* Thêm hiệu ứng mượt */
-}
-.about-history .icon-arrow-right.rotated {
-  transform: rotate(180deg); /* Xoay 180 độ */
-}
-.about-timeline {
-  margin-top: 50px;
-}
-.about-timeline__num-list {
-  display: flex;
-  justify-content: center;
-  list-style-type: none;
-  gap: 50px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 20px;
-}
-.about-timeline__num {
-  position: relative;
-  font-size: 30px;
-  padding: 0 24px;
-  cursor: pointer;
-  color: #ccc;
-}
-.about-timeline__num--current {
-  color: #fff;
-  background: #008000;
-  border-radius: 8px;
-}
-.about-timeline__num--current::before {
-  border-color: #008000 !important;
-}
-.about-timeline__num--current::after {
-  background: #008000 !important;
-}
-.about-timeline__num::before, .about-timeline__num::after {
-  position: absolute;
-  content: "";
-  bottom: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.about-timeline__num::before {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  background: #fff;
-}
-.about-timeline__num::after {
-  bottom: -28px;
-  width: 15px;
-  height: 15px;
-  background: #ccc;
-  border-radius: 50%;
-}
-.about-timeline__content {
-  margin-top: 50px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  display: none;
-}
-.about-timeline__content--current {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.about-timeline__heading {
-  font-family: sans-serif;
-}
-.about-timeline__desc {
-  margin-top: 20px;
-  width: 600px;
-  text-align: center;
-}
-
-.menu {
-  margin-top: 130px;
-  padding: 20px;
-}
-.menu-list {
-  display: flex;
-  align-items: center;
-}
-.menu-item {
-  list-style-type: none;
-  display: flex;
-}
-.menu-label {
-  position: relative;
-  font-weight: 600;
-  color: rgb(137, 141, 150);
-}
-.menu-label + .menu-label {
-  margin-left: 50px;
-}
-.menu-label:hover {
-  color: #008000;
-  cursor: context-menu;
-}
-.menu-form__search {
-  display: flex;
-  justify-content: flex-end;
-}
-.menu-form__search-input {
-  width: 200px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
-  font-size: 16px;
-}
-.menu-label:hover .sub-menu-item {
-  display: block;
-}
-.menu .sub-menu-item {
-  display: none;
-  position: absolute;
-  z-index: 992;
-  width: 250px;
-  background: #fff;
-  border-radius: 8px;
-  list-style-type: none;
-  box-shadow: 0px 0.5px 3px 0px #000;
-  overflow: hidden;
-}
-.menu .sub-menu-link {
-  display: block;
-  color: rgb(137, 141, 150);
-  padding: 15px 20px;
-  border-bottom: 1px solid #ccc;
-}
-.menu .sub-menu-link:hover {
-  border-radius: 8px;
-  color: #008000;
-  background-color: rgb(242, 250, 250);
-}
-
-.pagi {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  margin: 50px 0;
-  background-color: transparent;
-  border-radius: 16px;
-}
-.pagi .container1 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-bottom: 20px;
-  padding: 20px;
-}
-.pagi .card {
-  display: flex;
-  align-items: center;
-  background: linear-gradient(to right, #e0f7fa, #e0f2f1);
-  border-radius: 10px;
-  padding: 20px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.pagi .card img {
-  width: 40px;
-  height: 40px;
-  margin-right: 20px;
-}
-.pagi .card p {
-  margin: 0;
-  font-size: 16px;
-  color: #333;
-}
-.pagi .pagination {
-  display: flex;
-  gap: 10px;
-}
-.pagi .pagination button {
-  padding: 5px 10px;
-  border: none;
-  background-color: #008000;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.pagi .pagination button.disabled {
-  background-color: #d6d6d6;
-  cursor: not-allowed;
-}
-.pagi .pagination__icon {
-  color: #fff;
-}
-
-.about-feedback {
-  margin-top: 22px;
-}
-.about-feedback__label {
-  margin-bottom: 10px;
-}
-.about-feedback__table-wrapper {
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #ccc;
-}
-.about-feedback__table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.about-feedback__table-head {
-  background: #008000;
-}
-.about-feedback__table-head th {
-  color: #fff;
-  padding: 8px;
-}
-.about-feedback__table-body tr:nth-child(even) {
-  background: rgb(242, 250, 250);
-}
-.about-feedback__table-body td {
-  padding: 8px;
-}
-
-#team-list-wrapper {
-  width: 100%; /* Chiều rộng cố định hiển thị 4 người */
-  overflow: hidden; /* Ẩn phần bị tràn */
-  position: relative;
-}
-
-#team-list {
-  display: flex;
-  flex-wrap: nowrap;
-  transition: transform 0.3s ease-in-out; /* Hiệu ứng trượt */
-}
-
-.team-item {
-  flex: 0 0 25%; /* Mỗi phần tử chiếm 25% (4 phần tử trên hàng) */
-  max-width: 25%;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Vô hiệu hóa nút 
-.navigation__prev.disabled,
-.navigation__next.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-}*/
-.body2 {
-  font-family: "Roboto", sans-serif;
-  margin: 0;
-  padding: 0;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.container2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  padding: 20px;
-}
-
-.content2 {
-  display: flex;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.text2-section {
-  flex: 1;
-  padding: 10px;
-}
-
-.text2-item {
-  background-color: #f9f9f9;
-  padding: 10px;
-  margin-bottom: 17px;
-  border-radius: 8px;
-}
-
-.text2-item:last-child {
-  margin-bottom: 0;
-}
-
-.text2-item h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-}
-
-.text2-item p {
-  font-size: 1rem;
-  margin: 0;
-}
-
-.image2-section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #e0e0e0;
-}
-
-.image2-section img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0 8px 8px 0;
-}
-
-@media (max-width: 768px) {
-  .content2 {
-    flex-direction: column;
-  }
-  .image2-section {
-    border-radius: 0 0 8px 8px;
-  }
-}
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/style.scss to edit this template
-*/
-/*
-    Created on : Jan 30, 2025, 9:50:27 AM
-    Author     : hungk
-*/
-.form-control {
-  font-family: Montserrat-ExtraLight;
-  font-size: 18px;
-}
-.form-control__row {
-  display: flex;
-  gap: 16px;
-}
-.form-control__row--reverse {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-}
-.form-control__input {
-  font-size: 18px;
-}
-.form-control__input[type=date] {
-  appearance: none;
-  cursor: pointer;
-}
-.form-control .input--small {
-  padding: 10px 30px;
-  border-radius: 8px;
-}
-.form-control__textarea {
-  resize: none;
-  font-weight: bold;
-}
-.form-control__btn {
-  font-family: Montserrat-ExtraLight;
-  position: unset !important;
-}
-.form-control__btn--green {
-  background: green !important;
-  color: #fff;
-}
-.form-control__icon {
-  margin-right: 8px;
-}
-
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/style.scss to edit this template
-*/
-/*
-    Created on : Feb 1, 2025, 10:56:49 AM
-    Author     : hungk
-*/
-.modal__overlay, .modal {
-  position: fixed;
-  inset: 0;
-}
-
-.modal {
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity, visibility;
-  transition-duration: 0.2s;
-  /*    &__heading {
-          font-size: 2rem;
-          font-weight: 700;
-          line-height: 141.667%;
-      }
-
-      &__body {
-          max-height: calc(100vh - 180px);
-          padding-right: 20px;
-          overflow-y: auto;
-      }*/
-}
-.modal.show {
-  opacity: 1;
-  visibility: visible;
-}
-.modal__close {
-  position: absolute;
-  top: 5px;
-  right: 30px;
-  z-index: 2;
-  font-size: 35px;
-  padding: 3px 20px;
-  opacity: 0.7;
-  background: transparent;
-  border: none;
-}
-.modal__close:hover {
-  opacity: 1;
-}
-.modal__overlay {
-  background: rgba(0, 0, 0, 0.4);
-}
-.modal__content {
-  position: relative;
-  z-index: 1;
-  width: min(var(--content-width, 800px), 100% - 40px);
-  padding: 30px 10px 30px 30px;
-  border-radius: 20px;
-  background: linear-gradient(to right, #e0f7fa, #e0f2f1);
-  box-shadow: 0px 20px 60px 10px var(--modal-shadow);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.modal__info {
-  padding: 30px 0;
-}
-.modal__img-wrap {
-  border-radius: 18px;
-  overflow: hidden;
-}
-.modal__img {
-  object-fit: cover;
-}
-.modal--small .modal__content {
-  --content-width: 400px;
-}
-.modal--large .modal__content {
-  --content-width: 1100;
-}
-.modal--xl .modal__content {
-  --content-width: 1290;
-}
-.modal--fill .modal__content {
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-}
-.modal__text {
-  font-size: 28px;
-  line-height: 1.5;
-}
-.modal__link {
-  display: block;
-  margin-top: 10px;
-}
-.modal__link:hover {
-  color: #008000;
-}
-.modal__bottom {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 50px;
-  justify-content: flex-end;
-  padding-right: 20px;
-}
-
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/style.scss to edit this template
-*/
-/*
-    Created on : Feb 5, 2025, 12:26:47 AM
-    Author     : hungk
-*/
-.faq-heading {
-  margin: 30px 0;
-}
-.faq-wrap {
-  margin: 80px 0;
-}
-.faq-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 50px;
-  text-align: center;
-  transition: scale ease-in 0.5s;
-}
-.faq-card:hover {
-  transform: scale(1.1);
-  border: 1px solid #008000;
-}
-.faq-card__img {
-  width: 50px;
-  height: 50px;
-}
-.faq-card__heading {
-  font-size: 18px;
-  margin: 10px 0;
-  color: #2c6a2c;
-}
-.faq-card__btn {
-  background-color: #fff;
-  border: 2px solid #2c6a2c;
-  border-radius: 5px;
-  padding: 10px 20px;
-  color: #2c6a2c;
-  font-size: 14px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-.faq-card__btn:hover {
-  background-color: #2c6a2c;
-  color: #fff;
-}
-.faq-question__tab-list {
-  list-style-type: none;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-.faq-question__tab {
-  color: #000;
-  min-width: 150px;
-  text-align: center;
-  background-color: #ccc;
-  border-radius: 99px;
-  padding: 10px 20px;
-  cursor: context-menu;
-}
-.faq-question__tab--current {
-  color: #fff;
-  background-color: green;
-}
-.faq-question__tab:hover:not(.faq-question__tab--current) {
-  color: #a1c76d;
-  background: #f8ffec;
-  cursor: pointer;
-}
-.faq-question__contents {
-  margin-top: 30px;
-}
-.faq-question__content {
-  display: none;
-}
-.faq-question__content--current {
-  display: block;
-}
-.faq-question__ques-list {
-  margin-left: 20px;
-}
-.faq-question__ques-item::marker {
-  color: #008000;
-  font-size: 20px;
-  font-weight: bold;
-}
-.faq-question__ques-item + .faq-question__ques-item {
-  margin-top: 20px;
-}
-.faq-question__ques-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 30px;
-  margin-left: 20px;
-  cursor: pointer;
-}
-.faq-question__ques-title {
-  font-weight: bold;
-}
-.faq-question__ques-ans {
-  text-align: justify;
-  margin: 20px;
-  height: 0;
-  overflow: hidden;
-  transition: height ease-in 0.5s;
-}
-.faq-question__ques-ans.show {
-  height: auto;
-}
-.faq-question__ques-icon {
-  transform: rotate(0deg);
-  transition: transform 0.3s;
-}
-.faq-question__ques-icon.rotated {
-  transform: rotate(180deg);
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
