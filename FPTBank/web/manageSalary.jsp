@@ -995,13 +995,13 @@
                                             <c:forEach items="${requestScope.data}" var="sal">
                                                 <tr>
                                                     <td>
-                                                        <a href="customer?cid=${sal.customerId}"class="bi bi-person-circle" title="Xem chi tiết">
-                                                            ${sal.customerId}</a>
+                                                        <a href="customer?cid=${sal.getCustomerId}"class="bi bi-person-circle" title="Xem chi tiết">
+                                                            ${sal.getCustomerId}</a>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="product-box" style="position: relative;">
-                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${sal.image}" alt="" id="myImage">
+                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${sal.getImage}" alt="" id="myImage">
                                                                 <button class="zoom-icon" onclick="openModal(this)">
                                                                     <i class="fa fa-expand"></i>
                                                                 </button>
@@ -1010,26 +1010,26 @@
 
 
                                                     </td>
-                                                    <td>${sal.description}</td>
-                                                    <td>${sal.createdAt}</td>
-                                                    <c:if test="${sal.verification == false}">
+                                                    <td>${sal.getDescription}</td>
+                                                    <td>${sal.getCreatedAt}</td>
+                                                    <c:if test="${sal.isVerification == false}">
                                                         <td>Not Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${sal.verification != false}">
+                                                    <c:if test="${sal.isVerification != false}">
                                                         <td>Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${sal.status == false}">
+                                                    <c:if test="${sal.isStatus == false}">
                                                         <td>Not Accept</td>
                                                     </c:if>
-                                                    <c:if test="${sal.status != false}">
+                                                    <c:if test="${sal.isStatus != false}">
                                                         <td>Accept</td>
                                                     </c:if>   
                                             <form action="listSalary" method="post">
-                                                <input hidden type="text" name="salaryid" value="${sal.id}">
+                                                <input hidden type="text" name="salaryid" value="${sal.getId}">
                                                 <td>
                                                     <div class="form-group">
-                                                        <label for="salaryAction${sal.id}">Choose an action:</label>
-                                                        <select class="form-select" id="salaryAction${sal.id}"name="action" >
+                                                        <label for="salaryAction${sal.getId}">Choose an action:</label>
+                                                        <select class="form-select" id="salaryAction${sal.getId}"name="action" >
                                                             <option value="">Select an action</option>
                                                             <option value="accept">Accept asset</option>
                                                             <option value="deny">Deny asset</option>
