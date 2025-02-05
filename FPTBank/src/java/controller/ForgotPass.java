@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dal.UserDAO;
@@ -13,44 +12,47 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.sql.Date;
+import java.util.Random;
+import model.Emails;
 import model.User;
 
 /**
  *
- * @author HP
+ * @author tiend
  */
-@WebServlet(name="Register", urlPatterns={"/register"})
-public class Register extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "ForgotPass", urlPatterns = {"/forgotPass"})
+public class ForgotPass extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Register</title>");  
+            out.println("<title>Servlet SendEmail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Register at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SendEmail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,12 +60,13 @@ public class Register extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        request.getRequestDispatcher("register.jsp").forward(request, response);
-    } 
+            throws ServletException, IOException {
+        request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -71,23 +74,39 @@ public class Register extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String name = request.getParameter("name");
-        String gender = request.getParameter("gender");
-        String dob_raw = request.getParameter("dob");
-        String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
-        Date dob = Date.valueOf(dob_raw);
-        User userToAdd = new User(0, username, password, name,"", phone, email, dob, (gender.equals("Male")),"", "", 5, true, null,null);
-        UserDAO udao = new UserDAO();
-        udao.addAUser(userToAdd);
-        response.sendRedirect("/timibank/login?fromRegister=true");
+            throws ServletException, IOException {
+        String emailr = request.getParameter("email");
+        String code = getRandom();
+        Emails email = new Emails();
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.checkUserByEmail(emailr);
+        if (user != null) {
+            email.sendMess(emailr, "Recovery Password", code);
+            request.setAttribute("emailr", emailr);
+            request.setAttribute("code", code);
+            request.getRequestDispatcher("pincode.jsp").forward(request, response);
+        }else{
+            String err= "Not exist Email!";
+            request.setAttribute("err", err);
+            request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
+        }
+
     }
 
-    /** 
+    public String getRandom() {
+        Random random = new Random();
+
+        // Tạo chuỗi số ngẫu nhiên
+        StringBuilder randomNumbers = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            randomNumbers.append(random.nextInt(10));
+        }
+        return randomNumbers.toString();
+    }
+
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
