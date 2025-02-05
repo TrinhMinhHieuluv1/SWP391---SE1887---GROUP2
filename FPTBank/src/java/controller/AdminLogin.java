@@ -37,11 +37,21 @@ public class AdminLogin extends HttpServlet {
 
         User user = userDao.checkAuthen(userName, password);
 
-        if (user != null && userDao.isAdmin(userName, password)) {
+        // check ng dùng tồn tại + role là admin + status của account là active thì cho phép login
+        if ((user != null && userDao.isAdmin(userName, password)) && user.isStatus()) {
             request.getSession().setAttribute("admin", user);
             request.getSession().setAttribute("message", "Login Successfully !!");
             request.getRequestDispatcher("home.jsp").forward(request, response);
 
+            // check ng dùng tồn tại + role khác admin
+        } else if (user != null && !userDao.isAdmin(userName, password)) {
+            request.getSession().setAttribute("error", "Only admin have access !!");
+            response.sendRedirect("login");
+
+            // check ng dùng tồn tại + role = admin + status = inactive
+        } else if ((user != null && userDao.isAdmin(userName, password)) && !user.isStatus()) {
+            request.getSession().setAttribute("error", "Account has been disabled !!");
+            response.sendRedirect("login");
         } else {
             request.getSession().setAttribute("error", "Invalid username or password !!");
             response.sendRedirect("login");

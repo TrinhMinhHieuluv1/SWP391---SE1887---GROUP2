@@ -140,12 +140,13 @@
                 <input type="text" id="pass" name="password" required>
             </div>
 
-
             <!-- Full Name -->
             <div>
                 <label for="full">Full Name</label>
-                <input type="text" id="full" name="fullname" required pattern="^[a-zA-Z\s]+$" title="Vui lòng nhập tên không dấu và không nhập số kí tự đặc biệt !!" 
-                       placeholder="Nguyen Van A" >
+                <input type="text" id="full" name="fullname" required
+                       placeholder="Nguyen Van A"
+                       pattern="^[A-Za-zÀ-ỹ\s]+$"
+                       title="Vui lòng không nhập số hoặc kí tự đặc biệt !!">
             </div>
 
 
@@ -156,6 +157,12 @@
                        title="Vui lòng nhập đủ 10 chữ số !!" >
             </div>
 
+            <!-- Image -->
+            <div>
+                <label for="img">Image URL</label>
+                <input type="text" id="img" name="img" required>
+            </div>
+
             <!-- Email -->
             <div>
                 <label for="mail">Email</label>
@@ -164,13 +171,27 @@
                        >
             </div>
 
+            <!-- Address -->
+            <div>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+
+            <!-- ManageID -->
+            <div>
+                <label for="managerid">Manager ID</label>
+                <input type="text" id="managerid" name="managerid"
+                       placeholder="12345" pattern="^[0-9]+$"
+                       title="Vui lòng chỉ nhập số !!">
+            </div>
+
+
             <!-- Identity Card -->
             <div>
                 <label for="card">Identity Card</label>
                 <input type="text" id="card" name="card" pattern="\d{12}" placeholder="12 digit number" 
                        title="Vui lòng nhập đúng 12 chữ số" required>
             </div>
-
 
             <!-- Date of Birth -->
             <div>

@@ -949,6 +949,19 @@
                             </ul>
                         </div>
 
+                        <!--Filer list user by Status  -->
+                        <div class="btn-group position-static">
+                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
+                                Status Of Users
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="filter_byStatus?status=1">Active</a></li>
+                                <li><a class="dropdown-item" href="filter_byStatus?status=0">Inactive</a></li>
+                                <!--                                <li><hr class="dropdown-divider"></li>
+                                                                <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
+                            </ul>
+                        </div>
+
 
                         <!--Filer list user by role name  -->
                         <div class="btn-group position-static">
@@ -996,32 +1009,20 @@
 
                                 <!-- HEAD TABLE -->     
                                 <thead class="table-light">
-                                    <!--                                    <tr>
-                                                                            <th>
-                                                                                <input class="form-check-input" type="checkbox">
-                                                                            </th>
-                                                                            <th>USER ID</th>
-                                                                            <th>USER NAME</th>
-                                                                            <th>FULL NAME</th>
-                                                                            <th>PHONE</th>
-                                                                            <th>EMAIL</th>
-                                                                            <th>DATE OF BIRTH</th>
-                                                                            <th>GENDER</th>
-                                                                            <th>ROLE NAME</th>
-                                                                            <th>STATUS</th>
-                                                                            <th>CREATED AT</th>
-                                                                        </tr>-->
 
                                     <tr>
                                         <th class="text-center" >USER ID</th>
+                                        <th class="text-center" >IMAGE</th>
                                         <th class="text-center" >USER NAME</th>
                                         <th class="text-center" >FULL NAME</th>
                                         <th class="text-center" >PHONE</th>
                                         <th class="text-center" >EMAIL</th>
+                                        <th class="text-center" >ADDRESS</th>
                                         <th class="text-center" >DATE OF BIRTH</th>
                                         <th class="text-center" >GENDER</th>
                                         <th class="text-center" >Identity Card</th>
-                                        <th class="text-center" >ROLE NAME</th>
+                                        <th class="text-center" >ROLE</th>
+                                        <th class="text-center" >MANAGER ID</th>
                                         <th class="text-center" >STATUS</th>
                                         <th class="text-center" >CREATED AT</th>
                                         <th class="text-center" style="width: 10%">Action</th>
@@ -1056,35 +1057,37 @@
 
                                     <c:forEach var="u" items="${listUsers}">
                                         <tr>
-                                            <td class="text-center">${u.userID} </td>
-                                            <td class="text-center">${u.username} </td>
-                                            <td class="text-center">${u.name}</td>
-                                            <td class="text-center">${u.phone}</td>
-                                            <td class="text-center">${u.email}</td>
-                                            <td class="text-center">${u.dob}</td>
+                                            <td class="text-center">${u.getUserID()} </td>
+                                            <td class="text-center"><img src="${u.getImage()}" alt="User Image" width="100" height="100"></td>
+                                            <td class="text-center">${u.getUsername()} </td>
+                                            <td class="text-center">${u.getFullName()}</td>
+                                            <td class="text-center">${u.getPhone()}</td>
+                                            <td class="text-center">${u.getEmail()}</td>
+                                            <td class="text-center">${u.getAddress()}</td>
+                                            <td class="text-center">${u.getDateOfBirth()}</td>
                                             <td class="text-center">
-                                                <c:if test="${u.gender == true}">
+                                                <c:if test="${u.isGender() == true}">
                                                     Male
                                                 </c:if>
-                                                <c:if test="${u.gender == false}">
+                                                <c:if test="${u.isGender() == false}">
                                                     Female
                                                 </c:if>
                                             </td>
 
-                                            <td class="text-center">${u.cccd} </td>
+                                            <td class="text-center">${u.getCCCD()} </td>
 
                                             <td class="text-center">
                                                 <c:choose>
-                                                    <c:when test="${u.roleID == 1}">
+                                                    <c:when test="${u.getRoleID() == 1}">
                                                         Admin
                                                     </c:when>
-                                                    <c:when test="${u.roleID == 2}">
+                                                    <c:when test="${u.getRoleID() == 2}">
                                                         Seller
                                                     </c:when>
-                                                    <c:when test="${u.roleID == 3}">
+                                                    <c:when test="${u.getRoleID() == 3}">
                                                         Manager
                                                     </c:when>
-                                                    <c:when test="${u.roleID == 4}">
+                                                    <c:when test="${u.getRoleID() == 4}">
                                                         Provider Insurance
                                                     </c:when>
                                                     <c:otherwise>
@@ -1093,17 +1096,25 @@
                                                 </c:choose>
                                             </td>
 
+                                            <td class="text-center">${u.getManager()} </td>
+
                                             <td class="text-center">
-                                                <c:if test="${u.status == true}">
+                                                <%-- <c:if test="${u.status == true}">
                                                     Active
                                                 </c:if>
                                                 <c:if test="${u.status == false}">
                                                     Inactive
-                                                </c:if>
+                                                </c:if> --%>
+
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="adminSwitch-${u.getUserID()}" ${u.isStatus() ? 'checked' : ''} onchange="updateStatusOfUsers(${u.getUserID()}, this.checked)">
+                                                    <label class="form-check-label" for="adminSwitch-${u.userID}">Active</label>
+                                                </div>
+
                                             </td>
 
 
-                                            <td class="text-center">${u.createdAt}</td>
+                                            <td class="text-center">${u.getCreatedAt()}</td>
 
 
                                             <td class="text-center">
@@ -1111,7 +1122,7 @@
                                                 <div class="form-button-action">
 
                                                     <!-- Edit -->
-                                                    <a href="update_user?id=${u.userID}"
+                                                    <a href="update_user?id=${u.getUserID()}"
                                                        class="btn btn-link btn-primary btn-lg"
                                                        data-bs-toggle="tooltip"
                                                        title="Update Information"
@@ -1120,7 +1131,7 @@
                                                     </a>
 
                                                     <!-- Remove -->
-                                                    <a href="remove_user?id=${u.userID}" 
+                                                    <a href="remove_user?id=${u.getUserID()}" 
                                                        class="btn btn-link btn-danger" 
                                                        data-bs-toggle="tooltip" 
                                                        title="Remove Account" 
@@ -1137,15 +1148,15 @@
                         </div>
                         <div class="pagination">
                             <c:if test="${currentPage > 1}">
-                                <a href="?page=${currentPage - 1}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}" class="prev">Previous</a>
+                                <a href="?page=${currentPage - 1}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}&status=${statusOfUser}" class="prev">Previous</a>
                             </c:if>
 
                             <c:forEach var="i" begin="1" end="${totalPages}">
-                                <a href="?page=${i}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                <a href="?page=${i}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}&status=${statusOfUser}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                             </c:forEach>
 
                             <c:if test="${currentPage < totalPages}">
-                                <a href="?page=${currentPage + 1}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}" class="next">Next</a>
+                                <a href="?page=${currentPage + 1}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}&status=${statusOfUser}" class="next">Next</a>
                             </c:if>
                         </div>
                     </div>
@@ -1252,6 +1263,30 @@
         <!--BS Scripts-->
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/main.js"></script>
+
+
+        <script>
+                                                        function updateStatusOfUsers(userID, statusIsChecked) {
+                                                            $.ajax({
+                                                                url: 'updateStatus',
+                                                                type: 'POST',
+                                                                data: {
+                                                                    userID: userID,
+                                                                    status: statusIsChecked
+                                                                },
+                                                                success: function (response) {
+                                                                    if (response.success) {
+                                                                        alert(response.message);
+                                                                    } else {
+                                                                        alert(response.message);
+                                                                    }
+                                                                },
+                                                                error: function (xhr, status, error) {
+                                                                    alert('error: ' + error);
+                                                                }
+                                                            });
+                                                        }
+        </script>
 
 
         <%@ include file="Common/toarst.jsp" %>
