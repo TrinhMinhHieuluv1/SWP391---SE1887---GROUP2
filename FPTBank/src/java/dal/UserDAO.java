@@ -94,6 +94,7 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
 
         
     public User selectAnUserByConditions(int UserID, String Username, String Phone, String Email) {
@@ -1478,8 +1479,4 @@ public class UserDAO extends DBContext {
             return false;
         }
     }
-
-
-
-
 }
