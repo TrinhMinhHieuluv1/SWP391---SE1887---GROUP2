@@ -1,17 +1,16 @@
 <%-- 
-    Document   : register
-    Created on : Jan 13, 2025, 12:32:16 AM
+    Document   : changepassword
+    Created on : Jan 21, 2025, 1:00:18 AM
     Author     : HP
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en-US">
-
+<html>
     <head>
 
-        <title>TIMI - Register</title>
+        <title>TIMI - Change Password</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,13 +36,30 @@
         <script>
             function validateForm(event){
                 if (checkConfirmPassword()===false) {
-                    alert("Confirm password doesn't match password. Try again!");
+                    alert("Confirm password must match password. Try again!");
                     event.preventDefault();
+                }
+                if (checkNewPassword()===false) {
+                    alert("New Password can't be same as Old Password. Try again!");
+                    event.preventDefault();
+                }                
+            }
+            
+            function checkNewPassword() {
+                const password = document.getElementById('password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const err = document.getElementById('err-new-password');
+                if (password === newPassword) {
+                    err.style.display = 'block';
+                    return false;
+                } else {
+                    err.style.display = 'none';
+                    return true;
                 }
             }
             
             function checkConfirmPassword() {
-                const password = document.getElementById('password').value;
+                const password = document.getElementById('new-password').value;
                 const confirmPassword = document.getElementById('confirm-password').value;
                 const err = document.getElementById('err-confirm-password');
                 if (password !== confirmPassword) {
@@ -54,7 +70,7 @@
                     return true;
                 }
             }
-
+            
             function togglePassword(id) {
                 const passwordField = document.getElementById(id);
                 const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -71,9 +87,9 @@
         <div id="smooth-wrapper" class="mil-wrapper">
 
             <!-- preloader -->
-          <div class="mil-preloader">
-           
-        </div>
+            <div class="mil-preloader">
+
+            </div>
             <!-- preloader end -->
 
             <!-- scroll progress -->
@@ -96,37 +112,37 @@
                             <li class="mil-has-children">
                                 <a href="/timibank/home">Home</a>
                                 <ul>
-                                    <li><a href="index.jsp">Mở tài khoản</a></li>
-                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.jsp">Type 3</a></li>
-                                    <li><a href="home-4.jsp">Type 4</a></li>
-                                    <li><a href="home-5.jsp">Type 5</a></li>
+                                    <li><a href="index.html">Mở tài khoản</a></li>
+                                    <li><a href="home-2.html">Gửi tiết kiệm</a></li>
+                                    <li><a href="home-3.html">Type 3</a></li>
+                                    <li><a href="home-4.html">Type 4</a></li>
+                                    <li><a href="home-5.html">Type 5</a></li>
 
                                 </ul>
                             </li>
                             <li>
-                                <a href="about.jsp">About</a>
+                                <a href="about.html">About</a>
                             </li>
                             <li>
-                                <a href="services.jsp">Services</a>
+                                <a href="services.html">Services</a>
                             </li>
                             <li>
                                 <a href="#.">Blog</a>
                                 <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
+                                    <li><a href="blog.html">Blog list</a></li>
+                                    <li><a href="publication.html">Blog details</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="contact.jsp">Contact</a>
+                                <a href="contact.html">Contact</a>
                             </li>
                             <li class="mil-has-children">
                                 <a href="#.">Pages</a>
                                 <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
+                                    <li><a href="career.html">Career</a></li>
+                                    <li><a href="career-details.html">Career details</a></li>
+                                    <li><a href="price.html">Pricing</a></li>
+                                    <li><a href="register.html">Register</a></li>
 
                                 </ul>
                             </li>
@@ -145,17 +161,15 @@
             <div id="smooth-content">
 
                 <!-- banner -->
-                <div class="mil-banner mil-banner-inner mil-dissolve">
-                    <div class="container">
+                <div class="container" style="padding-top: 150px">
                         <div class="row align-items-center justify-content-center">
-                            <div class="col-xl-8">
+                            <div class="col-xl-9">
                                 <div class="mil-banner-text mil-text-center">
-                                    <h2 class="mil-mb-60" style="font-family: serif">Register with Timi Bank</h2>
+                                    <h2 class="mil-mb-80" style="font-family: serif">Change Password</h2>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <!-- banner end -->
 
                 <!-- register form -->
@@ -163,33 +177,26 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-xl-5">
-                                <form action="register" method="post" onsubmit="validateForm(event)">
-                                    <input id="username" class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" value="${requestScope.username}" required oninput="checkDuplicatedUsername()">
+                                <c:set var="cookie" value="${pageContext.request.cookies}"></c:set>
+                                <form action="change-password" method="post" style="background: #ccffcc; padding: 30px" onsubmit="validateForm(event)">
+                                    <input id="username" class="mil-input mil-up mil-mb-15" name="username" value="${sessionScope.account.username}" required readonly>
                                     <div style="position: relative; display: inline-block; width: 100%;">
-                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Password" name="password" value="${requestScope.password}" required>
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Old Password" name="password" required>
                                         <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('password')"></span>
                                     </div>
                                     <div style="position: relative; display: inline-block; width: 100%;">
-                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" type="password" id="confirm-password" class="mil-input mil-up mil-mb-15" placeholder="Confirm Password" name="confirm-password" oninput="checkConfirmPassword()" value="${requestScope.password}"  required>
-                                        <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#confirm-password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('confirm-password')" style=""></span>
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="new-password" type="password" placeholder="New Password" name="new-password" required oninput="checkNewPassword()">
+                                        <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('new-password')"></span>
+                                    </div>
+                                    <div id="err-new-password" style="color: red; display: none">New Password can't be same as Old Password</div>
+                                    <div style="position: relative; display: inline-block; width: 100%;">
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="confirm-password" type="password" placeholder="Confirm Password" name="confirm-password" required oninput="checkConfirmPassword()">
+                                        <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('confirm-password')"></span>
                                     </div>
                                     <div id="err-confirm-password" style="color: red; display: none">Confirm Password is incorrect. Try again!</div>
-                                    <input type="text" class="mil-input mil-up mil-mb-15" placeholder="Full Name" name="name" value="${requestScope.name}"  required>
-                                    <select name="gender" class="mil-input mil-up mil-mb-15">
-                                        <option value="" disabled selected hidden style="color: black">Gender</option>
-                                        <option value="Male" ${requestScope.gender.equals("Male")?"selected":""}>Male</option>
-                                        <option value="Female" ${requestScope.gender.equals("Female")?"selected":""}>Female</option>
-                                    </select>
-                                    <input type="date" class="mil-input mil-up mil-mb-15" name="dob" value="${requestScope.dob}" placeholder="Date of birth">
-                                    <input type="text" class="mil-input mil-up mil-mb-15" name="phone" value="${requestScope.phone}" placeholder="Phone">
-                                    <input type="text" class="mil-input mil-up mil-mb-15" name="email" value="${requestScope.email}" placeholder="Email">
-                                    <input required type="checkbox"> <p class="mil-text-xs mil-soft" style="margin-bottom: 10px; display: inline">Do you agree to <a href="services.jsp" class="mil-accent">our terms and conditions</a>.</p>
-                                    <div class="mil-up mil-mb-30">
-                                        <button type="submit" class="mil-btn mil-md mil-fw">Create Account</button>
-                                    </div>
-                                    <p class="mil-text-xs mil-text-center mil-soft mil-mb-30">If you already have an account:</p>
-                                    <div class="mil-up mil-mb-15">
-                                        <a href="/timibank/login" class="mil-btn mil-md mil-grey mil-fw mil-mb-30">Log in</a>
+                                    <h5 style="color: red">${requestScope.err}</h5>
+                                    <div class="mil-up mil-mb-15 mil-mt-30">
+                                        <button type="submit" class="mil-btn mil-md mil-fw">Change Password</button>
                                     </div>
                                 </form>
                             </div>
@@ -224,5 +231,4 @@
         <script src="js/main.js"></script>
 
     </body>
-
 </html>

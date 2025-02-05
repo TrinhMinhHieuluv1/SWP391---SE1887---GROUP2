@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import java.sql.*;
+
 
 public class UserDAO extends DBContext {
 
@@ -30,7 +32,7 @@ public class UserDAO extends DBContext {
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
-                        getManagerForSeller(rs.getInt("ManagerID")),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
                 return user;
             }
@@ -68,6 +70,46 @@ public class UserDAO extends DBContext {
         return null;
     }
 
+    public User selectAnUserByConditions(int UserID, String Username, String Phone, String Email) {
+        String sql = "SELECT * FROM [User] WHERE 1=1";
+        if (UserID != 0) {
+            sql = sql + " AND UserID=" + UserID;
+        }
+        if (!Username.isEmpty()) {
+            sql = sql + " AND Username='" + Username +"'";
+        }
+        if (!Phone.isEmpty()) {
+            sql = sql + " AND Phone='" + Phone + "'";
+        }
+        if (!Email.isEmpty()) {
+            sql = sql + " AND Email='" + Email + "'";
+        }
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User userToAdd = new User(rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getBoolean("Gender"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getInt("RoleID"),
+                        rs.getBoolean("Status"),
+                        getManagerForSeller(rs.getInt("ManageID")),
+                        rs.getDate("CreatedAt"));
+                return userToAdd;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+
     public List<User> selectAllUser() {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM [User]";
@@ -88,7 +130,7 @@ public class UserDAO extends DBContext {
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
-                        getManagerForSeller(rs.getInt("ManagerID")),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
                 userList.add(userToAdd);
             }
@@ -146,7 +188,7 @@ public class UserDAO extends DBContext {
                         rs.getString("CCCD"),
                         rs.getInt("RoleID"),
                         rs.getBoolean("Status"),
-                        getManagerForSeller(rs.getInt("ManagerID")),
+                        getManagerForSeller(rs.getInt("ManageID")),
                         rs.getDate("CreatedAt"));
                 sellerList.add(seller);
             }
@@ -156,8 +198,8 @@ public class UserDAO extends DBContext {
     }
 
     public void addAUser(User userToAdd) {
-        String sql = "INSERT INTO [User](Username, Password, FullName, Image, Phone, Email, DateOfBirth, Gender, Address, CCCD, RoleID, Status, ManagerID)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [User](Username, Password, FullName, Image, Phone, Email, DateOfBirth, Gender, Address, CCCD, RoleID, Status, ManageID)\n"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToAdd.getUsername());
@@ -172,14 +214,19 @@ public class UserDAO extends DBContext {
             st.setString(10, userToAdd.getCCCD());
             st.setInt(11, userToAdd.getRoleID());
             st.setBoolean(12, userToAdd.isStatus());
-            st.setInt(13, userToAdd.getManager().getUserID());
+            if (userToAdd.getManager() != null) {
+                st.setInt(13, userToAdd.getManager().getUserID());
+            } else {
+                st.setNull(13, Types.INTEGER);
+            }
             st.executeUpdate();
         } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 
     public void updateAUserByUserID(User userToUpdate) {
-        String sql = "UPDATE [User] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address, CCCD=?, RoleID=?, Status=?, ManagerID=? WHERE UserID=?";
+        String sql = "UPDATE [User] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, RoleID=?, Status=?, ManageID=? WHERE UserID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userToUpdate.getPassword());
@@ -193,12 +240,17 @@ public class UserDAO extends DBContext {
             st.setString(9, userToUpdate.getCCCD());
             st.setInt(10, userToUpdate.getRoleID());
             st.setBoolean(11, userToUpdate.isStatus());
-            st.setInt(12, userToUpdate.getManager().getUserID());
+            if (userToUpdate.getManager() != null) {
+                st.setInt(12, userToUpdate.getManager().getUserID());
+            } else {
+                st.setNull(12, Types.INTEGER);
+            }
             st.setInt(13, userToUpdate.getUserID());
             st.executeUpdate();
         } catch (SQLException e) {
         }
     }
+
     public List<User> selectAllUsersByRole(int roleID) {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM [TimiBank].[dbo].[User] WHERE RoleID = ?";
@@ -292,5 +344,5 @@ public class UserDAO extends DBContext {
 
         return userCount;
     }
-    
+
 }

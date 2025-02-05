@@ -58,7 +58,7 @@ public class Logout extends HttpServlet {
     throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("account");
-        response.sendRedirect("/timibank/home.jsp");
+        response.sendRedirect("/timibank/home");
     } 
 
     /** 
