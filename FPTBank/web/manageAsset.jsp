@@ -1011,40 +1011,40 @@
                                             <c:forEach items="${requestScope.data}" var="asset">
                                                 <tr>
                                                     <td>
-                                                        <a href="customer?cid=${asset.customerId}"class="bi bi-person-circle" title="Xem chi tiết">
-                                                            ${asset.customerId}</a>
+                                                        <a href="customer?cid=${asset.getCustomerId}"class="bi bi-person-circle" title="Xem chi tiết">
+                                                            ${asset.getCustomerId}</a>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="product-box" style="position: relative;">
-                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${asset.image}" alt="" id="myImage">
+                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${asset.getImage}" alt="" id="myImage">
                                                                 <button class="zoom-icon" onclick="openModal(this)">
                                                                     <i class="fa fa-expand"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>${asset.description}</td>
-                                                    <td>${asset.value}</td>
-                                                    <td>${asset.createdAt}</td>
-                                                    <c:if test="${asset.verification == false}">
+                                                    <td>${asset.getDescription}</td>
+                                                    <td>${asset.getValue}</td>
+                                                    <td>${asset.getCreatedAt}</td>
+                                                    <c:if test="${asset.isVerification == false}">
                                                         <td>Not Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${asset.verification != false}">
+                                                    <c:if test="${asset.isVerification != false}">
                                                         <td>Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${asset.status == false}">
+                                                    <c:if test="${asset.isStatus == false}">
                                                         <td>Not Accept</td>
                                                     </c:if>
-                                                    <c:if test="${asset.status != false}">
+                                                    <c:if test="${asset.isStatus != false}">
                                                         <td>Accept</td>
                                                     </c:if>   
                                             <form action="listAsset" method="post">
-                                                <input hidden type="text" name="assetid" value="${asset.id}">
+                                                <input hidden type="text" name="assetid" value="${asset.getId}">
                                                 <td>
                                                     <div class="form-group">
-                                                        <label for="assetAction${asset.id}">Choose an action:</label>
-                                                        <select class="form-select" id="assetAction${asset.id}"name="action" >
+                                                        <label for="assetAction${asset.getId}">Choose an action:</label>
+                                                        <select class="form-select" id="assetAction${asset.getId}"name="action" >
                                                             <option value="">Select an action</option>
                                                             <option value="accept">Accept asset</option>
                                                             <option value="deny">Deny asset</option>
