@@ -11,31 +11,33 @@ import java.math.BigDecimal;
  * @author ACER
  */
 public class Customer {
-    private int customerId, creditScore;
-    private BigDecimal balance;
-    private User user;
+
+    private int CustomerId, CreditScore;
+    private BigDecimal Balance;
+    private User User;
 
     public Customer(int customerId, User user, int creditScore, BigDecimal Balance) {
-        this.customerId = customerId;
-        this.user = user;
-        this.creditScore = creditScore;
-        this.balance = Balance;
+        this.CustomerId = customerId;
+        this.User = user;
+        this.CreditScore = creditScore;
+        this.Balance = Balance;
     }
 
     public int getCustomerId() {
-        return customerId;
+        return CustomerId;
     }
 
     public int getCreditScore() {
-        return creditScore;
+        return CreditScore;
     }
 
     public void setCreditScore(int creditScore) {
-        this.creditScore = creditScore;
+        this.CreditScore = creditScore;
     }
 
     public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+        this.CustomerId = customerId;
+
     }
     
     
@@ -43,40 +45,43 @@ public class Customer {
     }
 
     public int getCustomerid() {
-        return customerId;
+        return CustomerId;
     }
 
     public void setCustomerid(int customerId) {
-        this.customerId = customerId;
+        this.CustomerId = customerId;
     }
 
     public User getUser() {
-        return user;
+        return User;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.User = user;
     }
 
     public int getCreditscore() {
-        return creditScore;
+        return CreditScore;
     }
 
     public void setCreditscore(int creditScore) {
-        this.creditScore = creditScore;
+        this.CreditScore = creditScore;
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        return Balance;
     }
 
     public void setBalance(BigDecimal Balance) {
-        this.balance = Balance;
+        this.Balance = Balance;
+
     }
 
     @Override
     public String toString() {
-        return "Customer{" + "customerid=" + customerId +", creditscore=" + creditScore + ", balance=" + balance +"Use:,"+user.toString() +'}';
+
+        return "Customer{" + "customerid=" + CustomerId +", creditscore=" + CreditScore + ", balance=" + Balance +"Use:,"+User.toString() +'}';
+
     }
     
 }

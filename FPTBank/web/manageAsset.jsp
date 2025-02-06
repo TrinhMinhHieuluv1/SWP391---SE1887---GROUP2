@@ -115,6 +115,16 @@
             }
 
         </script> 
+        <script>
+            function submitSearch() {
+                var searchInput = document.getElementById('searchInput').value;
+                if (searchInput.trim() !== "") {
+                    document.getElementById('searchForm').submit();
+                } else {
+                    alert("Please enter a search term."); // Thông báo nếu ô tìm kiếm rỗng
+                }
+            }
+        </script>
     </head>
     <body>
 
@@ -901,10 +911,15 @@
 
             <div class="row g-3">
                 <div class="col-auto">
-                    <div class="position-relative">
-                        <input class="form-control px-5" type="search" placeholder="Search Products">
-                        <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
-                    </div>
+                    <form id="searchForm" action="sort" method="get">   
+                        <div class="position-relative">
+                            <input id="searchInput" class="form-control px-5" type="search" name="search" placeholder="Search Products">
+                            <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5" 
+                                  onclick="submitSearch();">
+                                search
+                            </span>
+                        </div>
+                    </form>
                 </div>
                 <div class="col-auto flex-grow-1 overflow-auto">
                     <div class="btn-group position-static">
@@ -951,7 +966,7 @@
                                     <li><a class="dropdown-item" onclick="submitSortForm3('true')">conform asset</a></li>
                                     <li><a class="dropdown-item" onclick="submitSortForm3('false')">Not Conform asset</a></li>
                                 </ul>
-                                 <input type="hidden" name="verify" id="verify">
+                                <input type="hidden" name="verify" id="verify">
                             </form>
                         </div>
                         <div class="btn-group position-static">
@@ -979,7 +994,9 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Customer ID</th>
-                                            <th>Asset Name</th>
+
+                                            <th>Asset Image</th>
+
                                             <th>Description</th>
                                             <th>Value</th>
                                             <th>Date</th>
@@ -996,40 +1013,45 @@
                                             <c:forEach items="${requestScope.data}" var="asset">
                                                 <tr>
                                                     <td>
-                                                        <a href="customer?cid=${asset.customerId}"class="bi bi-person-circle" title="Xem chi tiết">
-                                                            ${asset.customerId}</a>
+
+                                                        <a href="customer?cid=${asset.getCustomerId()}"class="bi bi-person-circle" title="Xem chi tiết">
+                                                            ${asset.getCustomerId()}</a>
+
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="product-box" style="position: relative;">
-                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${asset.image}" alt="" id="myImage">
+
+                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${asset.getImage()}" alt="" id="myImage">
+
                                                                 <button class="zoom-icon" onclick="openModal(this)">
                                                                     <i class="fa fa-expand"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>${asset.description}</td>
-                                                    <td>${asset.value}</td>
-                                                    <td>${asset.createdAt}</td>
-                                                    <c:if test="${asset.verification == false}">
+
+                                                    <td>${asset.getDescription()}</td>
+                                                    <td>${asset.getValue()}</td>
+                                                    <td>${asset.getCreatedAt()}</td>
+                                                    <c:if test="${asset.isVerification() == false}">
                                                         <td>Not Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${asset.verification != false}">
+                                                    <c:if test="${asset.isVerification() != false}">
                                                         <td>Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${asset.status == false}">
+                                                    <c:if test="${asset.isStatus() == false}">
                                                         <td>Not Accept</td>
                                                     </c:if>
-                                                    <c:if test="${asset.status != false}">
+                                                    <c:if test="${asset.isStatus() != false}">
                                                         <td>Accept</td>
                                                     </c:if>   
                                             <form action="listAsset" method="post">
-                                                <input hidden type="text" name="assetid" value="${asset.id}">
+                                                <input hidden type="text" name="assetid" value="${asset.getId()}">
                                                 <td>
                                                     <div class="form-group">
-                                                        <label for="assetAction${asset.id}">Choose an action:</label>
-                                                        <select class="form-select" id="assetAction${asset.id}"name="action" >
+                                                        <label for="assetAction${asset.getId()}">Choose an action:</label>
+                                                        <select class="form-select" id="assetAction${asset.getId()}"name="action" >
                                                             <option value="">Select an action</option>
                                                             <option value="accept">Accept asset</option>
                                                             <option value="deny">Deny asset</option>

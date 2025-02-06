@@ -13,7 +13,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Random;
-import model.Email;
+import model.Emails;
+import model.User;
+
+import model.Emails;
+
 import model.User;
 
 /**
@@ -77,7 +81,9 @@ public class ForgotPass extends HttpServlet {
             throws ServletException, IOException {
         String emailr = request.getParameter("email");
         String code = getRandom();
-        Email email = new Email();
+
+        Emails email = new Emails();
+
         UserDAO userDAO = new UserDAO();
         User user = userDAO.checkUserByEmail(emailr);
         if (user != null) {

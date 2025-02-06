@@ -77,6 +77,51 @@
             function closeModal() {
                 document.getElementById("modal").style.display = "none"; // Ẩn modal khi nhấn bên ngoài
             }
+        </script> 
+        <script>
+            function submitSortForm(order) {
+                document.getElementById('sortOrder').value = order; // Gán giá trị cho trường ẩn
+                document.getElementById('sortForm').submit(); // Gửi form
+            }
+
+        </script> 
+        <script>
+            function submitSortForm1(order) {
+                document.getElementById('sortDate').value = order; // Gán giá trị cho trường ẩn
+                document.getElementById('sortForm1').submit(); // Gửi form
+            }
+
+        </script> 
+        <script>
+            function submitSortForm2(order) {
+                document.getElementById('status').value = order; // Gán giá trị cho trường ẩn
+                document.getElementById('sortForm2').submit(); // Gửi form
+            }
+
+        </script> 
+        <script>
+            function submitSortForm3(order) {
+                document.getElementById('verify').value = order; // Gán giá trị cho trường ẩn
+                document.getElementById('sortForm3').submit(); // Gửi form
+            }
+
+        </script> 
+        <script>
+            function submitSortForm3(order) {
+                document.getElementById('verify').value = order; // Gán giá trị cho trường ẩn
+                document.getElementById('sortForm3').submit(); // Gửi form
+            }
+
+        </script> 
+        <script>
+            function submitSearch() {
+                var searchInput = document.getElementById('searchInput').value;
+                if (searchInput.trim() !== "") {
+                    document.getElementById('searchForm').submit();
+                } else {
+                    alert("Please enter a search term."); // Thông báo nếu ô tìm kiếm rỗng
+                }
+            }
         </script>
     </head>
     <body>
@@ -864,54 +909,65 @@
 
             <div class="row g-3">
                 <div class="col-auto">
-                    <div class="position-relative">
-                        <input class="form-control px-5" type="search" placeholder="Search Products">
-                        <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
-                    </div>
+
+                    <form id="searchForm" action="sortSala" method="get">   
+                        <div class="position-relative">
+                            <input id="searchInput" class="form-control px-5" type="search" name="search" placeholder="Search Products">
+                            <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5" 
+                                  onclick="submitSearch();">
+                                search
+                            </span>
+                        </div>
+                    </form>
+
                 </div>
                 <div class="col-auto flex-grow-1 overflow-auto">
                     <div class="btn-group position-static">
                         <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light px-4" >
-                                All
-                            </button>
+                            <a href="listSalary">
+                                <button type="button" class="btn border btn-light px-4" >
+                                    All
+                                </button>
+                            </a>
 
-                        </div>
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Value
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:;">Low to High</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">High to Low</a></li>
-                            </ul>
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
                                 Date
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:;">Latest</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">Early</a></li>
-                            </ul>
+
+                            <form action="sortSala" method="get" id="sortForm1">
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item"  onclick="submitSortForm1('asc')">Latest</a></li>
+                                    <li><a class="dropdown-item"  onclick="submitSortForm1('desc')">Early</a></li>
+                                </ul>
+                                <input type="hidden" name="sortDate" id="sortDate">
+                            </form>
+
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
                                 Verification
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:;">Not conform asset</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">Conform asset</a></li>
-                            </ul>
+                            <form action="sortSala" method="get" id="sortForm3">
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" onclick="submitSortForm3('true')">conform asset</a></li>
+                                    <li><a class="dropdown-item" onclick="submitSortForm3('false')">Not Conform asset</a></li>
+                                </ul>
+                                <input type="hidden" name="verify" id="verify">
+                            </form>
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
                                 Status
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="javascript:;">Accept asset</a></li>
-                                <li><a class="dropdown-item" href="javascript:;">Deny asset</a></li>
-                            </ul>
+                            <form action="sortSala" method="get" id="sortForm2">
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item"  onclick="submitSortForm2('true')">Accept asset</a></li>
+                                    <li><a class="dropdown-item"  onclick="submitSortForm2('false')">Deny asset</a></li>
+                                </ul>
+                                <input type="hidden" name="status" id="status">
+                            </form>
                         </div>
                     </div>  
                 </div>
@@ -925,9 +981,8 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Customer ID</th>
-                                            <th>Asset Name</th>
+                                            <th>Salary Image</th>
                                             <th>Description</th>
-                                            <th>Value</th>
                                             <th>Date</th>
                                             <th>Verification</th>
                                             <th>Status</th>
@@ -940,12 +995,15 @@
                                             <c:forEach items="${requestScope.data}" var="sal">
                                                 <tr>
                                                     <td>
-                                                        <a href="customer">${sal.customerId}</a>
+                                                        <a href="customer?cid=${sal.getCustomerId()}"class="bi bi-person-circle" title="Xem chi tiết">
+                                                            ${sal.getCustomerId()}</a>
+
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="product-box" style="position: relative;">
-                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${sal.image}" alt="" id="myImage">
+
+                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${sal.getImage()}" alt="" id="myImage">
                                                                 <button class="zoom-icon" onclick="openModal(this)">
                                                                     <i class="fa fa-expand"></i>
                                                                 </button>
@@ -954,38 +1012,42 @@
 
 
                                                     </td>
-                                                    <td>${sal.description}</td>
-                                                    <td>${sal.value}</td>
-                                                    <td>${sal.createdAt}</td>
-                                                    <c:if test="${sal.verification == false}">
+                                                    <td>${sal.getDescription()}</td>
+                                                    <td>${sal.getCreatedAt()}</td>
+                                                    <c:if test="${sal.isVerification() == false}">
                                                         <td>Not Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${sal.verification != false}">
+                                                    <c:if test="${sal.isVerification() != false}">
                                                         <td>Confirmed</td>
                                                     </c:if>
-                                                    <c:if test="${sal.status == false}">
+                                                    <c:if test="${sal.isStatus() == false}">
                                                         <td>Not Accept</td>
                                                     </c:if>
-                                                    <c:if test="${sal.status != false}">
+                                                    <c:if test="${sal.isStatus() != false}">
                                                         <td>Accept</td>
                                                     </c:if>   
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-sm btn-light border dropdown-toggle dropdown-toggle-nocaret" type="button" data-bs-toggle="dropdown">
-                                                                <i class="bi bi-three-dots"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#">Accept asset</a></li>
-                                                                <li><a class="dropdown-item" href="#">Deny asset</a></li>
-                                                                <li><a class="dropdown-item" href="#">Not conform asset</a></li>
-                                                                <li><a class="dropdown-item" href="#">Conform asset</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                </tr> 
-                                            </c:forEach>
+                                            <form action="listSalary" method="post">
+                                                <input hidden type="text" name="salaryid" value="${sal.getId()}">
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label for="salaryAction${sal.getId()}">Choose an action:</label>
+                                                        <select class="form-select" id="salaryAction${sal.getId()}"name="action" >
+                                                            <option value="">Select an action</option>
+                                                            <option value="accept">Accept asset</option>
+                                                            <option value="deny">Deny asset</option>
+                                                            <option value="notConform">Not conform asset</option>
+                                                            <option value="conform">Conform asset</option>
+                                                        </select>
+                                                    </div>
 
-                                        </c:if>
+                                                </td>
+                                                <td><button type="submit" >Submit</button></td>
+                                            </form>
+
+                                            </tr> 
+                                        </c:forEach>
+
+                                    </c:if>
                                     </tbody>
                                 </table>
                             </div>

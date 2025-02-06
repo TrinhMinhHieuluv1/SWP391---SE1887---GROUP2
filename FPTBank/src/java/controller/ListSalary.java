@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Asset;
 import model.Salary;
 
 /**
@@ -74,7 +75,39 @@ public class ListSalary extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        String id = request.getParameter("salaryid");
+        UserDAO dao = new UserDAO();
+        try {
+            int idd = Integer.parseInt(id);
+            Salary a = dao.getSalaryById(idd);
+            System.out.println(id + "...............................");
+            System.out.println(action + "...............................");
+            System.out.println(a.toString());
+            switch (action) {
+                case "accept":
+                    a.setStatus(true);
+                    dao.updateSalary(a);
+                    break;
+                case "deny":
+                    a.setStatus(false);
+                    dao.updateSalary(a);
+
+                    break;
+                case "notConform":
+                    a.setVerification(false);
+                    dao.updateSalary(a);
+                    break;
+                case "conform":
+                    a.setVerification(true);
+                    dao.updateSalary(a);
+                    break;
+            }
+            List<Salary> data = dao.selectAllSalary();
+            request.setAttribute("data", data);
+            request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
     }
 
     /** 
