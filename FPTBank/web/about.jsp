@@ -110,10 +110,25 @@
                         </ul>
                     </nav>
                     <div class="mil-menu-buttons">
-                        <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
-                        <div class="mil-menu-btn">
-                            <span></span>
-                        </div>
+                        <c:if test="${sessionScope.account == null}">
+                            <a href="/timibank/login" class="mil-btn mil-sm">Log in</a>
+                            <a href="/timibank/register" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
+                        </c:if>
+                        <c:if test="${sessionScope.account != null}">
+                            <nav class="mil-top-menu">
+                                <ul>
+                                    <li class="mil-has-children ">
+                                        <a href="#." class="mil-btn mil-sm">My Account</a>
+                                        <ul style="list-style-type: none">
+                                            <li><a href="/timibank/profile">My Profile</a></li>
+                                            <li><a href="/timibank/change-password">Change Password</a></li>
+                                            <li><a href="/timibank/purchase">My Purchase</a></li>
+                                            <li><a href="/timibank/logout">Log out</a></li>
+                                        </ul>
+                                    </li>   
+                                </ul>
+                            </nav>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -581,60 +596,95 @@
                         </div>
 
 
+                        <c:if test="${sessionScope.account != null}">
+                            <!-- Form tìm feedback theo ID -->
+                            <div class="about-feedback" id="feedback-form">
+                                <h3 class="about-feedback__label">Tìm đánh giá theo ID khách hàng: </h3>
+                                <form class="form-control" action="feedback" method="post">
+                                    <div class="form-control__row">
+                                        <input class="form-control__input input--small " type="text" name="id" id="id" required placeholder="Feedback ID"/>
+                                        <button class="mil-btn mil-sm" type="submit">Tìm kiếm</button>
+                                    </div>
+                                </form>
+                            </div>
 
-                        <!-- Form tìm feedback theo ID -->
-                        <div class="about-feedback" id="feedback-form">
-                            <h3 class="about-feedback__label">Tìm đánh giá theo ID khách hàng: </h3>
-                            <form class="form-control" action="feedback" method="post">
-                                <div class="form-control__row">
-                                    <input class="form-control__input input--small " type="text" name="id" id="id" required placeholder="Feedback ID"/>
-                                    <button class="mil-btn mil-sm" type="submit">Tìm kiếm</button>
+                            <!-- Form tìm feedback theo ngày -->
+                            <div class="about-feedback" id="feedback-form">
+                                <h3 class="about-feedback__label">Tìm đánh giá theo thời gian: </h3>
+                                <form class="form-control" action="feedback" method="post">
+                                    <div class="form-control__row">
+                                        <input class="form-control__input input--small " type="date" name="date" id="date" required/>
+                                        <button class="mil-btn mil-sm" type="submit">Tìm kiếm</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="about-feedback">
+                                <h3 class="about-feedback__label">Feedback List</h3>
+                                <div class="about-feedback__table-wrapper">
+                                    <table border="1" class="about-feedback__table">
+                                        <thead class="about-feedback__table-head">
+                                            <tr >
+                                                <th>ID Feedback</th>
+                                                <th>ID Customer</th>
+                                                <th>Message</th>
+                                                <th>Response</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="about-feedback__table-body">
+                                            <c:forEach items="${list}" var="c">
+                                                <tr>
+                                                    <td>${c.getFeedbackID()}</td>
+                                                    <td>${c.getCustomerID()}</td>
+                                                    <td>${c.getMessage()}</td>
+                                                    <td>${c.getResponse()}</td>
+                                                    <td>${c.isStatus() == true ? 'Done' : 'Not'}</td>
+                                                    <td><fmt:formatDate value="${c.getCreatedAt()}" pattern="yyyy/MM/dd" /></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </c:if>
 
-                        <!-- Form tìm feedback theo ngày -->
-                        <div class="about-feedback" id="feedback-form">
-                            <h3 class="about-feedback__label">Tìm đánh giá theo thời gian: </h3>
-                            <form class="form-control" action="feedback" method="post">
-                                <div class="form-control__row">
-                                    <input class="form-control__input input--small " type="date" name="date" id="date" required/>
-                                    <button class="mil-btn mil-sm" type="submit">Tìm kiếm</button>
-                                </div>
-                            </form>
-                        </div>
+
 
                         <!-- Hiển thị danh sách feedback -->
-
-                        <div class="about-feedback">
-                            <h3 class="about-feedback__label">Feedback List</h3>
-                            <div class="about-feedback__table-wrapper">
-                                <table border="1" class="about-feedback__table">
-                                    <thead class="about-feedback__table-head">
-                                        <tr >
-                                            <th>ID Feedback</th>
-                                            <th>ID Customer</th>
-                                            <th>Message</th>
-                                            <th>Response</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="about-feedback__table-body">
-                                        <c:forEach items="${list}" var="c">
-                                            <tr>
-                                                <td>${c.getFeedbackID()}</td>
-                                                <td>${c.getCustomerID()}</td>
-                                                <td>${c.getMessage()}</td>
-                                                <td>${c.getResponse()}</td>
-                                                <td>${c.isStatus() == true ? 'Done' : 'Not'}</td>
-                                                <td><fmt:formatDate value="${c.getCreatedAt()}" pattern="yyyy/MM/dd" /></td>
+                        <c:if test="${sessionScope.account == null}">
+                            <div class="about-feedback">
+                                <h3 class="about-feedback__label">Feedback List</h3>
+                                <div class="about-feedback__table-wrapper">
+                                    <table border="1" class="about-feedback__table">
+                                        <thead class="about-feedback__table-head">
+                                            <tr >
+                                                <th>ID Feedback</th>
+                                                <th>ID Customer</th>
+                                                <th>Message</th>
+                                                <th>Response</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                        </thead>
+                                        <tbody class="about-feedback__table-body">
+                                            <c:forEach items="${list}" var="c">
+                                                <tr>
+                                                    <td>${c.getFeedbackID()}</td>
+                                                    <td>${c.getCustomerID()}</td>
+                                                    <td>${c.getMessage()}</td>
+                                                    <td>${c.getResponse()}</td>
+                                                    <td>${c.isStatus() == true ? 'Done' : 'Not'}</td>
+                                                    <td><fmt:formatDate value="${c.getCreatedAt()}" pattern="yyyy/MM/dd" /></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> 
+                        </c:if>
+
                     </div>
                     <!-- feedback -->
 
