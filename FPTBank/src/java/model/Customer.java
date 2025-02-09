@@ -11,6 +11,7 @@ import java.math.BigDecimal;
  * @author ACER
  */
 public class Customer {
+
     private int CustomerId, CreditScore;
     private BigDecimal Balance;
     private User User;
@@ -36,6 +37,7 @@ public class Customer {
 
     public void setCustomerId(int customerId) {
         this.CustomerId = customerId;
+
     }
     
     
@@ -72,11 +74,14 @@ public class Customer {
 
     public void setBalance(BigDecimal Balance) {
         this.Balance = Balance;
+
     }
 
     @Override
     public String toString() {
+
         return "Customer{" + "customerid=" + CustomerId +", creditscore=" + CreditScore + ", balance=" + Balance +"Use:,"+User.toString() +'}';
+
     }
     
 }

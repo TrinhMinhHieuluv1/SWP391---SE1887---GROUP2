@@ -1,10 +1,14 @@
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Asset;
+import model.Customer;
+import model.Salary;
 import model.User;
 import java.sql.*;
 import model.Customer;
@@ -435,6 +439,7 @@ public class UserDAO extends DBContext {
 
         return null;
     }
+
 
     // duy
     public int addUserReturnRow(User userToAdd) {
@@ -949,7 +954,6 @@ public class UserDAO extends DBContext {
 
         return 0;
     }
-
      //Lấy ra list user từ trang hiện tại
     public ArrayList<User> getListUserByPage(int page, int pageSize) {
         // page: số trang hiện tại

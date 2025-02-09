@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class Asset {
 
+
     private int Id; // SalaryId
     private int CustomerId; // CustomerId
     private String Image; // Image
@@ -18,12 +19,14 @@ public class Asset {
     private Date CreatedAt; // CreatedAt
 
 
+
     // Constructor
     
     public Asset() {
     }
 
     public Asset(int customerId, String image, String description, BigDecimal value) {
+
         this.CustomerId = customerId;
         this.Image = image;
         this.Description = description;
@@ -31,9 +34,9 @@ public class Asset {
         this.Verification = false; // default
         this.Status = false; // default
         this.CreatedAt = new Date(); // default to current date
+
     }
 
-    // Getters and Setters
     public int getId() {
         return Id;
     }
@@ -96,11 +99,14 @@ public class Asset {
 
     public void setCreatedAt(Date createdAt) {
         this.CreatedAt = createdAt;
+
     }
 
     @Override
     public String toString() {
+
         return "Asset{" + "id=" + Id + ", customerId=" + CustomerId + ", image=" + Image + ", description=" + Description + ", value=" + Value + ", verification=" + Verification + ", status=" + Status + ", createdAt=" + CreatedAt + '}';
+
     }
     
 }

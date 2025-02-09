@@ -16,6 +16,10 @@ import java.util.Random;
 import model.Emails;
 import model.User;
 
+import model.Emails;
+
+import model.User;
+
 /**
  *
  * @author tiend
@@ -77,7 +81,9 @@ public class ForgotPass extends HttpServlet {
             throws ServletException, IOException {
         String emailr = request.getParameter("email");
         String code = getRandom();
+
         Emails email = new Emails();
+
         UserDAO userDAO = new UserDAO();
         User user = userDAO.checkUserByEmail(emailr);
         if (user != null) {

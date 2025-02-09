@@ -994,7 +994,9 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Customer ID</th>
+
                                             <th>Asset Image</th>
+
                                             <th>Description</th>
                                             <th>Value</th>
                                             <th>Date</th>
@@ -1011,19 +1013,24 @@
                                             <c:forEach items="${requestScope.data}" var="asset">
                                                 <tr>
                                                     <td>
+
                                                         <a href="customer?cid=${asset.getCustomerId()}"class="bi bi-person-circle" title="Xem chi tiết">
                                                             ${asset.getCustomerId()}</a>
+
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="product-box" style="position: relative;">
+
                                                                 <img class="clickable-image" style="height: 100px; width: 150px;" src="${asset.getImage()}" alt="" id="myImage">
+
                                                                 <button class="zoom-icon" onclick="openModal(this)">
                                                                     <i class="fa fa-expand"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
                                                     </td>
+
                                                     <td>${asset.getDescription()}</td>
                                                     <td>${asset.getValue()}</td>
                                                     <td>${asset.getCreatedAt()}</td>

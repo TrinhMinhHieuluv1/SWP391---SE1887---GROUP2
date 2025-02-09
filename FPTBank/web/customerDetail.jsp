@@ -888,18 +888,23 @@
                                            
                                                 <tr>
                                                      <td>
+
                                                         <a>${customer.getCustomerid()}</a>
+
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="product-box" style="position: relative;">
+
                                                                 <img class="clickable-image" style="height: 100px; width: 150px;" src="${customer.getUser().getImage()}" alt="" id="myImage">
+
                                                                 <button class="zoom-icon" onclick="openModal(this)">
                                                                     <i class="fa fa-expand"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
                                                     </td>
+
                                                     <td>${customer.getUser().getUsername()}</td>
                                                     <td>${customer.getUser().getPhone()}</td>
                                                     <td>${customer.getUser().getEmail()}</td>
@@ -911,6 +916,7 @@
                                                         <td>Not Active</td>
                                                     </c:if>
                                                     <c:if test="${customer.getUser().isStatus() != false}">
+
                                                         <td>Active</td>
                                                     </c:if>   
                                                 </tr> 

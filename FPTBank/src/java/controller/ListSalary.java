@@ -107,7 +107,6 @@ public class ListSalary extends HttpServlet {
             List<Salary> data = dao.selectAllSalary();
             request.setAttribute("data", data);
             request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
-
         } catch (Exception e) {
         }
     }

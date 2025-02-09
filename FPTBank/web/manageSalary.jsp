@@ -77,8 +77,6 @@
             function closeModal() {
                 document.getElementById("modal").style.display = "none"; // Ẩn modal khi nhấn bên ngoài
             }
-
-
         </script> 
         <script>
             function submitSortForm(order) {
@@ -911,6 +909,7 @@
 
             <div class="row g-3">
                 <div class="col-auto">
+
                     <form id="searchForm" action="sortSala" method="get">   
                         <div class="position-relative">
                             <input id="searchInput" class="form-control px-5" type="search" name="search" placeholder="Search Products">
@@ -920,22 +919,23 @@
                             </span>
                         </div>
                     </form>
+
                 </div>
                 <div class="col-auto flex-grow-1 overflow-auto">
                     <div class="btn-group position-static">
                         <div class="btn-group position-static">
-
-
                             <a href="listSalary">
                                 <button type="button" class="btn border btn-light px-4" >
                                     All
                                 </button>
                             </a>
+
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
                                 Date
                             </button>
+
                             <form action="sortSala" method="get" id="sortForm1">
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item"  onclick="submitSortForm1('asc')">Latest</a></li>
@@ -943,6 +943,7 @@
                                 </ul>
                                 <input type="hidden" name="sortDate" id="sortDate">
                             </form>
+
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
@@ -967,7 +968,6 @@
                                 </ul>
                                 <input type="hidden" name="status" id="status">
                             </form>
-
                         </div>
                     </div>  
                 </div>
@@ -997,10 +997,12 @@
                                                     <td>
                                                         <a href="customer?cid=${sal.getCustomerId()}"class="bi bi-person-circle" title="Xem chi tiết">
                                                             ${sal.getCustomerId()}</a>
+
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="product-box" style="position: relative;">
+
                                                                 <img class="clickable-image" style="height: 100px; width: 150px;" src="${sal.getImage()}" alt="" id="myImage">
                                                                 <button class="zoom-icon" onclick="openModal(this)">
                                                                     <i class="fa fa-expand"></i>

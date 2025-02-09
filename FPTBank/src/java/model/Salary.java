@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class Salary {
 
+
     private int Id; // SalaryId
     private int CustomerId; // CustomerId
     private String Image; // Image
@@ -18,12 +19,14 @@ public class Salary {
     private boolean Status; // Status
     private Date CreatedAt; // CreatedAt
 
+
     // Constructor
     
     public Salary() {
     }
 
     public Salary(int customerId, String image, String description, BigDecimal value) {
+
         this.CustomerId = customerId;
         this.Image = image;
         this.Description = description;
@@ -31,10 +34,12 @@ public class Salary {
         this.Verification = false; // default
         this.Status = false; // default
         this.CreatedAt = new Date(); // default to current date
+
     }
 
     // Getters and Setters
     public int getId() {
+
         return Id;
     }
 
@@ -96,5 +101,6 @@ public class Salary {
 
     public void setCreatedAt(Date createdAt) {
         this.CreatedAt = createdAt;
+
     }
 }
