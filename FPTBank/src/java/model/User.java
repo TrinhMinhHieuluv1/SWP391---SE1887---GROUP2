@@ -150,5 +150,12 @@ public class User {
     public void setManager(User Manager) {
         this.Manager = Manager;
     }
+
+    @Override
+    public String toString() {
+        return this.UserID +"";
+    }
     
+
+
 }
