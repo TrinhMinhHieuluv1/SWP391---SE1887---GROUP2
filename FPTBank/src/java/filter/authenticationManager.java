@@ -57,7 +57,7 @@ public class authenticationManager implements Filter {
             return;
         }
 
-        if (path.startsWith("/manager/")) {
+        if (path.startsWith("/manager")) {
             HttpSession session = httpRequest.getSession(false);
 
             if (session != null && session.getAttribute("account") != null) {
