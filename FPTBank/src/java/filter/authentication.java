@@ -51,6 +51,7 @@ public class authentication implements Filter {
         // Láº¥y Ä‘Æ°á»�ng dáº«n yÃªu cáº§u
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
+<<<<<<< HEAD
         // Kiá»ƒm tra quyá»�n truy cáº­p náº¿u Ä‘Æ°á»�ng dáº«n thuá»™c /admin/*
         if (path.startsWith("/admin")) {
             HttpSession session = httpRequest.getSession(false); // láº¥y ra session hiá»‡n táº¡i mÃ  k táº¡o má»›i ( tráº£ vá»� null náº¿u k cÃ³ session )
@@ -59,13 +60,26 @@ public class authentication implements Filter {
                 User user = (User) session.getAttribute("account");
 
                 // Náº¿u lÃ  admin, tiáº¿p tá»¥c xá»­ lÃ½
+=======
+        // Kiểm tra quyền truy cập nếu đường dẫn thuộc /admin/*
+        if (path.startsWith("/admin/")) {
+            HttpSession session = httpRequest.getSession(false); // lấy ra session hiện tại mà k tạo mới ( trả về null nếu k có session )
+            // Kiểm tra nếu session tồn tại và có thông tin admin
+            if (session != null && session.getAttribute("account") != null) {
+                User user = (User) session.getAttribute("account");
+                // Nếu là admin, tiếp tục xử lý
+>>>>>>> 034bb86f3a3aa0b06f9df5226c506201d3e2e2aa
                 if (user.getRoleID() == 1) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
+<<<<<<< HEAD
             // Náº¿u khÃ´ng pháº£i admin, chuyá»ƒn hÆ°á»›ng Ä‘áº¿n trang Ä‘Äƒng nháº­p
+=======
+            // Nếu không phải admin, chuyển hướng đến trang đăng nhập
+>>>>>>> 034bb86f3a3aa0b06f9df5226c506201d3e2e2aa
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
             return;
         }

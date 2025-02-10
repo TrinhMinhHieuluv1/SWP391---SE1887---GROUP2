@@ -67,7 +67,7 @@ public class Login extends HttpServlet {
             String message = "You created an account successfully!";
             request.setAttribute("message", message);
         }
-        if (roleErr != null && roleErr.equals("true")){
+        if (roleErr != null && roleErr.equals("true")) {
             String message = "Please log in to access this site!";
             request.setAttribute("roleErr", roleErr);
         }

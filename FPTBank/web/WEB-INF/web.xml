@@ -5,6 +5,7 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
     
+    
     <filter>
         <filter-name>authentication</filter-name>
         <filter-class>filter.authentication</filter-class>
@@ -13,6 +14,47 @@
         <filter-name>authentication</filter-name>
         <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
+    <servlet>
+        <servlet-name>congcu</servlet-name>
+        <servlet-class>controller.calSaving</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>congcu2</servlet-name>
+        <servlet-class>controller.calLoan</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>tinhvay</servlet-name>
+        <servlet-class>controller.tinhvay</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowFB</servlet-name>
+        <servlet-class>controller.ShowFB</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FindFeedback</servlet-name>
+        <servlet-class>controller.FindFeedback</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>congcu</servlet-name>
+        <url-pattern>/congcu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>congcu2</servlet-name>
+        <url-pattern>/congcu2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>tinhvay</servlet-name>
+        <url-pattern>/tinhvay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowFB</servlet-name>
+        <url-pattern>/showfb</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>FindFeedback</servlet-name>
+        <url-pattern>/feedback</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>congcu</servlet-name>

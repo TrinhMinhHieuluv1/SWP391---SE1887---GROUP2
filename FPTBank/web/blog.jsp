@@ -39,6 +39,7 @@
 
 <body>
 
+    
 
     <!-- wrapper -->
     <div id="smooth-wrapper" class="mil-wrapper">
@@ -78,7 +79,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="about.jsp">About</a>
+                            <a href="about">About</a>
                         </li>
                         <li>
                             <a href="services.jsp">Services</a>
