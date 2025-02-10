@@ -11,7 +11,7 @@ import model.Customer;
 
 public class UserDAO extends DBContext {
 
-    public User checkAuthen(String username, String password) {
+        public User checkAuthen(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE Username=? AND Password=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -571,3 +571,5 @@ public class UserDAO extends DBContext {
         return false;
     }
 }
+
+

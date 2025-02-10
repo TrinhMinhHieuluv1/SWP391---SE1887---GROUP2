@@ -10,7 +10,7 @@ public class User {
     private boolean Gender, Status;
     private User Manager;
 
-    public User() {
+    public User(String fullname, String phone, String email, Date dob, boolean equals, String address, String cccd) {
     }
 
     public User(int UserID, String Username, String Password, String FullName, String Image, String Phone, String Email, Date DateOfBirth, boolean Gender, String Address, String CCCD, int RoleID,  boolean Status, User Manager, Date CreatedAt) {
