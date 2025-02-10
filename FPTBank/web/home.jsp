@@ -214,10 +214,10 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="about.jsp">About</a>
+                                <a href="about">About</a>
                             </li>
                             <li>
-                                <a href="services.jsp">Services</a>
+                                <a href="faq.jsp">FAQ</a>
                             </li>
                             <li class="mil-has-children">
                                 <a href="#.">Blog</a>
@@ -246,8 +246,8 @@
                     <div class="mil-menu-buttons">
                         <c:if test="${sessionScope.account == null}">
                             <div class="mil-menu-buttons">
-                                <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
-                                <a href="register.jsp" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
+                                <a href="login" class="mil-btn mil-sm">Log in</a>
+                                <a href="register" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
                             </div>
                         </c:if>
                         <c:if test="${sessionScope.account != null}">
@@ -258,10 +258,9 @@
                                         <a href="#." class="mil-btn mil-sm">My Account</a>
                                         <ul>
                                             <li><a href="profile.jsp">My Profile</a></li>
-                                            <li><a href="/audio/change_pass">Change Password</a></li>
-                                            <li><a href="/audio/purchase">My Purchase</a></li>
-                                            <li><a href="myfeedback">My Feedback</a></li>
-                                            <li><a href="/audio/signout">Sign out</a></li>
+                                            <li><a href="/timibank/change-password">Change Password</a></li>
+                                            <li><a href="/timibank/myfeedback">My Feedback</a></li>
+                                            <li><a href="/timibank/logout">Sign out</a></li>
 
 
                                         </ul>

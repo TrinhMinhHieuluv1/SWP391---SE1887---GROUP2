@@ -48,35 +48,29 @@ public class authentication implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        // Lấy đường dẫn yêu cầu
+        // Láº¥y Ä‘Æ°á»�ng dáº«n yÃªu cáº§u
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-        // Cho phép truy cập tự do đến trang đăng nhập
-        if (path.equals("/admin/login")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // Kiểm tra nếu đường dẫn thuộc /admin/*
-        if (path.startsWith("/admin/")) {
-            HttpSession session = httpRequest.getSession(false);
-
-            // Kiểm tra nếu session tồn tại và có thông tin admin
+        // Kiá»ƒm tra quyá»�n truy cáº­p náº¿u Ä‘Æ°á»�ng dáº«n thuá»™c /admin/*
+        if (path.startsWith("/admin")) {
+            HttpSession session = httpRequest.getSession(false); // láº¥y ra session hiá»‡n táº¡i mÃ  k táº¡o má»›i ( tráº£ vá»� null náº¿u k cÃ³ session )
+            // Kiá»ƒm tra náº¿u session tá»“n táº¡i vÃ  cÃ³ thÃ´ng tin admin
             if (session != null && session.getAttribute("account") != null) {
                 User user = (User) session.getAttribute("account");
-                                // Nếu là admin, tiếp tục xử lý
-                if (user.getRoleID()==1) {
+
+                // Náº¿u lÃ  admin, tiáº¿p tá»¥c xá»­ lÃ½
+                if (user.getRoleID() == 1) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
-            // Nếu không phải admin, chuyển hướng đến trang đăng nhập
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/admin/login");
+            // Náº¿u khÃ´ng pháº£i admin, chuyá»ƒn hÆ°á»›ng Ä‘áº¿n trang Ä‘Äƒng nháº­p
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
             return;
         }
 
-        // Nếu không phải đường dẫn /admin/*, tiếp tục xử lý bình thường
+        // Náº¿u khÃ´ng pháº£i Ä‘Æ°á»�ng dáº«n /admin/*, tiáº¿p tá»¥c xá»­ lÃ½ bÃ¬nh thÆ°á»�ng
         chain.doFilter(request, response);
     }
 
