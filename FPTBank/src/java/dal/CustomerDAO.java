@@ -18,14 +18,15 @@ import model.User;
 public class CustomerDAO extends DBContext {
 
     public Customer getCustomerById(int id) {
-        String sql = "SELECT * FROM customer WHERE customer_id = ?";
+        String sql = "SELECT * FROM customer c "
+                + "join [User] u on u.UserID = c.UserID WHERE CustomerId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Customer customer = new Customer();
-                customer.setCustomerId(rs.getInt("customer_id"));
-                customer.setCreditScore(rs.getInt("credit_score"));
+                customer.setCustomerId(rs.getInt("CustomerId"));
+                customer.setCreditScore(rs.getInt("CreditScore"));
                 customer.setBalance(rs.getBigDecimal("balance"));
                 // customer.setUser(...); // Set the user if applicable
                 UserDAO userDAO = new UserDAO();
