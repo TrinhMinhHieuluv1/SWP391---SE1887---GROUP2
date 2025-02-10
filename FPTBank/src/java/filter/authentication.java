@@ -51,30 +51,22 @@ public class authentication implements Filter {
         // Lấy đường dẫn yêu cầu
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-        // Cho phép truy cập tự do đến trang đăng nhập
-        if (path.equals("/admin/login")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // Kiểm tra nếu đường dẫn thuộc /admin/*
+        // Kiểm tra quyền truy cập nếu đường dẫn thuộc /admin/*
         if (path.startsWith("/admin/")) {
-            HttpSession session = httpRequest.getSession(false);
-
+            HttpSession session = httpRequest.getSession(false); // lấy ra session hiện tại mà k tạo mới ( trả về null nếu k có session )
             // Kiểm tra nếu session tồn tại và có thông tin admin
-            if (session != null && session.getAttribute("admin") != null) {
-                User user = (User) session.getAttribute("admin");
-                
-                UserDAO dao = new UserDAO();
+            if (session != null && session.getAttribute("account") != null) {
+                User user = (User) session.getAttribute("account");
+
                 // Nếu là admin, tiếp tục xử lý
-                if (dao.isAdmin(user.getUsername(), user.getPassword())) {
+                if (user.getRoleID() == 1) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
             // Nếu không phải admin, chuyển hướng đến trang đăng nhập
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/admin/login");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
             return;
         }
 
