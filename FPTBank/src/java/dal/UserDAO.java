@@ -180,7 +180,7 @@ public class UserDAO extends DBContext {
     }
 
     // Hàm lấy User theo UserID (hỗ trợ lấy Manager)
-    private User getManagerForSeller(int userID) {
+    public User getManagerForSeller(int userID) {
         String sql = "SELECT * FROM [TimiBank].[dbo].[User] WHERE UserID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);

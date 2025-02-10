@@ -30,37 +30,36 @@ public class FilterListUserByRoleName extends HttpServlet {
         int idOfRole = Integer.parseInt(request.getParameter("id"));
         List<User> listUser;
 
-        int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int page = 1; // trang Ä‘áº§u tiÃªn
+        int pageSize = 10; // 1 trang cÃ³ 10 users
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        listUser = uDao.filterListUserByRoleName(idOfRole, page, pageSize);
+        listUser = uDao.filterListUser("RoleID", idOfRole, page, pageSize);
 
-        int totalUsers1 = uDao.getTotalUsersAfterFilteringByRole(idOfRole);
-        int totalPages = (int) Math.ceil((double) totalUsers1 / pageSize);
+        int totalUsersAfterFilter = uDao.getTotalUsers("RoleID", idOfRole);
+        int totalPages = (int) Math.ceil((double) totalUsersAfterFilter / pageSize);
 
         
-        // tính số lượng của user theo từng role
-        int totalUsers2 = uDao.getTotalUsers();
-        
-        int numOfAdmin = uDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = uDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = uDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = uDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = uDao.getTotalUsersOfEachRole("Customer");
+        // tÃ­nh sá»‘ lÆ°á»£ng cá»§a user theo tá»«ng role
+        int totalUsers = uDao.getTotalUsers(null, null);
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
-        // số lượng users hiển thị trên thanh search
-        request.setAttribute("totalUsers", totalUsers2);
+        // sá»‘ lÆ°á»£ng users hiá»ƒn thá»‹ trÃªn thanh search
+        request.setAttribute("totalUsers", totalUsers);
         request.setAttribute("numOfAdmin", numOfAdmin);
         request.setAttribute("numOfSeller", numOfSeller);
         request.setAttribute("numOfManager", numOfManager);
         request.setAttribute("numOfProviderInsurance", numOfProviderInsurance);
         request.setAttribute("numOfCustomer", numOfCustomer);
 
-        // phân trang
+        // phÃ¢n trang
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("idOfRole", idOfRole);

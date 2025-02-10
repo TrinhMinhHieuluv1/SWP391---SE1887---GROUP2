@@ -131,13 +131,19 @@
             <!-- Username -->
             <div>
                 <label for="name">User Name</label>
-                <input type="text" id="name" name="username" required>
+                <input type="text" id="name" name="username" required
+                       pattern="^[a-zA-Z0-9_.]{6,20}$" 
+                       title="Username phải từ 6-20 ký tự, chỉ chứa chữ cái, số, dấu chấm (.) và gạch dưới (_).">
             </div>
+
 
             <!-- Password -->
             <div>
                 <label for="pass">Password</label>
-                <input type="text" id="pass" name="password" required>
+                <input type="text" id="pass" name="password" required 
+                       placeholder="Abcd@123"
+                       pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&*!]).{8,16}$" 
+                       title="Mật khẩu phải có 8-16 ký tự, chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt !!">
             </div>
 
             <!-- Full Name -->
@@ -149,12 +155,12 @@
                        title="Vui lòng không nhập số hoặc kí tự đặc biệt !!">
             </div>
 
-
             <!-- Phone Number -->
             <div>
                 <label for="phonenum">Phone Number</label>
-                <input type="text" id="phonenum" name="phonenumber"  required pattern="[0-9]{10}" placeholder="10 digit number"  
-                       title="Vui lòng nhập đủ 10 chữ số !!" >
+                <input type="text" id="phonenum" name="phonenumber" required 
+                       pattern="0[0-9]{9}" placeholder="10 digit number"  
+                       title="Vui lòng nhập số điện thoại bắt đầu bằng số 0 và gồm đúng 10 chữ số !!">
             </div>
 
             <!-- Image -->
@@ -167,6 +173,7 @@
             <div>
                 <label for="mail">Email</label>
                 <input type="text" id="mail" name="email" placeholder="example@gmail.com" 
+                       title="Vui lòng nhập đúng cú pháp email !!"
                        required pattern="^[a-zA-Z0-9]+@gmail\.com$" 
                        >
             </div>
@@ -174,7 +181,9 @@
             <!-- Address -->
             <div>
                 <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
+                <input type="text" id="address" name="address" required 
+                       pattern="^[a-zA-Z0-9\s,.-]{5,100}$" 
+                       title="Địa chỉ phải từ 5-100 ký tự, chỉ chứa chữ cái, số, dấu phẩy (,), dấu chấm (.) và dấu gạch ngang (-)">
             </div>
 
             <!-- ManageID -->
@@ -184,7 +193,6 @@
                        placeholder="12345" pattern="^[0-9]+$"
                        title="Vui lòng chỉ nhập số !!">
             </div>
-
 
             <!-- Identity Card -->
             <div>

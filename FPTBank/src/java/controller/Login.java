@@ -116,13 +116,13 @@ public class Login extends HttpServlet {
                 response.addCookie(crem);
                 switch (account.getRoleID()) {
                     case 1:
-                        response.sendRedirect("/timibank/admin");
+                        response.sendRedirect("/timibank/admin/home");
                         break;
                     case 2:
                         response.sendRedirect("/timibank/seller");
                         break;
                     case 3:
-                        response.sendRedirect("/timibank/manager");
+                        response.sendRedirect("/timibank/home");
                         break;
                     case 4:
                         response.sendRedirect("/timibank/insurance_provider");

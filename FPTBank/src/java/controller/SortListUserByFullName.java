@@ -31,24 +31,24 @@ public class SortListUserByFullName extends HttpServlet {
         String typeOfSort = request.getParameter("type");
         List<User> listUser;
 
-        int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int page = 1; // trang Ä‘áº§u tiÃªn
+        int pageSize = 10; // 1 trang cÃ³ 10 users
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        listUser = uDao.sortListUserByFullName(typeOfSort, page, pageSize);
+        listUser = uDao.sortListUser("FullName", typeOfSort, page, pageSize);
 
-        int totalUsers = uDao.getTotalUsers();
+        int totalUsers = uDao.getTotalUsers(null, null);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
-        // số lượng của user theo từng role
-        int numOfAdmin = uDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = uDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = uDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = uDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = uDao.getTotalUsersOfEachRole("Customer");
+        // sá»‘ lÆ°á»£ng cá»§a user theo tá»«ng role
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
         request.setAttribute("totalUsers", totalUsers);
         request.setAttribute("numOfAdmin", numOfAdmin);
