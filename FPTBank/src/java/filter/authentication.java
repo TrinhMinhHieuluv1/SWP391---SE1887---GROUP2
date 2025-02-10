@@ -62,12 +62,10 @@ public class authentication implements Filter {
             HttpSession session = httpRequest.getSession(false);
 
             // Kiểm tra nếu session tồn tại và có thông tin admin
-            if (session != null && session.getAttribute("admin") != null) {
-                User user = (User) session.getAttribute("admin");
-                
-                UserDAO dao = new UserDAO();
-                // Nếu là admin, tiếp tục xử lý
-                if (dao.isAdmin(user.getUsername(), user.getPassword())) {
+            if (session != null && session.getAttribute("account") != null) {
+                User user = (User) session.getAttribute("account");
+                                // Nếu là admin, tiếp tục xử lý
+                if (user.getRoleID()==1) {
                     chain.doFilter(request, response);
                     return;
                 }
