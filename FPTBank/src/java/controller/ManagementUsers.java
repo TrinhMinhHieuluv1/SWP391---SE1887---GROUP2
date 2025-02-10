@@ -40,11 +40,7 @@ public class ManagementUsers extends HttpServlet {
         int totalUsers = uDao.getTotalUsers(null, null);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
-<<<<<<< HEAD
-        // sá»‘ lÆ°á»£ng cá»§a user theo tá»«ng role
-=======
         // số lượng của user theo từng role
->>>>>>> 034bb86f3a3aa0b06f9df5226c506201d3e2e2aa
         int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
         int numOfSeller = uDao.getTotalUsers("RoleID", 2);
         int numOfManager = uDao.getTotalUsers("RoleID", 3);
