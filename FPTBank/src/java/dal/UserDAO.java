@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.User;
 import java.sql.*;
-
+import model.Customer;
 
 public class UserDAO extends DBContext {
 
@@ -215,7 +215,6 @@ public class UserDAO extends DBContext {
     // kiểm tra sự tồn tại của username / cccd / phonenum / email
     public boolean isFieldExistsToAdd(String fieldName, String value) {
         String query = "SELECT COUNT(*) FROM [User] WHERE " + fieldName + " = ?";
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, value);
             ResultSet rs = stmt.executeQuery();

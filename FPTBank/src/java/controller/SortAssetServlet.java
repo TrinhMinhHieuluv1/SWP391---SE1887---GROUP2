@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.AssetDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,7 +65,7 @@ public class SortAssetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO dao = new UserDAO();
+        AssetDAO dao = new AssetDAO();
         String sortOrder = request.getParameter("sortOrder");
         String sortDate = request.getParameter("sortDate");
         String status = request.getParameter("status");
