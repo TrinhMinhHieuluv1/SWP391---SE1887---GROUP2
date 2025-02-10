@@ -33,9 +33,9 @@ public class InsertUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String name = request.getParameter("fullname");
+        String username = request.getParameter("username").trim();
+        String password = request.getParameter("password").trim();
+        String name = request.getParameter("fullname").trim();
 
         String gender = request.getParameter("gender");
         boolean isMale = gender.equals("1");
@@ -43,20 +43,21 @@ public class InsertUser extends HttpServlet {
         String dob_raw = request.getParameter("dob");
         Date dob = Date.valueOf(dob_raw);
 
-        String phone = request.getParameter("phonenumber");
-        String email = request.getParameter("email");
-        String cccd = request.getParameter("card");
+        String phone = request.getParameter("phonenumber").trim();
+        String email = request.getParameter("email").trim();
+        String cccd = request.getParameter("card").trim();
 
         String roleID_raw = request.getParameter("role");
         int roleID = Integer.parseInt(roleID_raw);
 
-        String img = request.getParameter("img");
-        String address = request.getParameter("address");
+        String img = request.getParameter("img").trim();
+        String address = request.getParameter("address").trim();
 
         String managerId_raw = request.getParameter("managerid");
 
         User manager = null;
         if (managerId_raw != null && !managerId_raw.isEmpty()) {
+            managerId_raw = managerId_raw.trim();
             int manageID = Integer.parseInt(managerId_raw);
             manager = userDao.getManagerForSeller(manageID);
             if (manager == null) {

@@ -6,63 +6,128 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.User;
 
-public class NewsDAO extends DBContext{
-    
-    public List<News> selectAllNews(){
+public class NewsDAO extends DBContext {
+
+    //Select all news
+    public List<News> selectAllNews() {
         List<News> newsList = new ArrayList<>();
         UserDAO udao = new UserDAO();
         String sql = "SELECT * FROM [News]";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            while (rs.next()){
-                News newsToAdd = new News(rs.getInt("NewsID"), 
-                                        udao.selectAnUserByConditions(rs.getInt("UserID"), "", "", ""), 
-                                        rs.getString("Title"), 
-                                        rs.getString("Description"), 
-                                        rs.getString("Image"), 
-                                        rs.getBoolean("Status"),
-                                        rs.getDate("CreatedAt"), 
-                                        rs.getInt("NumberOfAccess"));
+            while (rs.next()) {
+                News newsToAdd = new News(rs.getInt("NewsID"),
+                        udao.selectAnUserByConditions(rs.getInt("UserID"), "", "", ""),
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getBoolean("Status"),
+                        rs.getDate("CreatedAt"),
+                        rs.getInt("NumberOfAccess"));
                 newsList.add(newsToAdd);
             }
         } catch (SQLException e) {
         }
         return newsList;
     }
+
+    //Select a news by NewsID
+    public News selectANewsByNewsID(int NewsID) {
+        UserDAO udao = new UserDAO();
+        String sql = "SELECT * FROM [News] WHERE NewsID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, NewsID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                News news= new News(rs.getInt("NewsID"),
+                        udao.selectAnUserByConditions(rs.getInt("UserID"), "", "", ""),
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getBoolean("Status"),
+                        rs.getDate("CreatedAt"),
+                        rs.getInt("NumberOfAccess"));
+                return news;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
     
-    public List<News> selectANewsByConditions(int NewsID, int UserID){
+    //Select news list by conditions (search, sort, filter)
+    public List<News> selectNewsListByConditions(String searchKeyword, String sortBy, String filterStatus, String filterMine, int UserID) {
         List<News> newsList = new ArrayList<>();
         UserDAO udao = new UserDAO();
-        String sql = "SELECT * FROM [News] WHERE 1=1";
-        if (NewsID != 0) {
-            sql = sql + " AND NewsID=" + NewsID;
+        String sql = "SELECT n.*, u.FullName FROM [News] n JOIN [User] u ON (n.UserID = u.UserID) WHERE (1=1)";
+        
+        //Search by keyword match to author's fullname or news's title
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            sql = sql + " AND ((FullName LIKE N'%" + searchKeyword + "%') OR (n.Title LIKE N'%" + searchKeyword + "%'))";
         }
-        if (UserID != 0) {
-            sql = sql + " AND UserID=" + UserID;
+        
+        //Filter by news's status
+        if (filterStatus != null && !filterStatus.isEmpty()) {
+            if (filterStatus.equals("active")) {
+                sql = sql + " AND (n.[Status]=1)";
+            } else if (filterStatus.equals("inactive")){
+                sql = sql + " AND (n.[Status]=0)";
+            }
         }
+        
+        //Filter mine status
+        if (filterMine != null && !filterMine.isEmpty()) {
+            if (filterMine.equals("true")) {
+                sql = sql + " AND (n.UserID=" + UserID + ")";
+            }
+        }
+            
+        //Sort by CreatedAt or NumberOfAccess
+        if (sortBy != null && !sortBy.isEmpty()) {
+            switch (sortBy) {
+                case "CreatedAtASC":{
+                    sql = sql + " ORDER BY n.CreatedAt";
+                    break;
+                }
+                case "CreatedAtDESC":{
+                    sql = sql + " ORDER BY n.CreatedAt DESC";
+                    break;
+                }
+                case "NumberOfAccessASC":{
+                    sql = sql + " ORDER BY n.NumberOfAccess";
+                    break;
+                }
+                case "NumberOfAccessDESC":{
+                    sql = sql + " ORDER BY n.NumberOfAccess DESC";
+                    break;
+                }
+            }
+        }
+        System.out.println(sql);
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            while (rs.next()){
-                News newsToAdd = new News(rs.getInt("NewsID"), 
-                                        udao.selectAnUserByConditions(rs.getInt("UserID"), "", "", ""), 
-                                        rs.getString("Title"), 
-                                        rs.getString("Description"), 
-                                        rs.getString("Image"), 
-                                        rs.getBoolean("Status"),
-                                        rs.getDate("CreatedAt"), 
-                                        rs.getInt("NumberOfAccess"));
+            while (rs.next()) {
+                News newsToAdd = new News(rs.getInt("NewsID"),
+                        udao.selectAnUserByConditions(rs.getInt("UserID"), "", "", ""),
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getBoolean("Status"),
+                        rs.getDate("CreatedAt"),
+                        rs.getInt("NumberOfAccess"));
                 newsList.add(newsToAdd);
             }
         } catch (SQLException e) {
         }
         return newsList;
     }
-    
-    public void addANews(News newsToAdd){
+ 
+    //Add a news
+    public void addANews(News newsToAdd) {
         String sql = "INSERT INTO [News](UserID, Title, Description, Image) "
                 + "VALUES (?, ?, ?, ?)";
         try {
@@ -76,8 +141,9 @@ public class NewsDAO extends DBContext{
             System.out.println(e);
         }
     }
-    
-    public void updateANews(News newsToUpdate){
+
+    //Update a news
+    public void updateANews(News newsToUpdate) {
         String sql = "UPDATE [News] SET Title=?, Description=?, Image=?, Status=?, NumberOfAccess=? WHERE NewsID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
