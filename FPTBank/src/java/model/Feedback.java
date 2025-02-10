@@ -75,4 +75,10 @@ public class Feedback {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "Feedback{" + "feedbackID=" + feedbackID + ", customerID=" + customerID + ", message=" + message + ", response=" + response + ", status=" + status + ", createdAt=" + createdAt + '}';
+    }
+    
 }

@@ -265,24 +265,7 @@
                 setTimeout(closeNotification, 5000);
             }
         </script>
-        <!-- Error Modal -->
-        <div id="errorModal" class="modal ${not empty requestScope.err ? 'show' : ''}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-icon">
-                        <i class="fa fa-exclamation-circle"></i>
-                    </div>
-                    <h3 class="modal-title">Error</h3>
-                </div>
-                <div class="modal-body">
-                    ${requestScope.err}
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-close" onclick="closeModal()">OK</button>
-                </div>
-            </div>
-        </div>
-
+        
         <script>
             function closeModal() {
                 const modal = document.getElementById('errorModal');
@@ -409,11 +392,14 @@
                                             cursor: pointer; color: #4caf50;" toggle="#password" 
                                             class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('password')"></span>
                                     </div>
-                                    <div class="form-group mil-mb-25" style="display: flex; align-items: center;">
-                                        <input type="checkbox" id="rememberMe" name="rem" value="ON" ${(cookie.crem.value == "ON")?'checked':''} 
-                                            style="margin-right: 10px; accent-color: #4caf50;">
-                                        <label for="rememberMe" style="margin: 0; color: #2e7d32;">Remember me</label>
+                                    <div class="form-group mil-mb-25" style="display: flex; align-items: center;justify-content: space-between;">
+                                         <label style="margin-right: 10px;">
+                                                <input type="checkbox" name="rem"  id="rememberMe"value="ON" ${(cookie.crem.value == "ON") ? 'checked' : ''}>
+                                                Remember me
+                                            </label>
+                                         <a href="/timibank/forgotPass">Forgot Password</a>
                                     </div>
+                                           
                                     <div class="mil-mb-25" style="text-align: center;">
                                     </div>
                                     <div class="mil-up mil-mb-25" style="display: flex; gap: 15px;">

@@ -101,6 +101,7 @@ public class Login extends HttpServlet {
             HttpSession session = request.getSession();
             if (account.isStatus()) {
                 session.setAttribute("account", account);
+                session.setAttribute("uid", account.getUserID());
                 if ((rem != null) && (rem.equals("ON"))) {
                     cusername.setMaxAge(60 * 60 * 24 * 7);
                     cpassword.setMaxAge(60 * 60 * 24 * 7);

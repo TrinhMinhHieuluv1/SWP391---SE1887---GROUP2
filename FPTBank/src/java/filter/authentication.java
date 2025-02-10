@@ -57,7 +57,6 @@ public class authentication implements Filter {
             // Kiểm tra nếu session tồn tại và có thông tin admin
             if (session != null && session.getAttribute("account") != null) {
                 User user = (User) session.getAttribute("account");
-
                 // Nếu là admin, tiếp tục xử lý
                 if (user.getRoleID() == 1) {
                     chain.doFilter(request, response);
