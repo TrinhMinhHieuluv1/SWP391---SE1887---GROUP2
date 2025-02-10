@@ -34,6 +34,14 @@
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
 
+
+
+        <!-- Toarst -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
         <style>
             /* Notification styles */
             .notification {
@@ -643,6 +651,7 @@
 <script src="js/plugins/magnific-popup.js"></script>
 <!-- plax js -->
 <script src="js/main.js"></script>
+<%@ include file="admin/Common/toarst.jsp" %>
 
 </body>
 </html>

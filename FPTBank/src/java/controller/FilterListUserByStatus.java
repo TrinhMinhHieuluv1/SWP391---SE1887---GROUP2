@@ -37,21 +37,20 @@ public class FilterListUserByStatus extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        listUser = uDao.filterListUserByStatus(idOfStatus, page, pageSize);
-        int totalUsers1 = uDao.getTotalUsersAfterFilteringByStatus(idOfStatus);
-        int totalPages = (int) Math.ceil((double) totalUsers1 / pageSize);
+        listUser = uDao.filterListUser("Status", idOfStatus, page, pageSize);
+        int totalUsersAfterFilter = uDao.getTotalUsers("Status", idOfStatus);
+        int totalPages = (int) Math.ceil((double) totalUsersAfterFilter / pageSize);
 
         // tính số lượng của user theo từng role
-        int totalUsers2 = uDao.getTotalUsers();
-
-        int numOfAdmin = uDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = uDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = uDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = uDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = uDao.getTotalUsersOfEachRole("Customer");
+        int totalUsers = uDao.getTotalUsers(null, null);
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
         // số lượng users hiển thị trên thanh search
-        request.setAttribute("totalUsers", totalUsers2);
+        request.setAttribute("totalUsers", totalUsers);
         request.setAttribute("numOfAdmin", numOfAdmin);
         request.setAttribute("numOfSeller", numOfSeller);
         request.setAttribute("numOfManager", numOfManager);
@@ -62,7 +61,6 @@ public class FilterListUserByStatus extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("statusOfUser", idOfStatus);
-        
 
         request.setAttribute("listUsers", listUser);
         request.getRequestDispatcher("ManagementUsers.jsp").forward(request, response);

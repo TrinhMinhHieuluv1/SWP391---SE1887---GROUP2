@@ -18,10 +18,10 @@ import model.User;
 @WebServlet(name = "ManagementUsers", urlPatterns = {"/admin/manage_users"})
 public class ManagementUsers extends HttpServlet {
 
-    private UserDAO userDao;
+    private UserDAO uDao;
 
     public void init() throws ServletException {
-        userDao = new UserDAO();
+        uDao = new UserDAO();
     }
 
     @Override
@@ -35,17 +35,17 @@ public class ManagementUsers extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        ArrayList<User> listUsers = userDao.getListUserByPage(page, pageSize);
+        ArrayList<User> listUsers = uDao.getListUserByPage(page, pageSize);
 
-        int totalUsers = userDao.getTotalUsers();
+        int totalUsers = uDao.getTotalUsers(null, null);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
         // số lượng của user theo từng role
-        int numOfAdmin = userDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = userDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = userDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = userDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = userDao.getTotalUsersOfEachRole("Customer");
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
         request.setAttribute("numOfAdmin", numOfAdmin);
         request.setAttribute("numOfSeller", numOfSeller);
@@ -64,7 +64,5 @@ public class ManagementUsers extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
-
-    
 
 }
