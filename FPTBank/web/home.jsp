@@ -34,6 +34,14 @@
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
 
+
+
+        <!-- Toarst -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
         <style>
             /* Notification styles */
             .notification {
@@ -45,7 +53,7 @@
                 padding: 20px 30px;
                 border-radius: 15px;
                 box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3),
-                           0 0 0 1px rgba(220, 53, 69, 0.2);
+                    0 0 0 1px rgba(220, 53, 69, 0.2);
                 display: flex;
                 align-items: center;
                 gap: 15px;
@@ -60,10 +68,18 @@
                 animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
             }
             @keyframes shake {
-                10%, 90% { transform: translateX(calc(-50% + 1px)); }
-                20%, 80% { transform: translateX(calc(-50% - 2px)); }
-                30%, 50%, 70% { transform: translateX(calc(-50% + 4px)); }
-                40%, 60% { transform: translateX(calc(-50% - 4px)); }
+                10%, 90% {
+                    transform: translateX(calc(-50% + 1px));
+                }
+                20%, 80% {
+                    transform: translateX(calc(-50% - 2px));
+                }
+                30%, 50%, 70% {
+                    transform: translateX(calc(-50% + 4px));
+                }
+                40%, 60% {
+                    transform: translateX(calc(-50% - 4px));
+                }
             }
             .notification-icon {
                 width: 45px;
@@ -77,9 +93,15 @@
                 animation: pulse 2s infinite;
             }
             @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+                100% {
+                    transform: scale(1);
+                }
             }
             .notification-icon i {
                 color: #dc3545;
@@ -614,6 +636,8 @@
         <script src="js/plugins/magnific-popup.js"></script>
         <!-- plax js -->
         <script src="js/main.js"></script>
+
+        <%@ include file="admin/Common/toarst.jsp" %>
 
     </body>
 </html>

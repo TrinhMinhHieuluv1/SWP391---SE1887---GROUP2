@@ -2,6 +2,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
     <head>
@@ -816,8 +818,8 @@
 
 
                     <div class="user-info">
-                        <h5 class="mb-0 user-name">${sessionScope.admin.username}</h5>
-                        <p class="mb-0 user-designation">${sessionScope.admin.email}</p>
+                        <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>
+                        <p class="mb-0 user-designation">${sessionScope.account.email}</p>
                     </div>
 
 
@@ -1064,7 +1066,11 @@
                                             <td class="text-center">${u.getPhone()}</td>
                                             <td class="text-center">${u.getEmail()}</td>
                                             <td class="text-center">${u.getAddress()}</td>
-                                            <td class="text-center">${u.getDateOfBirth()}</td>
+
+                                            <td class="text-center">
+                                                <fmt:formatDate value="${u.dateOfBirth}" pattern="dd-MM-yyyy"/>
+                                            </td>
+
                                             <td class="text-center">
                                                 <c:if test="${u.isGender() == true}">
                                                     Male
@@ -1113,8 +1119,9 @@
 
                                             </td>
 
-
-                                            <td class="text-center">${u.getCreatedAt()}</td>
+                                            <td class="text-center">
+                                                <fmt:formatDate value="${u.createdAt}" pattern="dd-MM-yyyy"/>
+                                            </td>
 
 
                                             <td class="text-center">
