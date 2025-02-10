@@ -332,7 +332,7 @@
                                         <a href="index.jsp">Home</a>
                                     </li>
                                     <li class="mil-text-m mil-soft mil-mb-15">
-                                        <a href="about.jsp">About Us</a>
+                                        <a href="about">About Us</a>
                                     </li>
                                     <li class="mil-text-m mil-soft mil-mb-15">
                                         <a href="contact.jsp">Contact Us</a>

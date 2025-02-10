@@ -67,7 +67,7 @@ public class Login extends HttpServlet {
             String message = "You created an account successfully!";
             request.setAttribute("message", message);
         }
-        if (roleErr != null && roleErr.equals("true")){
+        if (roleErr != null && roleErr.equals("true")) {
             String message = "Please log in to access this site!";
             request.setAttribute("roleErr", roleErr);
         }
@@ -101,6 +101,7 @@ public class Login extends HttpServlet {
             HttpSession session = request.getSession();
             if (account.isStatus()) {
                 session.setAttribute("account", account);
+                session.setAttribute("uid", account.getUserID());
                 if ((rem != null) && (rem.equals("ON"))) {
                     cusername.setMaxAge(60 * 60 * 24 * 7);
                     cpassword.setMaxAge(60 * 60 * 24 * 7);
@@ -115,13 +116,13 @@ public class Login extends HttpServlet {
                 response.addCookie(crem);
                 switch (account.getRoleID()) {
                     case 1:
-                        response.sendRedirect("/timibank/admin");
+                        response.sendRedirect("/timibank/admin/home");
                         break;
                     case 2:
                         response.sendRedirect("/timibank/seller");
                         break;
                     case 3:
-                        response.sendRedirect("/timibank/manager");
+                        response.sendRedirect("/timibank/home");
                         break;
                     case 4:
                         response.sendRedirect("/timibank/insurance_provider");

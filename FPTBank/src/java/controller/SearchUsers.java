@@ -17,10 +17,10 @@ import model.User;
 @WebServlet(name = "SearchUsers", urlPatterns = {"/admin/search_users"})
 public class SearchUsers extends HttpServlet {
 
-    private UserDAO userDao;
+    private UserDAO uDao;
 
     public void init() throws ServletException {
-        userDao = new UserDAO();
+        uDao = new UserDAO();
     }
 
     @Override
@@ -29,33 +29,35 @@ public class SearchUsers extends HttpServlet {
         String keyword = request.getParameter("keyword").trim();
         List<User> listUsers;
 
-        int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int page = 1; // trang Ä‘áº§u tiÃªn
+        int pageSize = 10; // 1 trang cÃ³ 10 users
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
         if (keyword != null && !keyword.isEmpty()) {
-            // Truy vấn cơ sở dữ liệu với từ khóa
-            listUsers = userDao.searchUsers(keyword, page, pageSize);
+            listUsers = uDao.searchUsers(keyword, page, pageSize);
         } else {
-            // Nếu không có từ khóa, trả về toàn bộ danh sách
+            // Náº¿u khÃ´ng cÃ³ tá»« khÃ³a, tráº£ vá»� toÃ n bá»™ danh sÃ¡ch
             response.sendRedirect("manage_users");
             return;
         }
 
-        int totalUsersAfterSearching = userDao.getTotalUsersAfterSearching(keyword);
+        int totalUsersAfterSearching = uDao.getTotalUsersAfterSearching(keyword);
         int totalPages = (int) Math.ceil((double) totalUsersAfterSearching / pageSize);
-        
-        int totalUsers = userDao.getTotalUsers();
 
+<<<<<<< HEAD
+        // sá»‘ lÆ°á»£ng cá»§a user theo tá»«ng role
+=======
         // số lượng của user theo từng role
-        int numOfAdmin = userDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = userDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = userDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = userDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = userDao.getTotalUsersOfEachRole("Customer");
+>>>>>>> 034bb86f3a3aa0b06f9df5226c506201d3e2e2aa
+        int totalUsers = uDao.getTotalUsers(null, null);
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
         request.setAttribute("totalUsers", totalUsers);
         request.setAttribute("numOfAdmin", numOfAdmin);

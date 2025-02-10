@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.SalaryDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,7 +60,7 @@ public class ListSalary extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        UserDAO dao = new UserDAO();
+        SalaryDAO dao = new SalaryDAO();
         List<Salary>data = dao.selectAllSalary();
         request.setAttribute("data", data);
         request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
@@ -77,7 +78,7 @@ public class ListSalary extends HttpServlet {
     throws ServletException, IOException {
         String action = request.getParameter("action");
         String id = request.getParameter("salaryid");
-        UserDAO dao = new UserDAO();
+                SalaryDAO dao = new SalaryDAO();
         try {
             int idd = Integer.parseInt(id);
             Salary a = dao.getSalaryById(idd);

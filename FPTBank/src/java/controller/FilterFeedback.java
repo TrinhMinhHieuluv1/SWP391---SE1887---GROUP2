@@ -4,8 +4,8 @@
  */
 package controller;
 
-import dal.AssetDAO;
-import dal.UserDAO;
+import dal.CustomerDAO;
+import dal.FeedbackDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,20 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Asset;
+import model.Feedback;
 
 /**
  *
- * @author tiend
+ * @author ACER
  */
-
-@WebServlet(name = "SortAssetServlet", urlPatterns = {"/sort"})
-public class SortAssetServlet extends HttpServlet {
+@WebServlet(name = "FilterFeedback", urlPatterns = {"/filterfeedback"})
+public class FilterFeedback extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +41,10 @@ public class SortAssetServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SortAssetServlet</title>");
+            out.println("<title>Servlet FilterFeedback</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SortAssetServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FilterFeedback at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,6 +53,7 @@ public class SortAssetServlet extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -65,45 +62,59 @@ public class SortAssetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AssetDAO dao = new AssetDAO();
-        String sortOrder = request.getParameter("sortOrder");
-        String sortDate = request.getParameter("sortDate");
-        String status = request.getParameter("status");
-        String verify = request.getParameter("verify");
+        HttpSession session = request.getSession();
+        String date_raw = request.getParameter("date");
         String search = request.getParameter("search");
-        try {
-            List<Asset> data = new ArrayList<>();
-            if (sortOrder != null) {
-                data = dao.getAssetsSortedByValue(sortOrder);
-                request.setAttribute("data", data);
-            }
-            if (sortDate != null) {
-                data = dao.getAssetsSortedByDate(sortDate);
-                request.setAttribute("data", data);
-            }
-            if (status != null) {
-                boolean st = Boolean.parseBoolean(status);
-                data = dao.getAssetsByStatus(st);
-                request.setAttribute("data", data);
-            }
-            if (verify != null) {
-                boolean vt = Boolean.parseBoolean(verify);
-                data = dao.getAssetsByVerify(vt);
-                request.setAttribute("data", data);
-            }
-            if (search != null) {
-                data = dao.searchAssetsByDescription(search);
-                request.setAttribute("data", data);
+        CustomerDAO cdao = new CustomerDAO();
+        FeedbackDAO dao = new FeedbackDAO();
+        String error = "";
+        if (date_raw == null && (search.isEmpty() || search == null)) {
+            error = "Can't filter";
+            request.setAttribute("error", error);
+            request.getRequestDispatcher("feedback.jsp").forward(request, response);
+            return;
+        }
+        if (date_raw != null && (search == null || search.isEmpty())) {
+            try {
+                if (date_raw == null || date_raw.trim().isEmpty()) {
+                    throw new NumberFormatException();
+                }
+
+                String[] parts = date_raw.trim().split("-");
+
+                if (parts.length != 3) {
+                    throw new NumberFormatException();
+                }
+
+                int year = Integer.parseInt(parts[0].trim());
+                int month = Integer.parseInt(parts[1].trim());
+                int date = Integer.parseInt(parts[2].trim());
+
+                int uid = (int) session.getAttribute("uid");
+                int cid = cdao.getCustomerIdByUserId(uid);
+
+                List<Feedback> list = dao.getFeedbacksFromDate(date, month, year, cid);
+                session.setAttribute("listfeedback", list);
+
+                request.getRequestDispatcher("feedback.jsp").forward(request, response);
+
+            } catch (NumberFormatException e) {
+                error = "Can't filter";
+                request.setAttribute("error", error);
+                request.getRequestDispatcher("feedback.jsp").forward(request, response);
             }
 
-            request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
-        } catch (SQLException ex) {
+        } else if (search != null && !search.isEmpty()) {
+            List<Feedback> list2 = dao.searchFeedbackByMessage(search);
+            session.setAttribute("listfeedback", list2);
+            request.getRequestDispatcher("feedback.jsp").forward(request, response);
         }
 
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -117,6 +128,7 @@ public class SortAssetServlet extends HttpServlet {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

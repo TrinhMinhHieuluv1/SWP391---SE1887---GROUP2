@@ -20,7 +20,7 @@ import model.User;
  * @author hungk
  */
 @WebServlet(name = "Team", urlPatterns = {"/about"})
-public class Team extends HttpServlet {
+public class About extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,9 +44,9 @@ public class Team extends HttpServlet {
             throws ServletException, IOException {
         UserDAO userDAO = new UserDAO();
         List<User> teamMembers = userDAO.selectAllUsersByRole(2); // Lấy user có roleID = 2
-   int teamSeller = userDAO.countUsersByRole(2); // seller
-        int teamManage = userDAO.countUsersByRole(3);//mânger
-        int teamCustomer = userDAO.countUsersByRole(5);// customer
+   int teamSeller = userDAO.selectAllUsersByRole(2).size(); // seller
+        int teamManage = userDAO.selectAllUsersByRole(3).size();//manager
+        int teamCustomer = userDAO.selectAllUsersByRole(5).size();// customer
         request.setAttribute("teamSeller", teamSeller);
         request.setAttribute("teamManage", teamManage);
         request.setAttribute("teamCustomer", teamCustomer);
@@ -59,9 +59,9 @@ public class Team extends HttpServlet {
             throws ServletException, IOException {
          UserDAO userDAO = new UserDAO();
         List<User> teamMembers = userDAO.selectAllUsersByRole(2); // Lấy user có roleID = 2
-   int teamSeller = userDAO.countUsersByRole(2); // seller
-        int teamManage = userDAO.countUsersByRole(3);//mânger
-        int teamCustomer = userDAO.countUsersByRole(5);// customer
+   int teamSeller = userDAO.selectAllUsersByRole(2).size(); // seller
+        int teamManage = userDAO.selectAllUsersByRole(3).size();//mânger
+        int teamCustomer = userDAO.selectAllUsersByRole(5).size();// customer
         request.setAttribute("teamSeller", teamSeller);
         request.setAttribute("teamManage", teamManage);
         request.setAttribute("teamCustomer", teamCustomer);

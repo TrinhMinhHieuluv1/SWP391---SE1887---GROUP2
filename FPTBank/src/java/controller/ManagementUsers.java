@@ -18,34 +18,38 @@ import model.User;
 @WebServlet(name = "ManagementUsers", urlPatterns = {"/admin/manage_users"})
 public class ManagementUsers extends HttpServlet {
 
-    private UserDAO userDao;
+    private UserDAO uDao;
 
     public void init() throws ServletException {
-        userDao = new UserDAO();
+        uDao = new UserDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int page = 1; // trang Ä‘áº§u tiÃªn
+        int pageSize = 10; // 1 trang cÃ³ 10 users
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        ArrayList<User> listUsers = userDao.getListUserByPage(page, pageSize);
+        ArrayList<User> listUsers = uDao.getListUserByPage(page, pageSize);
 
-        int totalUsers = userDao.getTotalUsers();
+        int totalUsers = uDao.getTotalUsers(null, null);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
+<<<<<<< HEAD
+        // sá»‘ lÆ°á»£ng cá»§a user theo tá»«ng role
+=======
         // số lượng của user theo từng role
-        int numOfAdmin = userDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = userDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = userDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = userDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = userDao.getTotalUsersOfEachRole("Customer");
+>>>>>>> 034bb86f3a3aa0b06f9df5226c506201d3e2e2aa
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
         request.setAttribute("numOfAdmin", numOfAdmin);
         request.setAttribute("numOfSeller", numOfSeller);
@@ -64,7 +68,5 @@ public class ManagementUsers extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
-
-    
 
 }

@@ -4,8 +4,7 @@
  */
 package controller;
 
-import dal.AssetDAO;
-import dal.UserDAO;
+import dal.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,20 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Asset;
+import model.News;
 
 /**
  *
- * @author tiend
+ * @author HP
  */
-
-@WebServlet(name = "SortAssetServlet", urlPatterns = {"/sort"})
-public class SortAssetServlet extends HttpServlet {
+@WebServlet(name = "UpdateNews", urlPatterns = {"/seller/update-news"})
+public class UpdateNews extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +38,10 @@ public class SortAssetServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SortAssetServlet</title>");
+            out.println("<title>Servlet UpdateNews</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SortAssetServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateNews at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,6 +50,7 @@ public class SortAssetServlet extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -65,45 +59,30 @@ public class SortAssetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AssetDAO dao = new AssetDAO();
-        String sortOrder = request.getParameter("sortOrder");
-        String sortDate = request.getParameter("sortDate");
-        String status = request.getParameter("status");
-        String verify = request.getParameter("verify");
-        String search = request.getParameter("search");
-        try {
-            List<Asset> data = new ArrayList<>();
-            if (sortOrder != null) {
-                data = dao.getAssetsSortedByValue(sortOrder);
-                request.setAttribute("data", data);
+        NewsDAO ndao = new NewsDAO();
+        String NewsID_raw = request.getParameter("NewsID");
+        String changeStatus = request.getParameter("changeStatus");
+        if (NewsID_raw != null && !NewsID_raw.isEmpty()) {
+            int NewsID = Integer.parseInt(NewsID_raw);
+            News newsToUpdate = ndao.selectANewsByNewsID(NewsID);
+            if (changeStatus != null && changeStatus.equals("true")) {
+                if (newsToUpdate.isStatus()) {
+                    newsToUpdate.setStatus(false);
+                } else {
+                    newsToUpdate.setStatus(true);
+                }
+                ndao.updateANews(newsToUpdate);
+                response.sendRedirect("/timibank/seller/news-management?fromUpdate=true");
+                return;
             }
-            if (sortDate != null) {
-                data = dao.getAssetsSortedByDate(sortDate);
-                request.setAttribute("data", data);
-            }
-            if (status != null) {
-                boolean st = Boolean.parseBoolean(status);
-                data = dao.getAssetsByStatus(st);
-                request.setAttribute("data", data);
-            }
-            if (verify != null) {
-                boolean vt = Boolean.parseBoolean(verify);
-                data = dao.getAssetsByVerify(vt);
-                request.setAttribute("data", data);
-            }
-            if (search != null) {
-                data = dao.searchAssetsByDescription(search);
-                request.setAttribute("data", data);
-            }
-
-            request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
-        } catch (SQLException ex) {
+            request.setAttribute("newsToUpdate", newsToUpdate);
+            request.getRequestDispatcher("update-news.jsp").forward(request, response);
         }
-
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -112,11 +91,22 @@ public class SortAssetServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        NewsDAO ndao = new NewsDAO();
+
+        String NewsID_raw = request.getParameter("NewsID");
+        int NewsID = Integer.parseInt(NewsID_raw);
+        News newsToUpdate = ndao.selectANewsByNewsID(NewsID);
+        newsToUpdate.setTitle(request.getParameter("Title"));
+        newsToUpdate.setDescription(request.getParameter("Description"));
+        newsToUpdate.setImage(request.getParameter("Image"));
+        ndao.updateANews(newsToUpdate);
+        response.sendRedirect("/timibank/seller/news-management?fromUpdate=true");
+
     }
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
