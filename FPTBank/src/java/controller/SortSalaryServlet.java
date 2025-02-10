@@ -24,7 +24,7 @@ import model.Salary;
  *
  * @author tiend
  */
-@WebServlet(name="SortSalaryServlet", urlPatterns={"/sortSala"})
+@WebServlet(name="SortSalaryServlet", urlPatterns={"/manager/sortSala"})
 public class SortSalaryServlet extends HttpServlet {
    
     /** 

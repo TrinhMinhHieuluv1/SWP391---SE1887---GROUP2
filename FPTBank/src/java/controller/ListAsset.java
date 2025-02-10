@@ -20,7 +20,7 @@ import model.Asset;
  *
  * @author tiend
  */
-@WebServlet(name = "ListAsset", urlPatterns = {"/listAsset"})
+@WebServlet(name = "ListAsset", urlPatterns = {"/manager/listAsset"})
 public class ListAsset extends HttpServlet {
 
     /**

@@ -19,7 +19,7 @@ import model.Customer;
  *
  * @author HP
  */
-@WebServlet(name = "CustomerControl", urlPatterns = {"/customer"})
+@WebServlet(name = "CustomerControl", urlPatterns = {"/manager/customer"})
 public class CustomerControl extends HttpServlet {
 
     /**

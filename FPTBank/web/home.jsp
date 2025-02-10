@@ -45,7 +45,7 @@
                 padding: 20px 30px;
                 border-radius: 15px;
                 box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3),
-                           0 0 0 1px rgba(220, 53, 69, 0.2);
+                    0 0 0 1px rgba(220, 53, 69, 0.2);
                 display: flex;
                 align-items: center;
                 gap: 15px;
@@ -60,10 +60,18 @@
                 animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
             }
             @keyframes shake {
-                10%, 90% { transform: translateX(calc(-50% + 1px)); }
-                20%, 80% { transform: translateX(calc(-50% - 2px)); }
-                30%, 50%, 70% { transform: translateX(calc(-50% + 4px)); }
-                40%, 60% { transform: translateX(calc(-50% - 4px)); }
+                10%, 90% {
+                    transform: translateX(calc(-50% + 1px));
+                }
+                20%, 80% {
+                    transform: translateX(calc(-50% - 2px));
+                }
+                30%, 50%, 70% {
+                    transform: translateX(calc(-50% + 4px));
+                }
+                40%, 60% {
+                    transform: translateX(calc(-50% - 4px));
+                }
             }
             .notification-icon {
                 width: 45px;
@@ -77,9 +85,15 @@
                 animation: pulse 2s infinite;
             }
             @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+                100% {
+                    transform: scale(1);
+                }
             }
             .notification-icon i {
                 color: #dc3545;
@@ -240,6 +254,10 @@
                                         <ul style="list-style-type: none">
                                             <li><a href="/timibank/profile">My Profile</a></li>
                                             <li><a href="/timibank/change-password">Change Password</a></li>
+                                            <c:if test="${sessionScope.account.getRoleID()==3}">
+                                            <li><a href="/timibank/manager/listAsset">Manage Asset</a></li>
+                                            <li><a href="/timibank/manager/listSalary">Manage Salary</a></li>
+                                            </c:if>
                                             <li><a href="/timibank/purchase">My Purchase</a></li>
                                             <li><a href="/timibank/logout">Log out</a></li>
                                         </ul>

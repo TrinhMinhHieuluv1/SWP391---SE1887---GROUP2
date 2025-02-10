@@ -204,7 +204,8 @@ public List<Asset> getAssetsByStatus(boolean status) throws SQLException {
   public List<Asset> searchAssetsByDescription(String description) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset WHERE Description LIKE ?";
-
+        
+        
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, "%" + description + "%");
