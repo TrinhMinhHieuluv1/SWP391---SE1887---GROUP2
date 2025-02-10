@@ -9,14 +9,14 @@ import java.util.Date;
 
 public class Salary {
 
-    private int id; // SalaryId
-    private int customerId; // CustomerId
-    private String image; // Image
-    private String description; // Description
-    private BigDecimal value; // Value
-    private boolean verification; // Verification
-    private boolean status; // Status
-    private Date createdAt; // CreatedAt
+    private int Id; // SalaryId
+    private int CustomerId; // CustomerId
+    private String Image; // Image
+    private String Description; // Description
+    private BigDecimal Value; // Value
+    private boolean Verification; // Verification
+    private boolean Status; // Status
+    private Date CreatedAt; // CreatedAt
 
     // Constructor
     
@@ -24,77 +24,77 @@ public class Salary {
     }
 
     public Salary(int customerId, String image, String description, BigDecimal value) {
-        this.customerId = customerId;
-        this.image = image;
-        this.description = description;
-        this.value = value;
-        this.verification = false; // default
-        this.status = false; // default
-        this.createdAt = new Date(); // default to current date
+        this.CustomerId = customerId;
+        this.Image = image;
+        this.Description = description;
+        this.Value = value;
+        this.Verification = false; // default
+        this.Status = false; // default
+        this.CreatedAt = new Date(); // default to current date
     }
 
     // Getters and Setters
     public int getId() {
-        return id;
+        return Id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public int getCustomerId() {
-        return customerId;
+        return CustomerId;
     }
 
     public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+        this.CustomerId = customerId;
     }
 
     public String getImage() {
-        return image;
+        return Image;
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.Image = image;
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.Description = description;
     }
 
     public BigDecimal getValue() {
-        return value;
+        return Value;
     }
 
     public void setValue(BigDecimal value) {
-        this.value = value;
+        this.Value = value;
     }
 
     public boolean isVerification() {
-        return verification;
+        return Verification;
     }
 
     public void setVerification(boolean verification) {
-        this.verification = verification;
+        this.Verification = verification;
     }
 
     public boolean isStatus() {
-        return status;
+        return Status;
     }
 
     public void setStatus(boolean status) {
-        this.status = status;
+        this.Status = status;
     }
 
     public Date getCreatedAt() {
-        return createdAt;
+        return CreatedAt;
     }
 
     public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+        this.CreatedAt = createdAt;
     }
 }

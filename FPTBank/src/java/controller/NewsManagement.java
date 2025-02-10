@@ -64,17 +64,62 @@ public class NewsManagement extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         NewsDAO ndao = new NewsDAO();
-
         User account = (User) session.getAttribute("account");
-        if (account == null) {
-            response.sendRedirect("/timibank/login?roleErr=true");
-        } else if (account.getRoleID() != 2) {
-            response.sendRedirect("/timibank/home?roleErr=true");
-        } else {
-            List<News> newsList = ndao.selectAllNews();
-            request.setAttribute("newsList", newsList);
-            request.getRequestDispatcher("news-management.jsp").forward(request, response);
+
+        //Show message after a news updated
+        String fromUpdate = request.getParameter("fromUpdate");
+        if (fromUpdate != null && fromUpdate.equals("true")) {
+            String message = "Update successfully!";
+            request.setAttribute("message", message);
         }
+
+        String fromAdd = request.getParameter("fromAdd");
+        if (fromAdd != null && fromAdd.equals("true")) {
+            String message = "Add successfully!";
+            request.setAttribute("message", message);
+        }
+
+        // Get parameter
+        String searchKeyword = request.getParameter("searchKeyword");
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            searchKeyword = searchKeyword.trim();
+        }
+        String sortBy = request.getParameter("sortBy");
+        String filterMine = request.getParameter("filterMine");
+        String filterStatus = request.getParameter("filterStatus");
+
+        // Get news list by conditions
+        List<News> newsListBeforePagition = ndao.selectNewsListByConditions(searchKeyword, sortBy, filterStatus, filterMine, account.getUserID());
+
+        //Pagination
+        final int pageSize = 8;
+        int totalPages = (int) Math.ceil((double) newsListBeforePagition.size() / pageSize);
+        int page = 1;
+        String pageNum_raw = request.getParameter("page");
+        if (pageNum_raw != null && !pageNum_raw.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageNum_raw);
+                if (page < 1) {
+                    page = 1;
+                }
+                if (page > totalPages) {
+                    page = totalPages;
+                }
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        List<News> newsList = newsListBeforePagition.subList((page - 1) * pageSize, Math.min(newsListBeforePagition.size(), page * pageSize));
+
+        request.setAttribute("newsList", newsList);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("searchQuery", searchKeyword);
+        request.setAttribute("sortBy", sortBy);
+        request.setAttribute("filterMine", filterMine);
+        request.setAttribute("filterStatus", filterStatus);
+        request.getRequestDispatcher("news-management.jsp").forward(request, response);
     }
 
     /**

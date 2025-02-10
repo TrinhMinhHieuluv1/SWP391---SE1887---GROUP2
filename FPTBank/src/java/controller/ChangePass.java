@@ -78,7 +78,7 @@ public class ChangePass extends HttpServlet {
         User user = userDAO.checkUserByEmail(emailr);
         if (user != null) {
             user.setPassword(new_password);
-            userDAO.updateAUserByUserID(user);
+            userDAO.updateAUser(user);
             response.sendRedirect("/timibank/login");
         }
 

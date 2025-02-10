@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import model.User;
 import java.sql.*;
+import model.Customer;
 
 public class UserDAO extends DBContext {
 
-    public User checkAuthen(String username, String password) {
+        public User checkAuthen(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE Username=? AND Password=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -215,7 +216,6 @@ public class UserDAO extends DBContext {
     // kiểm tra sự tồn tại của username / cccd / phonenum / email
     public boolean isFieldExistsToAdd(String fieldName, String value) {
         String query = "SELECT COUNT(*) FROM [User] WHERE " + fieldName + " = ?";
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, value);
             ResultSet rs = stmt.executeQuery();
@@ -265,8 +265,6 @@ public class UserDAO extends DBContext {
             st.setString(10, userToAdd.getCCCD());
             st.setInt(11, userToAdd.getRoleID());
             st.setBoolean(12, userToAdd.isStatus());
-
-            // Nếu manager == null, đặt ManageID là NULL
             if (userToAdd.getManager() != null) {
                 st.setInt(13, userToAdd.getManager().getUserID());
             } else {
@@ -314,7 +312,6 @@ public class UserDAO extends DBContext {
             st.setString(9, "%" + keyword + "%");
             st.setString(10, "%" + keyword + "%");
             st.setString(11, "%" + keyword + "%");
-
             st.setInt(12, (page - 1) * pageSize);
             st.setInt(13, pageSize);
 
@@ -390,6 +387,7 @@ public class UserDAO extends DBContext {
     public List<User> sortListUser(String sortBy, String typeOfSort, int page, int pageSize) {
         List<User> listUser = new ArrayList<>();
 
+
         // Xác định cột cần sắp xếp
         String column = sortBy.equalsIgnoreCase("CreatedAt") ? "CreatedAt" : "FullName";
         String order = typeOfSort.equalsIgnoreCase("asc") ? "ASC" : "DESC";
@@ -399,8 +397,9 @@ public class UserDAO extends DBContext {
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, (page - 1) * pageSize); // Tính số dòng cần bỏ qua
-            st.setInt(2, pageSize); // Số lượng user trên mỗi trang
+            st.setInt(1, (page - 1) * pageSize); // TÃ­nh sá»‘ dÃ²ng cáº§n bá»� qua
+            st.setInt(2, pageSize); // Sá»‘ lÆ°á»£ng user trÃªn má»—i trang
+
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -441,7 +440,6 @@ public class UserDAO extends DBContext {
             st.setInt(1, filterValue);
             st.setInt(2, (page - 1) * pageSize);
             st.setInt(3, pageSize);
-
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -472,12 +470,10 @@ public class UserDAO extends DBContext {
     // fieldName = null, fieldValue = null nếu muốn count toàn bộ user
     public int getTotalUsers(String fieldName, Integer fieldValue) {
         String sql = "SELECT count(*) FROM [dbo].[User]";
-
         // Nếu có điều kiện lọc, thêm WHERE vào SQL
         if (fieldName != null && fieldName != null) {
             sql += " WHERE " + fieldName + " = ?";
         }
-
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
 
@@ -497,13 +493,14 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
+
     //Lấy ra listuser ở trang hiện tại 
     public ArrayList<User> getListUserByPage(int page, int pageSize) {
         ArrayList<User> listUser = new ArrayList<>();
 
         String sql = "select * from [User] order by [UserID] offset ? rows fetch next ? rows only";
-        // offset ? rows:    Bỏ qua một số dòng dựa trên số trang.
-        // fetch next ? rows only:  Lấy tiếp số dòng tương ứng với pageSize.
+        // offset ? rows:    Bá»� qua má»™t sá»‘ dÃ²ng dá»±a trÃªn sá»‘ trang.
+        // fetch next ? rows only:  Láº¥y tiáº¿p sá»‘ dÃ²ng tÆ°Æ¡ng á»©ng vá»›i pageSize.
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -536,7 +533,6 @@ public class UserDAO extends DBContext {
         return listUser;
     }
     
-    //---------------------------------------------------------------------------------------------------------------
     //Cuong
     public boolean isFieldExistsToUpdate(String fieldName, String value, int UserID) {
         String query = "SELECT COUNT(*) FROM [User] WHERE " + fieldName + " = ? AND UserID <> ?";

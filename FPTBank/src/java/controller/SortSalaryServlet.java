@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.SalaryDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,7 +62,7 @@ public class SortSalaryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-                UserDAO dao = new UserDAO();
+                SalaryDAO dao = new SalaryDAO();
         String sortDate = request.getParameter("sortDate");
         String status = request.getParameter("status");
         String verify = request.getParameter("verify");
