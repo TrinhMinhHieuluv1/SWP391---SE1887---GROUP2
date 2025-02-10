@@ -29,7 +29,7 @@ public class UpdateUser extends HttpServlet {
             throws ServletException, IOException {
 
         int userID = Integer.parseInt(request.getParameter("id"));
-        User user = uDao.getUserByUserID(userID);
+        User user = uDao.selectAnUserByConditions(userID, "", "", "");
 
         request.setAttribute("user", user);
         request.getRequestDispatcher("FormUpdateUser.jsp").forward(request, response);
@@ -41,22 +41,7 @@ public class UpdateUser extends HttpServlet {
             throws ServletException, IOException {
 
         int userID = Integer.parseInt(request.getParameter("userid"));
-
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String name = request.getParameter("fullname");
-        String gender = request.getParameter("gender");
-        boolean isMale = gender.equals("1");
-
-        String dob_raw = request.getParameter("dob");
-        Date dob = Date.valueOf(dob_raw);
-
-        String phone = request.getParameter("phonenumber");
-        String email = request.getParameter("email");
-        String cccd = request.getParameter("card");
-        String img = request.getParameter("img");
-        String address = request.getParameter("address");
-
+        
         String roleID_raw = request.getParameter("role");
         int roleID = Integer.parseInt(roleID_raw);
 
@@ -64,6 +49,7 @@ public class UpdateUser extends HttpServlet {
 
         User manager = null;
         if (managerId_raw != null && !managerId_raw.isEmpty()) {
+            managerId_raw = managerId_raw.trim();
             int manageID = Integer.parseInt(managerId_raw);
             manager = uDao.getManagerForSeller(manageID);
             if (manager == null) {
@@ -85,16 +71,12 @@ public class UpdateUser extends HttpServlet {
             return;
         }
 
-        User userToUpdate = new User(0, username, password, name, img, phone, email, dob, isMale, address, cccd, roleID, true, manager, null);
+        User userNeedUpdate = uDao.selectAnUserByConditions(userID, "", "", "");
+        userNeedUpdate.setRoleID(roleID);
+        userNeedUpdate.setManager(manager);
 
-        int row = uDao.updateUserByUserId2(userToUpdate, userID);
-
-        if (row > 0) {
-            request.getSession().setAttribute("message", "Update Successfully !!");
-        } else {
-            request.getSession().setAttribute("error", "Update fail !!");
-        }
-
+        uDao.updateAUser(userNeedUpdate);
+        request.getSession().setAttribute("message", "Update Successfully !!");
         response.sendRedirect("manage_users");
 
     }

@@ -105,12 +105,35 @@
                         </li>
                     </ul>
                 </nav>
-                <div class="mil-menu-buttons">
-                    <a href="register.jsp" class="mil-btn mil-sm">Log in</a>
-                    <div class="mil-menu-btn">
-                        <span></span>
+                <c:if test="${sessionScope.account == null}">
+                    <div class="mil-menu-buttons">
+                        <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
+                        <a href="register.jsp" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
                     </div>
-                </div>
+                </c:if>
+                <c:if test="${sessionScope.account != null}">
+
+                    <nav class="mil-top-menu">
+                        <ul>
+                            <li class="mil-has-children ">
+                                <a href="#." class="mil-btn mil-sm">My Account</a>
+                                <ul>
+                                    <li><a href="profile.jsp">My Profile</a></li>
+                                    <li><a href="/audio/change_pass">Change Password</a></li>
+                                    <li><a href="/audio/purchase">My Purchase</a></li>
+                                    <li><a href="myfeedback">My Feedback</a></li>
+                                    <li><a href="/audio/signout">Sign out</a></li>
+
+
+                                </ul>
+                            </li>   
+                        </ul>
+
+
+                    </nav>  
+
+
+                </c:if>
             </div>
         </div>
         <!-- top panel end -->
@@ -142,28 +165,22 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-xl-9">
-                            <form>
+                            <form action="contact" method="get">
                                 <div class="row">
                                     <div class="col-md-6 mil-mb-30">
-                                        <input class="mil-input mil-up" type="text" placeholder="Name" name="name">
+                                        <input class="mil-input mil-up" type="text" placeholder="Name" name="name" value="${sessionScope.account.fullName}">
                                     </div>
                                     <div class="col-md-6 mil-mb-30">
-                                        <input class="mil-input mil-up" type="email" placeholder="Email" name="email">
-                                    </div>
-                                    <div class="col-xl-12 mil-mb-30">
-                                        <input class="mil-input mil-up" type="tel" placeholder="Telephone number" name="tel">
+                                        <input class="mil-input mil-up" type="email" placeholder="Email" name="email" value="${sessionScope.account.email}">
                                     </div>
                                     <div class="col-xl-12 mil-mb-30 ">
                                         <textarea cols="30" rows="10" class="mil-up" placeholder="Message" name="message"></textarea>
                                     </div>
                                 </div>
-                                <div class="mil-checkbox-frame mil-mb-30 mil-up">
-                                    <div class="mil-checkbox">
-                                        <input type="checkbox" id="checkbox-1" name="checkmark" checked>
-                                        <label for="checkbox-1"></label>
-                                    </div>
-                                    <p class="mil-text-xs mil-soft">I agree that the data submitted, collected and stored *</p>
-                                </div>
+                                    <% if(request.getAttribute("error")!=null)  {%>
+                                    <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error"));%></a>
+                                    <%}%>
+                                    <br>
                                 <div class="mil-up">
                                     <button type="submit" class="mil-btn mil-m">Send Message</button>
                                 </div>

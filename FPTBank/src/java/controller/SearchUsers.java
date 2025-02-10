@@ -17,10 +17,10 @@ import model.User;
 @WebServlet(name = "SearchUsers", urlPatterns = {"/admin/search_users"})
 public class SearchUsers extends HttpServlet {
 
-    private UserDAO userDao;
+    private UserDAO uDao;
 
     public void init() throws ServletException {
-        userDao = new UserDAO();
+        uDao = new UserDAO();
     }
 
     @Override
@@ -37,25 +37,23 @@ public class SearchUsers extends HttpServlet {
         }
 
         if (keyword != null && !keyword.isEmpty()) {
-            // Truy vấn cơ sở dữ liệu với từ khóa
-            listUsers = userDao.searchUsers(keyword, page, pageSize);
+            listUsers = uDao.searchUsers(keyword, page, pageSize);
         } else {
             // Nếu không có từ khóa, trả về toàn bộ danh sách
             response.sendRedirect("manage_users");
             return;
         }
 
-        int totalUsersAfterSearching = userDao.getTotalUsersAfterSearching(keyword);
+        int totalUsersAfterSearching = uDao.getTotalUsersAfterSearching(keyword);
         int totalPages = (int) Math.ceil((double) totalUsersAfterSearching / pageSize);
-        
-        int totalUsers = userDao.getTotalUsers();
 
         // số lượng của user theo từng role
-        int numOfAdmin = userDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = userDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = userDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = userDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = userDao.getTotalUsersOfEachRole("Customer");
+        int totalUsers = uDao.getTotalUsers(null, null);
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
         request.setAttribute("totalUsers", totalUsers);
         request.setAttribute("numOfAdmin", numOfAdmin);

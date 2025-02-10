@@ -82,7 +82,7 @@ public class Register extends HttpServlet {
         Date dob = Date.valueOf(dob_raw);
         User userToAdd = new User(0, username, password, name,"", phone, email, dob, (gender.equals("Male")),"", "", 5, true, null,null);
         UserDAO udao = new UserDAO();
-        udao.addAUser(userToAdd);
+        udao.addUserReturnRow(userToAdd);
         response.sendRedirect("/timibank/login?fromRegister=true");
     }
 

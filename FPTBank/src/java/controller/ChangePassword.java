@@ -86,7 +86,7 @@ public class ChangePassword extends HttpServlet {
             HttpSession session = request.getSession();
             User account = (User) session.getAttribute("account");
             account.setPassword(new_password);
-            udao.updateAUserByUserID(account);
+            udao.updateAUser(account);
             session.removeAttribute("account");
             response.sendRedirect("/timibank/login");
         }

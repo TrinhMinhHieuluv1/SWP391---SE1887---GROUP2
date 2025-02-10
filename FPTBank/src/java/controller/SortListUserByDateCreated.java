@@ -38,17 +38,17 @@ public class SortListUserByDateCreated extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        listUser = uDao.sortListUserByCreatedAt(typeOfSort, page, pageSize);
+        listUser = uDao.sortListUser("CreatedAt", typeOfSort, page, pageSize);
 
-        int totalUsers = uDao.getTotalUsers();
+        int totalUsers = uDao.getTotalUsers(null, null);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
         // số lượng của user theo từng role
-        int numOfAdmin = uDao.getTotalUsersOfEachRole("Admin");
-        int numOfSeller = uDao.getTotalUsersOfEachRole("Seller");
-        int numOfManager = uDao.getTotalUsersOfEachRole("Manager");
-        int numOfProviderInsurance = uDao.getTotalUsersOfEachRole("Provider Insurance");
-        int numOfCustomer = uDao.getTotalUsersOfEachRole("Customer");
+        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
+        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
+        int numOfManager = uDao.getTotalUsers("RoleID", 3);
+        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
+        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
 
         request.setAttribute("totalUsers", totalUsers);
         request.setAttribute("numOfAdmin", numOfAdmin);

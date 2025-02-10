@@ -265,24 +265,7 @@
                 setTimeout(closeNotification, 5000);
             }
         </script>
-        <!-- Error Modal -->
-        <div id="errorModal" class="modal ${not empty requestScope.err ? 'show' : ''}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-icon">
-                        <i class="fa fa-exclamation-circle"></i>
-                    </div>
-                    <h3 class="modal-title">Error</h3>
-                </div>
-                <div class="modal-body">
-                    ${requestScope.err}
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-close" onclick="closeModal()">OK</button>
-                </div>
-            </div>
-        </div>
-
+        
         <script>
             function closeModal() {
                 const modal = document.getElementById('errorModal');
