@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.AssetDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -60,7 +61,7 @@ public class ListAsset extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO dao = new UserDAO();
+        AssetDAO dao = new AssetDAO();
         List<Asset> data = dao.selectAllAssets();
         request.setAttribute("data", data);
         request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
@@ -80,7 +81,7 @@ public class ListAsset extends HttpServlet {
 
         String action = request.getParameter("action");
         String assetId = request.getParameter("assetid");
-        UserDAO dao = new UserDAO();
+        AssetDAO dao = new AssetDAO();
         try {
             int id = Integer.parseInt(assetId);
             Asset a = dao.getAssetById(id);
@@ -91,8 +92,7 @@ public class ListAsset extends HttpServlet {
                 case "accept":
                     a.setStatus(true);
                     dao.updateAsset(a);
-                   
-              
+
                     break;
                 case "deny":
                     a.setStatus(false);
