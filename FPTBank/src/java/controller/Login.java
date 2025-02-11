@@ -62,14 +62,14 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String fromRegister = request.getParameter("fromRegister");
-        String roleErr = request.getParameter("roleErr");
+        String roleErr = request.getParameter("RoleErr");
         if (fromRegister != null && fromRegister.equals("true")) {
             String message = "You created an account successfully!";
             request.setAttribute("message", message);
         }
         if (roleErr != null && roleErr.equals("true")) {
             String message = "Please log in to access this site!";
-            request.setAttribute("roleErr", roleErr);
+            request.setAttribute("message", message);
         }
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }

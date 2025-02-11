@@ -355,8 +355,8 @@
                 <img src="assets/images/avatars/01.png" alt="">
             </div>
             <div class="user-info">
-                <h5 class="mb-0 user-name">${sessionScope.admin.username}</h5>
-                <p class="mb-0 user-designation">${sessionScope.admin.email}</p>
+                <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>
+                <p class="mb-0 user-designation">${sessionScope.account.email}</p>
             </div>
         </div>
 

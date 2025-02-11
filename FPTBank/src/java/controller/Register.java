@@ -13,9 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import model.User;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -59,6 +60,18 @@ public class Register extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        UserDAO udao = new UserDAO();
+        JSONArray usernameArray = new JSONArray();
+        JSONArray phoneArray = new JSONArray();
+        JSONArray cccdArray = new JSONArray();
+        for (User user : udao.selectAllUser()) {
+            usernameArray.add(user.getUsername());
+            phoneArray.add(user.getPhone());
+            cccdArray.add(user.getCCCD());
+        }
+        request.setAttribute("usernameArray", usernameArray);
+        request.setAttribute("phoneArray", phoneArray);
+        request.setAttribute("cccdArray", cccdArray);
         request.getRequestDispatcher("register.jsp").forward(request, response);
     } 
 
@@ -72,18 +85,22 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
         String gender = request.getParameter("gender");
         String dob_raw = request.getParameter("dob");
+        String image = request.getParameter("image");
         String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        String CCCD = request.getParameter("CCCD");
         Date dob = Date.valueOf(dob_raw);
-        User userToAdd = new User(0, username, password, name,"", phone, email, dob, (gender.equals("Male")),"", "", 5, true, null,null);
+        User userToAdd = new User(0, username, password, name,image, phone, " ", dob, (gender.equals("Male")), address, CCCD, 5, true, null,null);
         UserDAO udao = new UserDAO();
         udao.addUserReturnRow(userToAdd);
-        response.sendRedirect("/timibank/login?fromRegister=true");
+        session.setAttribute("userToAdd", userToAdd);
+        response.sendRedirect("/timibank/register-email");
     }
 
     /** 

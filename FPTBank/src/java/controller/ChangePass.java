@@ -75,7 +75,7 @@ public class ChangePass extends HttpServlet {
         String emailr = request.getParameter("emailr");
         String new_password = request.getParameter("new-password");
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.checkUserByEmail(emailr);
+        User user = userDAO.selectAnUserByConditions(0, "", "", emailr);
         if (user != null) {
             user.setPassword(new_password);
             userDAO.updateAUser(user);

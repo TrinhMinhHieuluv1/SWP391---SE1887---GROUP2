@@ -145,11 +145,11 @@
                 top: -100px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+                background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
                 padding: 20px 30px;
                 border-radius: 15px;
-                box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3),
-                           0 0 0 1px rgba(76, 175, 80, 0.2);
+                box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3),
+                           0 0 0 1px rgba(220, 53, 69, 0.2);
                 display: flex;
                 align-items: center;
                 gap: 15px;
@@ -186,7 +186,7 @@
                 100% { transform: scale(1); }
             }
             .notification-icon i {
-                color: #4CAF50;
+                color: #dc3545;
                 font-size: 1.4em;
             }
             .notification-content {
@@ -240,17 +240,16 @@
         <!-- Error Notification -->
         <div id="notification" class="notification ${not empty requestScope.err or not empty requestScope.message or param.roleErr eq 'true' ? 'show' : ''}">
             <div class="notification-icon">
-                <i class="fa fa-${not empty requestScope.message ? 'check-circle' : 'exclamation-circle'}"></i>
+                <i class="fa fa-exclamation-circle"></i>
             </div>
             <div class="notification-content">
-                <h3 class="notification-title">${not empty requestScope.message ? 'Success' : 'Error'}</h3>
-                <p class="notification-message">
-                    ${not empty requestScope.message ? requestScope.message : not empty requestScope.err ? requestScope.err : 'You do not have permission to access this page!'}
+                <h4 class="notification-title">Error</h4>
+                <p class="notification-text">
+                    ${not empty requestScope.err ? requestScope.err : 
+                      not empty requestScope.message ? requestScope.message : 
+                      param.roleErr eq 'true' ? 'Access Denied' : ''}
                 </p>
             </div>
-            <button class="notification-close" onclick="closeNotification()">
-                <i class="fa fa-times"></i>
-            </button>
         </div>
 
         <script>

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -63,8 +64,8 @@ public class CustomerControl extends HttpServlet {
         try {
 
             int cidd = Integer.parseInt(cid);
-            UserDAO dao = new UserDAO();
-            Customer c = dao.getUserbyCid(cidd);
+            CustomerDAO dao = new CustomerDAO();
+            Customer c = dao.getCustomerById(cidd);
             if (c != null) {
                 request.setAttribute("dataC", c);
                 request.getRequestDispatcher("customerDetail.jsp").forward(request, response);

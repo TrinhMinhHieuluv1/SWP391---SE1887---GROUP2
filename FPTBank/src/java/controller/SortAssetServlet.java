@@ -24,7 +24,7 @@ import model.Asset;
  *
  * @author tiend
  */
-@WebServlet(name = "SortAssetServlet", urlPatterns = {"/sort"})
+@WebServlet(name = "SortAssetServlet", urlPatterns = {"/manager/sort"})
 public class SortAssetServlet extends HttpServlet {
 
     /**
