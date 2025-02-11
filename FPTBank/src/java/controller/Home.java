@@ -55,7 +55,7 @@ public class Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String roleErr = request.getParameter("roleErr");
+        String roleErr = request.getParameter("RoleErr");
         if (roleErr != null && roleErr.equals("true")){
             request.setAttribute("message", "You do not have permission to access this website.");
         }

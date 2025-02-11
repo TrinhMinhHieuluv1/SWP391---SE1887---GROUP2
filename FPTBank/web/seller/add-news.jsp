@@ -14,7 +14,7 @@
         <title>Add News</title>
 
         <!-- CKEditor -->
-        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js"></script>
 
         <style>
             * {
@@ -190,62 +190,13 @@
 
         <script>
             // Initialize CKEditor
-            var editor = CKEDITOR.replace('description', {
-                height: 300,
-                removeButtons: 'Image',
-                enterMode: CKEDITOR.ENTER_BR,
-                shiftEnterMode: CKEDITOR.ENTER_P,
-                autoParagraph: false,
-                fillEmptyBlocks: false,
-                removePlugins: 'div,autolink',
-                toolbar: [
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
-                    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                    { name: 'links', items: [ 'Link', 'Unlink' ] },
-                    { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-                    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'tools', items: [ 'Maximize' ] }
-                ]
-            });
+            CKEDITOR.replace('description');
 
             // Function to update image preview
             function updateImagePreview(url) {
                 const preview = document.getElementById('imagePreview');
                 preview.src = url;
             }
-
-            function prepareSubmit() {
-                // Get CKEditor content
-                var content = CKEDITOR.instances.description.getData();
-                
-                // Remove all HTML tags except allowed formatting
-                content = content.replace(/<p[^>]*>/gi, '')
-                               .replace(/<\/p>/gi, '<br>')
-                               .replace(/<div[^>]*>/gi, '')
-                               .replace(/<\/div>/gi, '<br>')
-                               .replace(/[\n\r]+/g, '')
-                               .replace(/(<br\s*\/?>\s*)+$/g, ''); // Remove trailing <br>
-                
-                // Clean up any extra spaces and line breaks
-                content = content.trim();
-                
-                // Update both the original textarea and our hidden input
-                CKEDITOR.instances.description.setData(content);
-                document.getElementById('description').value = content;
-                document.getElementById('cleanDescription').value = content;
-                
-                return true;
-            }
-
-            // Clean initial content
-            window.onload = function() {
-                var initialContent = CKEDITOR.instances.description.getData();
-                initialContent = initialContent.replace(/<p[^>]*>/gi, '')
-                                            .replace(/<\/p>/gi, '<br>')
-                                            .replace(/[\n\r]+/g, '')
-                                            .trim();
-                CKEDITOR.instances.description.setData(initialContent);
-            };
         </script>
     </body>
 </html>

@@ -35,13 +35,29 @@
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
         <script>
-            function validateForm(event){
-                if (checkConfirmPassword()===false) {
+            function validateForm(event) {
+                if (checkConfirmPassword() === false) {
                     alert("Confirm password doesn't match password. Try again!");
                     event.preventDefault();
                 }
+                if (validatePhone() === false) {
+                    alert("Invalid phone number. Try again!");
+                    event.preventDefault();
+                }
+                if (validateCCCD() === false) {
+                    alert("Invalid CCCD. Try again!");
+                    event.preventDefault();
+                }
+                if (checkPhone() === false) {
+                    alert("Invalid phone number. Try again!");
+                    event.preventDefault();
+                }
+                if (checkCCCD() === false) {
+                    alert("Invalid CCCD. Try again!");
+                    event.preventDefault();
+                }
             }
-            
+
             function checkConfirmPassword() {
                 const password = document.getElementById('password').value;
                 const confirmPassword = document.getElementById('confirm-password').value;
@@ -55,6 +71,75 @@
                 }
             }
 
+            function checkUsername() {
+                const usernameToCheck = document.getElementById('username').value;
+                const err = document.getElementById('duplicated-username');
+                const usernameArray = <%=request.getAttribute("usernameArray")%>;
+                if (usernameArray.includes(usernameToCheck)) {
+                    err.style.display = 'block';
+                    return false;
+                } else {
+                    err.style.display = 'none';
+                    return true;
+                }
+            }
+            
+            function checkPhone() {
+                const phoneToCheck = document.getElementById('phone').value;
+                const err = document.getElementById('duplicated-phone');
+                const phoneArray = <%=request.getAttribute("phoneArray")%>;
+                if (phoneArray.includes(phoneToCheck)) {
+                    err.style.display = 'block';
+                    return false;
+                } else {
+                    err.style.display = 'none';
+                    return true;
+                }
+            }
+            
+            function checkCCCD() {
+                const cccdToCheck = document.getElementById('CCCD').value;
+                const err = document.getElementById('duplicated-cccd');
+                const cccdArray = <%=request.getAttribute("cccdArray")%>;
+                if (cccdArray.includes(cccdToCheck)) {
+                    err.style.display = 'block';
+                    return false;
+                } else {
+                    err.style.display = 'none';
+                    return true;
+                }
+            }
+
+            // Function to validate phone number
+            function validatePhone() {
+                const phone = document.getElementById('phone').value;
+                const err = document.getElementById('err-phone');
+                const phoneRegex = /^0[0-9]{9}$/;
+                if (phoneRegex.test(phone)) {
+                    err.style.display = 'none';
+                    return true;
+                } else {
+                    err.style.display = 'block';
+                    return false;
+                }
+                ;
+            }
+
+            // Function to validate CCCD (Citizen Identification Number)
+            function validateCCCD() {
+                const cccd = document.getElementById('CCCD').value;
+                const err = document.getElementById('err-cccd');
+                const cccdRegex = /^[0-9]{12}$/;
+                if (cccdRegex.test(cccd)) {
+                    err.style.display = 'none';
+                    return true;
+                } else {
+                    err.style.display = 'block';
+                    return false;
+                }
+                ;
+            }
+
             function togglePassword(id) {
                 const passwordField = document.getElementById(id);
                 const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -63,17 +148,16 @@
                 eyeIcon.classList.toggle('fa-eye');
                 eyeIcon.classList.toggle('fa-eye-slash');
             }
+
         </script>
     </head>
 
     <body>
         <!-- wrapper -->
         <div id="smooth-wrapper" class="mil-wrapper">
-
             <!-- preloader -->
-          <div class="mil-preloader">
-           
-        </div>
+            <div class="mil-preloader">
+            </div>
             <!-- preloader end -->
 
             <!-- scroll progress -->
@@ -164,25 +248,35 @@
                         <div class="row justify-content-center">
                             <div class="col-xl-5">
                                 <form action="register" method="post" onsubmit="validateForm(event)">
-                                    <input id="username" class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" value="${requestScope.username}" required oninput="checkDuplicatedUsername()">
+                                    <input id="username" class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" required oninput="checkUsername()">
+                                    <div id="duplicated-username" style="color: red; display: none">Username already exists. Please choose another!</div>
                                     <div style="position: relative; display: inline-block; width: 100%;">
-                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Password" name="password" value="${requestScope.password}" required>
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Password" name="password" required>
                                         <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('password')"></span>
                                     </div>
                                     <div style="position: relative; display: inline-block; width: 100%;">
-                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" type="password" id="confirm-password" class="mil-input mil-up mil-mb-15" placeholder="Confirm Password" name="confirm-password" oninput="checkConfirmPassword()" value="${requestScope.password}"  required>
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" type="password" id="confirm-password" class="mil-input mil-up mil-mb-15" placeholder="Confirm Password" name="confirm-password" oninput="checkConfirmPassword()" required>
                                         <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#confirm-password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('confirm-password')" style=""></span>
                                     </div>
                                     <div id="err-confirm-password" style="color: red; display: none">Confirm Password is incorrect. Try again!</div>
-                                    <input type="text" class="mil-input mil-up mil-mb-15" placeholder="Full Name" name="name" value="${requestScope.name}"  required>
-                                    <select name="gender" class="mil-input mil-up mil-mb-15">
+
+                                    <input type="text" class="mil-input mil-up mil-mb-15" placeholder="Full Name" name="name" required>
+                                    <input type="text" style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="image" name="image" placeholder="Image"
+                                           class="form-control" onchange="updateImagePreview(this.value)">
+                                    <img id="imagePreview" src="" class="image-preview">
+                                    <select name="gender" class="mil-input mil-up mil-mb-15" required>
                                         <option value="" disabled selected hidden style="color: black">Gender</option>
                                         <option value="Male" ${requestScope.gender.equals("Male")?"selected":""}>Male</option>
                                         <option value="Female" ${requestScope.gender.equals("Female")?"selected":""}>Female</option>
                                     </select>
-                                    <input type="date" class="mil-input mil-up mil-mb-15" name="dob" value="${requestScope.dob}" placeholder="Date of birth">
-                                    <input type="text" class="mil-input mil-up mil-mb-15" name="phone" value="${requestScope.phone}" placeholder="Phone">
-                                    <input type="text" class="mil-input mil-up mil-mb-15" name="email" value="${requestScope.email}" placeholder="Email">
+                                    <input type="date" class="mil-input mil-up mil-mb-15" name="dob" placeholder="Date of birth">
+                                    <input type="text" class="mil-input mil-up mil-mb-15" name="phone" placeholder="Phone" id="phone" oninput="validatePhone(); checkPhone()" required>
+                                    <div id="err-phone" style="color: red; display: none">Phone has to have 10 digits and start with 0. Try again!</div>
+                                    <div id="duplicated-phone" style="color: red; display: none">Phone already exists. Please choose another!</div>
+                                    <input type="text" class="mil-input mil-up mil-mb-15" name="address" placeholder="Address">
+                                    <input type="text" class="mil-input mil-up mil-mb-15" name="CCCD" placeholder="CCCD" id="CCCD" oninput="validateCCCD(); checkCCCD()" required>
+                                    <div id="err-cccd" style="color: red; display: none">CCCD has to have 12 digits. Try again!</div>
+                                    <div id="duplicated-cccd" style="color: red; display: none">CCCD already exists. Please choose another!</div>
                                     <input required type="checkbox"> <p class="mil-text-xs mil-soft" style="margin-bottom: 10px; display: inline">Do you agree to <a href="services.jsp" class="mil-accent">our terms and conditions</a>.</p>
                                     <div class="mil-up mil-mb-30">
                                         <button type="submit" class="mil-btn mil-md mil-fw">Create Account</button>
@@ -205,6 +299,13 @@
         </div>
         <!-- wrapper end -->
 
+        <script>
+            // Function to update image preview
+            function updateImagePreview(url) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = url;
+            }
+        </script>
         <!-- jquery js -->
         <script src="js/plugins/jquery.min.js"></script>
 

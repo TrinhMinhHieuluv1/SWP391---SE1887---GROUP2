@@ -79,7 +79,7 @@ public class ForgotPass extends HttpServlet {
         String code = getRandom();
         Emails email = new Emails();
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.checkUserByEmail(emailr);
+        User user = userDAO.selectAnUserByConditions(0, "", "", emailr);
         if (user != null) {
             email.sendMess(emailr, "Recovery Password", code);
             request.setAttribute("emailr", emailr);

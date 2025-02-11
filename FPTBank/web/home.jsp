@@ -158,7 +158,7 @@
     <body>
 
         <!-- Error Notification -->
-        <div id="notification" class="notification ${param.roleErr eq 'true' ? 'show' : ''}">
+        <div id="notification" class="notification ${param.RoleErr eq 'true' ? 'show' : ''}">
             <div class="notification-icon">
                 <i class="fa fa-exclamation-circle"></i>
             </div>
