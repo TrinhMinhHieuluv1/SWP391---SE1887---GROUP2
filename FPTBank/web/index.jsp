@@ -78,7 +78,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="about.jsp">About</a>
+                            <a href="about">About</a>
                         </li>
                         <li>
                             <a href="services.jsp">Services</a>
@@ -90,9 +90,11 @@
                                 <li><a href="publication.jsp">Blog details</a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="contact.jsp">Contact</a>
-                        </li>
+                        <c:if test="${sessionScope.account != null}">
+                                <li>
+                                    <a href="contact.jsp">Feedback</a>
+                                </li>
+                            </c:if>
                         <li class="mil-has-children">
                             <a href="#.">Pages</a>
                             <ul>
@@ -120,9 +122,10 @@
                             <li class="mil-has-children ">
                                 <a href="#." class="mil-btn mil-sm">My Account</a>
                                 <ul>
-                                    <li><a href="/audio/profile">My Profile</a></li>
+                                    <li><a href="profile.jsp">My Profile</a></li>
                                     <li><a href="/audio/change_pass">Change Password</a></li>
                                     <li><a href="/audio/purchase">My Purchase</a></li>
+                                    <li><a href="feedback.jsp">My Feedback</a></li>
                                     <li><a href="/audio/signout">Sign out</a></li>
 
 

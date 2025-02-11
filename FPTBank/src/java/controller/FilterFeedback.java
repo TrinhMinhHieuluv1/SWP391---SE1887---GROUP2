@@ -4,7 +4,8 @@
  */
 package controller;
 
-import dal.UserDAO;
+import dal.CustomerDAO;
+import dal.FeedbackDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +14,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.User;
+import java.util.List;
+import model.Feedback;
 
 /**
  *
- * @author HP
+ * @author ACER
  */
-@WebServlet(name = "changepassword", urlPatterns = {"/change-password"})
-public class ChangePassword extends HttpServlet {
+@WebServlet(name = "FilterFeedback", urlPatterns = {"/filterfeedback"})
+public class FilterFeedback extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +41,10 @@ public class ChangePassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangePassword</title>");
+            out.println("<title>Servlet FilterFeedback</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ChangePassword at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FilterFeedback at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +62,54 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("change-password.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        String date_raw = request.getParameter("date");
+        String search = request.getParameter("search");
+        CustomerDAO cdao = new CustomerDAO();
+        FeedbackDAO dao = new FeedbackDAO();
+        String error = "";
+        if (date_raw == null && (search.isEmpty() || search == null)) {
+            error = "Can't filter";
+            request.setAttribute("error", error);
+            request.getRequestDispatcher("feedback.jsp").forward(request, response);
+            return;
+        }
+        if (date_raw != null && (search == null || search.isEmpty())) {
+            try {
+                if (date_raw == null || date_raw.trim().isEmpty()) {
+                    throw new NumberFormatException();
+                }
+
+                String[] parts = date_raw.trim().split("-");
+
+                if (parts.length != 3) {
+                    throw new NumberFormatException();
+                }
+
+                int year = Integer.parseInt(parts[0].trim());
+                int month = Integer.parseInt(parts[1].trim());
+                int date = Integer.parseInt(parts[2].trim());
+
+                int uid = (int) session.getAttribute("uid");
+                int cid = cdao.getCustomerIdByUserId(uid);
+
+                List<Feedback> list = dao.getFeedbacksFromDate(date, month, year, cid);
+                session.setAttribute("listfeedback", list);
+
+                request.getRequestDispatcher("feedback.jsp").forward(request, response);
+
+            } catch (NumberFormatException e) {
+                error = "Can't filter";
+                request.setAttribute("error", error);
+                request.getRequestDispatcher("feedback.jsp").forward(request, response);
+            }
+
+        } else if (search != null && !search.isEmpty()) {
+            List<Feedback> list2 = dao.searchFeedbackByMessage(search);
+            session.setAttribute("listfeedback", list2);
+            request.getRequestDispatcher("feedback.jsp").forward(request, response);
+        }
+
     }
 
     /**
@@ -74,22 +123,7 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String old_password = request.getParameter("password");
-        String new_password = request.getParameter("new-password");
-        UserDAO udao = new UserDAO();
-        if (udao.checkAuthen(username, old_password) == null) {
-            String err = "Username or password is incorrect. Please try again!";
-            request.setAttribute("err", err);
-            request.getRequestDispatcher("change-password.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            User account = (User) session.getAttribute("account");
-            account.setPassword(new_password);
-            udao.updateAUser(account);
-            session.removeAttribute("account");
-            response.sendRedirect("/timibank/login");
-        }
+        processRequest(request, response);
     }
 
     /**

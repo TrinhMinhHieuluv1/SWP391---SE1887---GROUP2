@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.UserDAO;
+import dal.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,15 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
+import model.News;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "changepassword", urlPatterns = {"/change-password"})
-public class ChangePassword extends HttpServlet {
+@WebServlet(name = "UpdateNews", urlPatterns = {"/seller/update-news"})
+public class UpdateNews extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class ChangePassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangePassword</title>");
+            out.println("<title>Servlet UpdateNews</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ChangePassword at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateNews at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +59,25 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("change-password.jsp").forward(request, response);
+        NewsDAO ndao = new NewsDAO();
+        String NewsID_raw = request.getParameter("NewsID");
+        String changeStatus = request.getParameter("changeStatus");
+        if (NewsID_raw != null && !NewsID_raw.isEmpty()) {
+            int NewsID = Integer.parseInt(NewsID_raw);
+            News newsToUpdate = ndao.selectANewsByNewsID(NewsID);
+            if (changeStatus != null && changeStatus.equals("true")) {
+                if (newsToUpdate.isStatus()) {
+                    newsToUpdate.setStatus(false);
+                } else {
+                    newsToUpdate.setStatus(true);
+                }
+                ndao.updateANews(newsToUpdate);
+                response.sendRedirect("/timibank/seller/news-management?fromUpdate=true");
+                return;
+            }
+            request.setAttribute("newsToUpdate", newsToUpdate);
+            request.getRequestDispatcher("update-news.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -74,22 +91,17 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String old_password = request.getParameter("password");
-        String new_password = request.getParameter("new-password");
-        UserDAO udao = new UserDAO();
-        if (udao.checkAuthen(username, old_password) == null) {
-            String err = "Username or password is incorrect. Please try again!";
-            request.setAttribute("err", err);
-            request.getRequestDispatcher("change-password.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            User account = (User) session.getAttribute("account");
-            account.setPassword(new_password);
-            udao.updateAUser(account);
-            session.removeAttribute("account");
-            response.sendRedirect("/timibank/login");
-        }
+        NewsDAO ndao = new NewsDAO();
+
+        String NewsID_raw = request.getParameter("NewsID");
+        int NewsID = Integer.parseInt(NewsID_raw);
+        News newsToUpdate = ndao.selectANewsByNewsID(NewsID);
+        newsToUpdate.setTitle(request.getParameter("Title"));
+        newsToUpdate.setDescription(request.getParameter("Description"));
+        newsToUpdate.setImage(request.getParameter("Image"));
+        ndao.updateANews(newsToUpdate);
+        response.sendRedirect("/timibank/seller/news-management?fromUpdate=true");
+
     }
 
     /**

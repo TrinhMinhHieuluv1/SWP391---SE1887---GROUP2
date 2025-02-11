@@ -11,7 +11,7 @@ import java.sql.*;
 
 public class UserDAO extends DBContext {
 
-    public User checkAuthen(String username, String password) {
+        public User checkAuthen(String username, String password) {
         String sql = "SELECT * FROM [User] WHERE Username=? AND Password=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -47,7 +47,7 @@ public class UserDAO extends DBContext {
             sql = sql + " AND UserID=" + UserID;
         }
         if (!Username.isEmpty()) {
-            sql = sql + " AND Username='" + Username +"'";
+            sql = sql + " AND Username='" + Username + "'";
         }
         if (!Phone.isEmpty()) {
             sql = sql + " AND Phone='" + Phone + "'";
@@ -215,7 +215,6 @@ public class UserDAO extends DBContext {
     // kiểm tra sự tồn tại của username / cccd / phonenum / email
     public boolean isFieldExistsToAdd(String fieldName, String value) {
         String query = "SELECT COUNT(*) FROM [User] WHERE " + fieldName + " = ?";
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, value);
             ResultSet rs = stmt.executeQuery();
@@ -278,7 +277,7 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
-    //TÃ¬m kiáº¿m user dá»±a trÃªn keyword dc nháº­p vÃ o 
+    //Tìm kiếm user dựa trên keyword dc nhập vào 
     public List<User> searchUsers(String keyword, int page, int pageSize) {
         List<User> listUsers = new ArrayList<>();
 
@@ -312,8 +311,6 @@ public class UserDAO extends DBContext {
             st.setString(9, "%" + keyword + "%");
             st.setString(10, "%" + keyword + "%");
             st.setString(11, "%" + keyword + "%");
-
-            // Thiáº¿t láº­p phÃ¢n trang
             st.setInt(12, (page - 1) * pageSize);
             st.setInt(13, pageSize);
 
@@ -344,7 +341,7 @@ public class UserDAO extends DBContext {
         return listUsers;
     }
 
-    // láº¥y ra tá»•ng sá»‘ lÆ°á»£ng user sau khi search user by keyword
+    // lấy ra tổng số lượng user sau khi search user by keyword
     public int getTotalUsersAfterSearching(String keyword) {
         String sql = """
          SELECT COUNT(*) FROM [dbo].[User] 
@@ -389,7 +386,8 @@ public class UserDAO extends DBContext {
     public List<User> sortListUser(String sortBy, String typeOfSort, int page, int pageSize) {
         List<User> listUser = new ArrayList<>();
 
-        // XÃ¡c Ä‘á»‹nh cá»™t cáº§n sáº¯p xáº¿p
+
+        // Xác định cột cần sắp xếp
         String column = sortBy.equalsIgnoreCase("CreatedAt") ? "CreatedAt" : "FullName";
         String order = typeOfSort.equalsIgnoreCase("asc") ? "ASC" : "DESC";
 
@@ -398,7 +396,7 @@ public class UserDAO extends DBContext {
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, (page - 1) * pageSize); // TÃ­nh sá»‘ dÃ²ng cáº§n bá»  qua
+            st.setInt(1, (page - 1) * pageSize); // TÃ­nh sá»‘ dÃ²ng cáº§n bá»� qua
             st.setInt(2, pageSize); // Sá»‘ lÆ°á»£ng user trÃªn má»—i trang
 
             ResultSet rs = st.executeQuery();
@@ -439,9 +437,8 @@ public class UserDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
 
             st.setInt(1, filterValue);
-            st.setInt(2, (page - 1) * pageSize); // Sá»‘ dÃ²ng cáº§n bá»  qua
-            st.setInt(3, pageSize); // Sá»‘ lÆ°á»£ng user trÃªn má»—i trang
-
+            st.setInt(2, (page - 1) * pageSize);
+            st.setInt(3, pageSize);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -468,20 +465,18 @@ public class UserDAO extends DBContext {
         return listUser;
     }
 
-    // tÃ­nh sá»‘ lÆ°á»£ng user theo RoleID / Status / toÃ n bá»™ user hiá»‡n cÃ³
-    // fieldName = null, fieldValue = null náº¿u muá»‘n count toÃ n bá»™ user
+    // tính số lượng user theo RoleID / Status / toàn bộ user hiện có
+    // fieldName = null, fieldValue = null nếu muốn count toàn bộ user
     public int getTotalUsers(String fieldName, Integer fieldValue) {
         String sql = "SELECT count(*) FROM [dbo].[User]";
-
-        // Náº¿u cÃ³ Ä‘iá» u kiá»‡n lá» c, thÃªm WHERE vÃ o SQL
+        // Nếu có điều kiện lọc, thêm WHERE vào SQL
         if (fieldName != null && fieldName != null) {
             sql += " WHERE " + fieldName + " = ?";
         }
-
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
 
-            // Náº¿u cÃ³ Ä‘iá» u kiá»‡n lá» c, set giÃ¡ trá»‹ tham sá»‘
+            // Nếu có điều kiện lọc, set giá trị tham số
             if (fieldValue != null && fieldValue != null) {
                 stmt.setInt(1, fieldValue);
             }
@@ -497,12 +492,13 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
-    //Láº¥y ra listuser á»Ÿ trang hiá»‡n táº¡i 
+
+    //Lấy ra listuser ở trang hiện tại 
     public ArrayList<User> getListUserByPage(int page, int pageSize) {
         ArrayList<User> listUser = new ArrayList<>();
 
         String sql = "select * from [User] order by [UserID] offset ? rows fetch next ? rows only";
-        // offset ? rows:    Bá»  qua má»™t sá»‘ dÃ²ng dá»±a trÃªn sá»‘ trang.
+        // offset ? rows:    Bá»� qua má»™t sá»‘ dÃ²ng dá»±a trÃªn sá»‘ trang.
         // fetch next ? rows only:  Láº¥y tiáº¿p sá»‘ dÃ²ng tÆ°Æ¡ng á»©ng vá»›i pageSize.
 
         try {
@@ -563,7 +559,7 @@ public class UserDAO extends DBContext {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; 
+                    return rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
