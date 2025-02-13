@@ -3,7 +3,51 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
+//checkvalidate
+function validateLoanRate() {
+            let username = document.getElementById("loanRate").value;
+            let errorSpan = document.getElementById("nameError");
+            let pattern = /^(0|[1-9]\d*)([.,]\d+)?$/;
+            if (!pattern.test(username)) {
+                errorSpan.innerText = "LoanRate không hợp lệ !! phải là số dương, không chứa chữ cái, không kí tự đặc biệt ngoài[.,]";
+                errorSpan.style.color = "red";
+                errorSpan.style.fontSize = "13px";
+            } else {
+                errorSpan.innerText = "";
+            }
+        }
+        
+function validateTerm() {
+            let username = document.getElementById("duration").value;
+            let errorSpan = document.getElementById("nameError2");
+            let pattern = /^[1-9]\d*$/;
+            if (!pattern.test(username)) {
+                errorSpan.innerText = "Kì hạn không hợp lệ !! phải là số nguyên dương, không chứa chữ cái, không kí tự đặc biệt";
+                errorSpan.style.color = "red";
+                errorSpan.style.fontSize = "13px";
+            } else {
+                errorSpan.innerText = "";
+            }
+        }        
 
+   //thansg
+   document.addEventListener("DOMContentLoaded", () => {
+      const selectElement = document.getElementById('numberSelect');
+
+      if (!selectElement) {
+        console.error("Không tìm thấy phần tử có id 'numberSelect'.");
+        return; // Dừng thực thi nếu không tìm thấy phần tử
+      }
+
+      for (let i = 1; i <= 180; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        selectElement.appendChild(option);
+      }
+    });
+    
+    
 function load(selector, path) {
     const cached = localStorage.getItem(path);
     if (cached) {
