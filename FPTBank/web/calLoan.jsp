@@ -3,7 +3,10 @@
     Created on : Jan 24, 2025, 10:49:03 AM
     Author     : ADMIN
 --%>
-
+<%@ page import="java.time.LocalDate" %>
+<%
+    String today = LocalDate.now().toString();
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,7 +36,7 @@
         <!-- Favicon -->
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
-        
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     </head>
     <style>
@@ -147,7 +150,7 @@
             cursor: pointer;
             margin-top: 50px;
         }
-        
+
         .cal-form {
             width: 50%;
         }
@@ -216,7 +219,7 @@
             margin-top: 10px;
             font-size: 12px;
             color: #666;
-              
+
         }
         .red{
             color: red;
@@ -225,73 +228,56 @@
             font-weight: bold;
             color: black;
         }
+        .monthly-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .monthly-table th, .monthly-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .monthly-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .monthly-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .monthly-table tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
+
     <body>
+        <script type="text/javascript">
+            function formatNumber(input) {
+                // Loại bỏ tất cả các ký tự không phải số
+                let value = input.value.replace(/[^0-9]/g, '');
+
+                // Thêm dấu phẩy sau mỗi 3 chữ số
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+                // Gán giá trị đã định dạng lại vào input
+                input.value = value;
+            }
+            function validateInput(event) {
+                // Chỉ cho phép nhập các ký tự số
+                const charCode = (event.which) ? event.which : event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    event.preventDefault();
+                    return false;
+                }
+                return true;
+            }
+        </script>
         <div id="smooth-wrapper" class="mil-wrapper">
-            <!-- scroll progress -->
-            <div class="mil-progress-track">
-                <div class="mil-progress"></div>
-            </div>
-            <!-- scroll progress end -->
-
-            <!-- back to top -->
-            <div class="progress-wrap active-progress"></div>
-
-            <!-- top panel end -->
-            <div class="mil-top-panel cal-panel" id="mil-top-panel">
-                <div class="container">
-                    <a href="index.jsp" class="mil-logo">
-                        <img src="img/logo1.png" alt="Plax" width="200">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children">
-                                <a href="#.">Home</a>
-                                <ul>
-                                    <li><a href="index.jsp">Mở tài khoản</a></li>
-                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.jsp">Type 3</a></li>
-                                    <li><a href="home-4.jsp">Type 4</a></li>
-                                    <li><a href="home-5.jsp">Type 5</a></li>
-
-                                </ul>
-                            </li>
-                            <li class="mil-active">
-                                <a href="about">About</a>
-                            </li>
-                            <li>
-                                <a href="services.jsp">Services</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="contact.jsp">Contact</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mil-menu-buttons">
-                        <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
-                        <div class="mil-menu-btn">
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <%@ include file="header.jsp"%>
 
             <!-- top panel end -->
 
@@ -319,21 +305,30 @@
                             <div class="form-group">
                                 <label for="loanAmount" class="form-group__label">Số tiền vay</label>
                                 <div class="form-group__input-wrap">
-                                    <input type="text" class="form-group__input" id="loanAmount" name="loanAmount" value="${loanAmount}" required>
+                                    <input type="text" class="form-group__input" id="loanAmount" name="loanAmount" value="${loanAmount}" 
+                                           oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
                                     <span class="sub-text-input">VNĐ</span>
                                 </div>
                             </div>
                             <div class="form-group" >
                                 <label for="loanRate" class="form-group__label">Lãi suất vay</label>
-                                <div class="form-group__input-wrap">
-                                    <input type="number" class="form-group__input" step="0.01" value="${loanRate}" id="loanRate" name="loanRate" required>
-                                    <span class="sub-text-input">%/năm</span>
+                                <div class="form-group__input-wrap" >
+
+                                    <input class="form-group__input" step="0.01" type="number" id="loanRate" value="${loanRate}" name="loanRate" 
+                                           required
+                                           pattern="^[a-zA-Z0-9_.]{6,20}$" 
+                                           title="LoanRate phải là số dương, không chứa chữ cái, không kí tự đặc biệt ngoài[.,]"
+                                           oninput="validateLoanRate()">
+                                    <span id="nameError"  class="sub-text-input">%/năm</span>
                                 </div>
+
                             </div>
                             <div class="form-group" >
                                 <label for="loanMonths" class="form-group__label">Kỳ hạn vay</label>
                                 <div class="form-group__input-wrap">
-                                    <input type="text" class="form-group__input" value="${loanMonths}" id="loanMonths" name="loanMonths" required>
+                                    <select style="width: 50%" class="form-group__input" name="loanMonths" id="numberSelect">
+                                        <option  value="${loanMonths}" selected >${loanMonths}</option>
+                                    </select>
                                     <span class="sub-text-input">Tháng</span>
                                 </div>
                             </div>
@@ -350,23 +345,85 @@
                                 </div>
 
                             </div>
+                        
+                            <div class="form-group">
+                                <label for="disbursementDate" class="form-group__label">Ngày giải ngân</label>
+                                <div class="form-group__input-wrap">
+                                    <input type="date" class="form-group__input" id="disbursementDate" name="disbursementDate" 
+                                           value="<%= today %>" required> <!-- Hiển thị ngày hiện tại -->
+                                </div>
+                            </div>
                             <button type="submit" class="btn-submit">THỰC HIỆN</button>
                         </form>
-                        <table class="result-table">
+                              <table class="result-table">
                             <tr>
                                 <th>Số tiền vay</th>
                                 <td>${loanAmount} VNĐ</td>
                             </tr>
                             <tr>
-                                <th>Số tiền lãi phải trả</th>
+                                <th>Lãi suất vay</th>
+                                <td>${loanRate} %/năm</td>
+                            </tr>
+                            <tr>
+                                <th>Kỳ hạn vay</th>
+                                <td>${loanMonths} Tháng</td>
+                            </tr>
+                            <tr>
+                                <th>Phương pháp tính</th>
+                                <td>${calculationMethod == 'reducing' ? 'Trả trên dư nợ giảm dần' : 'Trả trên dư nợ ban đầu'}</td>
+                            </tr>
+                            <tr>
+                                <th>Tổng tiền lãi</th>
                                 <td>${loanResult} VNĐ</td>
                             </tr>
                             <tr>
-                                <th>Tổng số gốc và lãi phải trả</th>
+                                <th>Tổng số tiền phải trả</th>
                                 <td style="color: red;">${total} VNĐ</td>
+                            </tr>
+                            <tr>
+                                <th>Ngày giải ngân</th>
+                                <td>${today}</td> <!-- Hiển thị ngày hiện tại -->
                             </tr>
                         </table>
                     </div>
+                            <br><!-- comment -->
+                    <!-- Bảng hiển thị kết quả tổng -->
+                    <c:if test="${not empty loanResult}">
+                      
+
+                        <!-- Bảng chi tiết từng tháng -->
+                        <h3>Chi tiết từng tháng</h3>
+                        <table class="monthly-table">
+                            <tr>
+                                <th>Tháng</th>
+                                <th>Ngày thanh toán</th>
+                                <th>Số gốc còn lại</th>
+                                <th>Tiền gốc</th>
+                                <th>Tiền lãi</th>
+                                <th>Tổng tiền phải trả</th>
+                            </tr>
+                            <c:forEach var="payment" items="${monthlyPayments}">
+                                <tr>
+                                    <td>${payment.month}</td>
+                                    <td>${payment.paymentDate}</td>
+                                    <td>${payment.remainingPrincipal} VNĐ</td>
+                                    <td>${payment.principal} VNĐ</td>
+                                    <td>${payment.interest} VNĐ</td>
+                                    <td>${payment.totalPayment} VNĐ</td>
+                                </tr>
+                               
+                            </c:forEach>
+                                 <tr>
+                                    <td style="color: red;"> Tổng tiền </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>${loanAmount} VNĐ</td>
+                                    <td>${loanResult} VNĐ</td>
+                                    <td>${total} VNĐ</td>
+                                    
+                                </tr>
+                        </table>
+                    </c:if>
                     <div class="details-title">DIỄN GIẢI CHI TIẾT CÁCH TÍNH LÃI SUẤT VAY NGÂN HÀNG:</div>
                     <br/>
                     <div class="congthuc"> <div>
@@ -375,29 +432,29 @@
 
                             <br/> <div class="red">Tiền lãi hàng tháng = Dư nợ gốc x Lãi suất vay/Thời gian vay</div> <br/>
 
-                                Ví dụ:<br/>
+                            Ví dụ:<br/>
 
-                                A vay 300 triệu đồng trong 12 tháng với mức lãi suất là 12%/năm.<br/>
+                            A vay 300 triệu đồng trong 12 tháng với mức lãi suất là 12%/năm.<br/>
 
-                                Số tiền gốc phải trả ngân hàng hàng tháng là: 300 triệu/12 tháng = 25.000.000 đồng<br/>
+                            Số tiền gốc phải trả ngân hàng hàng tháng là: 300 triệu/12 tháng = 25.000.000 đồng<br/>
 
-                                Số lãi phải trả ngân hàng hàng tháng là: (300 triệu x 12%)/12 tháng = 3.000.000 đồng<br/>
+                            Số lãi phải trả ngân hàng hàng tháng là: (300 triệu x 12%)/12 tháng = 3.000.000 đồng<br/>
 
-                                Số tiền phải trả hàng tháng là 28.000.000 đồng <br/>
+                            Số tiền phải trả hàng tháng là 28.000.000 đồng <br/>
                         </div><br/><!-- comment -->
-                    <div>
-                        <h3> Cách 2: Cách tính lãi suất vay theo số dư nợ giảm dần</h3><br/>
-                        
+                        <div>
+                            <h3> Cách 2: Cách tính lãi suất vay theo số dư nợ giảm dần</h3><br/>
+
                             Trường hợp tính lãi suất vay theo số dư nợ giảm dần thì số dư nợ dựa trên số tiền thực tế còn nợ sau khi đã trừ đi phần nợ gốc người vay đã trả trong những tháng trước đó. Số dư nợ giảm dần thì tiền lãi mà người vay phải trả cũng giảm dần.<br/>
 
                             Công thức tính lãi suất theo dư nợ giảm dần cụ thể như sau:<br/>
-                        <div class="red"> - Tiền gốc hàng tháng = Số tiền vay/số tháng vay<br/>
+                            <div class="red"> - Tiền gốc hàng tháng = Số tiền vay/số tháng vay<br/>
 
-                            - Tiền lãi tháng đầu = Số tiền vay x Lãi suất vay theo tháng<br/>
+                                - Tiền lãi tháng đầu = Số tiền vay x Lãi suất vay theo tháng<br/>
 
-                            - Tiền lãi các tháng tiếp theo = Số tiền gốc còn lại x Lãi suất vay<br/></div>
+                                - Tiền lãi các tháng tiếp theo = Số tiền gốc còn lại x Lãi suất vay<br/></div>
 
-                           <br/>
+                            <br/>
 
                             Ví dụ:<br/>
 
@@ -412,106 +469,13 @@
                             Tiền lãi tháng thứ 3 = (275 triệu - 25 triệu) x 12%/12 = 2.500.000 đồng. Tổng tiền phải trả tháng thứ 3 là 25 triệu + 2,5 triệu = 27.500.000 đồng.<br/>
 
                             Các tháng tiếp theo tính tương tự như vậy cho đến khi hết nợ.<br/>
-                        
-                    </div></div>
-                   
+
+                        </div></div>
+
 
                 </div>
                 <!-- footer -->
-                   <footer class="mil-p-160-0 footer" id="footer">
-                    <div class="container">
-                        <div class="row mil-footer-top">
-                            <div class="col-xl-2">
-                                <a href="#." class=" mil-footer-logo mil-mb-60">
-                                    <img src="img/logo1.png" alt="Plax" width="150">
-                                </a>
-                            </div>
-                            <div class="col-xl-3 mil-mb-60">
-                                <h6 class="mil-mb-60">Liên kết hữu ích</h6>
-                                <ul class="mil-footer-list">
-                                    <li class="mil-text-m mil-soft mil-mb-15">
-                                        <a href="index.jsp">Home</a>
-                                    </li>
-                                    <li class="mil-text-m mil-soft mil-mb-15">
-                                        <a href="about.jsp">About Us</a>
-                                    </li>
-                                    <li class="mil-text-m mil-soft mil-mb-15">
-                                        <a href="contact.jsp">Contact Us</a>
-                                    </li>
-                                    <li class="mil-text-m mil-soft mil-mb-15">
-                                        <a href="faq.jsp">FAQs</a>
-                                    </li>
-                                    <li class="mil-text-m mil-soft mil-mb-15">
-                                        <a href="price.jsp">Pricing</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-xl-3 mil-mb-60">
-                                <h6 class="mil-mb-60">Hỗ trợ</h6>
-                                <ul class="mil-footer-list">
-                                    <li class="mil-text-m mil-soft mil-mb-15" >
-                                        <a href="mailto:nguyenquangthoai04@gmail.com" class="modal__link">Email: nguyenquangthoai04@gmail.com</a> 
-                                    </li>
-                                    <li class="mil-text-m mil-soft mil-mb-15">
-                                        <a href="tel:0967368980" class="modal__link">Liên hệ: 0967368980</a>                                        </li>
-
-                                </ul>
-                            </div>
-                            <div class="col-xl-4 mil-mb-80">
-                                <h6 class="mil-mb-60">Gửi Hỗ trợ</h6>
-                                <p class="mil-text-xs mil-soft mil-mb-15">Hãy miêu tả những thứ bạn cần hỗ trợ </p>
-                                <form action="showfb" method="post" class="mil-subscripe-form-footer">
-                                    <!-- Email Input -->
-                                    <div class="mb-3">
-                                        <input class="form-control form-control__input mil-input" type="email" placeholder="Email" name="email" required>
-                                    </div>
-                                    <!-- Tiêu đề Input -->
-                                    <div class="mb-3">
-                                        <input  class="form-control form-control__input mil-input" type="text" placeholder="Tiêu đề" name="tieude" required>
-                                    </div>
-                                    <!-- Nội dung Input -->
-                                    <div class="mb-3">
-                                        <textarea class="form-control form-control__textarea" rows="3" placeholder="Nội dung" name="noidung" required></textarea>                                    
-                                    </div>
-
-                                    <div class="form-control__row--reverse">
-                                        <!-- Submit Button -->
-                                        <button type="submit" class="form-control__btn form-control__btn--green mil-btn mil-ssm">
-                                            <i class="far fa-envelope-open form-control__icon"></i> Gửi
-                                        </button>
-                                        <!-- Checkbox -->
-                                        <div class="mil-checkbox-frame">
-                                            <div class="mil-checkbox">
-                                                <input type="checkbox" id="checkbox" checked>
-                                                <label for="checkbox"></label>
-                                            </div>
-                                            <p class="mil-text-xs mil-soft">Đăng ký để nhận tin tức mới nhất</p>
-
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-
-                        </div>
-                        <div class="mil-footer-bottom">
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <p class="mil-text-s mil-soft">© 2025 TIMI Finance & Fintech Design</p>
-                                </div>
-                                <div class="col-xl-6">
-                                    <button type="button" class=" mil-btn mil-ssm footer--toggle--btn" onclick="toggleFooter()">
-                                        <span class="text-expand">Thu gọn chân trang</span>
-                                        <span class="text-collapsed" style="display: none">Mở rộng chân trang</span>
-                                        <span class="icon-arrow-right">
-
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                <%@ include file="footer.jsp"%>
                 <!-- footer end -->
 
             </div>
