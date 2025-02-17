@@ -1,4 +1,4 @@
-package controller;
+ package controller;
 
 import dal.UserDAO;
 import java.io.IOException;
@@ -8,12 +8,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.util.List;
 import model.User;
 
-/**
- *
- * @author SCN
- */
+import jakarta.servlet.annotation.MultipartConfig;
+import utils.ImageUploadUtil;
+
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
+
 @WebServlet(name = "InsertUser", urlPatterns = {"/admin/insert_users"})
 public class InsertUser extends HttpServlet {
 
@@ -26,6 +32,18 @@ public class InsertUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // get list manager
+        List<User> listManager = userDao.selectAllUsersByRole(3);
+
+        // loại bỏ các manager bị inactive
+        for (int i = 0; i < listManager.size(); i++) {
+            if (!listManager.get(i).isStatus()) { // Nếu status = false
+                listManager.remove(i);
+                i--; // Giảm i để kiểm tra lại phần tử ở vị trí i sau khi xóa
+            }
+        }
+        request.getSession().setAttribute("listManager", listManager);
         request.getRequestDispatcher("FormAddUser.jsp").forward(request, response);
     }
 
@@ -33,9 +51,26 @@ public class InsertUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String pathHost = getServletContext().getRealPath("");  
+        String finalPath = pathHost.replace("build\\", "");    
+        String uploadPath = finalPath + "uploads";
+
+        String fileName = ImageUploadUtil.uploadImage(request, "img", uploadPath);      
+        String img;
+       
+        if (fileName != null) {
+            img = "../uploads/" + fileName;
+        } else {
+            request.getSession().setAttribute("error", "File upload failed!");
+            response.sendRedirect("insert_users");
+            return;
+        }
+
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
-        String name = request.getParameter("fullname").trim();
+
+        String name_raw = request.getParameter("fullname");
+        String name = SearchUsers.normalizeString(name_raw);
 
         String gender = request.getParameter("gender");
         boolean isMale = gender.equals("1");
@@ -50,8 +85,8 @@ public class InsertUser extends HttpServlet {
         String roleID_raw = request.getParameter("role");
         int roleID = Integer.parseInt(roleID_raw);
 
-        String img = request.getParameter("img").trim();
-        String address = request.getParameter("address").trim();
+        String address_raw = request.getParameter("address");
+        String address = SearchUsers.normalizeString(address_raw);
 
         String managerId_raw = request.getParameter("managerid");
 
@@ -78,6 +113,8 @@ public class InsertUser extends HttpServlet {
             response.sendRedirect("insert_users");
             return;
         }
+
+        // add user
         User userToAdd = new User(0, username, password, name, img, phone, email, dob, isMale, address, cccd, roleID, true, manager, null);
 
         int row = userDao.addUserReturnRow(userToAdd);
@@ -85,22 +122,24 @@ public class InsertUser extends HttpServlet {
         switch (row) {
             case 1 ->
                 request.getSession().setAttribute("message", "Insert Successfully !!");
-            case 0 ->
+            case 0 -> {
                 request.getSession().setAttribute("error", "Insert fail !!");
-            case 2 ->
-                request.getSession().setAttribute("error", "Username has exsisted !!");
-            case 3 ->
-                request.getSession().setAttribute("error", "Identity card has exsisted !!");
-            case 4 ->
-                request.getSession().setAttribute("error", "Email has exsisted !!");
-            case 5 ->
-                request.getSession().setAttribute("error", "Phone number has exsisted !!");
-            default -> {
+            }
+            case 2 -> {
+                request.getSession().setAttribute("error", "Username has existed !!");
+            }
+            case 3 -> {
+                request.getSession().setAttribute("error", "Identity card has existed !!");
+            }
+            case 4 -> {
+                request.getSession().setAttribute("error", "Email has existed !!");
+            }
+            case 5 -> {
+                request.getSession().setAttribute("error", "Phone number has existed !!");
             }
         }
 
         response.sendRedirect("insert_users");
-
     }
 
 }
