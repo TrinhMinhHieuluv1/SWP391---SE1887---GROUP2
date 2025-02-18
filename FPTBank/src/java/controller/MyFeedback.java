@@ -64,7 +64,7 @@ public class MyFeedback extends HttpServlet {
          HttpSession session = request.getSession();
          int uid = (int) session.getAttribute("uid");
          CustomerDAO cdao = new CustomerDAO();
-         int cid = cdao.getCustomerIdByUserId(uid);
+         int cid = cdao.getCustomerById(uid);
          FeedbackDAO dao = new FeedbackDAO();
          List<Feedback> listf = dao.findFBByID2(cid);
          session.setAttribute("listfeedback", listf);

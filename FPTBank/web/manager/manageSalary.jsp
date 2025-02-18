@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,62 +22,128 @@
         <script src="assets/js/pace.min.js"></script>
         <!--Styles-->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npbootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="assets/css/icons.css">
 
-        <link href="https://fonts.googleapis.cocss2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
         <link href="assets/css/extra-icons.css" rel="stylesheet">
         <link href="assets/css/main.css" rel="stylesheet">
         <link href="assets/css/dark-theme.css" rel="stylesheet">
         <link href="assets/css/semi-dark-theme.css" rel="stylesheet">
         <link href="assets/css/minimal-theme.css" rel="stylesheet">
         <link href="assets/css/shadow-theme.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.coajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
-            .product-box {
-                position: relative;
-            }
-            .zoom-icon {
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                background-color: rgba(255, 255, 255, 0.8);
-                border: none;
+            detail-icon {
                 cursor: pointer;
-                padding: 5px;
-                border-radius: 50%;
+                color: #007bff;
+                font-size: 1.2em;
+                transition: color 0.3s ease;
             }
+
+            .detail-icon:hover {
+                color: #0056b3;
+            }
+
             .modal {
-                display: none;
-                position: fixed;
-                z-index: 1000;
+                display: none; /* Ẩn modal mặc định */
+                position: fixed; /* Cố định vị trí */
+                z-index: 1000; /* Đảm bảo modal hiển thị trên tất cả các phần tử khác */
                 left: 0;
                 top: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.8);
-                justify-content: center;
-                align-items: center;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
             }
-            .modal img {
-                max-width: 90%;
-                max-height: 90%;
+
+            .modal-content {
+                background-color: #fff;
+                margin: 10% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                border-radius: 8px;
+                width: 80%;
+                max-width: 1200px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                position: relative; /* Để nút đóng có thể định vị đúng */
             }
+
+            .close {
+                color: #aaa;
+                position: absolute; /* Định vị nút đóng */
+                top: 10px;
+                right: 10px;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+            }
+            .modal-body {
+                display: flex;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .modal-image {
+                width: 600px;
+                height: 450px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+            .modal-info {
+                flex: 1;
+            }
+
+            .modal-info p {
+                margin: 10px 0;
+            }
+            /*            #modalImage {
+                            width: 100%;
+                            height: auto;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 8px;
+                            margin-bottom: 15px;
+                        }*/
+
+            #modalDescription,
+            #modalValue,
+            #modalDate {
+                font-size: 1em;
+                margin: 10px 0;
+            }
+            .form-control {
+                width: 80%;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            .comment-input {
+                width: 100%;
+                height: 50px;
+                padding: 10px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                resize: none; /* Không cho phép thay đổi kích thước */
+                font-size: 16px;
+            }
+            .comment-input:focus {
+                border-color: #80bdff;
+                outline: none;
+            }
+
         </style>
 
-        <script>
-            function openModal(button) {
-                var modal = document.getElementById("modal");
-                var modalImage = document.getElementById("modalImage");
-                var image = button.parentElement.querySelector('.clickable-image'); // Lấy hình ảnh từ thẻ cha
-                modalImage.src = image.src; // Lấy đường dẫn ảnh từ hình ảnh đã nhấn
-                modal.style.display = "flex"; // Hiện modal
-            }
 
-            function closeModal() {
-                document.getElementById("modal").style.display = "none"; // Ẩn modal khi nhấn bên ngoài
-            }
-        </script> 
         <script>
             function submitSortForm(order) {
                 document.getElementById('sortOrder').value = order; // Gán giá trị cho trường ẩn
@@ -107,13 +173,6 @@
 
         </script> 
         <script>
-            function submitSortForm3(order) {
-                document.getElementById('verify').value = order; // Gán giá trị cho trường ẩn
-                document.getElementById('sortForm3').submit(); // Gửi form
-            }
-
-        </script> 
-        <script>
             function submitSearch() {
                 var searchInput = document.getElementById('searchInput').value;
                 if (searchInput.trim() !== "") {
@@ -123,6 +182,43 @@
                 }
             }
         </script>
+        <script>
+            function showAssetDetails(image, description, value, date) {
+                document.getElementById("modalImage").src = image;
+                document.getElementById("modalDescription").innerHTML = description;
+                document.getElementById("modalValue").innerText = value;
+                document.getElementById("modalDate").innerText = date;
+                document.getElementById("assetDetailModal").style.display = "block";
+            }
+            function closeAssetModal() {
+                document.getElementById("assetDetailModal").style.display = "none";
+            }
+
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const commentElements = document.querySelectorAll(".comment-text");
+
+                commentElements.forEach((element) => {
+                    const fullComment = element.getAttribute("data-full-comment");
+                    if (fullComment.length > 50) {
+                        element.textContent = fullComment.substring(0, 50) + "...";
+                    }
+                });
+            });
+        </script>
+        <script>
+            function showFullComment(comment) {
+                document.getElementById('fullCommentContent').innerHTML = comment;
+                document.getElementById('commentDetailModal').style.display = 'block';
+            }
+
+            function closeCommentModal() {
+                document.getElementById("commentDetailModal").style.display = "none";
+            }
+
+        </script>
+
     </head>
     <body>
 
@@ -552,9 +648,9 @@
                             <div class="menu-title">Dashboard</div>
                         </a>
                     </li>
-                    
 
-                      
+
+
                     <li>
                         <a href="listAsset" class="has-arrow">
                             <div class="parent-icon"><span class="material-symbols-outlined">shopping_cart</span>
@@ -566,19 +662,19 @@
                                                 </li>
                                                 <li> <a href="ecommerce-products.html"><span class="material-symbols-outlined">arrow_right</span>Products</a>
                                                 </li>-->
-                            </li>
-                             <li> <a href="listAsset"><span class="material-symbols-outlined">arrow_right</span>Asset</a>
-                            </li>
-                              <li> <a href="listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
-                            </li>
-                            <!--                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
-                                                </li>
-                                                <li> <a href="ecommerce-orders.html"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
-                                                </li>
-                                                <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>
-                                                </li>-->
-                        </ul>
-                    </li> 
+                    </li>
+                    <li> <a href="listAsset"><span class="material-symbols-outlined">arrow_right</span>Asset</a>
+                    </li>
+                    <li> <a href="listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
+                    </li>
+                    <!--                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
+                                        </li>
+                                        <li> <a href="ecommerce-orders.html"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
+                                        </li>
+                                        <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>
+                                        </li>-->
+                </ul>
+                </li> 
                 </ul>
                 <!--end navigation-->
 
@@ -671,12 +767,12 @@
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Verification
+                                Used
                             </button>
                             <form action="sortSala" method="get" id="sortForm3">
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" onclick="submitSortForm3('true')">conform asset</a></li>
-                                    <li><a class="dropdown-item" onclick="submitSortForm3('false')">Not Conform asset</a></li>
+                                    <li><a class="dropdown-item" onclick="submitSortForm3('true')">Used</a></li>
+                                    <li><a class="dropdown-item" onclick="submitSortForm3('false')">non-Use</a></li>
                                 </ul>
                                 <input type="hidden" name="verify" id="verify">
                             </form>
@@ -687,8 +783,10 @@
                             </button>
                             <form action="sortSala" method="get" id="sortForm2">
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"  onclick="submitSortForm2('true')">Accept asset</a></li>
-                                    <li><a class="dropdown-item"  onclick="submitSortForm2('false')">Deny asset</a></li>
+                                    <li><a class="dropdown-item"  onclick="submitSortForm2('Pending')">Pending</a></li>
+                                    <li><a class="dropdown-item"  onclick="submitSortForm2('Adjusting')">Adjusting</a></li>
+                                    <li><a class="dropdown-item"  onclick="submitSortForm2('Adjusted')">Adjusted</a></li>
+                                    <li><a class="dropdown-item"  onclick="submitSortForm2('Approved')">Approved</a></li>
                                 </ul>
                                 <input type="hidden" name="status" id="status">
                             </form>
@@ -705,12 +803,13 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Customer ID</th>
-                                            <th>Salary Image</th>
-                                            <th>Description</th>
-                                            <th>Date</th>
-                                            <th>Verification</th>
+                                            <th>Salary ID</th>
+                                             <th>Comments</th>
+                                            <th>Valuation Amount</th>
+                                            <th>Used</th>
                                             <th>Status</th>
                                             <th>Action</th>
+                                            <th>Confirm</th>
 
                                         </tr>
                                     </thead>
@@ -718,52 +817,67 @@
                                         <c:if test="${requestScope.data!= null}">
                                             <c:forEach items="${requestScope.data}" var="sal">
                                                 <tr>
+                                                  <form action="listSalary" method="post">
                                                     <td>
                                                         <a href="customer?cid=${sal.getCustomerId()}" class="bi bi-person-circle" title="Xem chi tiết">
                                                             ${sal.getCustomerId()}</a>
 
                                                     </td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center gap-3">
-                                                            <div class="product-box" style="position: relative;">
+                                                      <td>
+                                                    <i class="fas fa-info-circle detail-icon" 
+                                                       onclick="showAssetDetails('${sal.getImage()}', '${sal.getDescription()}', '${sal.getValue()}', '${sal.getCreatedAt()}')"
+                                                       title="Xem chi tiết">
+                                                    </i>
+                                                    <span>${sal.getId()}</span>
+                                                     <td>
+                                                    <c:choose>
+                                                        <c:when test="${empty sal.getComments()}">
+                                                            <textarea type="text" class="comment-input" 
+                                                                      placeholder="Nhập comment" 
+                                                                      name="comment_${sal.getId()}" required></textarea> 
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="comment-text " data-full-comment="${sal.getComments()}">
+                                                                ${sal.getComments()}
+                                                            </span>
+                                                            <i class="fas fa-info-circle detail-icon" 
+                                                               onclick="showFullComment('${sal.getComments()}')"
+                                                               title="Xem chi tiết"> 
+                                                            </i>
 
-                                                                <img class="clickable-image" style="height: 100px; width: 150px;" src="${sal.getImage()}" alt="" id="myImage">
-                                                                <button class="zoom-icon" onclick="openModal(this)">
-                                                                    <i class="fa fa-expand"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
 
+                                                <td>  
+                                                    <c:choose>
+                                                        <c:when test="${empty asset.getValuationAmount()}">
+                                                            <input type="number" class="form-control" 
+                                                                   placeholder="Nhập giá trị định giá" 
+                                                                   name="valuationAmount_${sal.getId()}" required/>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${sal.getValuationAmount()}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <c:if test="${sal.isUsed() == false}">
+                                                    <td>Non-Use</td>
+                                                </c:if>
+                                                <c:if test="${sal.isUsed() != false}">
+                                                    <td>Used</td>
+                                                </c:if>
+                                                <td>${sal.getStatus()}</td>
 
-                                                    </td>
-                                                    <td>${sal.getDescription()}</td>
-                                                    <td>${sal.getCreatedAt()}</td>
-                                                    <c:if test="${sal.isVerification() == false}">
-                                                        <td>Not Confirmed</td>
-                                                    </c:if>
-                                                    <c:if test="${sal.isVerification() != false}">
-                                                        <td>Confirmed</td>
-                                                    </c:if>
-                                                    <c:if test="${sal.isStatus() == false}">
-                                                        <td>Not Accept</td>
-                                                    </c:if>
-                                                    <c:if test="${sal.isStatus() != false}">
-                                                        <td>Accept</td>
-                                                    </c:if>   
-                                            <form action="listSalary" method="post">
-                                                <input hidden type="text" name="salaryid" value="${sal.getId()}">
+                                                <input hidden type="text" name="assetid" value="${sal.getId()}">
                                                 <td>
                                                     <div class="form-group">
-                                                        <label for="salaryAction${sal.getId()}">Choose an action:</label>
-                                                        <select class="form-select" id="salaryAction${sal.getId()}"name="action" >
+                                                        <select class="form-select" id="assetAction${sal.getId()}"name="action" required>
                                                             <option value="">Select an action</option>
-                                                            <option value="accept">Accept asset</option>
-                                                            <option value="deny">Deny asset</option>
-                                                            <option value="notConform">Not conform asset</option>
-                                                            <option value="conform">Conform asset</option>
+                                                            <option value="Adjusting">Adjusting</option>
+                                                            <option value="Approved">Approved</option>
                                                         </select>
                                                     </div>
-
                                                 </td>
                                                 <td><button type="submit" >Submit</button></td>
                                             </form>
@@ -778,10 +892,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal" id="modal" onclick="closeModal()">
-                    <img id="modalImage" src="" alt="Phóng to hình ảnh">
+                 <div id="assetDetailModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeAssetModal()">&times;</span> <!-- Nút đóng -->
+                        <div class="modal-body">
+                            <img id="modalImage" src="" alt="" class="modal-image">
+                            <div class="modal-info">
+                                <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                                <p><strong>Description:</strong> <span id="modalDescription"></span></p>
+                                <p><strong>Value:</strong> <span id="modalValue"></span></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+                <div id="commentDetailModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeCommentModal()">&times;</span>
+                        <div class="modal-info">
+                            <p><strong>Comment:</strong> <span id="fullCommentContent"></span></p>
+                        </div>
+                    </div>
+                </div>
         </main>
         <!--end main content-->
 
@@ -852,10 +983,10 @@
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="LightTheme" value="option1">
                     <label class="form-check-label" for="LightTheme">Light</label>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2" checked="">
-                    <label class="form-check-label" for="DarkTheme">Dark</label>
-                </div>
+                <!--                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2" checked="">
+                                    <label class="form-check-label" for="DarkTheme">Dark</label>
+                                </div>-->
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SemiDarkTheme" value="option3">
                     <label class="form-check-label" for="SemiDarkTheme">Semi Dark</label>

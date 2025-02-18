@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Random;
+import model.Customer;
 import model.Emails;
 import model.User;
 
@@ -26,7 +28,7 @@ import model.User;
  */
 @WebServlet(name = "ForgotPass", urlPatterns = {"/forgotPass"})
 public class ForgotPass extends HttpServlet {
-
+   Random random = new Random();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,7 +42,6 @@ public class ForgotPass extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -81,14 +82,15 @@ public class ForgotPass extends HttpServlet {
             throws ServletException, IOException {
         String emailr = request.getParameter("email");
         String code = getRandom();
-
         Emails email = new Emails();
-
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.selectAnUserByConditions(0,"","",emailr);
-        if (user != null) {
-            email.sendMess(emailr, "Recovery Password", code);
-            request.setAttribute("emailr", emailr);
+        CustomerDAO cusDAO = new CustomerDAO();
+        Customer customer = cusDAO.selectCustomerByConditions(0,"","",emailr.trim());
+        User user = userDAO.selectAnUserByConditions(0,"","",emailr.trim());
+        
+        if (user != null||customer!=null) {
+            email.sendMess(emailr.trim(), "Recovery Password", code);
+            request.setAttribute("emailr", emailr.trim());
             request.setAttribute("code", code);
             request.getRequestDispatcher("pincode.jsp").forward(request, response);
         }else{
@@ -100,9 +102,6 @@ public class ForgotPass extends HttpServlet {
     }
 
     public String getRandom() {
-        Random random = new Random();
-
-        // Tạo chuỗi số ngẫu nhiên
         StringBuilder randomNumbers = new StringBuilder();
         for (int i = 0; i < 6; i++) {
             randomNumbers.append(random.nextInt(10));

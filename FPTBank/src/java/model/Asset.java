@@ -3,39 +3,39 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class Asset {
-
 
     private int Id; // SalaryId
     private int CustomerId; // CustomerId
     private String Image; // Image
     private String Description; // Description
     private BigDecimal Value; // Value
-    private boolean Verification; // Verification
-    private boolean Status; // Status
-    private Date CreatedAt; // CreatedAt
-
-
+    private String Comments;
+    private BigDecimal ValuationAmount;
+    private boolean Used;
+    private String Status;
+    private Date CreatedAt;
 
     // Constructor
-    
     public Asset() {
     }
 
-    public Asset(int customerId, String image, String description, BigDecimal value) {
-
-        this.CustomerId = customerId;
-        this.Image = image;
-        this.Description = description;
-        this.Value = value;
-        this.Verification = false; // default
-        this.Status = false; // default
-        this.CreatedAt = new Date(); // default to current date
-
+    public Asset(int CustomerId, String Image, String Description, BigDecimal Value, String Comments, BigDecimal ValuationAmount) {
+        this.CustomerId = CustomerId;
+        this.Image = Image;
+        this.Description = Description;
+        this.Value = Value;
+        this.Comments = Comments;
+        this.ValuationAmount = ValuationAmount;
+        this.Used = false;
+        this.Status = "Pending";
+        this.CreatedAt = new Date();
     }
+
 
     public int getId() {
         return Id;
@@ -77,22 +77,6 @@ public class Asset {
         this.Value = value;
     }
 
-    public boolean isVerification() {
-        return Verification;
-    }
-
-    public void setVerification(boolean verification) {
-        this.Verification = verification;
-    }
-
-    public boolean isStatus() {
-        return Status;
-    }
-
-    public void setStatus(boolean status) {
-        this.Status = status;
-    }
-
     public Date getCreatedAt() {
         return CreatedAt;
     }
@@ -102,12 +86,42 @@ public class Asset {
 
     }
 
+    public String getComments() {
+        return Comments;
+    }
+
+    public void setComments(String Comments) {
+        this.Comments = Comments;
+    }
+
+    public BigDecimal getValuationAmount() {
+        return ValuationAmount;
+    }
+
+    public void setValuationAmount(BigDecimal ValuationAmount) {
+        this.ValuationAmount = ValuationAmount;
+    }
+
+    public boolean isUsed() {
+        return Used;
+    }
+
+    public void setUsed(boolean Used) {
+        this.Used = Used;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
+
     @Override
     public String toString() {
-
-        return "Asset{" + "id=" + Id + ", customerId=" + CustomerId + ", image=" + Image + ", description=" + Description + ", value=" + Value + ", verification=" + Verification + ", status=" + Status + ", createdAt=" + CreatedAt + '}';
-
+        return "Asset{" + "Id=" + Id + ", CustomerId=" + CustomerId + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + '}';
     }
     
-}
 
+}

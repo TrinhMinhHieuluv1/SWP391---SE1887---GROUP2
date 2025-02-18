@@ -69,19 +69,17 @@ public class SortSalaryServlet extends HttpServlet {
            String search = request.getParameter("search");
         try {
              List<Salary> data = new ArrayList<>(); 
-         
             if(sortDate!=null){
                  data = dao.getSalarySortedByDate(sortDate);
                  request.setAttribute("data", data);
             }
             if(status!= null){
-                boolean st = Boolean.parseBoolean(status);
-                data = dao.getSalaryByStatus(st);
+                data = dao.getSalaryByStatus(status);
                  request.setAttribute("data", data);
             }
              if(verify!= null){
-                boolean vt = Boolean.parseBoolean(verify);
-                data = dao.getSalaryByVerify(vt);
+                boolean used = Boolean.parseBoolean(verify);
+                data = dao.getSalaryByUse(used);
                  request.setAttribute("data", data);
             }
              if (search != null) {
@@ -93,6 +91,7 @@ public class SortSalaryServlet extends HttpServlet {
           
            request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     } 
 

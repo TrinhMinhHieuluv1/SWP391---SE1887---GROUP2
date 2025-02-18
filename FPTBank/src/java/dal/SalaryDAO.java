@@ -31,8 +31,10 @@ public class SalaryDAO extends DBContext{
                 salary.setImage(resultSet.getString("Image"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
-                salary.setVerification(resultSet.getBoolean("Verification"));
-                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -44,18 +46,20 @@ public class SalaryDAO extends DBContext{
     }
       public boolean updateSalary(Salary salary) {
         String sql = "UPDATE Salary SET CustomerId = ?, Image = ?, Description = ?, "
-                + "Value = ?, Verification = ?, Status = ?, CreatedAt = ? WHERE SalaryId = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, salary.getCustomerId());
-            preparedStatement.setString(2, salary.getImage());
-            preparedStatement.setString(3, salary.getDescription());
-            preparedStatement.setBigDecimal(4, salary.getValue());
-            preparedStatement.setBoolean(5, salary.isVerification());
-            preparedStatement.setBoolean(6, salary.isStatus());
-            preparedStatement.setTimestamp(7, new java.sql.Timestamp(salary.getCreatedAt().getTime()));
-            preparedStatement.setInt(8, salary.getId());
+                + "Value = ?,Comments = ?, ValuationAmount = ?, Used = ?, Status = ?, CreatedAt = ? WHERE SalaryId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, salary.getCustomerId());
+            pstmt.setString(2, salary.getImage());
+            pstmt.setString(3, salary.getDescription());
+            pstmt.setBigDecimal(4, salary.getValue());
+            pstmt.setString(5, salary.getComments());
+            pstmt.setBigDecimal(6, salary.getValuationAmount());
+            pstmt.setBoolean(7, salary.isUsed());
+            pstmt.setString(8, salary.getStatus());
+            pstmt.setTimestamp(9, new java.sql.Timestamp(salary.getCreatedAt().getTime()));
+            pstmt.setInt(10, salary.getId());
 
-            int rowsUpdated = preparedStatement.executeUpdate();
+            int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0; // Trả về true nếu có ít nhất một hàng được cập nhật
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,8 +81,10 @@ public class SalaryDAO extends DBContext{
                 salary.setImage(resultSet.getString("Image"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
-                salary.setVerification(resultSet.getBoolean("Verification"));
-                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 return salary;
             }
@@ -102,8 +108,10 @@ public class SalaryDAO extends DBContext{
                 salary.setImage(resultSet.getString("Image"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
-                salary.setVerification(resultSet.getBoolean("Verification"));
-                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -115,13 +123,13 @@ public class SalaryDAO extends DBContext{
         return null;
 
     }
-  public List<Salary> getSalaryByStatus(boolean status) throws SQLException {
+  public List<Salary> getSalaryByStatus(String status) throws SQLException {
         List<Salary> salarys = new ArrayList<>();
         String query = "SELECT * FROM Salary WHERE Status = ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setBoolean(1, status);
+            pstmt.setString(1, status);
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
                 Salary salary = new Salary();
@@ -130,8 +138,10 @@ public class SalaryDAO extends DBContext{
                 salary.setImage(resultSet.getString("Image"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
-                salary.setVerification(resultSet.getBoolean("Verification"));
-                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -143,9 +153,9 @@ public class SalaryDAO extends DBContext{
         return null;
 
     }
-  public List<Salary> getSalaryByVerify(boolean status) throws SQLException {
+  public List<Salary> getSalaryByUse(boolean status) throws SQLException {
         List<Salary> salarys = new ArrayList<>();
-        String query = "SELECT * FROM Salary WHERE Verification = ?";
+        String query = "SELECT * FROM Salary WHERE Used = ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
@@ -158,8 +168,10 @@ public class SalaryDAO extends DBContext{
                 salary.setImage(resultSet.getString("Image"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
-                salary.setVerification(resultSet.getBoolean("Verification"));
-                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -186,8 +198,10 @@ public class SalaryDAO extends DBContext{
                 salary.setImage(resultSet.getString("Image"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
-                salary.setVerification(resultSet.getBoolean("Verification"));
-                salary.setStatus(resultSet.getBoolean("Status"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }

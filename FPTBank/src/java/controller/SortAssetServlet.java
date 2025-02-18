@@ -82,13 +82,12 @@ public class SortAssetServlet extends HttpServlet {
                 request.setAttribute("data", data);
             }
             if (status != null) {
-                boolean st = Boolean.parseBoolean(status);
-                data = dao.getAssetsByStatus(st);
+                data = dao.getAssetsByStatus(status);
                 request.setAttribute("data", data);
             }
             if (verify != null) {
-                boolean vt = Boolean.parseBoolean(verify);
-                data = dao.getAssetsByVerify(vt);
+                boolean used= Boolean.parseBoolean(verify);
+                data = dao.getAssetsByUsed(used);
                 request.setAttribute("data", data);
             }
             if (search != null) {

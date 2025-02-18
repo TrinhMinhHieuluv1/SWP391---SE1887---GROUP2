@@ -65,7 +65,7 @@ public class CustomerControl extends HttpServlet {
 
             int cidd = Integer.parseInt(cid);
             CustomerDAO dao = new CustomerDAO();
-            Customer c = dao.getCustomerById(cidd);
+            Customer c = dao.getCustomerByID(cidd);
             if (c != null) {
                 request.setAttribute("dataC", c);
                 request.getRequestDispatcher("customerDetail.jsp").forward(request, response);
