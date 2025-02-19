@@ -40,6 +40,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
+        
 
     public User selectAnUserByConditions(int UserID, String Username, String Phone, String Email) {
         String sql = "SELECT * FROM [User] WHERE 1=1";

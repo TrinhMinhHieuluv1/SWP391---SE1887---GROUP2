@@ -244,12 +244,12 @@
                         <div class="card mb-4 mb-xl-0">
                             <div class="card-header">Profile Picture</div>
                             <div class="card-body text-center">
-                                <form action="updateimage" method="get">
+                                <form action="updateimage" method="post" enctype="multipart/form-data">
                                     <!-- Profile picture image-->
                                     <img class="img-account-profile rounded-circle mb-2" src="${sessionScope.account.image}" alt="">
                                     <!-- Profile picture help block-->
                                     <div class="mb-3">           
-                                        <input class="form-control" id="inputUsername" name="image" type="text" placeholder="Enter your url image">
+                                        <input style="color: white;" id="inputUsername" name="image" type="file" accept="images/avatar/*">
                                     </div>
                                     <% if(request.getAttribute("error2")!=null)  {%>
                                     <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error2"));%></a>

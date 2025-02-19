@@ -25,6 +25,7 @@ public class FeedbackDAO extends DBContext {
     CustomerDAO dao = new CustomerDAO();
     ServiceDAO sdao = new ServiceDAO();
 
+
     public List<Feedback> selectAllFeedback() {
         List<Feedback> feedbackList = new ArrayList<>();
         String sqlFeedback = "SELECT * FROM Feedback";
@@ -130,7 +131,7 @@ public class FeedbackDAO extends DBContext {
 
     public List<Feedback> findFBByID2(int CustomerID) {
         List<Feedback> feedbackList = new ArrayList<>();
-        String sql = "SELECT * FROM Feedback WHERE CustomerID = ?";
+        String sql = "SELECT * FROM Feedback WHERE CustomerID = ? AND Status = 1";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -184,14 +185,19 @@ public class FeedbackDAO extends DBContext {
                         customer
                 );
 
-                feedbackList.add(feedback);
-            }
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setBoolean(1, newStatus);
+            stmt.setInt(2, feedbackId);
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-
-        return feedbackList;
     }
+
 
     public ArrayList<Feedback> getFeedbacksToDate(String date, int cid) {
         ArrayList<Feedback> feedbackList = new ArrayList<>();
@@ -318,23 +324,143 @@ public class FeedbackDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return feedback;
     }
 
-    public boolean updateStatus(int feedbackId, boolean newStatus) {
-        String sql = "UPDATE Feedback SET Status = ? WHERE FeedbackID = ?";
+    public Feedback findFBByfID(int fid) {
+        Feedback feedback = null;
+        String sql = "SELECT * FROM Feedback WHERE FeedbackID = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, fid);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    int customerID = rs.getInt("CustomerID");
+                    Customer customer = dao.getCustomerByID(customerID);
+                    Service service = sdao.getServiceByID(rs.getInt("ServiceID"));
 
-            stmt.setBoolean(1, newStatus);
-            stmt.setInt(2, feedbackId);
-
-            int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;
+                    feedback = new Feedback(
+                            rs.getInt("FeedbackID"),
+                            rs.getInt("StarScore"),
+                            rs.getString("Message"),
+                            rs.getString("Response"),
+                            rs.getBoolean("Status"),
+                            rs.getDate("CreatedAt"),
+                            service,
+                            customer
+                    );
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return feedback;
+    }
+
+    public List<Feedback> filterFeedback(String date1, String date2, String status, String search, int cid) {
+        String sql = "select * from Feedback where 1 = 1 and CustomerID = " + cid + " and status = 1 ";
+        if (date1 != "") {
+            sql += " and CAST(CreatedAt as date) >= '" + date1 + "'";
+        }
+        if (date2 != "") {
+            sql += " and CAST(CreatedAt as date) <= '" + date2 + "'";
+        }
+
+        if (status != "" && status.equals("true")) {
+            sql += " and Response is not null ";
+        }
+        if (status != "" && status.equals("false")) {
+            sql += " and Response is null ";
+        }
+        if (search != "") {
+            
+            search = search.replaceAll("\\s+", " ").trim();
+            sql += " and Message like '%" + search + "%'";
+        }
+        List<Feedback> listFeedback = new ArrayList<>();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Service service = sdao.getServiceByID(rs.getInt("ServiceID"));
+                Customer customer = dao.getCustomerByID(rs.getInt("CustomerID"));
+                Feedback feedback = new Feedback(
+                        rs.getInt("FeedbackID"),
+                        rs.getInt("StarScore"),
+                        rs.getString("Message"),
+                        rs.getString("Response"),
+                        rs.getBoolean("Status"),
+                        rs.getDate("CreatedAt"),
+                        service,
+                        customer
+                );
+                listFeedback.add(feedback);
+            }
+            return listFeedback;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Feedback> filterFeedback2(String search_raw, String status_raw, String status_res, String date1, String date2) {
+        String sql = "select * from Feedback where 1 = 1 ";
+        if (search_raw != "") {
+            search_raw = search_raw.replaceAll("\\s+", " ");
+            sql += " and Message like '%" + search_raw + "%'";
+        }
+        if (status_raw != "" && status_raw.equals("active")) {
+            sql += " and Status = 1";
+        }
+        if (status_raw != "" && status_raw.equals("inactive")) {
+            sql += " and Status = 0";
+        }
+        if (status_res != "" && status_res.equals("true")) {
+            sql += " and Response is not null";
+        }
+        if (status_res != "" && status_res.equals("false")) {
+            sql += " and Response is null";
+        }
+        if (date1 != "") {
+            sql += " and CAST(CreatedAt as Date) >= '" + date1 + "'";
+        }
+        if (date2 != "") {
+            sql += " and CAST(CreatedAt as Date) <= '" + date2 + "'";
+        }
+        List<Feedback> listFeedback = new ArrayList<>();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Service service = sdao.getServiceByID(rs.getInt("ServiceID"));
+                Customer customer = dao.getCustomerByID(rs.getInt("CustomerID"));
+                Feedback feedback = new Feedback(
+                        rs.getInt("FeedbackID"),
+                        rs.getInt("StarScore"),
+                        rs.getString("Message"),
+                        rs.getString("Response"),
+                        rs.getBoolean("Status"),
+                        rs.getDate("CreatedAt"),
+                        service,
+                        customer
+                );
+                listFeedback.add(feedback);
+            }
+            return listFeedback;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Feedback> getListByPage(List<Feedback> list, int start, int end) {
+        List<Feedback> listfeedback = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            listfeedback.add(list.get(i));
+        }
+        return listfeedback;
     }
 
     public boolean updateResponse(int feedbackId, String response) {
@@ -568,5 +694,6 @@ public class FeedbackDAO extends DBContext {
         for (Feedback feedback : list) {
             System.out.println(feedback);
         }
+
     }
 }
