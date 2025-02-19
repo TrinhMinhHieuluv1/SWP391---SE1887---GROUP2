@@ -45,7 +45,7 @@ public class CustomerDAO extends DBContext {
                 return customer;
             }
         } catch (SQLException e) {
-            e.printStackTrace(); //
+            e.printStackTrace(); 
         }
         return null;
     }
@@ -84,5 +84,5 @@ public class CustomerDAO extends DBContext {
         }
         return false;
     }
-   
+
 }
