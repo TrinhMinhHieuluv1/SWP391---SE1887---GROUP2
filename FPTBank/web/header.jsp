@@ -44,7 +44,7 @@
                         <a href="about">About</a>
                     </li>
                     <li>
-                        <a href="faq.jsp">FAQ</a>
+                        <a href="faq">FAQ</a>
                     </li>
                     <li class="mil-has-children">
                         <a href="#.">Blog</a>

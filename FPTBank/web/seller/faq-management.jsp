@@ -3,8 +3,8 @@
     Created on : Feb 13, 2025, 1:15:17 PM
     Author     : ADMIN
 --%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -210,46 +210,56 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin-top: 20px;
-                gap: 10px;
+                margin: auto;
             }
 
-            .pagination-button {
-                padding: 8px 16px;
-                border: 1px solid #4caf50;
-                background-color: white;
-                color: #4caf50;
+            .pagination a {
+                padding: 9px 10px;
+                margin: 0 5px;
+                background-color: #f4f4f4;
+
+                color: #333;
+                text-decoration: none;
+                border-radius: 25px;
+                font-weight: bold;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .pagination a:hover {
+                background-color: yellowgreen;
+            }
+
+            .pagination a.active {
+                background-color: green;
+                color: #fff;
+                border-radius: 30px;
+            }
+
+            select {
+                margin-top: 15px;
+                background-color: #0d6efd;
+                color: white ;
+                padding: 3px 8px; /* Giảm padding để ô nhỏ hơn */
+                border-radius: 6px; /* Bo tròn góc nhẹ */
+                font-size: 14px; /* Giảm kích thước chữ */
                 cursor: pointer;
-                border-radius: 4px;
-                transition: all 0.3s ease;
             }
 
-            .pagination-button:hover {
-                background-color: #4caf50;
-                color: white;
-            }
 
-            .pagination-button.active {
-                background-color: #4caf50;
-                color: white;
-            }
-
-            .pagination-button:disabled {
-                border-color: #ccc;
-                color: #ccc;
-                cursor: not-allowed;
-            }
-
-            .pagination-info {
-                color: #666;
-                font-size: 0.9em;
+            /* Khi focus vào ô chọn */
+            select:focus {
+                outline: none;
+                box-shadow: 0 0 5px #007bff;
             }
 
             /* Search Box */
             .search-container {
                 position: relative;
                 margin-bottom: 20px;
-                max-width: 300px;
+                max-width:50%;
+                display: flex;
+                gap: 10px;
+
             }
 
             .search-container i {
@@ -309,6 +319,9 @@
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 margin-bottom: 20px;
             }
+            .filter-controls h3{
+                text-align: center;
+            }
 
             .filter-group label {
                 font-weight: 500;
@@ -361,61 +374,34 @@
                 font-size: 24px;
             }
 
-            /* Modal Styles */
-            .modal {
-                display: none;
+            /* Toast Message Styles */
+            .toast-message1 {
                 position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-            }
-
-            .modal-content {
-                background-color: #fefefe;
-                margin: 5% auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-                max-width: 800px;
+                top: -100px; /* Start above viewport */
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #FF0000;
+                color: white;
+                padding: 16px 32px;
                 border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            .modal-header {
+                font-size: 16px;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                 display: flex;
-                justify-content: space-between;
                 align-items: center;
-                margin-bottom: 20px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid #eee;
+                gap: 12px;
+                z-index: 1000;
+                transition: top 0.5s ease-in-out;
             }
 
-            .modal-title {
-                color: #2e7d32;
-                font-size: 1.5em;
-                margin: 0;
+            .toast-message1.show {
+                top: 20px; /* Slide down to this position */
             }
 
-            .close-modal {
-                color: #aaa;
-                font-size: 28px;
-                font-weight: bold;
-                cursor: pointer;
-                transition: color 0.3s ease;
+            .toast-message1 i {
+                font-size: 24px;
             }
 
-            .close-modal:hover {
-                color: #666;
-            }
-
-            .modal-body {
-                margin-bottom: 20px;
-                display: flex;
-                gap: 20px;
-            }
 
             .news-description {
                 color: #333;
@@ -476,6 +462,30 @@
                 transform: translateY(-2px);
                 box-shadow: 0 4px 6px rgba(76,175,80,0.2);
             }
+            .checkbox-bar {
+                display: flex;
+                justify-content: space-around;
+                background-color: #f4f4f4;
+                padding: 10px;
+            }
+            .checkbox-item {
+                display: flex;
+                align-items: center;
+            }
+            .checkbox-item label {
+                margin-left: 5px;
+            }
+
+            select {
+                margin-top: 15px;
+                background-color: #008000;
+                color: white ;
+                padding: 3px 8px; /* Giảm padding để ô nhỏ hơn */
+                border-radius: 6px; /* Bo tròn góc nhẹ */
+                font-size: 14px; /* Giảm kích thước chữ */
+                cursor: pointer;
+                margin-bottom: 20px;
+            }
 
             @media (max-width: 768px) {
                 .news-management {
@@ -485,6 +495,8 @@
                 .news-table {
                     display: block;
                     overflow-x: auto;
+                    width: 100%;
+                    table-layout: fixed;
                 }
 
                 .action-button {
@@ -492,9 +504,7 @@
                     font-size: 0.85em;
                 }
 
-                .modal-body {
-                    flex-direction: column;
-                }
+
 
                 .news-description {
                     padding-right: 0;
@@ -513,140 +523,152 @@
         </style>
     </head>
     <body>
-        
-        <c:if test="${not empty requestScope.message}">
+        <!--show message-->
+        <c:if test="${not empty sessionScope.message}">
             <div id="toastMessage" class="toast-message">
                 <i class="fa fa-check-circle"></i>
-                ${requestScope.message}
+                ${sessionScope.message}
             </div>
+            <c:remove var="message" scope="session" />
         </c:if>
+
+        <c:if test="${not empty sessionScope.error}">
+            <div id="toastMessage" class="toast-message1">
+                <i class="fa fa-check-circle"></i>
+                ${sessionScope.error}
+            </div>
+            <c:remove var="error" scope="session" />
+        </c:if>
+
 
         <div class="news-management">
             <h1 class="page-title">FAQ Management</h1>
-
+            
             <!-- Filter Controls -->
-            <form action="faq-management" method="post" class="filter-controls">
+            <form action="faq-search-question" method="get" class="filter-controls">
                 <!-- Search Box -->
-                <div class="search-container">
+                <div class="search-container"  >
                     <i class="fa fa-search"></i>
-                    <input type="text" name="searchKeyword" value="${param.searchKeyword}" placeholder="Search news..." class="search-input">
-                </div>
-
-                <div class="filter-group">
-                    <label for="status">Status:</label>
-                    <select name="filterStatus" id="status" onchange="updateURLParameter('filterStatus', this.value)">
-                        <option value="none" ${param.filterStatus == 'none' ? 'selected' : ''}>All Status</option>
-                        <option value="active" ${param.filterStatus == 'active' ? 'selected' : ''}>Active</option>
-                        <option value="inactive" ${param.filterStatus == 'inactive' ? 'selected' : ''}>Inactive</option>
-                    </select>
-
-                    <label class="mine-checkbox">
-                        <input type="checkbox" name="filterMine" value="true" ${param.filterMine == 'true'? 'checked' : ''} onchange="updateURLParameter('filterMine', this.checked)">
-                        Show only my FAQS
-                    </label>
+                    <input   type="text" name="searchKeyword" value="${param.searchKeyword}" placeholder="Search questions..." class="search-input">
+                    <button class="add-news-btn" type="submit" >Search </button>
                 </div>
             </form>
-            <button class="show-all-news-btn" onclick="window.location.href = '/timibank/seller/faq-management'">Show All FAQ</button>
-            <button class="add-news-btn" onclick="window.location.href = '/timibank/seller/add-'">Add FAQ</button>
-
-            <!-- News Table -->
-            <table class="news-table">
-                <thead>
-                    <tr>
-                        <th class="id-column center-align">ID</th>
-                        <th class="author-column">Type</th>
-                        <th class="title-column">Questions</th>
-                        <th class="status-column">Answers</th>
-                       
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${listFAQ}" var="f">
-                        <tr>
-                            <td class="center-align">${f.getFaqID()}</td>
-                            <td class="author-name">${f.getType()}</td>
-                            <td class="created-time">${f.getQuestion()}</td>
-                            <td class="access-count">${f.getAnswer()}</td>
-                           
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-
-            <!-- Pagination Controls -->
-            <div class="pagination">
-                <button class="pagination-button" onclick="changePage(${currentPage - 1})" ${currentPage == 1 ? 'disabled' : ''}>
-                    Previous
-                </button>
-
-                <c:forEach begin="1" end="${totalPages}" var="page">
-                    <button class="pagination-button ${currentPage == page ? 'active' : ''}" 
-                            onclick="changePage(${page})">
-                        ${page}
-                    </button>
-                </c:forEach>
-
-                <button class="pagination-button" onclick="changePage(${currentPage + 1})" ${currentPage == totalPages ? 'disabled' : ''}>
-                    Next
-                </button>
-
-                <span class="pagination-info">
-                    Page ${currentPage} of ${totalPages}
-                </span>
-            </div>
-        </div>
-
-        <!-- News Modal -->
-        <div id="newsModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="modalTitle"></h2>
-                    <span class="close-modal" onclick="closeNewsModal()">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <p class="news-description" id="modalDescription"></p>
-                    <div class="news-image-container">
-                        <img id="modalImage" class="news-image" src="" alt="News Image">
+                    
+            <!--filter theo type-->
+            <form action="faq-search-type" method="get" class="filter-controls">
+                <div class="filter-group">
+                    <h3>Câu hỏi về</h3>
+                    <div class="checkbox-bar">
+                        <%
+                            String selectedType = request.getAttribute("selectedType") != null ? request.getAttribute("selectedType").toString() : "";
+                        %>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="faq1" name="faqType" value="account" class="faq-checkbox"
+                                   <%= "account".equals(selectedType) ? "checked" : "" %>>
+                            <label for="faq1">Tài khoản ngân hàng</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="faq2" name="faqType" value="borrow" class="faq-checkbox"
+                                   <%= "borrow".equals(selectedType) ? "checked" : "" %>>
+                            <label for="faq2">Vay tiền</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="faq3" name="faqType" value="savings" class="faq-checkbox"
+                                   <%= "savings".equals(selectedType) ? "checked" : "" %>>
+                            <label for="faq3">Gửi tiền</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="faq4" name="faqType" value="card" class="faq-checkbox"
+                                   <%= "card".equals(selectedType) ? "checked" : "" %>>
+                            <label for="faq4">Thẻ</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <button class="add-news-btn" type="submit">Search</button>
+                        </div>
                     </div>
                 </div>
+            </form>
+
+
+            <button class="show-all-news-btn" onclick="window.location.href = '/timibank/seller/faq-management'">Show All FAQ</button>
+            <button class="add-news-btn" onclick="window.location.href = '/timibank/seller/faq-add'">Add FAQ</button>
+
+            <!--show entry-->
+            <form id="entriesForm" action="faq-management" method="GET">
+                <label for="entries">Show Entries</label>
+                <select  id="entries" name="entries" onchange="this.form.submit()">
+                    <option value="" >10</option>
+                    <option value="15" ${(entries == 15)?'selected':''}>15</option>
+                    <option value="25" ${(entries == 25)?'selected':''}>25</option>
+                    <option value="50" ${(entries == 50)?'selected':''}>50</option>
+                    <option value="100" ${(entries == 100)?'selected':''}>100</option>
+                </select>
+                <input type="hidden" name="searchKey" value="${keyword}">
+                <input type="hidden" name="searchType" value="${selectedType}">
+            </form>
+            
+            <!-- News Table -->
+            <form action="faq-update"> 
+                <table class="news-table" border="1">
+                    <colgroup>
+                        <col style="width: 10%;"> <!-- Cột ID -->
+                        <col style="width: 30%;"> <!-- Cột Questions -->
+                        <col style="width: 50%;"> <!-- Cột Answers (lớn nhất) -->
+                        <col style="width: 10%;"> <!-- Cột Actions -->
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="id-column center-align">ID</th>                    
+                            <th class="title-column">Câu hỏi</th>
+                            <th class="status-column">Câu trả lời</th>
+                            <th class="status-column">Sửa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${listFAQ}" var="f">
+
+                            <tr>
+                                <td class="center-align">${f.getFaqID()}</td>                        
+                                <td class="created-time">${f.getQuestion()}</td>
+                                <td class="access-count">${f.getAnswer()}</td>
+                                <td> 
+                                    <button type="submit" name="FaqID" value="${f.getFaqID()}" class="add-news-btn">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </form>
+
+
+            <div class="pagination">
+                <c:if test="${currentPage > 1}">
+                    <a href="?page=${currentPage - 1}&searchKeyword=${keyword}&faqType=${selectedType}&entries=${entries}"  class="prev" > Previous</a>
+                </c:if>
+
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <a href="?page=${i}&searchKeyword=${keyword}&faqType=${selectedType}&entries=${entries}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                </c:forEach>
+
+                <c:if test="${currentPage < totalPages}">
+                    <a href="?page=${currentPage + 1}&searchKeyword=${keyword}&faqType=${selectedType}&entries=${entries}" class="next">Next</a>
+                </c:if>
             </div>
+
+
         </div>
 
         <script>
             function changePage(page) {
-                const form = document.querySelector('.filter-controls');
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'page';
+                const form = document.querySelector(".filter-controls"); // Chỉ lấy form đầu tiên
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "page";
                 input.value = page;
                 form.appendChild(input);
                 form.submit();
-            }
-
-            function showNewsModal(title, description, image) {
-                const modal = document.getElementById('newsModal');
-                const modalTitle = document.getElementById('modalTitle');
-                const modalDescription = document.getElementById('modalDescription');
-                const modalImage = document.getElementById('modalImage');
-
-                modalTitle.textContent = title;
-                modalDescription.innerHTML = description;
-                modalImage.src = image;
-
-                modal.style.display = 'block';
-            }
-
-            function closeNewsModal() {
-                const modal = document.getElementById('newsModal');
-                modal.style.display = 'none';
-            }
-
-            // Close modal when clicking outside of it
-            window.onclick = function (event) {
-                const modal = document.getElementById('newsModal');
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
             }
 
             // Toast message animation
@@ -669,16 +691,21 @@
                 }
             });
 
-            function updateURLParameter(param, value) {
-                let url = new URL(window.location.href);
-                let params = new URLSearchParams(url.search);
+            document.addEventListener("DOMContentLoaded", function () {
+                const checkboxes = document.querySelectorAll(".faq-checkbox");
 
-                params.set(param, value);
-                params.delete('fromUpdate');
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        checkboxes.forEach(cb => {
+                            if (cb !== this) {
+                                cb.checked = false;
+                            }
+                        });
+                    });
+                });
+            });
 
-                window.location.search = params.toString();
-            }
         </script>
-        
+
     </body>
 </html>

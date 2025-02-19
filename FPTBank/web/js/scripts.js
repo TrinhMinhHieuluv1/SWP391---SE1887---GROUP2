@@ -5,49 +5,47 @@
 
 //checkvalidate
 function validateLoanRate() {
-            let username = document.getElementById("loanRate").value;
-            let errorSpan = document.getElementById("nameError");
-            let pattern = /^(0|[1-9]\d*)([.,]\d+)?$/;
-            if (!pattern.test(username)) {
-                errorSpan.innerText = "LoanRate không hợp lệ !! phải là số dương, không chứa chữ cái, không kí tự đặc biệt ngoài[.,]";
-                errorSpan.style.color = "red";
-                errorSpan.style.fontSize = "13px";
-            } else {
-                errorSpan.innerText = "";
-            }
-        }
-        
+    let username = document.getElementById("loanRate").value;
+    let errorSpan = document.getElementById("nameError");
+    let pattern = /^(0|[1-9]\d*)([.,]\d+)?$/;
+    if (!pattern.test(username)) {
+        errorSpan.innerText = "LoanRate không hợp lệ !! phải là số dương, không chứa chữ cái, không kí tự đặc biệt ngoài[.,]";
+        errorSpan.style.color = "red";
+        errorSpan.style.fontSize = "13px";
+    } else {
+        errorSpan.innerText = "";
+    }
+}
+
 function validateTerm() {
-            let username = document.getElementById("duration").value;
-            let errorSpan = document.getElementById("nameError2");
-            let pattern = /^[1-9]\d*$/;
-            if (!pattern.test(username)) {
-                errorSpan.innerText = "Kì hạn không hợp lệ !! phải là số nguyên dương, không chứa chữ cái, không kí tự đặc biệt";
-                errorSpan.style.color = "red";
-                errorSpan.style.fontSize = "13px";
-            } else {
-                errorSpan.innerText = "";
-            }
-        }        
+    let username = document.getElementById("duration").value;
+    let errorSpan = document.getElementById("nameError2");
+    let pattern = /^[1-9]\d*$/;
+    if (!pattern.test(username)) {
+        errorSpan.innerText = "Kì hạn không hợp lệ !! phải là số nguyên dương, không chứa chữ cái, không kí tự đặc biệt";
+        errorSpan.style.color = "red";
+        errorSpan.style.fontSize = "13px";
+    } else {
+        errorSpan.innerText = "";
+    }
+}
 
-   //thansg
-   document.addEventListener("DOMContentLoaded", () => {
-      const selectElement = document.getElementById('numberSelect');
+//thansg
+document.addEventListener("DOMContentLoaded", () => {
+    const selectElement = document.getElementById('numberSelect');
 
-      if (!selectElement) {
+    if (!selectElement) {
         console.error("Không tìm thấy phần tử có id 'numberSelect'.");
         return; // Dừng thực thi nếu không tìm thấy phần tử
-      }
+    }
 
-      for (let i = 1; i <= 180; i++) {
+    for (let i = 1; i <= 180; i++) {
         const option = document.createElement('option');
         option.value = i;
         option.textContent = i;
         selectElement.appendChild(option);
-      }
-    });
-    
-    
+    }
+});
 function load(selector, path) {
     const cached = localStorage.getItem(path);
     if (cached) {
@@ -92,7 +90,7 @@ function toggleFooter() {
 
 document.addEventListener("DOMContentLoaded", function () {
     const faqItems = document.querySelectorAll(".faq-question__ques-item");
-    
+
     faqItems.forEach(item => {
         const wrap = item.querySelector(".faq-question__ques-wrap");
         const answer = item.querySelector(".faq-question__ques-ans");
@@ -107,10 +105,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function toggleContent(toggleButton, contentSelector) {
-    if (!toggleButton) return; // Đảm bảo nút tồn tại trước khi xử lý
+    if (!toggleButton)
+        return; // Đảm bảo nút tồn tại trước khi xử lý
 
     const content = document.querySelector(contentSelector);
-    if (!content) return; // Đảm bảo nội dung tồn tại
+    if (!content)
+        return; // Đảm bảo nội dung tồn tại
 
     const textExpand = toggleButton.querySelector(".text-expand");
     const textCollapsed = toggleButton.querySelector(".text-collapsed");
@@ -139,114 +139,75 @@ document.querySelector(".borrow-money__toggle--btn")?.addEventListener("click", 
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const tabsSelector = "about-introduction__item";
-    const contentsSelector = "about-introduction__content";
+    function setupTabs(tabsSelector, contentsSelector) {
+        const tabActive = `${tabsSelector}--current`;
+        const contentActive = `${contentsSelector}--current`;
 
-    const tabActive = `${tabsSelector}--current`;
-    const contentActive = `${contentsSelector}--current`;
+        document.querySelectorAll(".js-tabs").forEach((tabContainer) => {
+            const tabs = tabContainer.querySelectorAll(`.${tabsSelector}`);
+            const contents = tabContainer.querySelectorAll(`.${contentsSelector}`);
 
-    // Chọn tất cả các container có class .js-tabs
-    const tabContainers = document.querySelectorAll(".js-tabs");
-    tabContainers.forEach((tabContainer) => {
-        const tabs = tabContainer.querySelectorAll(`.${tabsSelector}`);
-        const contents = tabContainer.querySelectorAll(`.${contentsSelector}`);
-        tabs.forEach((tab, index) => {
-            tab.addEventListener("click", () => {
-                // Xóa class active khỏi tab và nội dung hiện tại
-                tabContainer.querySelector(`.${tabActive}`)?.classList.remove(tabActive);
-                tabContainer.querySelector(`.${contentActive}`)?.classList.remove(contentActive);
+            if (tabs.length === 0 || contents.length === 0) {
+                console.warn(`⚠️ Không tìm thấy tabs (${tabsSelector}) hoặc contents (${contentsSelector}) trong .js-tabs`);
+                return; // Dừng hàm nếu không tìm thấy phần tử
+            }
 
-                // Thêm class active vào tab và nội dung được chọn
-                tab.classList.add(tabActive);
-                contents[index].classList.add(contentActive);
+            tabs.forEach((tab, index) => {
+                tab.addEventListener("click", () => {
+                    // Xóa class active khỏi tab và nội dung hiện tại
+                    tabContainer.querySelector(`.${tabActive}`)?.classList.remove(tabActive);
+                    tabContainer.querySelector(`.${contentActive}`)?.classList.remove(contentActive);
+
+                    // Thêm class active vào tab và nội dung được chọn
+                    tab.classList.add(tabActive);
+                    contents[index]?.classList.add(contentActive);
+                });
             });
         });
-    });
+    }
+
+    // Gọi hàm setupTabs cho các nhóm tabs khác nhau
+    setupTabs("about-introduction__item", "about-introduction__content");
+    setupTabs("about-timeline__num", "about-timeline__content");
+    setupTabs("faq-question__tab", "faq-question__content");
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const tabsSelector = "about-timeline__num";
-    const contentsSelector = "about-timeline__content";
 
-    const tabActive = `${tabsSelector}--current`;
-    const contentActive = `${contentsSelector}--current`;
-
-    // Chọn tất cả các container có class .js-tabs
-    const tabContainers = document.querySelectorAll(".js-tabs");
-    tabContainers.forEach((tabContainer) => {
-        const tabs = tabContainer.querySelectorAll(`.${tabsSelector}`);
-        const contents = tabContainer.querySelectorAll(`.${contentsSelector}`);
-        tabs.forEach((tab, index) => {
-            tab.addEventListener("click", () => {
-                // Xóa class active khỏi tab và nội dung hiện tại
-                tabContainer.querySelector(`.${tabActive}`)?.classList.remove(tabActive);
-                tabContainer.querySelector(`.${contentActive}`)?.classList.remove(contentActive);
-
-                // Thêm class active vào tab và nội dung được chọn
-                tab.classList.add(tabActive);
-                contents[index].classList.add(contentActive);
-            });
-        });
-    });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const tabsSelector = "faq-question__tab";
-    const contentsSelector = "faq-question__content";
-
-    const tabActive = `${tabsSelector}--current`;
-    const contentActive = `${contentsSelector}--current`;
-
-    // Chọn tất cả các container có class .js-tabs
-    const tabContainers = document.querySelectorAll(".js-tabs");
-    tabContainers.forEach((tabContainer) => {
-        const tabs = tabContainer.querySelectorAll(`.${tabsSelector}`);
-        const contents = tabContainer.querySelectorAll(`.${contentsSelector}`);
-        tabs.forEach((tab, index) => {
-            tab.addEventListener("click", () => {
-                // Xóa class active khỏi tab và nội dung hiện tại
-                tabContainer.querySelector(`.${tabActive}`)?.classList.remove(tabActive);
-                tabContainer.querySelector(`.${contentActive}`)?.classList.remove(contentActive);
-
-                // Thêm class active vào tab và nội dung được chọn
-                tab.classList.add(tabActive);
-                contents[index].classList.add(contentActive);
-            });
-        });
-    });
-});
-
-const dataSections = {
-    vision: [
-        { text: "Số 1 về quy mô lợi nhuận", img: "./img/about/number1.svg" },
-        { text: "Dẫn đầu về chuyển đổi số trong ngành ngân hàng", img: "./img/about/number2.svg" },
-        { text: "Ngân hàng hàng đầu về quản trị rủi ro", img: "./img/about/number3.svg" },
-        { text: "Dẫn đầu về chất lượng nguồn nhân lực", img: "./img/about/number4.svg" },
-        { text: "Dẫn đầu về quản trị môi trường, xã hội & doanh nghiệp", img: "./img/about/number5.svg" },
-        { text: "Phấn đấu phát hành cổ phiếu và niêm yết trên TTCK quốc tế", img: "./img/about/number6.svg" }
-    ],
-    "core-values": [
-        { text: "TIMIBANK không ngừng sáng tạo để mang lại những giá trị thiết thực cho khách hàng", img: "./img/about/value1.svg" },
-        { text: "Nỗ lực mở rộng danh mục khách hàng, là nguồn tài sản quý giá và đáng tự hào của TIMIBANK", img: "./img/about/value2.svg" },
-        { text: "Lấy sự Chu đáo - Tận tâm với khách hàng làm tiêu chí phấn đấu.", img: "./img/about/value3.svg" },
-        { text: "Để xây dựng một ngân hàng quốc gia sánh tầm với khu vực và thế giới.", img: "./img/about/value4.svg" },
-        { text: "Luôn nỗ lực tìm kiếm sự Khác biệt trên nền tảng chất lượng và giá trị cao nhất.", img: "./img/about/value5.svg" },
-        { text: "Đề cao tính An toàn, bảo mật nhằm bảo vệ tối đa lợi ích của khách hàng, cổ đông", img: "./img/about/value6.svg" }
-    ]
-};
 
 const itemsPerPage = 3;
 
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("data/sections.json")
+            .then(response => response.json())
+            .then(dataSections => {
+                Object.keys(dataSections).forEach(sectionId => {
+                    createCarousel(sectionId, dataSections[sectionId]);
+                });
+            })
+            .catch(error => console.error("Error loading data:", error));
+});
+
 function createCarousel(sectionId, data) {
     let currentIndex = 0;
-    let direction = 1; // 1: Sang phải, -1: Sang trái
+    let direction = 1;
+
+    const container = document.querySelector(`#container-${sectionId}`);
+    const pagination = document.querySelector(`#pagination-${sectionId}`);
+
+    if (!container || !pagination) {
+        console.error(`Không tìm thấy phần tử container hoặc pagination cho sectionId: ${sectionId}`);
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        container.innerHTML = `<p class="error-message">Không có dữ liệu để hiển thị.</p>`;
+        pagination.innerHTML = "";
+        return;
+    }
 
     function renderCards() {
-        const container = document.querySelector(`#container-${sectionId}`);
         container.innerHTML = "";
-
         const pageItems = data.slice(currentIndex, currentIndex + itemsPerPage);
-
         pageItems.forEach(item => {
             const card = document.createElement("div");
             card.className = "card";
@@ -259,7 +220,6 @@ function createCarousel(sectionId, data) {
     }
 
     function renderPagination() {
-        const pagination = document.querySelector(`#pagination-${sectionId}`);
         pagination.innerHTML = "";
 
         const prevButton = document.createElement("button");
@@ -291,9 +251,9 @@ function createCarousel(sectionId, data) {
 
     function autoSlide() {
         if (currentIndex + itemsPerPage >= data.length) {
-            direction = -1; // Đổi hướng sang trái
+            direction = -1;
         } else if (currentIndex === 0) {
-            direction = 1; // Đổi hướng sang phải
+            direction = 1;
         }
 
         currentIndex += direction;
@@ -306,19 +266,29 @@ function createCarousel(sectionId, data) {
     setInterval(autoSlide, 3000);
 }
 
-// Khởi tạo carousel cho từng phần
-Object.keys(dataSections).forEach(sectionId => {
-    createCarousel(sectionId, dataSections[sectionId]);
-});
 
 
 
-document.getElementById("date").addEventListener("click", function () {
-    this.showPicker();
+document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById("date");
+    if (dateInput) {
+        dateInput.addEventListener("click", function () {
+            this.showPicker();
+        });
+    } else {
+        console.error('Không tìm thấy phần tử với id="date"');
+    }
 });
 
 // Đóng mở modal
-window.addEventListener("DOMContentLoaded", initJsToggle);
+/**
+ * JS toggle
+ *
+ * Cách dùng:
+ * <button class="js-toggle" toggle-target="#box">Click</button>
+ * <div id="box">Content show/hide</div>
+ */
+document.addEventListener("DOMContentLoaded", initJsToggle);
 
 function initJsToggle() {
     const $ = document.querySelector.bind(document);
@@ -326,12 +296,13 @@ function initJsToggle() {
     $$(".js-toggle").forEach((button) => {
         const target = button.getAttribute("toggle-target");
         if (!target) {
-            document.body.innerText = `Cần thêm toggle-target cho: ${button.outerHTML}`;
+            console.error(`Cần thêm toggle-target cho: ${button.outerHTML}`);
         }
         button.onclick = (e) => {
             e.preventDefault();
+
             if (!$(target)) {
-                return (document.body.innerText = `Không tìm thấy phần tử "${target}"`);
+                console.error(`Không tìm thấy phần tử "${target}"`);
             }
             const isHidden = $(target).classList.contains("hide");
 
@@ -340,7 +311,6 @@ function initJsToggle() {
                 $(target).classList.toggle("show", isHidden);
             });
         };
-
         document.onclick = function (e) {
             if (!e.target.closest(target)) {
                 const isHidden = $(target).classList.contains("hide");
@@ -349,57 +319,65 @@ function initJsToggle() {
                 }
             }
         };
-
     });
 }
 
-const teamList = document.querySelector("#team-list");
-const teamItems = document.querySelectorAll(".team-item");
-const prevButton = document.querySelector(".navigation__prev");
-const nextButton = document.querySelector(".navigation__next");
+document.addEventListener("DOMContentLoaded", () => {
+    const teamList = document.querySelector("#team-list");
+    const teamItems = document.querySelectorAll(".team-item");
+    const prevButton = document.querySelector(".navigation__prev");
+    const nextButton = document.querySelector(".navigation__next");
 
-let currentIndex = 0; // Vị trí ban đầu
-const visibleItems = 4; // Số lượng item hiển thị
-const totalItems = teamItems.length;
-
-// Hàm tính lại chiều rộng mỗi item (bao gồm cả margin)
-function getItemWidth() {
-    return teamItems[0].offsetWidth ; // Lấy chiều rộng của item cộng với margin-right
-}
-
-// Cập nhật vị trí hiển thị và trạng thái của nút
-function updatePosition() {
-    const itemWidth = getItemWidth(); // Tính lại itemWidth mỗi lần cập nhật
-    const translateValue = -currentIndex * itemWidth;
-    teamList.style.transform = `translateX(${translateValue}px)`;
-
-    // Cập nhật trạng thái của nút Prev
-    prevButton.disabled = currentIndex <= 0;
-    prevButton.classList.toggle("disabled", currentIndex <= 0);
-
-    // Cập nhật trạng thái của nút Next
-    nextButton.disabled = currentIndex >= totalItems - visibleItems;
-    nextButton.classList.toggle("disabled", currentIndex >= totalItems - visibleItems);
-}
-
-// Sự kiện bấm Next
-nextButton.addEventListener("click", () => {
-    if (currentIndex < totalItems - visibleItems) {
-        currentIndex++;
-        updatePosition();
+    // Kiểm tra nếu không tìm thấy phần tử cần thiết
+    if (!teamList || teamItems.length === 0 || !prevButton || !nextButton) {
+        console.error("Thiếu phần tử cần thiết trong DOM.");
+        return; // Dừng thực thi nếu thiếu phần tử
     }
+
+    let currentIndex = 0; // Vị trí ban đầu
+    const visibleItems = 4; // Số lượng item hiển thị
+    const totalItems = teamItems.length;
+
+    // Hàm tính lại chiều rộng mỗi item (bao gồm cả margin)
+    function getItemWidth() {
+        return teamItems[0].offsetWidth; // Lấy chiều rộng của item
+    }
+
+    // Cập nhật vị trí hiển thị và trạng thái của nút
+    function updatePosition() {
+        const itemWidth = getItemWidth(); // Tính lại itemWidth mỗi lần cập nhật
+        const translateValue = -currentIndex * itemWidth;
+        teamList.style.transform = `translateX(${translateValue}px)`;
+
+        // Cập nhật trạng thái của nút Prev
+        prevButton.disabled = currentIndex <= 0;
+        prevButton.classList.toggle("disabled", currentIndex <= 0);
+
+        // Cập nhật trạng thái của nút Next
+        nextButton.disabled = currentIndex >= totalItems - visibleItems;
+        nextButton.classList.toggle("disabled", currentIndex >= totalItems - visibleItems);
+    }
+
+    // Sự kiện bấm Next
+    nextButton.addEventListener("click", () => {
+        if (currentIndex < totalItems - visibleItems) {
+            currentIndex++;
+            updatePosition();
+        }
+    });
+
+    // Sự kiện bấm Prev
+    prevButton.addEventListener("click", () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updatePosition();
+        }
+    });
+
+    // Khởi tạo vị trí ban đầu
+    updatePosition();
 });
 
-// Sự kiện bấm Prev
-prevButton.addEventListener("click", () => {
-    if (currentIndex > 0) {
-        currentIndex--;
-        updatePosition();
-    }
-});
-
-// Khởi tạo vị trí ban đầu
-updatePosition();
 
 
 
@@ -409,38 +387,100 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (feedbackButton && form) {
         feedbackButton.addEventListener("click", function () {
-            form.scrollIntoView({ behavior: "smooth" });
+            form.scrollIntoView({behavior: "smooth"});
         });
     }
 });
 
 // Khi nhấn vào liên kết, cuộn tới form tìm feedback
-document.getElementById('feedback-link').addEventListener('click', function (event) {
-    event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết (chuyển trang)
+document.addEventListener("DOMContentLoaded", function () {
+    const feedbackLink = document.getElementById('feedback-link');
+    const feedbackForm = document.getElementById('feedback-form');
 
-    var form = document.getElementById('feedback-form');
-    if (form) {
-        form.scrollIntoView({behavior: 'auto'});
+    if (feedbackLink && feedbackForm) {
+        feedbackLink.addEventListener('click', function (event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết (chuyển trang)
+
+            feedbackForm.scrollIntoView({behavior: 'auto'});
+
+            // Nếu bạn muốn sau khi cuộn, trang vẫn chuyển đến "showfb", hãy thêm đoạn này:
+            setTimeout(function () {
+                window.location.href = "showfb"; // Chuyển hướng đến "showfb" sau khi cuộn
+            }, 500); // Thời gian trễ để cuộn trang trước khi chuyển hướng
+        });
+    } else {
+        console.warn("Không tìm thấy 'feedback-link' hoặc 'feedback-form' trong DOM.");
     }
-
-    // Nếu bạn muốn sau khi cuộn, trang vẫn chuyển đến "showfb", hãy thêm đoạn này:
-    setTimeout(function () {
-        window.location.href = "showfb"; // Chuyển hướng đến "showfb" sau khi cuộn
-    }, 100); // Thời gian trễ để cuộn trang trước khi chuyển hướng
 });
+
 
 //trang prefer
 
-        function showInfo() {
-            var selectBox = document.getElementById("serviceSelect");
-            var selectedValue = selectBox.value;
-            var resultBox = document.getElementById("resultBox");
+function showInfo() {
+    var selectBox = document.getElementById("serviceSelect");
+    var selectedValue = selectBox.value;
+    var resultBox = document.getElementById("resultBox");
 
-            if (selectedValue) {
-                resultBox.innerHTML = "<strong>Bạn đã chọn:</strong> " + selectedValue;
-                resultBox.style.display = "block";
-            } else {
-                resultBox.style.display = "none";
-            }
-        }
+    if (selectedValue) {
+        resultBox.innerHTML = "<strong>Bạn đã chọn:</strong> " + selectedValue;
+        resultBox.style.display = "block";
+    } else {
+        resultBox.style.display = "none";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("data/products.json")
+            .then(response => response.json())
+            .then(products => {
+                const productContainer = document.getElementById("product-list");
+                const modalContainer = document.getElementById("modal-container");
+
+                products.forEach(product => {
+                    // Render product items
+                    const productItem = document.createElement("div");
+                    productItem.classList.add("product-item");
+                    productItem.innerHTML = `
+                    <img alt="${product.title} Icon" height="50" src="${product.image}" width="50"/>
+                    <h3>${product.title}</h3>
+                    <p>${product.description}</p>
+                    <button class="product-item__btn mil-btn mil-ssm mil-empty js-toggle" toggle-target="#modal-${product.id}">Xem chi tiết</button>
+                `;
+                    productContainer.appendChild(productItem);
+
+                    // Render modal content
+                    const modalItem = document.createElement("div");
+                    modalItem.innerHTML = `
+                    <div id="modal-${product.id}" class="modal hide" style="--content-width:800px">
+                        <div class="modal__content">
+                            <button class="modal__close js-toggle" toggle-target="#modal-${product.id}">&times;</button>
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="modal__img-wrap">
+                                        <img src="${product.modalImage}" alt="portrait" class="product-item__img">
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <div class="modal__info">
+                                        <div class="modal__text">${product.modalText}</div>
+                                        <div class="modal__desct">${product.modalDesc}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal__overlay js-toggle" toggle-target="#modal-${product.id}"></div>
+                    </div>
+                `;
+                    modalContainer.appendChild(modalItem);
+                });
+
+                // Gọi initJsToggle() sau khi tất cả phần tử đã được render
+                initJsToggle();
+            })
+            .catch(error => console.error("Error loading products:", error));
+
+
+});
+
+
    
