@@ -130,7 +130,6 @@
     <div class="form-container">
         <h3 class="fw-bold mb-3">UPDATE USER</h3>
         <form action="update_user" method="post">
-
             <!-- Username -->
             <div>
                 <div style="display:flex;">
