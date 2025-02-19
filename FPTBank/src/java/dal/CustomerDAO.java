@@ -7,8 +7,8 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 import model.Customer;
-import model.User;
 
 /**
  *
@@ -16,59 +16,73 @@ import model.User;
  */
 public class CustomerDAO extends DBContext {
 
-    public int getCustomerIdByUserId(int userId) {
-        String query = "SELECT CustomerId FROM [dbo].[Customer] WHERE UserID = ?";
-
-        try (
-                PreparedStatement pstmt = connection.prepareStatement(query)) {
-
-            pstmt.setInt(1, userId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("CustomerId");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0; // Trả về null nếu không tìm thấy
-    }
-
-    public Customer getCustomerById(int id) {
-        String sql = "SELECT * FROM customer c "
-                + "join [User] u on u.UserID = c.UserID WHERE CustomerId = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Customer customer = new Customer();
-                customer.setCustomerId(rs.getInt("CustomerId"));
-                customer.setCreditScore(rs.getInt("CreditScore"));
-                customer.setBalance(rs.getBigDecimal("balance"));
-                // customer.setUser(...); // Set the user if applicable
-                UserDAO userDAO = new UserDAO();
-                User user = new User(rs.getInt("UserID"),
+    public Customer checkAuthen(String username, String password) {
+        String sql = "SELECT * FROM Customer WHERE Username=? AND Password=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            st.setString(2, password);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer(
+                        rs.getInt("CustomerId"),
+                        rs.getInt("CreditScore"),
+                        rs.getInt("RoleID"),
                         rs.getString("Username"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
                         rs.getString("Image"),
                         rs.getString("Phone"),
                         rs.getString("Email"),
-                        rs.getDate("DateOfBirth"),
-                        rs.getBoolean("Gender"),
                         rs.getString("Address"),
-                        rs.getString("CCCD"),
-                        rs.getInt("RoleID"),
+                        rs.getString("CCCD"),  
+                        rs.getDate("DateOfBirth"),
+                        rs.getDate("CreatedAt"),
+                        rs.getBoolean("Gender"),   
                         rs.getBoolean("Status"),
-                        userDAO.getManagerForSeller(rs.getInt("ManageID")),
-                        rs.getDate("CreatedAt"));
-                customer.setUser(user);
+                        rs.getBigDecimal("Balance")
+                );
                 return customer;
             }
-        } catch (Exception e) {
-            e.printStackTrace(); // Handle exceptions appropriately
-
+        } catch (SQLException e) {
+            e.printStackTrace(); //
         }
         return null;
     }
+    public void updateACustomer(Customer customerToUpdate) {
+    String sql = "UPDATE [Customer] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, Status=? WHERE CustomerID=?";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, customerToUpdate.getPassword());
+        st.setString(2, customerToUpdate.getFullName());
+        st.setString(3, customerToUpdate.getImage());
+        st.setString(4, customerToUpdate.getPhone());
+        st.setString(5, customerToUpdate.getEmail());
+        st.setDate(6, (Date) customerToUpdate.getDateOfBirth());
+        st.setBoolean(7, customerToUpdate.isGender());
+        st.setString(8, customerToUpdate.getAddress());
+        st.setString(9, customerToUpdate.getCCCD());
+        st.setBoolean(10, customerToUpdate.isStatus());
+        st.setInt(11, customerToUpdate.getCustomerId());
+        st.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+    public boolean isFieldExistsToUpdate(String fieldName, String value, int UserID) {
+        String query = "SELECT COUNT(*) FROM [Customer] WHERE " + fieldName + " = ? AND CustomerID <> ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, value);
+            stmt.setInt(2, UserID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+   
 }
