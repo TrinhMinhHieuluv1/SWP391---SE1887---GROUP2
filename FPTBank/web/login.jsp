@@ -233,36 +233,138 @@
                     margin: 0 20px;
                 }
             }
+            /* Custom select styling */
+            .mil-form-group {
+                margin-bottom: 15px;
+            }
+            .mil-label {
+                display: block;
+                margin-bottom: 8px;
+                color: #2e7d32; /* Slightly darker green for better contrast */
+                font-weight: 600;
+                font-size: 15px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                position: relative;
+                padding-left: 5px;
+            }
+            .mil-label::before {
+                content: '';
+                position: absolute;
+                left: -5px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 3px;
+                height: 80%;
+                background-color: #4caf50;
+                border-radius: 2px;
+            }
+            .mil-select-wrapper {
+                position: relative;
+                width: 150px; /* Narrow width */
+            }
+            .mil-select {
+                width: 100%;
+                padding: 6px 10px;
+                border: 1px solid #4caf50;
+                border-radius: 6px;
+                background-color: #ffffff;
+                font-size: 13px;
+                color: #333;
+                transition: all 0.3s ease;
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%234CAF50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 8px center;
+                cursor: pointer;
+                height: 35px;
+                box-shadow: 0 1px 3px rgba(76, 175, 80, 0.1);
+            }
+            .mil-select:focus {
+                border-color: #4caf50;
+                box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+                outline: none;
+            }
+            .mil-select option {
+                background-color: #ffffff;
+                color: #333;
+                padding: 5px;
+            }
+            .notification.success-register {
+                background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3),
+                           0 0 0 1px rgba(76, 175, 80, 0.2);
+            }
+            .notification.success-register .notification-icon {
+                background: rgba(255, 255, 255, 0.95);
+            }
+            .notification.success-register .notification-icon i {
+                color: #4caf50;
+                font-size: 1.4em;
+            }
+            .notification.success-register .notification-title,
+            .notification.success-register .notification-text {
+                color: white;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            }
         </style>
     </head>
 
     <body>
         <!-- Error Notification -->
-        <div id="notification" class="notification ${not empty requestScope.err or not empty requestScope.message or param.roleErr eq 'true' ? 'show' : ''}">
+        <div id="notification" class="notification 
+            ${(not empty requestScope.err or 
+               not empty requestScope.message or 
+               not empty requestScope.fromRegisterMessage or 
+               param.roleErr eq 'true' or 
+               param.fromRegister eq 'true') ? 'show' : ''}
+            ${(param.fromRegister eq 'true' or not empty requestScope.fromRegisterMessage) ? ' success-register' : ''}">
             <div class="notification-icon">
-                <i class="fa fa-exclamation-circle"></i>
+                <i class="${(param.fromRegister eq 'true' or not empty requestScope.fromRegisterMessage) ? 'fa fa-check-circle' : 'fa fa-exclamation-circle'}"></i>
             </div>
             <div class="notification-content">
-                <h4 class="notification-title">Error</h4>
+                <h4 class="notification-title">
+                    <c:choose>
+                        <c:when test="${not empty requestScope.err}">Error</c:when>
+                        <c:when test="${not empty requestScope.message}">Message</c:when>
+                        <c:when test="${param.fromRegister eq 'true' or not empty requestScope.fromRegisterMessage}">Success</c:when>
+                        <c:when test="${param.roleErr eq 'true'}">Access Denied</c:when>
+                        <c:otherwise>Notification</c:otherwise>
+                    </c:choose>
+                </h4>
                 <p class="notification-text">
-                    ${not empty requestScope.err ? requestScope.err : 
-                      not empty requestScope.message ? requestScope.message : 
-                      param.roleErr eq 'true' ? 'Access Denied' : ''}
+                    <c:choose>
+                        <c:when test="${not empty requestScope.err}">${requestScope.err}</c:when>
+                        <c:when test="${not empty requestScope.message}">${requestScope.message}</c:when>
+                        <c:when test="${not empty requestScope.fromRegisterMessage}">${requestScope.fromRegisterMessage}</c:when>
+                        <c:when test="${param.fromRegister eq 'true'}">Registration Successful</c:when>
+                        <c:when test="${param.roleErr eq 'true'}">You do not have permission to access this page.</c:when>
+                        <c:otherwise></c:otherwise>
+                    </c:choose>
                 </p>
             </div>
+            <button class="notification-close" onclick="this.closest('.notification').classList.remove('show')">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
 
         <script>
-            // Đóng notification
+            // Close notification
             function closeNotification() {
                 const notification = document.getElementById('notification');
-                notification.classList.remove('show');
+                if (notification) {
+                    notification.classList.remove('show');
+                }
             }
 
-            // Tự động đóng notification sau 5 giây
-            if (document.getElementById('notification').classList.contains('show')) {
-                setTimeout(closeNotification, 5000);
-            }
+            // Auto-close notification after 5 seconds
+            document.addEventListener('DOMContentLoaded', function() {
+                const notification = document.getElementById('notification');
+                if (notification && notification.classList.contains('show')) {
+                    setTimeout(closeNotification, 5000);
+                }
+            });
         </script>
         
         <script>
@@ -378,6 +480,15 @@
                             <div class="col-xl-5">
                                 <c:set var="cookie" value="${pageContext.request.cookies}"></c:set>
                                 <form action="login" method="post" style="background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(76, 175, 80, 0.1);">
+                                    <div class="form-group mil-form-group mil-mb-25">
+                                        <label for="role-select" class="mil-label">You are:</label>
+                                        <div class="mil-select-wrapper">
+                                            <select id="role-select" name="role" required class="mil-select">
+                                                <option value="customer" ${cookie.crole.value eq "customer"?'selected':''}>Customer</option>
+                                                <option value="staff" ${cookie.crole.value eq "staff"?'selected':''}>Staff</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="form-group mil-mb-25">
                                         <input id="username" class="mil-input mil-up" type="text" placeholder="Username" name="username" 
                                             value="${cookie.cusername.value}" required oninput="checkDuplicatedUsername()" 
@@ -399,8 +510,6 @@
                                          <a href="/timibank/forgotPass">Forgot Password</a>
                                     </div>
                                            
-                                    <div class="mil-mb-25" style="text-align: center;">
-                                    </div>
                                     <div class="mil-up mil-mb-25" style="display: flex; gap: 15px;">
                                         <button type="submit" class="mil-btn mil-md mil-fw" 
                                             style="flex: 1; border-radius: 8px; background: #4caf50; color: white; 

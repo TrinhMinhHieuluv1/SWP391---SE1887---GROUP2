@@ -19,6 +19,9 @@
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/icons.css">
+<!-- Favicon -->
+<link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/x-icon">
+<link rel="icon" href="assets/images/logo-icon.png" type="image/x-icon">
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="assets/css/main.css" rel="stylesheet">
@@ -126,68 +129,49 @@
 
     <div class="form-container">
         <h3 class="fw-bold mb-3">UPDATE USER</h3>
-
         <form action="update_user" method="post">
-
-            <!-- User ID -->
-            
             <!-- Username -->
             <div>
-                <label for="name">User Name</label>
+                <div style="display:flex;">
+                    <label for="name">User Name</label> 
+                    <label for="read" style="color: red; font-size: small; margin-left: 5px; display: inline;">(read only)</label>
+                </div>
                 <input type="text" id="name" name="username" value="${user.getUsername()}" readonly>
             </div>
 
             <!-- Full Name -->
             <div>
-                <label for="full">Full Name</label>
+                <div style="display:flex;">
+                    <label for="full">Full Name</label> 
+                    <label for="read" style="color: red; font-size: small; margin-left: 5px; display: inline;">(read only)</label>
+                </div>
                 <input type="text" id="full" name="fullname" value="${user.getFullName()}" readonly>
             </div>
 
-            <!-- Phone Number -->
-            <div>
-                <label for="phonenum">Phone Number</label>
-                <input type="text" id="phonenum" name="phonenumber" value="${user.getPhone()}" readonly>
-            </div>
-
-            <!-- Email -->
-            <div>
-                <label for="mail">Email</label>
-                <input type="text" id="mail" name="email" value="${user.getEmail()}" readonly>
-            </div>
-
-            <!-- Address -->
-            <div>
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" value="${user.getAddress()}" readonly>
-            </div>
-
-            <!-- Image -->
-            <div>
-                <label for="img">Image</label>
-                <input type="text" id="img" name="img" value="${user.getImage()}" readonly>
-            </div>
-
             <!-- Manager ID -->
-
             <div>
-                <label for="managerid">Manager ID</label>
-                <input type="text" id="managerid" name="managerid"
-                       pattern="^[0-9]+$"
-                       value="${user.getManager() != null ? user.getManager().userID : ''}"
-                       title="Vui lòng chỉ nhập số !!">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.listManager}">
+                        <label for="manager">Manager</label>
+                        <select id="manager" name="managerid">
+                            <option value="">Choose Manager</option>
+                            <c:forEach var="listM" items="${sessionScope.listManager}">
+                                <option value="${listM.getUserID()}" ${not empty user.getManager() and listM.getUserID() == user.getManager().getUserID() ? 'selected' : ''}>
+                                    ${listM.getFullName()}
+                                </option>
+                            </c:forEach> 
+                        </select>
+                    </c:when>
+                    <c:otherwise>
+                        <label for="manager">Manager</label>
+                        <select id="manager" name="managerid">
+                            <option value=""disabled>Do not have any manager</option>
+                        </select>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
-            <!-- Identity Card -->
-            <div>
-                <label for="card">Identity Card</label>
-                <input type="text" id="card" name="card" value="${user.getCCCD()}" readonly>
-            </div>
 
-            <!-- Date of Birth -->
-            <div>
-                <label for="dob">Date Of Birth</label>
-                <input type="date" id="dob" name="dob" value="${user.getDateOfBirth()}" readonly>
-            </div>
 
             <!-- Role -->
             <div>
@@ -202,20 +186,11 @@
                 </select>
             </div>
 
-            <!-- Gender -->
-            <div>
-                <label for="gender">Gender</label>
-                <input type="text" id="gender" name="gender" value="${user.isGender() == true ? 'Male' : 'Female'}" readonly>
-            </div>
-
 
             <!-- Submit Button -->
             <input type="submit" value="UPDATE">
         </form>
-
     </div>
-
-
 
 </body>
 

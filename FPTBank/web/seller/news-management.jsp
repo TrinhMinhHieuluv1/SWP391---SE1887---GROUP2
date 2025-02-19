@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,6 +32,7 @@
         <!-- Favicon -->
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <style>
             .news-management {
@@ -539,10 +541,29 @@
                         <option value="inactive" ${param.filterStatus == 'inactive' ? 'selected' : ''}>Inactive</option>
                     </select>
 
+                    <label for="NewsCategory" style="margin-left: 20px">News Category: </label>
+                    <select name="filterNewsCategoryID" id="NewsCategory" onchange="updateURLParameter('filterNewsCategoryID', this.value)">
+                        <option value="0" ${param.filterNewsCategoryID == 0 ? 'selected' : ''}>All Category</option>
+                        <c:forEach items="${requestScope.ncList}" var="nc">
+                            <option value="${nc.getNewsCategoryID()}" ${param.filterNewsCategoryID == nc.getNewsCategoryID() ? 'selected' : ''}>${nc.getNewsCategoryName()}</option>
+                        </c:forEach>
+                    </select>
+
                     <label class="mine-checkbox">
                         <input type="checkbox" name="filterMine" value="true" ${param.filterMine == 'true'? 'checked' : ''} onchange="updateURLParameter('filterMine', this.checked)">
                         Show only my news
                     </label>
+                        
+                    <label for="pageSize">Items per page:</label>
+                    <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
+                        <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
+                        <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
+                        <option value="15" ${param.pageSize == 15 ? 'selected' : ''}>15</option>
+                        <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
+                        <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
+                        <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
+                        <option value="100" ${param.pageSize == 100 ? 'selected' : ''}>100</option>
+                    </select>
                 </div>
             </form>
             <button class="show-all-news-btn" onclick="window.location.href = '/timibank/seller/news-management'">Show All News</button>
@@ -586,11 +607,9 @@
                         <tr>
                             <td class="center-align">${news.getNewsID()}</td>
                             <td class="author-name">${news.getUser().getFullName()}</td>
-                            <td><a href="#" class="news-title" onclick="showNewsModal('${news.getTitle()}', '${news.getDescription()}', '${news.getImage()}')">${news.getTitle()}</a></td>
-                            <td>
-                                <span class="status-badge ${news.isStatus() ? 'status-active' : 'status-inactive'}">
-                                    ${news.isStatus() ? 'Active' : 'Inactive'}
-                                </span>
+                            <td><a href="#" class="news-title" onclick="showNewsModal('${news.getTitle()}', '${fn:escapeXml(news.getDescription())}', '${fn:escapeXml(news.getImage())}')">${news.getTitle()}</a></td>
+                            <td id="status-${news.getNewsID()}">
+                                ${news.isStatus() ? 'Active' : 'Inactive'}
                             </td>
                             <td class="created-time">${news.getCreatedAt()}</td>
                             <td class="access-count">${news.getNumberOfAccess()}</td>
@@ -599,10 +618,10 @@
                                     <div class="action-buttons-container">
                                         <a href="/timibank/seller/update-news?NewsID=${news.getNewsID()}" class="action-button update-btn">Update</a>
                                         <c:if test="${news.isStatus()}">
-                                            <a href="/timibank/seller/update-news?NewsID=${news.getNewsID()}&changeStatus=true"><button type="submit" class="action-button inactivate-btn">Inactivate</button></a>
+                                            <button type="submit" class="action-button inactivate-btn" onclick="changeStatus(${news.getNewsID()}, this)">Inactivate</button>
                                         </c:if>
                                         <c:if test="${!news.isStatus()}">
-                                            <a href="/timibank/seller/update-news?NewsID=${news.getNewsID()}&changeStatus=true"><button type="submit" class="action-button activate-btn">Activate</button></a>
+                                            <button type="submit" class="action-button activate-btn" onclick="changeStatus(${news.getNewsID()}, this)">Activate</button>
                                         </c:if>
                                     </div>
                                 </c:if>
@@ -614,7 +633,7 @@
 
             <!-- Pagination Controls -->
             <div class="pagination">
-                <button class="pagination-button" onclick="changePage(${currentPage - 1})" ${currentPage == 1 ? 'disabled' : ''}>
+                <button class="pagination-button" onclick='changePage(${currentPage - 1})' ${currentPage == 1 ? 'disabled' : ''}>
                     Previous
                 </button>
 
@@ -643,7 +662,7 @@
                     <span class="close-modal" onclick="closeNewsModal()">&times;</span>
                 </div>
                 <div class="modal-body">
-                    <p class="news-description" id="modalDescription"></p>
+                    <div class="news-description" id="modalDescription"></div>
                     <div class="news-image-container">
                         <img id="modalImage" class="news-image" src="" alt="News Image">
                     </div>
@@ -668,7 +687,7 @@
                 const modalDescription = document.getElementById('modalDescription');
                 const modalImage = document.getElementById('modalImage');
 
-                modalTitle.textContent = title;
+                modalTitle.innerHTML = title;
                 modalDescription.innerHTML = description;
                 modalImage.src = image;
 
@@ -686,7 +705,7 @@
                 if (event.target == modal) {
                     modal.style.display = 'none';
                 }
-            }
+            };
 
             // Toast message animation
             document.addEventListener('DOMContentLoaded', function () {
@@ -715,7 +734,31 @@
                 params.set(param, value);
                 params.delete('fromUpdate');
 
-                window.location.search = params.toString();
+                window.location.href = 'news-management?' + params.toString();
+            }
+
+            function changeStatus(NewsID, element) {
+                $.ajax({
+                    url: 'update-news',
+                    type: 'GET',
+                    data: {
+                        NewsID: NewsID,
+                        changeStatus: "true"
+                    }
+
+                });
+                const status = document.getElementById("status-" + NewsID);
+                if (status.textContent.trim() === 'Active') {
+                    status.textContent = 'Inactive';
+                    element.textContent = 'Activate';
+                    element.classList.remove('inactivate-btn');
+                    element.classList.add('activate-btn');
+                } else {
+                    status.textContent = 'Active';
+                    element.textContent = 'Inactivate';
+                    element.classList.remove('activate-btn');
+                    element.classList.add('inactivate-btn');
+                }
             }
         </script>
     </body>

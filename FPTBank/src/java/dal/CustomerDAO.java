@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 import model.Customer;
-import model.User;
 
 /**
  *
@@ -46,7 +45,7 @@ public class CustomerDAO extends DBContext {
                 return customer;
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Để dễ debug hơn
+            e.printStackTrace();
         }
         return null;
     }
@@ -145,6 +144,4 @@ public class CustomerDAO extends DBContext {
         e.printStackTrace(); // Hoặc dùng logger để ghi log lỗi
     }
 }
-
-    
 }

@@ -6,7 +6,8 @@ package model;
 
 /**
  *
- * @author ACER
+
+ * @author ADMIN
  */
 public class Service {
     int ServiceID;
