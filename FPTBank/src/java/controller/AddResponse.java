@@ -4,7 +4,6 @@
  */
 package controller;
 
-import dal.CustomerDAO;
 import dal.FeedbackDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,16 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import model.Feedback;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name = "FilterFeedback", urlPatterns = {"/filterfeedback"})
-public class FilterFeedback extends HttpServlet {
+@WebServlet(name = "AddResponse", urlPatterns = {"/seller/addresponse"})
+public class AddResponse extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +38,10 @@ public class FilterFeedback extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet FilterFeedback</title>");
+            out.println("<title>Servlet AddResponse</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet FilterFeedback at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddResponse at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,54 +59,30 @@ public class FilterFeedback extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String date_raw = request.getParameter("date");
-        String search = request.getParameter("search");
-        CustomerDAO cdao = new CustomerDAO();
         FeedbackDAO dao = new FeedbackDAO();
+        String fid_raw = request.getParameter("FID");
+
+        Feedback feedback = null;
         String error = "";
-        if (date_raw == null && (search.isEmpty() || search == null)) {
-            error = "Can't filter";
-            request.setAttribute("error", error);
-            request.getRequestDispatcher("feedback.jsp").forward(request, response);
-            return;
-        }
-        if (date_raw != null && (search == null || search.isEmpty())) {
+
+        if (fid_raw != null && !fid_raw.isEmpty()) {
             try {
-                if (date_raw == null || date_raw.trim().isEmpty()) {
-                    throw new NumberFormatException();
+                int fid = Integer.parseInt(fid_raw);
+                feedback = dao.findFBByfID(fid);
+
+                if (feedback == null) {
+                    error = "Feedback not found.";
                 }
-
-                String[] parts = date_raw.trim().split("-");
-
-                if (parts.length != 3) {
-                    throw new NumberFormatException();
-                }
-
-                int year = Integer.parseInt(parts[0].trim());
-                int month = Integer.parseInt(parts[1].trim());
-                int date = Integer.parseInt(parts[2].trim());
-
-                int uid = (int) session.getAttribute("uid");
-                int cid = cdao.getCustomerIdByUserId(uid);
-
-                List<Feedback> list = dao.getFeedbacksFromDate(date, month, year, cid);
-                session.setAttribute("listfeedback", list);
-
-                request.getRequestDispatcher("feedback.jsp").forward(request, response);
-
             } catch (NumberFormatException e) {
-                error = "Can't filter";
-                request.setAttribute("error", error);
-                request.getRequestDispatcher("feedback.jsp").forward(request, response);
+                error = "Invalid Feedback ID.";
             }
-
-        } else if (search != null && !search.isEmpty()) {
-            List<Feedback> list2 = dao.searchFeedbackByMessage(search);
-            session.setAttribute("listfeedback", list2);
-            request.getRequestDispatcher("feedback.jsp").forward(request, response);
+        } else {
+            error = "Feedback ID is missing.";
         }
 
+        request.setAttribute("error", error);
+        request.setAttribute("feedbackre", feedback);
+        request.getRequestDispatcher("addresponse.jsp").forward(request, response);
     }
 
     /**
@@ -123,7 +96,30 @@ public class FilterFeedback extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        FeedbackDAO dao = new FeedbackDAO();
+        String fid_raw = request.getParameter("FID");
+        String text = request.getParameter("response");
+
+        String error = "";
+//        PrintWriter out = response.getWriter();
+//        out.print(text);
+        if (fid_raw == null || fid_raw.isEmpty() || text == null || text.trim().isEmpty()) {
+            error = "Response cannot be empty.";
+        } else {
+            try {
+                int fid = Integer.parseInt(fid_raw);
+                boolean updated = dao.updateResponse(fid, text);
+                if (updated) {
+                    error = "Response added successfully.";
+                } else {
+                    error = "Failed to add response.";
+                }
+            } catch (NumberFormatException e) {
+                error = "Invalid Feedback ID format.";
+            }
+        }
+
+        response.sendRedirect("managefeedback?message=" + error);
     }
 
     /**
