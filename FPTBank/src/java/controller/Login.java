@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Customer;
 import model.User;
 
 /**
@@ -92,12 +94,14 @@ public class Login extends HttpServlet {
         Cookie cpassword = new Cookie("cpassword", password);
         Cookie crem = new Cookie("crem", rem);
         UserDAO udao = new UserDAO();
+        CustomerDAO dao = new CustomerDAO();
         User account = udao.checkAuthen(username, password);
-        if (account == null) {
+        Customer account2 = dao.checkAuthen(username, password);
+        if (account == null && account2 == null) {
             String err = "Username or password is incorrect. Please try again!";
             request.setAttribute("err", err);
             request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else {
+        } else if (account != null) {
             HttpSession session = request.getSession();
             if (account.isStatus()) {
                 session.setAttribute("account", account);
@@ -119,7 +123,7 @@ public class Login extends HttpServlet {
                         response.sendRedirect("/timibank/admin/home");
                         break;
                     case 2:
-                        response.sendRedirect("/timibank/seller");
+                        response.sendRedirect("/timibank/home");
                         break;
                     case 3:
                         response.sendRedirect("/timibank/home");
@@ -131,6 +135,32 @@ public class Login extends HttpServlet {
                         response.sendRedirect("/timibank/home");
                         break;
                 }
+            } else {
+                String err = "Your account is inactivated. Please contact admin to activate your account!";
+                request.setAttribute("err", err);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+        } else if (account2 != null) {
+            HttpSession session = request.getSession();
+            if (account2.isStatus()) {
+                session.setAttribute("account", account2);
+                session.setAttribute("uid", account2.getCustomerId());
+
+                if ("ON".equals(rem)) {
+                    cusername.setMaxAge(60 * 60 * 24 * 7);
+                    cpassword.setMaxAge(60 * 60 * 24 * 7);
+                    crem.setMaxAge(60 * 60 * 24 * 7);
+                } else {
+                    cusername.setMaxAge(0);
+                    cpassword.setMaxAge(0);
+                    crem.setMaxAge(0);
+                }
+
+                response.addCookie(cusername);
+                response.addCookie(cpassword);
+                response.addCookie(crem);
+
+                response.sendRedirect("/timibank/home");
             } else {
                 String err = "Your account is inactivated. Please contact admin to activate your account!";
                 request.setAttribute("err", err);

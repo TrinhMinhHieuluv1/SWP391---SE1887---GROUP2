@@ -11,22 +11,40 @@ import java.util.Date;
  * @author ADMIN
  */
 public class Feedback {
-      int feedbackID,customerID;
+      int feedbackID,StarScore;
       String message,response;
       boolean status;
       Date createdAt;
-
-    public Feedback() {
+      Service service;
+      Customer Customer;
+    
+      public Feedback() {
     }
 
-    public Feedback(int feedbackID, int customerID, String message, String response, boolean status, Date createdAt) {
+    public Feedback(int feedbackID, int StarScore, String message, String response, boolean status, Date createdAt, Service service, Customer Customer) {
         this.feedbackID = feedbackID;
-        this.customerID = customerID;
+        this.StarScore = StarScore;
         this.message = message;
         this.response = response;
         this.status = status;
         this.createdAt = createdAt;
+        this.service = service;
+        this.Customer = Customer;
     }
+
+    public Feedback(int feedbackID, int StarScore, String message, String response, boolean status, Date createdAt, Customer Customer) {
+        this.feedbackID = feedbackID;
+        this.StarScore = StarScore;
+        this.message = message;
+        this.response = response;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.Customer = Customer;
+    }
+
+    
+
+    
 
     public int getFeedbackID() {
         return feedbackID;
@@ -36,13 +54,31 @@ public class Feedback {
         this.feedbackID = feedbackID;
     }
 
-    public int getCustomerID() {
-        return customerID;
+    public int getStarScore() {
+        return StarScore;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setStarScore(int StarScore) {
+        this.StarScore = StarScore;
     }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public Customer getCustomer() {
+        return Customer;
+    }
+
+    public void setCustomer(Customer Customer) {
+        this.Customer = Customer;
+    }
+
+    
 
     public String getMessage() {
         return message;
@@ -78,7 +114,11 @@ public class Feedback {
 
     @Override
     public String toString() {
-        return "Feedback{" + "feedbackID=" + feedbackID + ", customerID=" + customerID + ", message=" + message + ", response=" + response + ", status=" + status + ", createdAt=" + createdAt + '}';
+        return "Feedback{" + "feedbackID=" + feedbackID + ", StarScore=" + StarScore + ", message=" + message + ", response=" + response + ", status=" + status + ", createdAt=" + createdAt + ", service=" + service + ", Customer=" + Customer + '}';
     }
+
+   
+
+    
     
 }
