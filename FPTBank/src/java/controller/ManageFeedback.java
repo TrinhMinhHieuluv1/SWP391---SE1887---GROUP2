@@ -13,15 +13,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.Feedback;
+import org.apache.catalina.ha.ClusterSession;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name = "ReclaimFeedback", urlPatterns = {"/reclaim"})
-public class ReclaimFeedback extends HttpServlet {
+@WebServlet(name = "ManageFeedback", urlPatterns = {"/seller/managefeedback"})
+public class ManageFeedback extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +42,10 @@ public class ReclaimFeedback extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ReclaimFeedback</title>");
+            out.println("<title>Servlet ManageFeedback</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ReclaimFeedback at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ManageFeedback at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,64 +64,69 @@ public class ReclaimFeedback extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String fid_raw = request.getParameter("fid");
-        String date_raw1 = request.getParameter("date_1");
-        String date_raw2 = request.getParameter("date_2");
-        String search = request.getParameter("search");
-        String status = request.getParameter("status");
+        String search_raw = request.getParameter("searchKeyword");
+        String status_raw = request.getParameter("filterStatus");
+        String status_res = request.getParameter("statusresponse");
         String number = request.getParameter("pagesize");
-        if (date_raw1 == null) {
-            date_raw1 = "";
+        String date_1 = request.getParameter("date1");
+        String date_2 = request.getParameter("date2");
+        if(search_raw == null){
+            search_raw = "";
         }
-        if (date_raw2 == null) {
-            date_raw2 = "";
+        if(status_raw == null){
+            status_raw = "";
         }
-        if (date_raw2 == null) {
-            date_raw2 = "";
+        if(status_res == null){
+            status_res = "";
         }
-        if (status == null) {
-            status = "";
+        if(date_1 == null){
+            date_1 = "";
         }
-        if (search == null) {
-            search = "";
+        if(date_2 == null){
+            date_2 = "";
         }
-        int fid = Integer.parseInt(fid_raw);
-        int uid = (int) session.getAttribute("uid");
         FeedbackDAO dao = new FeedbackDAO();
-        dao.updateStatus(fid, false);
-        List<Feedback> list = dao.filterFeedback(date_raw1, date_raw2, status, search, uid);
+        List<Feedback> list = dao.filterFeedback2(search_raw, status_raw, status_res,date_1,date_2);
         int page = 1;
-        int pageSize = 5;
+        int pageSize = 10;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
-        if (number != null && !number.trim().isEmpty()) {
-            pageSize = Integer.parseInt(number);
+        if(number == null || number.trim().isEmpty()){
+            pageSize = 10;
+        }else{
+            int numberinpage = Integer.parseInt(number);
+            pageSize = numberinpage;
         }
-
-        int totalUsers = list.size();
-
-        int totalPages = totalUsers % pageSize == 0 ? totalUsers / pageSize : (totalUsers / pageSize) + 1;
-        int start = (page - 1) * pageSize;
-        int end = page * pageSize > totalUsers ? totalUsers : page * pageSize;
+        int totalfeedback = list.size();
+        int totalPages = totalfeedback % pageSize == 0? totalfeedback/pageSize: (totalfeedback/pageSize) + 1;
+        int start = (page - 1)*pageSize;
+        int end = page*pageSize > totalfeedback ? totalfeedback : page*pageSize;
         list = dao.getListByPage(list, start, end);
-        request.setAttribute("listfeedback", list);
-        String error = "You reclaimed a feedback!";
-        request.setAttribute("error2", error);
+        
+        request.setAttribute("searchKeyword", search_raw);
+        request.setAttribute("filterStatus", status_raw);
+        request.setAttribute("statusresponse", status_res);
         request.setAttribute("currentPage", page);
+        request.setAttribute("pagesize", number);
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("date_1", date_raw1);
-        request.setAttribute("date_2", date_raw2);
-        request.setAttribute("search", search);
-        request.setAttribute("status", status);
-        request.setAttribute("pagesize", pageSize);
-        request.getRequestDispatcher("myfeedback").forward(request, response);
+        request.setAttribute("date1", date_1);
+        request.setAttribute("date2", date_2);
+        request.setAttribute("listfeedback", list);
+        request.getRequestDispatcher("feedbacks-management.jsp").forward(request, response);
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**
