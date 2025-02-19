@@ -1,0 +1,29 @@
+[
+    {
+        "id": "1",
+        "image": "https://storage.googleapis.com/a1aa/image/hhVUJgV1Gd0qnh8_tBssYQHwu0YJdHE9oECjBIAfGqU.jpg",
+        "title": "APP MBBANK",
+        "description": "Ứng dụng ngân hàng của MB trên điện thoại di động, thực hiện các giao dịch tài chính, thanh toán, theo dõi tài khoản dễ dàng, thuận tiện.",
+        "modalImage": "img/inner-pages/team/1.png",
+        "modalText": "Ứng dụng giúp bạn dễ dàng thực hiện các giao dịch tài chính, chuyển tiền, thanh toán hóa đơn và quản lý tài khoản một cách an toàn và tiện lợi.",
+        "modalDesc": "Tải ngay APP MBBANK để trải nghiệm dịch vụ ngân hàng số tốt nhất."
+    },
+    {
+        "id": "2",
+        "image": "https://storage.googleapis.com/a1aa/image/w0fgVraIc-5YFqFXjP1ZySO0toeeX7kx9lj-Ri0qc2w.jpg",
+        "title": "DỊCH VỤ KIỀU HỐI",
+        "description": "Chuyển tiền quốc tế, mua bán ngoại tệ, chuyển tiền từ nước ngoài về Việt Nam nhanh chóng, bảo mật, đa dạng ngoại tệ và dễ dàng trên App MBBank.",
+        "modalImage": "img/inner-pages/team/1.png",
+        "modalText": "APP TPBANK mang lại trải nghiệm ngân hàng số hiện đại với nhiều tính năng hấp dẫn.",
+        "modalDesc": "Hỗ trợ thanh toán QR, chuyển khoản nhanh 24/7, và nhiều dịch vụ tài chính khác."
+    },
+    {
+        "id": "3",
+        "image": "https://storage.googleapis.com/a1aa/image/yb92lAIijS366JRhHyQLhOocCqu4QtC--lyYpyQGmKs.jpg",
+        "title": "TIỀN GỬI",
+        "description": "Với lãi suất rất hấp dẫn cùng kỳ hạn và hình thức đa dạng linh hoạt, các sản phẩm tiền gửi tiết kiệm mang lại nhiều lựa chọn phù hợp.",
+        "modalImage": "img/inner-pages/team/1.png",
+        "modalText": "Ứng dụng VCB Digibank cung cấp các tính năng hiện đại như chuyển khoản nhanh, thanh toán hóa đơn và tra cứu thông tin tài khoản.",
+        "modalDesc": "Dễ dàng sử dụng với giao diện đơn giản và bảo mật tối ưu."
+    }
+]

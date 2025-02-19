@@ -83,7 +83,8 @@ public class ShowFB extends HttpServlet {
       String tieude = request.getParameter("tieude");
       String noidung= request.getParameter("noidung");
       sendMail.guiSupport( noidung, tieude, email);
-      response.sendRedirect("showfb");
+      response.sendRedirect("home");
+      
     }
 
  

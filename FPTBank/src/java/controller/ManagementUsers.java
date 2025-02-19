@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import utils.UserRoleUtils;
 
 /**
  *
@@ -24,39 +25,63 @@ public class ManagementUsers extends HttpServlet {
         uDao = new UserDAO();
     }
 
+    private boolean handleRequestParameter(HttpServletRequest request, HttpServletResponse response, String parameterName, String redirectUrl, int pageSize) throws IOException {
+        String parameterValue = request.getParameter(parameterName);
+        if (parameterValue != null && !parameterValue.isEmpty()) {
+            request.getSession().setAttribute("entries", pageSize);
+            response.sendRedirect(redirectUrl + parameterValue);
+            return true; // Nếu đã xử lý, trả về true
+        }
+        return false; // Nếu không xử lý, trả về false
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int page = 1; // trang Ä‘áº§u tiÃªn
-        int pageSize = 10; // 1 trang cÃ³ 10 users
-
+        int page = 1; // trang đầu tiên
+        int pageSize = 10; // 1 trang có 10 users
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        ArrayList<User> listUsers = uDao.getListUserByPage(page, pageSize);
+        // get entries from drownlist with user option
+        String entries_raw = request.getParameter("entries");
+        if (entries_raw != null && !entries_raw.isEmpty()) {
+            pageSize = Integer.parseInt(entries_raw);
+        }
 
+        if (handleRequestParameter(request, response, "typeOfSortByName", "sort_fullname?typeOfSort=", pageSize)) {
+            return;
+        }
+        if (handleRequestParameter(request, response, "typeOfSortByDate", "sort_dateCreated?typeOfSort=", pageSize)) {
+            return;
+        }
+        if (handleRequestParameter(request, response, "status", "filter_byStatus?status=", pageSize)) {
+            return;
+        }
+        if (handleRequestParameter(request, response, "idOfRole", "filter_roleName?idOfRole=", pageSize)) {
+            return;
+        }
+        if (handleRequestParameter(request, response, "keyword", "search_users?key=", pageSize)) {
+            return;
+        }
+
+        ArrayList<User> listUsers = uDao.getListUserByPage(page, pageSize);
         int totalUsers = uDao.getTotalUsers(null, null);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
         // số lượng của user theo từng role
-        int numOfAdmin = uDao.getTotalUsers("RoleID", 1);
-        int numOfSeller = uDao.getTotalUsers("RoleID", 2);
-        int numOfManager = uDao.getTotalUsers("RoleID", 3);
-        int numOfProviderInsurance = uDao.getTotalUsers("RoleID", 4);
-        int numOfCustomer = uDao.getTotalUsers("RoleID", 5);
-
-        request.setAttribute("numOfAdmin", numOfAdmin);
-        request.setAttribute("numOfSeller", numOfSeller);
-        request.setAttribute("numOfManager", numOfManager);
-        request.setAttribute("numOfProviderInsurance", numOfProviderInsurance);
-        request.setAttribute("numOfCustomer", numOfCustomer);
-
+        UserRoleUtils.setUserCountsForEachRole(request, uDao);
         request.setAttribute("totalUsers", totalUsers);
-        request.setAttribute("listUsers", listUsers);
+
+        // set phân trang
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
+
+        // lưu entries vào trong session
+        request.getSession().setAttribute("entries", pageSize);
+        request.setAttribute("listUsers", listUsers);
         request.getRequestDispatcher("ManagementUsers.jsp").forward(request, response);
     }
 

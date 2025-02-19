@@ -5,7 +5,7 @@
 package model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -17,7 +17,6 @@ public class Customer {
     private Date DateOfBirth, CreatedAt;
     private boolean Gender, Status;
     private BigDecimal Balance;
-
 
     public Customer() {
     }
@@ -40,9 +39,6 @@ public class Customer {
         this.Status = Status;
         this.Balance = Balance;
     }
-
-    
-
     
     public Customer(int customerId, int creditScore, BigDecimal Balance) {
         this.CustomerId = customerId;
@@ -166,6 +162,7 @@ public class Customer {
         return Status;
     }
 
+
     public void setStatus(boolean Status) {
         this.Status = Status;
     }
@@ -183,10 +180,5 @@ public class Customer {
         return "Customer{" + "CustomerId=" + CustomerId + ", CreditScore=" + CreditScore + ", RoleID=" + RoleID + ", Username=" + Username + ", Password=" + Password + ", FullName=" + FullName + ", Image=" + Image + ", Phone=" + Phone + ", Email=" + Email + ", Address=" + Address + ", CCCD=" + CCCD + ", DateOfBirth=" + DateOfBirth + ", CreatedAt=" + CreatedAt + ", Gender=" + Gender + ", Status=" + Status + ", Balance=" + Balance + '}';
     }
 
-
-    
-
-    
-   
 }
 

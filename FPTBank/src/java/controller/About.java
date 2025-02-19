@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -57,6 +58,7 @@ public class About extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        CustomerDAO cusDAO = new CustomerDAO();
          UserDAO userDAO = new UserDAO();
         List<User> teamMembers = userDAO.selectAllUsersByRole(2); // Lấy user có roleID = 2
    int teamSeller = userDAO.selectAllUsersByRole(2).size(); // seller

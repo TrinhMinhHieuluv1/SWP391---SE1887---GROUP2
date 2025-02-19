@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,10 +31,16 @@
         <link href="assets/css/shadow-theme.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/x-icon">
+        <link rel="icon" href="assets/images/logo-icon.png" type="image/x-icon">
+
         <!-- Toarst -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
 
         <style>
             .pagination {
@@ -66,8 +72,43 @@
                 border-radius: 30px;
             }
 
-        </style>
+            select {
+                margin-top: 15px;
+                background-color: #0d6efd;
+                color: white ;
+                padding: 3px 8px; /* Giảm padding để ô nhỏ hơn */
+                border-radius: 6px; /* Bo tròn góc nhẹ */
+                font-size: 14px; /* Giảm kích thước chữ */
+                cursor: pointer;
+            }
 
+
+            /* Khi focus vào ô chọn */
+            select:focus {
+                outline: none;
+                box-shadow: 0 0 5px #007bff;
+            }
+
+            .modal-footer .btn:hover {
+                background-color: green;
+                color: white;
+                border-color: green;
+                transition: 0.3s;
+            }
+
+            .btn-link{
+                --bs-btn-hover-color: orange;
+                --bs-btn-active-color: orange;
+            }
+
+            .btn-info {
+                --bs-btn-hover-bg: #0b5ed7;
+                --bs-btn-active-bg: #0b5ed7;
+            }
+
+
+
+        </style>
 
     </head>
     <body>
@@ -929,8 +970,8 @@
                                 Full Name
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="sort_fullname?type=asc">Sort Ascending</a></li>
-                                <li><a class="dropdown-item" href="sort_fullname?type=des">Sort Descending</a></li>
+                                <li><a class="dropdown-item" href="sort_fullname?type1=asc">Sort A → Z</a></li>
+                                <li><a class="dropdown-item" href="sort_fullname?type1=des">Sort Z → A</a></li>
 
                                 <!--                                <li><hr class="dropdown-divider"></li>
                                                                 <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
@@ -944,8 +985,8 @@
                                 Date Created
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="sort_dateCreated?type=asc">Sort Ascending</a></li>
-                                <li><a class="dropdown-item" href="sort_dateCreated?type=des">Sort Descending</a></li>
+                                <li><a class="dropdown-item" href="sort_dateCreated?type2=asc">Show Oldest</a></li>
+                                <li><a class="dropdown-item" href="sort_dateCreated?type2=des">Show Latest</a></li>
                                 <!--                                <li><hr class="dropdown-divider"></li>
                                                                 <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
                             </ul>
@@ -980,9 +1021,6 @@
                                                                 <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
                             </ul>
                         </div>
-
-
-
                     </div>  
                 </div>
 
@@ -1002,6 +1040,27 @@
 
             </div><!--end row-->
 
+
+
+            <form id="entriesForm" action="manage_users" method="GET">
+                <label for="entries">Show Entries</label>
+                <select id="entries" name="entries" onchange="this.form.submit()">
+                    <option value="" >10</option>
+                    <option value="15" ${(entries == 15)?'selected':''}>15</option>
+                    <option value="25" ${(entries == 25)?'selected':''}>25</option>
+                    <option value="50" ${(entries == 50)?'selected':''}>50</option>
+                    <option value="100" ${(entries == 100)?'selected':''}>100</option>
+                </select>
+
+                <input type="hidden" name="typeOfSortByName" value="${typeOfSortByName}">
+                <input type="hidden" name="typeOfSortByDate" value="${typeOfSortByDate}">
+                <input type="hidden" name="status" value="${statusOfUser}">
+                <input type="hidden" name="idOfRole" value="${idOfRole}">
+                <input type="hidden" name="keyword" value="${keyword}">
+            </form>
+
+
+
             <div class="card mt-4">
                 <div class="card-body">
                     <div class="customer-table">
@@ -1014,17 +1073,12 @@
 
                                     <tr>
                                         <th class="text-center" >USER ID</th>
-                                        <th class="text-center" >IMAGE</th>
-                                        <th class="text-center" >USER NAME</th>
                                         <th class="text-center" >FULL NAME</th>
                                         <th class="text-center" >PHONE</th>
                                         <th class="text-center" >EMAIL</th>
                                         <th class="text-center" >ADDRESS</th>
-                                        <th class="text-center" >DATE OF BIRTH</th>
-                                        <th class="text-center" >GENDER</th>
-                                        <th class="text-center" >Identity Card</th>
-                                        <th class="text-center" >ROLE</th>
-                                        <th class="text-center" >MANAGER ID</th>
+                                        <th class="text-center" >Gender</th>
+                                        <th class="text-center" >ROLE</th>          
                                         <th class="text-center" >STATUS</th>
                                         <th class="text-center" >CREATED AT</th>
                                         <th class="text-center" style="width: 10%">Action</th>
@@ -1035,41 +1089,13 @@
                                 <!--BODY TABLE --> 
                                 <tbody>
 
-                                    <!--                                    <tr>
-                                            <td>
-                                                <input class="form-check-input" type="checkbox">
-                                            </td>
-                                            <td>
-                                                <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                    <div class="customer-pic">
-                                                        <img src="assets/images/avatars/01.png" class="rounded-circle" width="40" height="40" alt="">
-                                                    </div>
-                                                    <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:;" class="font-text1">abc@example.com</a>
-                                            </td>
-                                            <td>142</td>
-                                            <td>$2485</td>
-                                            <td>England</td>
-                                            <td>24 min ago</td>
-                                            <td>Nov 12, 10:45 PM</td>
-                                        </tr>-->
-
                                     <c:forEach var="u" items="${listUsers}">
                                         <tr>
                                             <td class="text-center">${u.getUserID()} </td>
-                                            <td class="text-center"><img src="${u.getImage()}" alt="User Image" width="100" height="100"></td>
-                                            <td class="text-center">${u.getUsername()} </td>
                                             <td class="text-center">${u.getFullName()}</td>
                                             <td class="text-center">${u.getPhone()}</td>
                                             <td class="text-center">${u.getEmail()}</td>
                                             <td class="text-center">${u.getAddress()}</td>
-
-                                            <td class="text-center">
-                                                <fmt:formatDate value="${u.dateOfBirth}" pattern="dd-MM-yyyy"/>
-                                            </td>
 
                                             <td class="text-center">
                                                 <c:if test="${u.isGender() == true}">
@@ -1080,7 +1106,6 @@
                                                 </c:if>
                                             </td>
 
-                                            <td class="text-center">${u.getCCCD()} </td>
 
                                             <td class="text-center">
                                                 <c:choose>
@@ -1102,15 +1127,10 @@
                                                 </c:choose>
                                             </td>
 
-                                            <td class="text-center">${u.getManager()} </td>
+
 
                                             <td class="text-center">
-                                                <%-- <c:if test="${u.status == true}">
-                                                    Active
-                                                </c:if>
-                                                <c:if test="${u.status == false}">
-                                                    Inactive
-                                                </c:if> --%>
+
 
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" role="switch" id="adminSwitch-${u.getUserID()}" ${u.isStatus() ? 'checked' : ''} onchange="updateStatusOfUsers(${u.getUserID()}, this.checked)">
@@ -1125,10 +1145,7 @@
 
 
                                             <td class="text-center">
-
                                                 <div class="form-button-action">
-
-                                                    <!-- Edit -->
                                                     <a href="update_user?id=${u.getUserID()}"
                                                        class="btn btn-link btn-primary btn-lg"
                                                        data-bs-toggle="tooltip"
@@ -1137,14 +1154,16 @@
                                                         <i class="fa fa-edit"></i>
                                                     </a>
 
-                                                    <!-- Remove -->
-<!--                                                    <a href="remove_user?id=${u.getUserID()}" 
-                                                       class="btn btn-link btn-danger" 
-                                                       data-bs-toggle="tooltip" 
-                                                       title="Remove Account" 
-                                                       data-original-title="Remove Account">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>-->
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-link btn-info btn-lg"
+                                                       data-bs-toggle="tooltip"
+                                                       title="View Profile"
+                                                       onclick="showUserDetails('${u.getImage()}', '${u.getUsername()}', '${u.getFullName()}', '${u.getPhone()}',
+                                                                       '${u.getEmail()}', '${u.getAddress()}', '${u.getDateOfBirth()}', '${u.isGender()}', '${u.getRoleID()}',
+                                                                       '${u.getManager()!=null? u.getManager().getFullName() : 'None'}', '${u.isStatus()}', '${u.getCreatedAt()}')">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -1153,19 +1172,62 @@
                                 </tbody>
                             </table>
                         </div>
+
+
+
+                        <!-- Modal for show detail user -->
+                        <div class="modal fade" id="userDetailModal" tabindex="-1" aria-labelledby="userDetailModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="userDetailModalLabel">User Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <!-- Column left: IMAGE -->
+                                            <div class="col-md-6 text-center">
+                                                <img id="userImage" src="" alt="User Image"  style="width: 300px; height: 380px;">
+                                            </div>
+                                            <!-- Column right: User Detail -->
+                                            <div class="col-md-6">
+                                                <p><strong>Username:</strong> <span id="userUsername"></span></p>
+                                                <p><strong>Full Name:</strong> <span id="userFullName"></span></p>
+                                                <p><strong>Phone:</strong> <span id="userPhone"></span></p>
+                                                <p><strong>Email:</strong> <span id="userEmail"></span></p>
+                                                <p><strong>Address:</strong> <span id="userAddress"></span></p>
+                                                <p><strong>Date of Birth:</strong> <span id="userDateOfBirth"></span></p>
+                                                <p><strong>Gender:</strong> <span id="userGender"></span></p>
+                                                <p><strong>Role:</strong> <span id="userRole"></span></p>
+                                                <p><strong>Manager:</strong> <span id="userManager"></span></p>
+                                                <p><strong>Status:</strong> <span id="userStatus"></span></p>
+                                                <p><strong>Created At:</strong> <span id="userCreatedAt"></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="pagination">
                             <c:if test="${currentPage > 1}">
-                                <a href="?page=${currentPage - 1}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}&status=${statusOfUser}" class="prev">Previous</a>
+                                <a href="?page=${currentPage - 1}&keyword=${keyword}&type1=${typeOfSortByName}&type2=${typeOfSortByDate}&id=${idOfRole}&status=${statusOfUser}&entries=${entries}" class="prev">Previous</a>
                             </c:if>
 
                             <c:forEach var="i" begin="1" end="${totalPages}">
-                                <a href="?page=${i}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}&status=${statusOfUser}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                <a href="?page=${i}&keyword=${keyword}&type1=${typeOfSortByName}&type2=${typeOfSortByDate}&id=${idOfRole}&status=${statusOfUser}&entries=${entries}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                             </c:forEach>
 
                             <c:if test="${currentPage < totalPages}">
-                                <a href="?page=${currentPage + 1}&keyword=${keyword}&type=${typeOfSort}&id=${idOfRole}&status=${statusOfUser}" class="next">Next</a>
+                                <a href="?page=${currentPage + 1}&keyword=${keyword}&type1=${typeOfSortByName}&type2=${typeOfSortByDate}&id=${idOfRole}&status=${statusOfUser}&entries=${entries}" class="next">Next</a>
                             </c:if>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -1273,27 +1335,66 @@
 
 
         <script>
-                                                        function updateStatusOfUsers(userID, statusIsChecked) {
-                                                            $.ajax({
-                                                                url: 'updateStatus',
-                                                                type: 'POST',
-                                                                data: {
-                                                                    userID: userID,
-                                                                    status: statusIsChecked
-                                                                },
-                                                                success: function (response) {
-                                                                    if (response.success) {
-                                                                        alert(response.message);
-                                                                    } else {
-                                                                        alert(response.message);
-                                                                    }
-                                                                },
-                                                                error: function (xhr, status, error) {
-                                                                    alert('error: ' + error);
-                                                                }
-                                                            });
-                                                        }
+                                                           function updateStatusOfUsers(userID, statusIsChecked) {
+                                                               $.ajax({
+                                                                   url: 'updateStatus',
+                                                                   type: 'POST',
+                                                                   data: {
+                                                                       userID: userID,
+                                                                       status: statusIsChecked
+                                                                   },
+                                                                   success: function (response) {
+                                                                       if (response.success) {
+                                                                           alert(response.message);
+                                                                       } else {
+                                                                           alert(response.message);
+                                                                       }
+                                                                   },
+                                                                   error: function (xhr, status, error) {
+                                                                       alert('error: ' + error);
+                                                                   }
+                                                               });
+                                                           }
+
+                                                           function showUserDetails(image, username, fullName, phone, email, address, dateOfBirth, gender, roleID, managerName, status, createdAt) {
+                                                               // Điền dữ liệu vào modal
+                                                               document.getElementById('userImage').src = image;
+                                                               document.getElementById('userUsername').textContent = username;
+                                                               document.getElementById('userFullName').textContent = fullName;
+                                                               document.getElementById('userPhone').textContent = phone;
+                                                               document.getElementById('userEmail').textContent = email;
+                                                               document.getElementById('userAddress').textContent = address;
+                                                               document.getElementById('userDateOfBirth').textContent = dateOfBirth;
+                                                               document.getElementById('userGender').textContent = gender === 'true' ? 'Male' : 'Female';
+                                                               document.getElementById('userManager').textContent = managerName;
+
+                                                               // Role Mapping
+                                                               const roles = {
+                                                                   1: 'Admin',
+                                                                   2: 'Seller',
+                                                                   3: 'Manager',
+                                                                   4: 'Provider Insurance',
+                                                                   5: 'Customer'
+                                                               };
+                                                               document.getElementById('userRole').textContent = roles[roleID] || 'Unknown';
+
+                                                               // Status Mapping
+                                                               document.getElementById('userStatus').textContent = status === 'true' ? 'Active' : 'Inactive';
+                                                               document.getElementById('userCreatedAt').textContent = createdAt;
+
+                                                               // Hiển thị modal
+                                                               const modal = new bootstrap.Modal(document.getElementById('userDetailModal'));
+                                                               modal.show();
+                                                           }
+
+
+
+
         </script>
+
+
+
+
 
 
         <%@ include file="Common/toarst.jsp" %>

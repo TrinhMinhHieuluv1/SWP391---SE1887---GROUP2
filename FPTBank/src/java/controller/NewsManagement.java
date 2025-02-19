@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.NewsCategoryDAO;
 import dal.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,6 +65,7 @@ public class NewsManagement extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         NewsDAO ndao = new NewsDAO();
+        NewsCategoryDAO ncDAO = new NewsCategoryDAO();
         User account = (User) session.getAttribute("account");
 
         //Show message after a news updated
@@ -87,12 +89,23 @@ public class NewsManagement extends HttpServlet {
         String sortBy = request.getParameter("sortBy");
         String filterMine = request.getParameter("filterMine");
         String filterStatus = request.getParameter("filterStatus");
+        String filterNewsCategoryID_raw = request.getParameter("filterNewsCategoryID");
+        int filterNewsCategoryID = 0;
+        try {
+            filterNewsCategoryID = Integer.parseInt(filterNewsCategoryID_raw);
+        } catch (NumberFormatException e) {
+        }
 
         // Get news list by conditions
-        List<News> newsListBeforePagition = ndao.selectNewsListByConditions(searchKeyword, sortBy, filterStatus, filterMine, account.getUserID());
+        List<News> newsListBeforePagition = ndao.selectNewsListByConditions(searchKeyword, sortBy, filterStatus, filterMine, filterNewsCategoryID, account.getUserID());
 
         //Pagination
-        final int pageSize = 8;
+        String pageSize_raw = request.getParameter("pageSize");
+        int pageSize = 10;
+        try {
+            pageSize = Integer.parseInt(pageSize_raw);
+        } catch (NumberFormatException e) {
+        }
         int totalPages = (int) Math.ceil((double) newsListBeforePagition.size() / pageSize);
         int page = 1;
         String pageNum_raw = request.getParameter("page");
@@ -109,9 +122,10 @@ public class NewsManagement extends HttpServlet {
                 page = 1;
             }
         }
-
+        
         List<News> newsList = newsListBeforePagition.subList((page - 1) * pageSize, Math.min(newsListBeforePagition.size(), page * pageSize));
-
+        request.setAttribute("ncList", ncDAO.selectAllNewsCategory());  
+        request.setAttribute("pageSize", pageSize);
         request.setAttribute("newsList", newsList);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
@@ -119,6 +133,7 @@ public class NewsManagement extends HttpServlet {
         request.setAttribute("sortBy", sortBy);
         request.setAttribute("filterMine", filterMine);
         request.setAttribute("filterStatus", filterStatus);
+        request.setAttribute("filterNewsCategoryID", filterNewsCategoryID   );
         request.getRequestDispatcher("news-management.jsp").forward(request, response);
     }
 

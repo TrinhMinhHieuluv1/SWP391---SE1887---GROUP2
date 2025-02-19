@@ -284,7 +284,7 @@
             <!-- content -->
             <div id="smooth-content">
                 <div class="cal-container">
-                    <a href="about.jsp"><i class="fa-solid fa-arrow-left-long"></i></a>
+                    <a href="about"><i class="fa-solid fa-arrow-left-long"></i></a>
                     <div class="tabs">
                         <a href="calSaving.jsp" class="tab">LÃI SUẤT TIẾT KIỆM</a>
                         <a href="calLoan.jsp" class="tab active">LÃI VAY NGÂN HÀNG</a>
