@@ -96,6 +96,16 @@
                 transition: 0.3s;
             }
 
+            .btn-link{
+                --bs-btn-hover-color: orange;
+                --bs-btn-active-color: orange;
+            }
+
+            .btn-info {
+                --bs-btn-hover-bg: #0b5ed7;
+                --bs-btn-active-bg: #0b5ed7;
+            }
+
 
 
         </style>
@@ -1216,8 +1226,8 @@
                                 <a href="?page=${currentPage + 1}&keyword=${keyword}&type1=${typeOfSortByName}&type2=${typeOfSortByDate}&id=${idOfRole}&status=${statusOfUser}&entries=${entries}" class="next">Next</a>
                             </c:if>
                         </div>
-      
-                        
+
+
                     </div>
                 </div>
             </div>

@@ -19,6 +19,9 @@
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/icons.css">
+<!-- Favicon -->
+<link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/x-icon">
+<link rel="icon" href="assets/images/logo-icon.png" type="image/x-icon">
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="assets/css/main.css" rel="stylesheet">
@@ -68,11 +71,14 @@
         color: green;
     }
 
+
+
     form {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
+
 
     label {
         display: block;
@@ -117,14 +123,17 @@
 
 
 </style>
+
+
 </head>
 <body>
+
+
     <%@ include file="Common/header.jsp" %>
     <%@ include file="Common/sidebar.jsp" %>
     <%@ include file="Common/toarst.jsp" %>
 
-
-    <div class="form-container">
+    <div class="form-container" >
         <h3 class="fw-bold mb-3">ADD USER</h3>
 
         <form action="insert_users" method="post" enctype="multipart/form-data">
@@ -132,7 +141,7 @@
             <div>
                 <label for="name">User Name</label>
                 <input type="text" id="name" name="username" 
-                       required
+                       required value="${userToAdd.getUsername()}"
                        pattern="^[a-zA-Z0-9_.]{6,20}$" 
                        title="Username phải từ 6-20 ký tự, chỉ chứa chữ cái, số, dấu chấm (.) và gạch dưới (_)"
                        oninput="validateAndCheckUsername()">
@@ -144,7 +153,7 @@
             <div>
                 <label for="pass">Password</label>
                 <input type="text" id="pass" name="password" 
-                       required 
+                       required value="${userToAdd.getPassword()}"
                        placeholder="Abcd@123"
                        pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&*!])[a-zA-Z\d@#$%^&*!]{8,16}$"
                        title="Mật khẩu phải có 8-16 ký tự, chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt !!"
@@ -156,24 +165,24 @@
             <div>
                 <label for="full">Full Name</label>
                 <input type="text" id="full" name="fullname" 
-                       required
+                       required value="${userToAdd.getFullName()}"
                        placeholder="Nguyen Van A"
                        pattern="^(?!\s*$)[A-Za-zÀ-ỹ\s]+$"
                        maxlength="100"
                        title="Vui lòng không nhập số hoặc kí tự đặc biệt !!"
                        oninput="validateFullName()">
-                <span id="fullError"></span>
+                <span id="fullError" class="error"></span>
             </div>
 
             <!-- Phone Number -->
             <div>
                 <label for="phonenum">Phone Number</label>
                 <input type="text" id="phonenum" name="phonenumber" 
-                       required 
+                       required value="${userToAdd.getPhone()}"
                        pattern="0[0-9]{9}" placeholder="10 digit number"  
                        title="Vui lòng nhập số điện thoại bắt đầu bằng số 0 và gồm đúng 10 chữ số !!"
                        oninput="validatePhoneNumber()">
-                <span id="phoneError"></span>
+                <span id="phoneError" class="error"></span>
             </div>
 
 
@@ -188,7 +197,7 @@
             <div>
                 <label for="mail">Email</label>
                 <input type="text" id="mail" name="email" 
-                       placeholder="example@gmail.com" 
+                       placeholder="example@gmail.com"  value="${userToAdd.getEmail()}"
                        title="Vui lòng nhập đúng cú pháp email !!"
                        required pattern="^[a-zA-Z0-9]+@gmail\.com$" 
                        oninput="validateEmail()">
@@ -200,11 +209,11 @@
             <div>
                 <label for="address">Address</label>
                 <input type="text" id="address" name="address" 
-                       required 
+                       required value="${userToAdd.getAddress()}"
                        pattern="^(?!\s*$)[A-Za-zÀ-ỹ0-9\s,.-]{5,100}$" 
                        title="Địa chỉ phải từ 5-100 ký tự, chỉ chứa chữ cái, số, dấu phẩy (,), dấu chấm (.) và dấu gạch ngang (-)"
                        oninput="validateAddress()">
-                <span id="addressError"></span>
+                <span id="addressError" class="error"></span>
             </div>
 
             <!-- Manager ID -->
@@ -231,18 +240,19 @@
             <!-- Identity Card -->
             <div>
                 <label for="card">Identity Card</label>
-                <input type="text" id="card" name="card" 
+                <input type="text" id="card" name="card" value="${userToAdd.getCCCD()}"
                        pattern="\d{12}" placeholder="12 digit number" 
                        title="Vui lòng nhập đúng 12 chữ số" required
                        oninput="validateIdentityCard()">
-                <span id="cardError"></span>
+                <span id="cardError" class="error"></span>
             </div>
 
             <!-- Date of Birth -->
             <div>
                 <label for="dob">Date Of Birth</label>
-                <input type="date" id="dob" name="dob" required>
+                <input type="date" id="dob" name="dob" value="${dateOfBirth}" required min="1900-01-01" max="2999-12-31">
             </div>
+
 
             <!-- Role -->
             <div>
@@ -262,8 +272,8 @@
                 <label for="gender">Gender</label>
                 <select id="gender" name="gender" required>
                     <option value="" disabled selected>Choose Gender</option>
-                    <option value="1">Male</option>
-                    <option value="0">Female</option>
+                    <option value="1" ${userToAdd.isGender() == true?'selected':''}>Male</option>
+                    <option value="0" ${userToAdd.isGender() == false?'selected':''}>Female</option>
                 </select>
             </div>
 
@@ -366,7 +376,7 @@
                         errorSpan.style.fontSize = "13px";
                     } else if (response === "available") {
                         // Nếu username khả dụng
-                        errorSpan.innerText = "Valid email!!";
+                        errorSpan.innerText = "Valid email !!";
                         errorSpan.style.color = "green";
                         errorSpan.style.fontSize = "13px";
                     }
@@ -391,7 +401,9 @@
                 errorSpan.style.fontSize = "13px";
                 return; // Dừng lại nếu username không hợp lệ
             } else {
-                errorSpan.innerText = "";
+                errorSpan.innerText = "Valid fullname !!";
+                errorSpan.style.color = "green";
+                errorSpan.style.fontSize = "13px";
             }
         }
 
@@ -449,7 +461,9 @@
                 errorSpan.style.fontSize = "13px";
                 return; // Dừng lại nếu username không hợp lệ
             } else {
-                errorSpan.innerText = "";
+                errorSpan.innerText = "Valid address !!";
+                errorSpan.style.color = "green";
+                errorSpan.style.fontSize = "13px";
             }
         }
 
@@ -494,6 +508,31 @@
                 }
             });
         }
+
+
+        // Hàm kiểm tra xem tất cả các ô có lỗi hay không
+        function validateForm(event) {
+            let isValid = true;
+
+            // Kiểm tra các trường hợp lỗi
+            const errorElements = document.querySelectorAll('.error');
+            errorElements.forEach(function (errorElement) {
+                if (errorElement.style.color === 'red') {
+                    isValid = false; 
+                }
+            });
+
+            // Nếu có lỗi, ngừng submit form
+            if (!isValid) {
+                event.preventDefault(); // Dừng việc submit form
+                alert('Please fill your infomation in the correct form before adding !!');
+            }
+        }
+
+        // Lắng nghe sự kiện submit form
+        document.querySelector('form').addEventListener('submit', validateForm);
+
+
 
 
 

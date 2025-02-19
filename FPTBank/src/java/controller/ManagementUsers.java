@@ -25,6 +25,16 @@ public class ManagementUsers extends HttpServlet {
         uDao = new UserDAO();
     }
 
+    private boolean handleRequestParameter(HttpServletRequest request, HttpServletResponse response, String parameterName, String redirectUrl, int pageSize) throws IOException {
+        String parameterValue = request.getParameter(parameterName);
+        if (parameterValue != null && !parameterValue.isEmpty()) {
+            request.getSession().setAttribute("entries", pageSize);
+            response.sendRedirect(redirectUrl + parameterValue);
+            return true; // Nếu đã xử lý, trả về true
+        }
+        return false; // Nếu không xử lý, trả về false
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,45 +51,19 @@ public class ManagementUsers extends HttpServlet {
             pageSize = Integer.parseInt(entries_raw);
         }
 
-        // lấy typeOfSort (asc/desc) nếu ng dùng sort trc và show entries sau 
-        String typeOfSortByName = request.getParameter("typeOfSortByName");
-        if (typeOfSortByName != null && !typeOfSortByName.isEmpty()) {
-            request.getSession().setAttribute("entries", pageSize);
-            response.sendRedirect("sort_fullname?typeOfSort=" + typeOfSortByName);
+        if (handleRequestParameter(request, response, "typeOfSortByName", "sort_fullname?typeOfSort=", pageSize)) {
             return;
         }
-
-        // lấy typeOfSort (asc/desc) nếu ng dùng sort trc và show entries sau 
-        String typeOfSortByDate = request.getParameter("typeOfSortByDate");
-        if (typeOfSortByDate != null && !typeOfSortByDate.isEmpty()) {
-            request.getSession().setAttribute("entries", pageSize);
-            response.sendRedirect("sort_dateCreated?typeOfSort=" + typeOfSortByDate);
+        if (handleRequestParameter(request, response, "typeOfSortByDate", "sort_dateCreated?typeOfSort=", pageSize)) {
             return;
         }
-
-        // lấy status (active/inactive) nếu ng dùng filter trc và show entries sau 
-        String status_raw = request.getParameter("status");
-        if (status_raw != null && !status_raw.isEmpty()) {
-            int status = Integer.parseInt(status_raw);
-            request.getSession().setAttribute("entries", pageSize);
-            response.sendRedirect("filter_byStatus?status=" + status);
+        if (handleRequestParameter(request, response, "status", "filter_byStatus?status=", pageSize)) {
             return;
         }
-
-        // lấy role user (1,2,3,4,5) nếu ng dùng filter trc và show entries sau 
-        String idOfRole_raw = request.getParameter("idOfRole");
-        if (idOfRole_raw != null && !idOfRole_raw.isEmpty()) {
-            int idOfRole = Integer.parseInt(idOfRole_raw);
-            request.getSession().setAttribute("entries", pageSize);
-            response.sendRedirect("filter_roleName?idOfRole=" + idOfRole);
+        if (handleRequestParameter(request, response, "idOfRole", "filter_roleName?idOfRole=", pageSize)) {
             return;
         }
-
-        // lấy keyword nếu ng dùng search trc và show entries sau
-        String keyword = request.getParameter("keyword");
-        if (keyword != null && !keyword.isEmpty()) {
-            request.getSession().setAttribute("entries", pageSize);
-            response.sendRedirect("search_users?key=" + keyword);
+        if (handleRequestParameter(request, response, "keyword", "search_users?key=", pageSize)) {
             return;
         }
 

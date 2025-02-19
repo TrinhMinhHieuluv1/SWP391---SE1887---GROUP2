@@ -1,4 +1,4 @@
- package controller;
+package controller;
 
 import dal.UserDAO;
 import java.io.IOException;
@@ -10,8 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.util.List;
 import model.User;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
 
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpSession;
 import utils.ImageUploadUtil;
 
 @MultipartConfig(
@@ -24,9 +27,17 @@ import utils.ImageUploadUtil;
 public class InsertUser extends HttpServlet {
 
     private UserDAO userDao;
-
     public void init() throws ServletException {
         userDao = new UserDAO();
+    }
+
+    public String setDateOfBirthToString(Date dateOfBirth) {
+        // Định dạng ngày sinh theo kiểu yyyy-MM-dd
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Chuyển đổi ngày sinh thành chuỗi, nếu không có ngày thì để rỗng
+        String dateOfBirthString = (dateOfBirth != null) ? sdf.format(dateOfBirth) : "";
+        return dateOfBirthString;
     }
 
     @Override
@@ -51,13 +62,14 @@ public class InsertUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String pathHost = getServletContext().getRealPath("");  
-        String finalPath = pathHost.replace("build\\", "");    
+        String pathHost = getServletContext().getRealPath("");
+
+        String finalPath = pathHost.replace("build\\", "");
         String uploadPath = finalPath + "uploads";
 
-        String fileName = ImageUploadUtil.uploadImage(request, "img", uploadPath);      
+        String fileName = ImageUploadUtil.uploadImage(request, "img", uploadPath);
         String img;
-       
+
         if (fileName != null) {
             img = "../uploads/" + fileName;
         } else {
@@ -102,26 +114,43 @@ public class InsertUser extends HttpServlet {
             }
         }
 
+        // add user
+        User userToAdd = new User(0, username, password, name, img, phone, email, dob, isMale, address, cccd, roleID, true, manager, null);
+
         // check for seller
         if (roleID == 2 && manager == null) {
-            request.getSession().setAttribute("error", "Seller must have a manager ID !!");
+            request.getSession().setAttribute("error", "Seller must have a manager !!");
+            request.getSession().setAttribute("userToAdd", userToAdd);
+
+            String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+            request.getSession().setAttribute("dateOfBirth", dateOfBirth);
             response.sendRedirect("insert_users");
             return;
         }
         if (roleID != 2 && manager != null) {
-            request.getSession().setAttribute("error", "Only Sellers can have a managerID !!");
+            request.getSession().setAttribute("error", "Only sellers can have a manager !!");
+            request.getSession().setAttribute("userToAdd", userToAdd);
+
+            String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+            request.getSession().setAttribute("dateOfBirth", dateOfBirth);
             response.sendRedirect("insert_users");
             return;
         }
 
-        // add user
-        User userToAdd = new User(0, username, password, name, img, phone, email, dob, isMale, address, cccd, roleID, true, manager, null);
-
         int row = userDao.addUserReturnRow(userToAdd);
-
         switch (row) {
-            case 1 ->
+            case 1 -> {
                 request.getSession().setAttribute("message", "Insert Successfully !!");
+                HttpSession session = request.getSession(false);
+                if (session != null) {
+                    if (session.getAttribute("userToAdd") != null) {
+                        session.removeAttribute("userToAdd");
+                    }
+                    if (session.getAttribute("dateOfBirth") != null) {
+                        session.removeAttribute("dateOfBirth");
+                    }
+                }
+            }
             case 0 -> {
                 request.getSession().setAttribute("error", "Insert fail !!");
             }
@@ -136,6 +165,9 @@ public class InsertUser extends HttpServlet {
             }
             case 5 -> {
                 request.getSession().setAttribute("error", "Phone number has existed !!");
+            }
+            default -> {
+                // Để xử lý trường hợp mặc định nếu cần thiết
             }
         }
 

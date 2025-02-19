@@ -19,6 +19,9 @@
 <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/icons.css">
+<!-- Favicon -->
+<link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/x-icon">
+<link rel="icon" href="assets/images/logo-icon.png" type="image/x-icon">
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="assets/css/main.css" rel="stylesheet">
