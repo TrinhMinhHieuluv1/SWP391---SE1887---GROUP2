@@ -5,19 +5,47 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  *
  * @author ACER
  */
 public class Customer {
-    private int CustomerId, CreditScore;
+    private int CustomerId, CreditScore, RoleID;
+    private String Username, Password, FullName, Image, Phone, Email, Address, CCCD;
+    private Date DateOfBirth, CreatedAt;
+    private boolean Gender, Status;
     private BigDecimal Balance;
-    private User User;
 
-    public Customer(int customerId, User user, int creditScore, BigDecimal Balance) {
+
+    public Customer() {
+    }
+
+    public Customer(int CustomerId, int CreditScore, int RoleID, String Username, String Password, String FullName, String Image, String Phone, String Email, String Address, String CCCD, Date DateOfBirth, Date CreatedAt, boolean Gender, boolean Status, BigDecimal Balance) {
+        this.CustomerId = CustomerId;
+        this.CreditScore = CreditScore;
+        this.RoleID = RoleID;
+        this.Username = Username;
+        this.Password = Password;
+        this.FullName = FullName;
+        this.Image = Image;
+        this.Phone = Phone;
+        this.Email = Email;
+        this.Address = Address;
+        this.CCCD = CCCD;
+        this.DateOfBirth = DateOfBirth;
+        this.CreatedAt = CreatedAt;
+        this.Gender = Gender;
+        this.Status = Status;
+        this.Balance = Balance;
+    }
+
+    
+
+    
+    public Customer(int customerId, int creditScore, BigDecimal Balance) {
         this.CustomerId = customerId;
-        this.User = user;
         this.CreditScore = creditScore;
         this.Balance = Balance;
     }
@@ -26,44 +54,120 @@ public class Customer {
         return CustomerId;
     }
 
+    public void setCustomerId(int CustomerId) {
+        this.CustomerId = CustomerId;
+    }
+
     public int getCreditScore() {
         return CreditScore;
     }
 
-    public void setCreditScore(int creditScore) {
-        this.CreditScore = creditScore;
+    public void setCreditScore(int CreditScore) {
+        this.CreditScore = CreditScore;
     }
 
-    public void setCustomerId(int customerId) {
-        this.CustomerId = customerId;
-    }
-    
-    
-    public Customer() {
+    public int getRoleID() {
+        return RoleID;
     }
 
-    public int getCustomerid() {
-        return CustomerId;
+    public void setRoleID(int RoleID) {
+        this.RoleID = RoleID;
     }
 
-    public void setCustomerid(int customerId) {
-        this.CustomerId = customerId;
+    public String getUsername() {
+        return Username;
     }
 
-    public User getUser() {
-        return User;
+    public void setUsername(String Username) {
+        this.Username = Username;
     }
 
-    public void setUser(User user) {
-        this.User = user;
+    public String getPassword() {
+        return Password;
     }
 
-    public int getCreditscore() {
-        return CreditScore;
+    public void setPassword(String Password) {
+        this.Password = Password;
     }
 
-    public void setCreditscore(int creditScore) {
-        this.CreditScore = creditScore;
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String FullName) {
+        this.FullName = FullName;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String Image) {
+        this.Image = Image;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String Address) {
+        this.Address = Address;
+    }
+
+    public String getCCCD() {
+        return CCCD;
+    }
+
+    public void setCCCD(String CCCD) {
+        this.CCCD = CCCD;
+    }
+
+    public Date getDateOfBirth() {
+        return DateOfBirth;
+    }
+
+    public void setDateOfBirth(Date DateOfBirth) {
+        this.DateOfBirth = DateOfBirth;
+    }
+
+    public Date getCreatedAt() {
+        return CreatedAt;
+    }
+
+    public void setCreatedAt(Date CreatedAt) {
+        this.CreatedAt = CreatedAt;
+    }
+
+    public boolean isGender() {
+        return Gender;
+    }
+
+    public void setGender(boolean Gender) {
+        this.Gender = Gender;
+    }
+
+    public boolean isStatus() {
+        return Status;
+    }
+
+    public void setStatus(boolean Status) {
+        this.Status = Status;
     }
 
     public BigDecimal getBalance() {
@@ -76,8 +180,13 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "customerid=" + CustomerId +", creditscore=" + CreditScore + ", balance=" + Balance +"Use:,"+User.toString() +'}';
+        return "Customer{" + "CustomerId=" + CustomerId + ", CreditScore=" + CreditScore + ", RoleID=" + RoleID + ", Username=" + Username + ", Password=" + Password + ", FullName=" + FullName + ", Image=" + Image + ", Phone=" + Phone + ", Email=" + Email + ", Address=" + Address + ", CCCD=" + CCCD + ", DateOfBirth=" + DateOfBirth + ", CreatedAt=" + CreatedAt + ", Gender=" + Gender + ", Status=" + Status + ", Balance=" + Balance + '}';
     }
+
+
     
+
+    
+   
 }
 
