@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +15,9 @@
         <title>Update News</title>
 
         <!-- CKEditor -->
-        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <style>
             * {
@@ -154,32 +157,29 @@
     </head>
     <body>
         <div class="container">
-            <form action="update-news" method="post" class="update-form" onsubmit="return prepareSubmit()">
+            <form action="update-news" method="post" class="update-form" onsubmit="return prepareSubmit()" enctype="multipart/form-data">
                 <div class="form-header">
                     <h1 class="form-title">Update News</h1>
                 </div>
-
-                <input type="hidden" name="NewsID" value="${requestScope.newsToUpdate.getNewsID()}">
-
+                <input type="hidden" name="NewsID" value="${requestScope.newsToUpdate.getNewsID()}"/>
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" id="title" name="Title" value="${requestScope.newsToUpdate.getTitle()}" 
-                           class="form-control" required>
+                    <input type="text" id="title" name="Title" 
+                           class="form-control" value="${requestScope.newsToUpdate.getTitle()}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea id="description" name="Description" class="form-control" required>
-                        ${requestScope.newsToUpdate.getDescription()}
                     </textarea>
-                    <input type="hidden" id="cleanDescription" name="CleanDescription">
                 </div>
 
                 <div class="form-group">
-                    <label for="image">Image URL</label>
-                    <input type="text" id="image" name="Image" value="${requestScope.newsToUpdate.getImage()}" 
-                           class="form-control" required onchange="updateImagePreview(this.value)">
-                    <img id="imagePreview" src="${requestScope.newsToUpdate.getImage()}" class="image-preview">
+                    <label for="url-image">Image URL</label>
+                    <input type="text" id="url-image" name="url-image" 
+                           class="form-control" value="${requestScope.newsToUpdate.getImage()}" required onchange="updateImagePreviewByUrl(this.value)"><br><br>
+                    <input id="file-image" type="file" name="file-image" accept="image/jpeg, image/png" required onchange="updateImagePreviewByFile()"><br>
+                    <img id="imagePreview" src="" class="image-preview">
                 </div>
 
                 <div class="button-group">
@@ -191,62 +191,93 @@
 
         <script>
             // Initialize CKEditor
-            var editor = CKEDITOR.replace('description', {
-                height: 300,
-                removeButtons: 'Image',
-                enterMode: CKEDITOR.ENTER_BR,
-                shiftEnterMode: CKEDITOR.ENTER_P,
-                autoParagraph: false,
-                fillEmptyBlocks: false,
-                removePlugins: 'div,autolink',
-                toolbar: [
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
-                    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                    { name: 'links', items: [ 'Link', 'Unlink' ] },
-                    { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-                    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'tools', items: [ 'Maximize' ] }
-                ]
-            });
+            CKEDITOR.replace('description');
 
-            // Function to update image preview
-            function updateImagePreview(url) {
-                const preview = document.getElementById('imagePreview');
-                preview.src = url;
-            }
-
-            function prepareSubmit() {
-                // Get CKEditor content
-                var content = CKEDITOR.instances.description.getData();
+            // Function to clean CKEditor content by removing unnecessary <p> tags
+            function cleanCKEditorContent(content) {
+                // Remove empty <p> tags
+                content = content.replace(/<p>\s*<\/p>/gi, '');
                 
-                // Remove all HTML tags except allowed formatting
-                content = content.replace(/<p[^>]*>/gi, '')
-                               .replace(/<\/p>/gi, '<br>')
-                               .replace(/<div[^>]*>/gi, '')
-                               .replace(/<\/div>/gi, '<br>')
-                               .replace(/[\n\r]+/g, '')
-                               .replace(/(<br\s*\/?>\s*)+$/g, ''); // Remove trailing <br>
+                // Remove <p> tags that only wrap the entire content
+                content = content.replace(/^<p>(.*)<\/p>$/gi, '$1');
                 
-                // Clean up any extra spaces and line breaks
+                // Trim whitespace
                 content = content.trim();
                 
-                // Update both the original textarea and our hidden input
-                CKEDITOR.instances.description.setData(content);
-                document.getElementById('description').value = content;
-                document.getElementById('cleanDescription').value = content;
+                return content;
+            }
+
+            // Function to update image preview
+            function updateImagePreview() {
+                const preview = document.getElementById('imagePreview');
+                const image = document.getElementById('url-image').value;
+                preview.src = image.replaceAll("\\\\", "\\");
+            }
+            
+            // Function to update image preview
+            function updateImagePreviewByUrl(url) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = url.replaceAll('//', '/');
+                document.getElementById('file-image').value = '';
+                document.getElementById('file-image').removeAttribute('required');
+            }
+            
+            function updateImagePreviewByFile() {
+                let formData = new FormData();
+                let file_image = document.getElementById('file-image');
+
+                if (file_image.files.length === 0) {
+                    alert('Please choose a file to upload!');
+                    return;
+                }
+
+                formData.append('file', file_image.files[0]);
+
+                fetch('update-preview-image-by-file', {
+                    method: 'POST',
+                    body: formData
+                })
+                        .then(response => response.blob())
+                        .then(blob => {
+                            const imageUrl = URL.createObjectURL(blob);
+                            document.getElementById('imagePreview').src = imageUrl;
+                            document.getElementById('url-image').value = '';
+                            document.getElementById('url-image').removeAttribute('required');
+                        })
+                        .catch(error => console.error('Error:', error));
+
+            }
+            
+            window.onload = updateImagePreview();
+            
+            // Prepare form submission
+            function prepareSubmit() {
+                // Get CKEditor content
+                const description = CKEDITOR.instances.description.getData();
                 
+                // Clean description
+                const cleanDescription = cleanCKEditorContent(description);
+                
+                // Set cleaned description directly to textarea
+                CKEDITOR.instances.description.setData(cleanDescription);
+                
+                // Validate inputs
+                const title = document.getElementById('title').value.trim();
+                const image = document.getElementById('image').value.trim();
+
+                if (!title || !cleanDescription || !image) {
+                    alert('Please fill in all fields');
+                    return false;
+                }
+
                 return true;
             }
 
-            // Clean initial content
-            window.onload = function() {
-                var initialContent = CKEDITOR.instances.description.getData();
-                initialContent = initialContent.replace(/<p[^>]*>/gi, '')
-                                            .replace(/<\/p>/gi, '<br>')
-                                            .replace(/[\n\r]+/g, '')
-                                            .trim();
-                CKEDITOR.instances.description.setData(initialContent);
-            };
+             // Set CKEditor content after page load
+            document.addEventListener('DOMContentLoaded', function() {
+                const initialDescription = `${requestScope.newsToUpdate.getDescription()}`;
+                CKEDITOR.instances.description.setData(initialDescription);
+            });
         </script>
     </body>
 </html>

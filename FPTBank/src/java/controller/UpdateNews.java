@@ -4,6 +4,7 @@
  */
 package controller;
 
+import Tools.SaveImage;
 import dal.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +13,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.News;
+import jakarta.servlet.annotation.MultipartConfig;
 
 /**
  *
  * @author HP
  */
 @WebServlet(name = "UpdateNews", urlPatterns = {"/seller/update-news"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 10MB
+        maxFileSize = 1024 * 1024 * 50, // 50MB
+        maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class UpdateNews extends HttpServlet {
 
     /**
@@ -92,13 +98,31 @@ public class UpdateNews extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         NewsDAO ndao = new NewsDAO();
-
+        SaveImage si = new SaveImage();
+        int NewsID=0;
         String NewsID_raw = request.getParameter("NewsID");
-        int NewsID = Integer.parseInt(NewsID_raw);
+        try {
+            NewsID = Integer.parseInt(NewsID_raw);
+        } catch (NumberFormatException e) {
+                        response.getWriter().print(NewsID_raw);
+
+            response.getWriter().print(e);
+            return;
+        }
         News newsToUpdate = ndao.selectANewsByNewsID(NewsID);
+        String urlImage = request.getParameter("url-image");
+        Part filePart = request.getPart("file-image");
+        String imagePath;
+        if (urlImage != null && !urlImage.isEmpty()) {
+            imagePath = si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+            si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+        } else {
+            imagePath = si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+            si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+        }
         newsToUpdate.setTitle(request.getParameter("Title"));
         newsToUpdate.setDescription(request.getParameter("Description"));
-        newsToUpdate.setImage(request.getParameter("Image"));
+        newsToUpdate.setImage(imagePath);
         ndao.updateANews(newsToUpdate);
         response.sendRedirect("/timibank/seller/news-management?fromUpdate=true");
 
