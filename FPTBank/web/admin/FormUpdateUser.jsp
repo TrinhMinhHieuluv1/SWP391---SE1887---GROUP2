@@ -130,7 +130,11 @@
         <form action="update_user" method="post">
 
             <!-- User ID -->
-            
+            <div>
+                <label for="userid">User ID</label>
+                <input type="text" id="userid" name="userid" value="${user.getUserID()}" readonly>
+            </div>
+
             <!-- Username -->
             <div>
                 <label for="name">User Name</label>

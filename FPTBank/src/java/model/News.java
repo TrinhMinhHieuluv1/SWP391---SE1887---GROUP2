@@ -10,11 +10,12 @@ public class News {
     private boolean Status;
     private Date CreatedAt;
     private int NumberOfAccess;
+    private NewsCategory NewsCategory;
 
     public News() {
     }
 
-    public News(int NewsID, User User, String Title, String Description, String Image, boolean Status, Date CreatedAt, int NumberOfAccess) {
+    public News(int NewsID, User User, String Title, String Description, String Image, boolean Status, Date CreatedAt, int NumberOfAccess, NewsCategory NewsCategory) {
         this.NewsID = NewsID;
         this.User = User;
         this.Title = Title;
@@ -23,6 +24,7 @@ public class News {
         this.Status = Status;
         this.CreatedAt = CreatedAt;
         this.NumberOfAccess = NumberOfAccess;
+        this.NewsCategory = NewsCategory;
     }
 
     public int getNewsID() {
@@ -87,6 +89,14 @@ public class News {
 
     public void setNumberOfAccess(int NumberOfAccess) {
         this.NumberOfAccess = NumberOfAccess;
+    }
+
+    public NewsCategory getNewsCategory() {
+        return NewsCategory;
+    }
+
+    public void setNewsCategory(NewsCategory NewsCategory) {
+        this.NewsCategory = NewsCategory;
     }
   
 }

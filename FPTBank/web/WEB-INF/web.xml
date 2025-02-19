@@ -40,10 +40,10 @@
         <servlet-name>congcu2</servlet-name>
         <servlet-class>controller.calLoan</servlet-class>
     </servlet>
-    <servlet>
+<!--    <servlet>
         <servlet-name>tinhvay</servlet-name>
         <servlet-class>controller.tinhvay</servlet-class>
-    </servlet>
+    </servlet>-->
     <servlet>
         <servlet-name>ShowFB</servlet-name>
         <servlet-class>controller.ShowFB</servlet-class>
@@ -60,10 +60,10 @@
         <servlet-name>congcu2</servlet-name>
         <url-pattern>/congcu2</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+<!--    <servlet-mapping>
         <servlet-name>tinhvay</servlet-name>
         <url-pattern>/tinhvay</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>ShowFB</servlet-name>
         <url-pattern>/showfb</url-pattern>
