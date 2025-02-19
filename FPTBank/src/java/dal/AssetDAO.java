@@ -15,8 +15,9 @@ import model.Asset;
  *
  * @author tiend
  */
-public class AssetDAO extends DBContext{
-     public List<Asset> selectAllAssets() {
+public class AssetDAO extends DBContext {
+
+    public List<Asset> selectAllAssets() {
         List<Asset> assets = new ArrayList<>();
         try {
             String sql = "SELECT  * FROM Asset";
@@ -34,6 +35,7 @@ public class AssetDAO extends DBContext{
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -44,10 +46,11 @@ public class AssetDAO extends DBContext{
 
         return null;
     }
-      public boolean updateAsset(Asset asset) {
-        String sql = "UPDATE Asset SET CustomerID = ?, Image = ?, Description = ?, " +
-                     "Value = ?, Comments = ?, ValuationAmount = ?, Used = ?, " +
-                     "Status = ?, CreatedAt = ? WHERE AssetID = ?";
+
+    public boolean updateAsset(Asset asset) {
+        String sql = "UPDATE Asset SET CustomerID = ?, Image = ?, Description = ?, "
+                + "Value = ?, Comments = ?, ValuationAmount = ?, Used = ?, "
+                + "Status = ?,PdfPath=?, CreatedAt = ? WHERE AssetID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, asset.getCustomerId());
             pstmt.setString(2, asset.getImage());
@@ -57,8 +60,9 @@ public class AssetDAO extends DBContext{
             pstmt.setBigDecimal(6, asset.getValuationAmount());
             pstmt.setBoolean(7, asset.isUsed());
             pstmt.setString(8, asset.getStatus());
-            pstmt.setTimestamp(9, new java.sql.Timestamp(asset.getCreatedAt().getTime()));
-            pstmt.setInt(10, asset.getId());
+            pstmt.setString(9, asset.getPdfPath());
+            pstmt.setTimestamp(10, new java.sql.Timestamp(asset.getCreatedAt().getTime()));
+            pstmt.setInt(11, asset.getId());
 
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0; // Trả về true nếu có ít nhất một hàng được cập nhật
@@ -67,7 +71,8 @@ public class AssetDAO extends DBContext{
             return false; // Trả về false nếu có lỗi xảy ra
         }
     }
-       public Asset getAssetById(int assetId) {
+
+    public Asset getAssetById(int assetId) {
 
         String sql = "SELECT * FROM Asset WHERE AssetId = ?";
 
@@ -86,6 +91,7 @@ public class AssetDAO extends DBContext{
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 return asset;
             }
@@ -95,7 +101,8 @@ public class AssetDAO extends DBContext{
 
         return null;
     }
-        public List<Asset> getAssetsSortedByValue(String ascending) throws SQLException {
+
+    public List<Asset> getAssetsSortedByValue(String ascending) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset ORDER BY Value " + ascending;
 
@@ -113,6 +120,7 @@ public class AssetDAO extends DBContext{
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -143,6 +151,7 @@ public class AssetDAO extends DBContext{
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -154,7 +163,7 @@ public class AssetDAO extends DBContext{
         return null;
 
     }
-public List<Asset> getAssetsByStatus(String status) throws SQLException {
+    public List<Asset> getAssetsByStatus(String status) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset WHERE Status = ?";
 
@@ -173,6 +182,7 @@ public List<Asset> getAssetsByStatus(String status) throws SQLException {
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -184,7 +194,7 @@ public List<Asset> getAssetsByStatus(String status) throws SQLException {
         return null;
 
     }
- public List<Asset> getAssetsByUsed(boolean status) throws SQLException {
+    public List<Asset> getAssetsByUsed(boolean status) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset WHERE Used = ?";
 
@@ -203,6 +213,7 @@ public List<Asset> getAssetsByStatus(String status) throws SQLException {
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -214,14 +225,16 @@ public List<Asset> getAssetsByStatus(String status) throws SQLException {
         return null;
 
     }
-  public List<Asset> searchAssetsByDescription(String description) throws SQLException {
+
+    public List<Asset> searchAssetsByDescription(String description) throws SQLException {
         List<Asset> assets = new ArrayList<>();
-        String query = "SELECT * FROM Asset WHERE Description LIKE ?";
-        
-        
+        String query = "SELECT a.* FROM Asset a "
+                + " join Customer c on a.CustomerId = c.CustomerId"
+                + " WHERE a.Description LIKE ? or c.FullName LIKE ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, "%" + description + "%");
+            pstmt.setString(2, "%" + description + "%");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
                 Asset asset = new Asset();
@@ -234,6 +247,7 @@ public List<Asset> getAssetsByStatus(String status) throws SQLException {
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }

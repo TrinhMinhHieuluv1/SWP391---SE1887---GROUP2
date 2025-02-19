@@ -19,9 +19,13 @@ public class Asset {
     private boolean Used;
     private String Status;
     private Date CreatedAt;
+    private String PdfPath;
 
-    // Constructor
     public Asset() {
+        this.Used = false;
+        this.Status = "Pending";
+        this.PdfPath="";
+        this.CreatedAt = new Date();
     }
 
     public Asset(int CustomerId, String Image, String Description, BigDecimal Value, String Comments, BigDecimal ValuationAmount) {
@@ -31,11 +35,7 @@ public class Asset {
         this.Value = Value;
         this.Comments = Comments;
         this.ValuationAmount = ValuationAmount;
-        this.Used = false;
-        this.Status = "Pending";
-        this.CreatedAt = new Date();
     }
-
 
     public int getId() {
         return Id;
@@ -118,10 +118,17 @@ public class Asset {
         this.Status = Status;
     }
 
+    public String getPdfPath() {
+        return PdfPath;
+    }
+
+    public void setPdfPath(String PdfPath) {
+        this.PdfPath = PdfPath;
+    }
+
     @Override
     public String toString() {
-        return "Asset{" + "Id=" + Id + ", CustomerId=" + CustomerId + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + '}';
+        return "Asset{" + "Id=" + Id + ", CustomerId=" + CustomerId + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + ", PdfPath=" + PdfPath + '}';
     }
-    
 
 }

@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!doctype html>
 <html lang="en" data-bs-theme="light">
     <head>
@@ -33,6 +34,7 @@
         <link href="assets/css/minimal-theme.css" rel="stylesheet">
         <link href="assets/css/shadow-theme.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        
         <style>
             detail-icon {
                 cursor: pointer;
@@ -226,7 +228,8 @@
         </script>
         <script>
             function showFullComment(comment) {
-                document.getElementById('fullCommentContent').innerHTML = comment;
+                 var formattedComment = comment.replace(/\n/g, '<br>');
+                document.getElementById('fullCommentContent').innerHTML = formattedComment;
                 document.getElementById('commentDetailModal').style.display = 'block';
             }
 
@@ -245,6 +248,28 @@
 
                 // Chuyển hướng đến URL
                 window.location.href = "viewPdf?fileName=" + encodeURIComponent(fileName);
+            }
+        </script>
+        <script type="text/javascript">
+
+           function formatNumber(input) {
+                // Loại bỏ tất cả các ký tự không phải số
+                let value = input.value.replace(/[^0-9]/g, '');
+
+                // Thêm dấu phẩy sau mỗi 3 chữ số
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+                // Gán giá trị đã định dạng lại vào input
+                input.value = value;
+            }
+            function validateInput(event) {
+                // Chỉ cho phép nhập các ký tự số
+                const charCode = (event.which) ? event.which : event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    event.preventDefault();
+                    return false;
+                }
+                return true;
             }
         </script>
     </head>
@@ -821,7 +846,7 @@
                                     <li><a class="dropdown-item" onclick="submitSortForm3('true')">Used</a></li>
                                     <li><a class="dropdown-item" onclick="submitSortForm3('false')">non-Use</a></li>
                                 </ul>
-                                <input type="hidden" name="verify" id="verify">
+                                <input type="hidden" name="used" id="verify">
                             </form>
                         </div>
                         <div class="btn-group position-static">
@@ -884,11 +909,13 @@
 
                                                 <td>
                                                     <c:choose>
+                                                        
                                                         <c:when test="${empty asset.getComments()}">
                                                             <textarea type="text" class="comment-input"
                                                                       placeholder="Nhập comment"
                                                                       name="comment_${asset.getId()}"required></textarea> 
                                                         </c:when>
+                                                        
                                                         <c:otherwise>
                                                             <span class="comment-text " data-full-comment="${asset.getComments()}">
                                                                 ${asset.getComments()}
@@ -905,12 +932,16 @@
                                                 <td>  
                                                     <c:choose>
                                                         <c:when test="${empty asset.getValuationAmount()}">
-                                                            <input type="number" class="form-control" 
+                                                            <input type="number" class="form-control"  id="AmountAsset"
                                                                    placeholder="Nhập giá trị định giá"
-                                                                   name="valuationAmount_${asset.getId()}"required />
+                                                                   name="valuationAmount_${asset.getId()}" />
                                                         </c:when>
                                                         <c:otherwise>
-                                                            ${asset.getValuationAmount()}
+                                                            <span >
+                                                                <fmt:formatNumber value=" ${asset.getValuationAmount()}" pattern="###,###"/>
+                                                               
+                                                            </span>
+                                                        
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -932,9 +963,12 @@
                                                         </select>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <button type="submit">Submit</button>
-                                                </td>   
+                                               <c:if test="${asset.getStatus() eq 'Approved'}">
+                                                    <td><button type="submit" style="display:none;">Confirm</button></td>
+                                                </c:if>
+                                                <c:if test="${asset.getStatus() ne 'Approved'}">
+                                                    <td><button type="submit">Confirm</button></td>
+                                                </c:if>  
                                             </form>
 
                                             </tr> 
@@ -956,7 +990,7 @@
                             <img id="modalImage" src="" alt="" class="modal-image">
                             <div class="modal-info">
                                 <span id="modalidAss"></span>
-                                <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                                <p><strong>Date of request:</strong> <span id="modalDate"></span></p>
                                 <p><strong>Description:</strong> <span id="modalDescription"></span></p>
                                 <p><strong>Value:</strong> <span id="modalValue"></span></p>
                                 

@@ -69,7 +69,7 @@ public class ListAsset extends HttpServlet {
         for (Asset asset : data) {
             StringBuilder result = new StringBuilder();
             String descript = asset.getDescription();
-            String[] des = descript.split("\\.");
+            String[] des = descript.split("\n");
             for (String de : des) {
                 result.append(de.trim()).append("<br>-");
             }
@@ -80,7 +80,7 @@ public class ListAsset extends HttpServlet {
         String uploadPath = getServletContext().getRealPath("assetPDF");
         File uploadDir = new File(uploadPath);
         String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
-        String assetId = "assetid"; 
+        String assetId = "assetid";
         List<String> filteredList = new ArrayList<>();
         for (String filename : filenames) {
             if (filename.contains(assetId)) {
@@ -119,9 +119,13 @@ public class ListAsset extends HttpServlet {
                 a.setComments(comment);
                 dao.updateAsset(a);
             }
-            if (value != null) {
+            if (value != null && !value.isEmpty()) {
                 double va  = Double.parseDouble(value);
                 a.setValuationAmount(BigDecimal.valueOf(va));
+                dao.updateAsset(a);
+            }else{
+                double valu = Double.parseDouble(a.getValue().toString());
+                a.setValuationAmount(BigDecimal.valueOf(valu));
                 dao.updateAsset(a);
             }
 
@@ -138,11 +142,32 @@ public class ListAsset extends HttpServlet {
                     //
                     break;
             }
+             List<Asset> data = dao.selectAllAssets();
+            for (Asset asset : data) {
+                StringBuilder result = new StringBuilder();
+                String descript = asset.getDescription();
+                String[] des = descript.split("\n");
+                for (String de : des) {
+                    result.append(de.trim()).append("<br>-");
+                }
+                result.deleteCharAt(result.toString().length() - 1);
+                asset.setDescription(result.toString());
+
+            }
             String uploadPath = getServletContext().getRealPath("assetPDF");
             File uploadDir = new File(uploadPath);
             String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
-            request.setAttribute("filenames", filenames);
-            List<Asset> data = dao.selectAllAssets();
+            String asseti = "assetid";
+            List<String> filteredList = new ArrayList<>();
+            for (String filename : filenames) {
+                if (filename.contains(asseti)) {
+                    filename = filename.replaceAll(".pdf", "");
+                    filename = filename.replaceAll("\\d.*", "");
+                    filteredList.add(filename);
+                }
+            }
+            request.setAttribute("filenames", filteredList);
+           
             request.setAttribute("data", data);
             request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
 

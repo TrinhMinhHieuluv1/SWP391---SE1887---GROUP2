@@ -4,33 +4,30 @@
  */
 package controller;
 
-import dal.CustomerDAO;
-import dal.UserDAO;
+import dal.AssetDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import model.Customer;
-import model.Emails;
-import model.User;
-
-import model.Emails;
-
-import model.User;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import model.Asset;
 
 /**
  *
  * @author tiend
  */
-@WebServlet(name = "ForgotPass", urlPatterns = {"/forgotPass"})
-public class ForgotPass extends HttpServlet {
-   Random random = new Random();
+@WebServlet(name = "FileUploadServlet", urlPatterns = {"/uploadFile"})
+@MultipartConfig(
+    maxFileSize = 1048576 * 100, // 1MB (1MB = 1024 * 1024 bytes)
+    maxRequestSize = 2097152 * 100 // 2MB (2MB = 2 * 1024 * 1024 bytes)
+)
+public class FileUploadServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,13 +41,14 @@ public class ForgotPass extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SendEmail</title>");
+            out.println("<title>Servlet FileUploadServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SendEmail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FileUploadServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,7 +66,7 @@ public class ForgotPass extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -82,43 +80,26 @@ public class ForgotPass extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String emailr = request.getParameter("email");
-        String code = getRandom();
-        Emails email = new Emails();
-        UserDAO userDAO = new UserDAO();
-        CustomerDAO cusDAO = new CustomerDAO();
+        Part filePart = request.getPart("file"); // Nhận file
+        String fileName = filePart.getSubmittedFileName(); // Lấy tên file
+        if (!fileName.endsWith(".pdf")) {
+            response.getWriter().println("Error: Only PDF files are allowed.");
+            return;
+        }
+        // Lưu file vào thư mục assetPDF/
+        String uploadPath = getServletContext().getRealPath("") + "../assetPDF/"; // Đường dẫn đến thư mục assetPDF
+        File uploadsDir = new File(uploadPath);
+        if (!uploadsDir.exists()) {
+            uploadsDir.mkdir(); // Tạo thư mục nếu chưa tồn tại
+        }
+        filePart.write(uploadPath + fileName); // Ghi file vào thư mục
         
-        Customer customer = cusDAO.selectCustomerByConditions(0,"","",emailr.trim());
-        User user = userDAO.selectAnUserByConditions(0,"","",emailr.trim());
-        if(!isValidEmail(emailr)){
-            String err= "Invalid format!";
-            request.setAttribute("err", err);
-            request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
-        }else if (user != null||customer!=null) {
-            email.sendMess(emailr.trim(), "Recovery Password", code);
-            request.setAttribute("emailr", emailr.trim());
-            request.setAttribute("code", code);
-            request.getRequestDispatcher("pincode.jsp").forward(request, response);
-        }else{
-            String err= "Not exist Email!";
-            request.setAttribute("err", err);
-            request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
-        }
-
-    }
-        public static boolean isValidEmail(String email) {
-        String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"; 
-        Pattern pattern = Pattern.compile(emailPattern);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    public String getRandom() {
-        StringBuilder randomNumbers = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            randomNumbers.append(random.nextInt(10));
-        }
-        return randomNumbers.toString();
+        //DAO lưu tên vào cssdl
+        AssetDAO dao = new AssetDAO();
+        Asset asset = dao.getAssetById(2);
+        asset.setPdfPath(fileName);
+        dao.updateAsset(asset);
+        response.sendRedirect("home");
     }
 
     /**

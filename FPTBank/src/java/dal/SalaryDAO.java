@@ -46,7 +46,7 @@ public class SalaryDAO extends DBContext{
     }
       public boolean updateSalary(Salary salary) {
         String sql = "UPDATE Salary SET CustomerId = ?, Image = ?, Description = ?, "
-                + "Value = ?,Comments = ?, ValuationAmount = ?, Used = ?, Status = ?, CreatedAt = ? WHERE SalaryId = ?";
+                + "Value = ?,Comments = ?, ValuationAmount = ?, Used = ?, Status = ?,PdfPath=?, CreatedAt = ? WHERE SalaryId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, salary.getCustomerId());
             pstmt.setString(2, salary.getImage());
@@ -56,8 +56,9 @@ public class SalaryDAO extends DBContext{
             pstmt.setBigDecimal(6, salary.getValuationAmount());
             pstmt.setBoolean(7, salary.isUsed());
             pstmt.setString(8, salary.getStatus());
-            pstmt.setTimestamp(9, new java.sql.Timestamp(salary.getCreatedAt().getTime()));
-            pstmt.setInt(10, salary.getId());
+            pstmt.setString(9, salary.getPdfPath());
+            pstmt.setTimestamp(10, new java.sql.Timestamp(salary.getCreatedAt().getTime()));
+            pstmt.setInt(11, salary.getId());
 
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0; // Trả về true nếu có ít nhất một hàng được cập nhật
@@ -85,6 +86,7 @@ public class SalaryDAO extends DBContext{
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
+                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 return salary;
             }
@@ -112,6 +114,7 @@ public class SalaryDAO extends DBContext{
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
+                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -142,6 +145,7 @@ public class SalaryDAO extends DBContext{
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
+                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -172,6 +176,7 @@ public class SalaryDAO extends DBContext{
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
+                salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -185,11 +190,14 @@ public class SalaryDAO extends DBContext{
     }
    public List<Salary> searchSalaryByDescription(String description) throws SQLException {
         List<Salary> salarys = new ArrayList<>();
-        String query = "SELECT * FROM Salary WHERE Description LIKE ?";
+        String query = "SELECT * FROM Salary s "
+                + " join Customer c on s.CustomerId = c.CustomerId"
+                + " WHERE s.Description LIKE ? or c.FullName LIKE ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, "%" + description + "%");
+            pstmt.setString(2, "%" + description + "%");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
                Salary salary = new Salary();
@@ -202,6 +210,7 @@ public class SalaryDAO extends DBContext{
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
+                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }

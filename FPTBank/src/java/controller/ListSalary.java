@@ -13,7 +13,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import model.Asset;
 import model.Salary;
@@ -68,7 +70,7 @@ public class ListSalary extends HttpServlet {
         for (Salary sala : data) {
             StringBuilder result = new StringBuilder();
             String descript = sala.getDescription();
-            String[] des = descript.split("\\.");
+            String[] des = descript.split("\n");
             for (String de : des) {
                 result.append(de.trim()).append("<br>-");
             }
@@ -76,6 +78,19 @@ public class ListSalary extends HttpServlet {
             sala.setDescription(result.toString());
 
         }
+        String uploadPath = getServletContext().getRealPath("assetPDF");
+        File uploadDir = new File(uploadPath);
+        String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
+        String salaId = "salaryid";
+        List<String> filteredList = new ArrayList<>();
+        for (String filename : filenames) {
+            if (filename.contains(salaId)) {
+                filename = filename.replaceAll(".pdf", "");
+                filename = filename.replaceAll("\\d.*", "");
+                filteredList.add(filename);
+            }
+        }
+        request.setAttribute("filenames", filteredList);
         request.setAttribute("data", data);
         request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
     }
@@ -103,9 +118,13 @@ public class ListSalary extends HttpServlet {
                 a.setComments(comment);
                 dao.updateSalary(a);
             }
-            if (value != null) {
+            if (value != null && !value.isEmpty())  {
                 double va  = Double.parseDouble(value);
                 a.setValuationAmount(BigDecimal.valueOf(va));
+                dao.updateSalary(a);
+            }else{
+                double valu = Double.parseDouble(a.getValue().toString());
+                a.setValuationAmount(BigDecimal.valueOf(valu));
                 dao.updateSalary(a);
             }
             switch (action) {
@@ -122,6 +141,31 @@ public class ListSalary extends HttpServlet {
                     break;
             }
             List<Salary> data = dao.selectAllSalary();
+            for (Salary sala : data) {
+                StringBuilder result = new StringBuilder();
+                String descript = sala.getDescription();
+                String[] des = descript.split("\n");
+                for (String de : des) {
+                    result.append(de.trim()).append("<br>-");
+                }
+                result.deleteCharAt(result.toString().length() - 1);
+                sala.setDescription(result.toString());
+            }
+            
+            String uploadPath = getServletContext().getRealPath("assetPDF");
+            File uploadDir = new File(uploadPath);
+            String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
+            String salaId = "salaryid";
+            List<String> filteredList = new ArrayList<>();
+            for (String filename : filenames) {
+                if (filename.contains(salaId)) {
+                    filename = filename.replaceAll(".pdf", "");
+                    filename = filename.replaceAll("\\d.*", "");
+                    filteredList.add(filename);
+                }
+            }
+            request.setAttribute("filenames", filteredList);
+
             request.setAttribute("data", data);
             request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
         } catch (Exception e) {

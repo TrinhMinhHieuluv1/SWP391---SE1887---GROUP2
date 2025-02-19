@@ -9,7 +9,6 @@ import java.util.Date;
 
 public class Salary {
 
-
     private int Id; // SalaryId
     private int CustomerId; // CustomerId
     private String Image; // Image
@@ -20,11 +19,12 @@ public class Salary {
     private boolean Used;
     private String Status;
     private Date CreatedAt;
-
-
-    // Constructor
-    
+    private String PdfPath;
     public Salary() {
+        this.Used = false;
+        this.Status = "Pending";
+        this.PdfPath="";
+        this.CreatedAt = new Date();
     }
 
     public Salary(int CustomerId, String Image, String Description, BigDecimal Value, String Comments, BigDecimal ValuationAmount) {
@@ -34,11 +34,8 @@ public class Salary {
         this.Value = Value;
         this.Comments = Comments;
         this.ValuationAmount = ValuationAmount;
-        this.Used = false;
-        this.Status = "Pending";
-        this.CreatedAt = new Date();
-    }
 
+    }
 
     // Getters and Setters
     public int getId() {
@@ -123,9 +120,17 @@ public class Salary {
         this.Status = Status;
     }
 
+    public String getPdfPath() {
+        return PdfPath;
+    }
+
+    public void setPdfPath(String PdfPath) {
+        this.PdfPath = PdfPath;
+    }
+
     @Override
     public String toString() {
-        return "Salary{" + "Id=" + Id + ", CustomerId=" + CustomerId + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + '}';
+        return "Salary{" + "Id=" + Id + ", CustomerId=" + CustomerId + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + ", PdfPath=" + PdfPath + '}';
     }
-    
+
 }

@@ -183,11 +183,12 @@
             }
         </script>
         <script>
-            function showAssetDetails(image, description, value, date) {
+            function showAssetDetails(image, description, value, date, id) {
                 document.getElementById("modalImage").src = image;
                 document.getElementById("modalDescription").innerHTML = description;
                 document.getElementById("modalValue").innerText = value;
                 document.getElementById("modalDate").innerText = date;
+                document.getElementById("modalidAss").innerText = id;
                 document.getElementById("assetDetailModal").style.display = "block";
             }
             function closeAssetModal() {
@@ -217,6 +218,18 @@
                 document.getElementById("commentDetailModal").style.display = "none";
             }
 
+        </script>
+        <script>
+            function viewPdf(filenames) {
+                // Lấy giá trị từ span
+                var modalValue = document.getElementById("modalidAss").innerText;
+
+                // Kết hợp giá trị từ span với filenames
+                var fileName = filenames + modalValue; // Điều chỉnh tùy theo cách bạn muốn kết hợp
+
+                // Chuyển hướng đến URL
+                window.location.href = "viewPdf?fileName=" + encodeURIComponent(fileName);
+            }
         </script>
 
     </head>
@@ -774,7 +787,7 @@
                                     <li><a class="dropdown-item" onclick="submitSortForm3('true')">Used</a></li>
                                     <li><a class="dropdown-item" onclick="submitSortForm3('false')">non-Use</a></li>
                                 </ul>
-                                <input type="hidden" name="verify" id="verify">
+                                <input type="hidden" name="used" id="verify">
                             </form>
                         </div>
                         <div class="btn-group position-static">
@@ -804,7 +817,7 @@
                                         <tr>
                                             <th>Customer ID</th>
                                             <th>Salary ID</th>
-                                             <th>Comments</th>
+                                            <th>Comments</th>
                                             <th>Valuation Amount</th>
                                             <th>Used</th>
                                             <th>Status</th>
@@ -817,19 +830,19 @@
                                         <c:if test="${requestScope.data!= null}">
                                             <c:forEach items="${requestScope.data}" var="sal">
                                                 <tr>
-                                                  <form action="listSalary" method="post">
-                                                    <td>
-                                                        <a href="customer?cid=${sal.getCustomerId()}" class="bi bi-person-circle" title="Xem chi tiết">
-                                                            ${sal.getCustomerId()}</a>
+                                            <form action="listSalary" method="post">
+                                                <td>
+                                                    <a href="customer?cid=${sal.getCustomerId()}" class="bi bi-person-circle" title="Xem chi tiết">
+                                                        ${sal.getCustomerId()}</a>
 
-                                                    </td>
-                                                      <td>
+                                                </td>
+                                                <td>
                                                     <i class="fas fa-info-circle detail-icon" 
-                                                       onclick="showAssetDetails('${sal.getImage()}', '${sal.getDescription()}', '${sal.getValue()}', '${sal.getCreatedAt()}')"
+                                                       onclick="showAssetDetails('${sal.getImage()}', '${sal.getDescription()}', '${sal.getValue()}', '${sal.getCreatedAt()}', '${sal.getId()}')"
                                                        title="Xem chi tiết">
                                                     </i>
                                                     <span>${sal.getId()}</span>
-                                                     <td>
+                                                <td>
                                                     <c:choose>
                                                         <c:when test="${empty sal.getComments()}">
                                                             <textarea type="text" class="comment-input" 
@@ -837,7 +850,7 @@
                                                                       name="comment_${sal.getId()}" required></textarea> 
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span class="comment-text " data-full-comment="${sal.getComments()}">
+                                                            <span class="comment-text " data-full-comment="${sal.getComments()}>
                                                                 ${sal.getComments()}
                                                             </span>
                                                             <i class="fas fa-info-circle detail-icon" 
@@ -854,10 +867,13 @@
                                                         <c:when test="${empty asset.getValuationAmount()}">
                                                             <input type="number" class="form-control" 
                                                                    placeholder="Nhập giá trị định giá" 
-                                                                   name="valuationAmount_${sal.getId()}" required/>
+                                                                   name="valuationAmount_${sal.getId()}" />
                                                         </c:when>
                                                         <c:otherwise>
-                                                            ${sal.getValuationAmount()}
+                                                          <span >
+                                                                <fmt:formatNumber value=" ${sal.getValuationAmount()}" pattern="###,###"/>
+                                                               
+                                                            </span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -879,7 +895,13 @@
                                                         </select>
                                                     </div>
                                                 </td>
-                                                <td><button type="submit" >Submit</button></td>
+                                                <c:if test="${sal.getStatus() eq 'Approved'}">
+                                                    <td><button type="submit"hidden >Confirm</button></td>
+                                                </c:if>
+                                                <c:if test="${sal.getStatus() ne 'Approved'}">
+                                                    <td><button type="submit" >Confirm</button></td>
+                                                </c:if>
+
                                             </form>
 
                                             </tr> 
@@ -892,15 +914,19 @@
                         </div>
                     </div>
                 </div>
-                 <div id="assetDetailModal" class="modal">
+                <div id="assetDetailModal" class="modal">
                     <div class="modal-content">
                         <span class="close" onclick="closeAssetModal()">&times;</span> <!-- Nút đóng -->
                         <div class="modal-body">
                             <img id="modalImage" src="" alt="" class="modal-image">
                             <div class="modal-info">
-                                <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                                <span id="modalidAss"></span>
+                                <p><strong>Date of request:</strong> <span id="modalDate"></span></p>
                                 <p><strong>Description:</strong> <span id="modalDescription"></span></p>
                                 <p><strong>Value:</strong> <span id="modalValue"></span></p>
+                                <td>
+                                    <a href="#" onclick="viewPdf('${requestScope.filenames[0]}')">Xem thêm</a>
+                                </td>
                             </div>
                         </div>
                     </div>

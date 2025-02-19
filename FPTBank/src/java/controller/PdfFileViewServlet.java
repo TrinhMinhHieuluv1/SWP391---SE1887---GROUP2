@@ -4,8 +4,6 @@
  */
 package controller;
 
-import dal.CustomerDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,24 +11,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import model.Customer;
-import model.Emails;
-import model.User;
-
-import model.Emails;
-
-import model.User;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 
 /**
  *
  * @author tiend
  */
-@WebServlet(name = "ForgotPass", urlPatterns = {"/forgotPass"})
-public class ForgotPass extends HttpServlet {
-   Random random = new Random();
+@WebServlet(name = "PdfFileViewServlet", urlPatterns = {"/manager/viewPdf"})
+public class PdfFileViewServlet extends HttpServlet {
+
+    private static final String UPLOAD_DIR = "assetPDF";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,10 +40,10 @@ public class ForgotPass extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SendEmail</title>");
+            out.println("<title>Servlet PdfFileViewServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SendEmail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PdfFileViewServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,7 +61,31 @@ public class ForgotPass extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
+        String fileName = request.getParameter("fileName");
+        fileName+=".pdf";
+        String uploadPath = getServletContext().getRealPath(UPLOAD_DIR) + File.separator + fileName;
+
+        File pdfFile = new File(uploadPath);
+
+        if (!pdfFile.exists()) {
+//            response.sendError(HttpServletResponse.SC_NOT_FOUND); 
+            response.sendRedirect("listAsset");
+            return;
+        }
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
+
+        try (FileInputStream inStream = new FileInputStream(pdfFile); OutputStream outStream = response.getOutputStream()) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Trả về lỗi 500
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -82,43 +99,7 @@ public class ForgotPass extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String emailr = request.getParameter("email");
-        String code = getRandom();
-        Emails email = new Emails();
-        UserDAO userDAO = new UserDAO();
-        CustomerDAO cusDAO = new CustomerDAO();
-        
-        Customer customer = cusDAO.selectCustomerByConditions(0,"","",emailr.trim());
-        User user = userDAO.selectAnUserByConditions(0,"","",emailr.trim());
-        if(!isValidEmail(emailr)){
-            String err= "Invalid format!";
-            request.setAttribute("err", err);
-            request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
-        }else if (user != null||customer!=null) {
-            email.sendMess(emailr.trim(), "Recovery Password", code);
-            request.setAttribute("emailr", emailr.trim());
-            request.setAttribute("code", code);
-            request.getRequestDispatcher("pincode.jsp").forward(request, response);
-        }else{
-            String err= "Not exist Email!";
-            request.setAttribute("err", err);
-            request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
-        }
-
-    }
-        public static boolean isValidEmail(String email) {
-        String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"; 
-        Pattern pattern = Pattern.compile(emailPattern);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    public String getRandom() {
-        StringBuilder randomNumbers = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            randomNumbers.append(random.nextInt(10));
-        }
-        return randomNumbers.toString();
+        processRequest(request, response);
     }
 
     /**
