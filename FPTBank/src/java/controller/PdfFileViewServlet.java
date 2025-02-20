@@ -4,8 +4,6 @@
  */
 package controller;
 
-import dal.CustomerDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +11,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Customer;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 
 /**
  *
- * @author HP
+ * @author tiend
  */
-@WebServlet(name = "CustomerControl", urlPatterns = {"/manager/customer"})
-public class CustomerControl extends HttpServlet {
+@WebServlet(name = "PdfFileViewServlet", urlPatterns = {"/manager/viewPdf"})
+public class PdfFileViewServlet extends HttpServlet {
+
+    private static final String UPLOAD_DIR = "assetPDF";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,14 +37,13 @@ public class CustomerControl extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Customer</title>");
+            out.println("<title>Servlet PdfFileViewServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Customer at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PdfFileViewServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,17 +61,29 @@ public class CustomerControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String cid = request.getParameter("cid");
-        try {
+        String fileName = request.getParameter("fileName");
+        fileName+=".pdf";
+        String uploadPath = getServletContext().getRealPath(UPLOAD_DIR) + File.separator + fileName;
 
-            int cidd = Integer.parseInt(cid);
-            CustomerDAO dao = new CustomerDAO();
-            Customer c = dao.getCustomerByID(cidd);
-            if (c != null) {
-                request.setAttribute("dataC", c);
-                request.getRequestDispatcher("customerDetail.jsp").forward(request, response);
+        File pdfFile = new File(uploadPath);
+
+        if (!pdfFile.exists()) {
+//            response.sendError(HttpServletResponse.SC_NOT_FOUND); 
+            response.sendRedirect("listAsset");
+            return;
+        }
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
+
+        try (FileInputStream inStream = new FileInputStream(pdfFile); OutputStream outStream = response.getOutputStream()) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, bytesRead);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Trả về lỗi 500
             e.printStackTrace();
         }
     }

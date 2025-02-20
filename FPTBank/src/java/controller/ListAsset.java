@@ -13,6 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import model.Asset;
 
@@ -36,7 +40,6 @@ public class ListAsset extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -63,6 +66,30 @@ public class ListAsset extends HttpServlet {
             throws ServletException, IOException {
         AssetDAO dao = new AssetDAO();
         List<Asset> data = dao.selectAllAssets();
+        for (Asset asset : data) {
+            StringBuilder result = new StringBuilder();
+            String descript = asset.getDescription();
+            String[] des = descript.split("\n");
+            for (String de : des) {
+                result.append(de.trim()).append("<br>-");
+            }
+            result.deleteCharAt(result.toString().length() - 1);
+            asset.setDescription(result.toString());
+
+        }
+        String uploadPath = getServletContext().getRealPath("assetPDF");
+        File uploadDir = new File(uploadPath);
+        String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
+        String assetId = "assetid";
+        List<String> filteredList = new ArrayList<>();
+        for (String filename : filenames) {
+            if (filename.contains(assetId)) {
+                filename = filename.replaceAll(".pdf", "");
+                filename = filename.replaceAll("\\d.*", "");
+                filteredList.add(filename);
+            }
+        }
+        request.setAttribute("filenames", filteredList);
         request.setAttribute("data", data);
         request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
     }
@@ -81,38 +108,71 @@ public class ListAsset extends HttpServlet {
 
         String action = request.getParameter("action");
         String assetId = request.getParameter("assetid");
+
         AssetDAO dao = new AssetDAO();
         try {
             int id = Integer.parseInt(assetId);
             Asset a = dao.getAssetById(id);
-            System.out.println(id + "...............................");
-            System.out.println(action + "...............................");
-            System.out.println(a.toString());
+            String comment = request.getParameter("comment_" + id);
+            String value = request.getParameter("valuationAmount_" + id);
+            if (comment != null) {
+                a.setComments(comment);
+                dao.updateAsset(a);
+            }
+            if (value != null && !value.isEmpty()) {
+                double va  = Double.parseDouble(value);
+                a.setValuationAmount(BigDecimal.valueOf(va));
+                dao.updateAsset(a);
+            }else{
+                double valu = Double.parseDouble(a.getValue().toString());
+                a.setValuationAmount(BigDecimal.valueOf(valu));
+                dao.updateAsset(a);
+            }
+
             switch (action) {
-                case "accept":
-                    a.setStatus(true);
-                    dao.updateAsset(a);
-
-                    break;
-                case "deny":
-                    a.setStatus(false);
-                    dao.updateAsset(a);
-
-                    break;
-                case "notConform":
-                    a.setVerification(false);
+                case "Adjusting":
+                    a.setStatus("Adjusting");
                     dao.updateAsset(a);
                     break;
-                case "conform":
-                    a.setVerification(true);
+                case "Approved":
+                    a.setStatus("Approved");
                     dao.updateAsset(a);
+                    break;
+                default:
+                    //
                     break;
             }
-            List<Asset> data = dao.selectAllAssets();
+             List<Asset> data = dao.selectAllAssets();
+            for (Asset asset : data) {
+                StringBuilder result = new StringBuilder();
+                String descript = asset.getDescription();
+                String[] des = descript.split("\n");
+                for (String de : des) {
+                    result.append(de.trim()).append("<br>-");
+                }
+                result.deleteCharAt(result.toString().length() - 1);
+                asset.setDescription(result.toString());
+
+            }
+            String uploadPath = getServletContext().getRealPath("assetPDF");
+            File uploadDir = new File(uploadPath);
+            String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
+            String asseti = "assetid";
+            List<String> filteredList = new ArrayList<>();
+            for (String filename : filenames) {
+                if (filename.contains(asseti)) {
+                    filename = filename.replaceAll(".pdf", "");
+                    filename = filename.replaceAll("\\d.*", "");
+                    filteredList.add(filename);
+                }
+            }
+            request.setAttribute("filenames", filteredList);
+           
             request.setAttribute("data", data);
             request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

@@ -83,8 +83,13 @@ public class NewsManagement extends HttpServlet {
 
         // Get parameter
         String searchKeyword = request.getParameter("searchKeyword");
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+        if (searchKeyword != null) {
             searchKeyword = searchKeyword.trim();
+            if (!searchKeyword.isEmpty()) {
+                while (searchKeyword.contains("  ")) {
+                    searchKeyword = searchKeyword.replaceAll("  ", " ");
+                }
+            }
         }
         String sortBy = request.getParameter("sortBy");
         String filterMine = request.getParameter("filterMine");
@@ -122,9 +127,9 @@ public class NewsManagement extends HttpServlet {
                 page = 1;
             }
         }
-        
+
         List<News> newsList = newsListBeforePagition.subList((page - 1) * pageSize, Math.min(newsListBeforePagition.size(), page * pageSize));
-        request.setAttribute("ncList", ncDAO.selectAllNewsCategory());  
+        request.setAttribute("ncList", ncDAO.selectAllNewsCategory());
         request.setAttribute("pageSize", pageSize);
         request.setAttribute("newsList", newsList);
         request.setAttribute("currentPage", page);
@@ -133,7 +138,7 @@ public class NewsManagement extends HttpServlet {
         request.setAttribute("sortBy", sortBy);
         request.setAttribute("filterMine", filterMine);
         request.setAttribute("filterStatus", filterStatus);
-        request.setAttribute("filterNewsCategoryID", filterNewsCategoryID   );
+        request.setAttribute("filterNewsCategoryID", filterNewsCategoryID);
         request.getRequestDispatcher("news-management.jsp").forward(request, response);
     }
 

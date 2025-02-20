@@ -5,7 +5,6 @@
 package controller;
 
 import dal.AssetDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,11 +12,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Asset;
 
 /**
@@ -69,7 +67,7 @@ public class SortAssetServlet extends HttpServlet {
         String sortOrder = request.getParameter("sortOrder");
         String sortDate = request.getParameter("sortDate");
         String status = request.getParameter("status");
-        String verify = request.getParameter("verify");
+        String use = request.getParameter("used");
         String search = request.getParameter("search");
         try {
             List<Asset> data = new ArrayList<>();
@@ -82,24 +80,55 @@ public class SortAssetServlet extends HttpServlet {
                 request.setAttribute("data", data);
             }
             if (status != null) {
-                boolean st = Boolean.parseBoolean(status);
-                data = dao.getAssetsByStatus(st);
+                data = dao.getAssetsByStatus(status);
                 request.setAttribute("data", data);
             }
-            if (verify != null) {
-                boolean vt = Boolean.parseBoolean(verify);
-                data = dao.getAssetsByVerify(vt);
+            if (use != null) {
+                boolean used = Boolean.parseBoolean(use);
+                data = dao.getAssetsByUsed(used);
                 request.setAttribute("data", data);
             }
-            if (search != null) {
+            if (search != null && !search.isEmpty()) {
+                search = normalizeString(search);
                 data = dao.searchAssetsByDescription(search);
                 request.setAttribute("data", data);
             }
+            for (Asset asset : data) {
+                StringBuilder result = new StringBuilder();
+                String descript = asset.getDescription();
+                String[] des = descript.split("\n");
+                for (String de : des) {
+                    result.append(de.trim()).append("<br>-");
+                }
+                result.deleteCharAt(result.toString().length() - 1);
+                asset.setDescription(result.toString());
 
+            }
+            String uploadPath = getServletContext().getRealPath("assetPDF");
+            File uploadDir = new File(uploadPath);
+            String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
+            String assetId = "assetid";
+            List<String> filteredList = new ArrayList<>();
+            for (String filename : filenames) {
+                if (filename.contains(assetId)) {
+                    filename = filename.replaceAll(".pdf", "");
+                    filename = filename.replaceAll("\\d.*", "");
+                    filteredList.add(filename);
+                }
+            }
+            request.setAttribute("filenames", filteredList);
             request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
 
+    }
+
+    public String normalizeString(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return "";
+        }
+        return keyword.trim().replaceAll("\\s+", " ");
     }
 
     /**

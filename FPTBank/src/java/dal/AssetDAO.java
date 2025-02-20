@@ -15,12 +15,11 @@ import model.Asset;
  *
  * @author tiend
  */
-public class AssetDAO extends DBContext{
-     public List<Asset> selectAllAssets() {
+public class AssetDAO extends DBContext {
+
+    public List<Asset> selectAllAssets() {
         List<Asset> assets = new ArrayList<>();
-
         try {
-
             String sql = "SELECT  * FROM Asset";
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet resultSet = st.executeQuery();
@@ -32,8 +31,11 @@ public class AssetDAO extends DBContext{
                 asset.setImage(resultSet.getString("Image"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
-                asset.setVerification(resultSet.getBoolean("Verification"));
-                asset.setStatus(resultSet.getBoolean("Status"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -44,27 +46,33 @@ public class AssetDAO extends DBContext{
 
         return null;
     }
-      public boolean updateAsset(Asset asset) {
-        String sql = "UPDATE Asset SET CustomerId = ?, Image = ?, Description = ?, "
-                + "Value = ?, Verification = ?, Status = ?, CreatedAt = ? WHERE AssetId = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, asset.getCustomerId());
-            preparedStatement.setString(2, asset.getImage());
-            preparedStatement.setString(3, asset.getDescription());
-            preparedStatement.setBigDecimal(4, asset.getValue());
-            preparedStatement.setBoolean(5, asset.isVerification());
-            preparedStatement.setBoolean(6, asset.isStatus());
-            preparedStatement.setTimestamp(7, new java.sql.Timestamp(asset.getCreatedAt().getTime()));
-            preparedStatement.setInt(8, asset.getId());
 
-            int rowsUpdated = preparedStatement.executeUpdate();
+    public boolean updateAsset(Asset asset) {
+        String sql = "UPDATE Asset SET CustomerID = ?, Image = ?, Description = ?, "
+                + "Value = ?, Comments = ?, ValuationAmount = ?, Used = ?, "
+                + "Status = ?,PdfPath=?, CreatedAt = ? WHERE AssetID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, asset.getCustomerId());
+            pstmt.setString(2, asset.getImage());
+            pstmt.setString(3, asset.getDescription());
+            pstmt.setBigDecimal(4, asset.getValue());
+            pstmt.setString(5, asset.getComments());
+            pstmt.setBigDecimal(6, asset.getValuationAmount());
+            pstmt.setBoolean(7, asset.isUsed());
+            pstmt.setString(8, asset.getStatus());
+            pstmt.setString(9, asset.getPdfPath());
+            pstmt.setTimestamp(10, new java.sql.Timestamp(asset.getCreatedAt().getTime()));
+            pstmt.setInt(11, asset.getId());
+
+            int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0; // Trả về true nếu có ít nhất một hàng được cập nhật
         } catch (SQLException e) {
             e.printStackTrace();
             return false; // Trả về false nếu có lỗi xảy ra
         }
     }
-       public Asset getAssetById(int assetId) {
+
+    public Asset getAssetById(int assetId) {
 
         String sql = "SELECT * FROM Asset WHERE AssetId = ?";
 
@@ -79,8 +87,11 @@ public class AssetDAO extends DBContext{
                 asset.setImage(resultSet.getString("Image"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
-                asset.setVerification(resultSet.getBoolean("Verification"));
-                asset.setStatus(resultSet.getBoolean("Status"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 return asset;
             }
@@ -90,23 +101,27 @@ public class AssetDAO extends DBContext{
 
         return null;
     }
-        public List<Asset> getAssetsSortedByValue(String ascending) throws SQLException {
+
+    public List<Asset> getAssetsSortedByValue(String ascending) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset ORDER BY Value " + ascending;
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
                 Asset asset = new Asset();
-                asset.setId(rs.getInt("AssetId"));
-                asset.setCustomerId(rs.getInt("CustomerId"));
-                asset.setImage(rs.getString("Image"));
-                asset.setDescription(rs.getString("Description"));
-                asset.setValue(rs.getBigDecimal("Value"));
-                asset.setVerification(rs.getBoolean("Verification"));
-                asset.setStatus(rs.getBoolean("Status"));
-                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
             return assets;
@@ -124,17 +139,20 @@ public class AssetDAO extends DBContext{
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
                 Asset asset = new Asset();
-                asset.setId(rs.getInt("AssetId"));
-                asset.setCustomerId(rs.getInt("CustomerId"));
-                asset.setImage(rs.getString("Image"));
-                asset.setDescription(rs.getString("Description"));
-                asset.setValue(rs.getBigDecimal("Value"));
-                asset.setVerification(rs.getBoolean("Verification"));
-                asset.setStatus(rs.getBoolean("Status"));
-                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
             return assets;
@@ -145,24 +163,27 @@ public class AssetDAO extends DBContext{
         return null;
 
     }
-public List<Asset> getAssetsByStatus(boolean status) throws SQLException {
+    public List<Asset> getAssetsByStatus(String status) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset WHERE Status = ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setBoolean(1, status);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
+            pstmt.setString(1, status);
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
                 Asset asset = new Asset();
-                asset.setId(rs.getInt("AssetId"));
-                asset.setCustomerId(rs.getInt("CustomerId"));
-                asset.setImage(rs.getString("Image"));
-                asset.setDescription(rs.getString("Description"));
-                asset.setValue(rs.getBigDecimal("Value"));
-                asset.setVerification(rs.getBoolean("Verification"));
-                asset.setStatus(rs.getBoolean("Status"));
-                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
             return assets;
@@ -173,24 +194,27 @@ public List<Asset> getAssetsByStatus(boolean status) throws SQLException {
         return null;
 
     }
- public List<Asset> getAssetsByVerify(boolean status) throws SQLException {
+    public List<Asset> getAssetsByUsed(boolean status) throws SQLException {
         List<Asset> assets = new ArrayList<>();
-        String query = "SELECT * FROM Asset WHERE Verification = ?";
+        String query = "SELECT * FROM Asset WHERE Used = ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setBoolean(1, status);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
                 Asset asset = new Asset();
-                asset.setId(rs.getInt("AssetId"));
-                asset.setCustomerId(rs.getInt("CustomerId"));
-                asset.setImage(rs.getString("Image"));
-                asset.setDescription(rs.getString("Description"));
-                asset.setValue(rs.getBigDecimal("Value"));
-                asset.setVerification(rs.getBoolean("Verification"));
-                asset.setStatus(rs.getBoolean("Status"));
-                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
             return assets;
@@ -201,24 +225,30 @@ public List<Asset> getAssetsByStatus(boolean status) throws SQLException {
         return null;
 
     }
-  public List<Asset> searchAssetsByDescription(String description) throws SQLException {
-        List<Asset> assets = new ArrayList<>();
-        String query = "SELECT * FROM Asset WHERE Description LIKE ?";
 
+    public List<Asset> searchAssetsByDescription(String description) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT a.* FROM Asset a "
+                + " join Customer c on a.CustomerId = c.CustomerId"
+                + " WHERE a.Description LIKE ? or c.FullName LIKE ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, "%" + description + "%");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
+            pstmt.setString(2, "%" + description + "%");
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
                 Asset asset = new Asset();
-                asset.setId(rs.getInt("AssetId"));
-                asset.setCustomerId(rs.getInt("CustomerId"));
-                asset.setImage(rs.getString("Image"));
-                asset.setDescription(rs.getString("Description"));
-                asset.setValue(rs.getBigDecimal("Value"));
-                asset.setVerification(rs.getBoolean("Verification"));
-                asset.setStatus(rs.getBoolean("Status"));
-                asset.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setPdfPath(resultSet.getString("PdfPath"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
             return assets;

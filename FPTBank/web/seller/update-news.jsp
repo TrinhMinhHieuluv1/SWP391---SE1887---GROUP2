@@ -178,7 +178,7 @@
                     <label for="url-image">Image URL</label>
                     <input type="text" id="url-image" name="url-image" 
                            class="form-control" value="${requestScope.newsToUpdate.getImage()}" required onchange="updateImagePreviewByUrl(this.value)"><br><br>
-                    <input id="file-image" type="file" name="file-image" accept="image/jpeg, image/png" required onchange="updateImagePreviewByFile()"><br>
+                    <input id="file-image" type="file" name="file-image" accept="image/jpeg, image/png" onchange="updateImagePreviewByFile()"><br>
                     <img id="imagePreview" src="" class="image-preview">
                 </div>
 

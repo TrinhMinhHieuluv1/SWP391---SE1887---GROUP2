@@ -5,6 +5,7 @@
 package controller;
 
 import Tools.SaveImage;
+import dal.NewsCategoryDAO;
 import dal.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,6 +68,8 @@ public class AddNews extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        NewsCategoryDAO ncDAO = new NewsCategoryDAO();
+        request.setAttribute("ncList", ncDAO.categoryList);
         request.getRequestDispatcher("add-news.jsp").forward(request, response);
     }
 
@@ -83,12 +86,14 @@ public class AddNews extends HttpServlet {
             throws ServletException, IOException {
         NewsDAO ndao = new NewsDAO();
         SaveImage si = new SaveImage();
+        NewsCategoryDAO ncDAO = new NewsCategoryDAO();
 
         String Title = request.getParameter("Title");
         String Description = request.getParameter("Description");
         String urlImage = request.getParameter("url-image");
+        String NewsCategoryID_raw = request.getParameter("NewsCategoryID");
         Part filePart = request.getPart("file-image");
-        News newsToAdd = new News(0, (User) request.getSession().getAttribute("account"), Title, Description, "", true, null, 0);
+        News newsToAdd = new News(0, (User) request.getSession().getAttribute("account"), Title, Description, "", true, null, 0, ncDAO.selectANewsCategoryByID(Integer.parseInt(NewsCategoryID_raw)));
         ndao.addANews(newsToAdd);
         List<News> newsList = ndao.selectAllNews();
         News newsToUpdate = newsList.get(newsList.size() - 1);
