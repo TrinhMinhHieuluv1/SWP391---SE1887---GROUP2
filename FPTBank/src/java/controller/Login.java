@@ -158,46 +158,23 @@ public class Login extends HttpServlet {
                         cusername.setMaxAge(60 * 60 * 24 * 7);
                         cpassword.setMaxAge(60 * 60 * 24 * 7);
                         crem.setMaxAge(60 * 60 * 24 * 7);
+                        crole.setMaxAge(60 * 60 * 24 * 7);
                     } else {
                         cusername.setMaxAge(0);
                         cpassword.setMaxAge(0);
                         crem.setMaxAge(0);
+                        crole.setMaxAge(0);
                     }
                     response.addCookie(cusername);
                     response.addCookie(cpassword);
                     response.addCookie(crem);
+                    response.addCookie(crole);
                     response.sendRedirect("/timibank/home");
                 } else {
                     String err = "Your account is inactivated. Please contact admin to activate your account!";
                     request.setAttribute("err", err);
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
-            }
-        } else if (account2 != null) {
-            HttpSession session = request.getSession();
-            if (account2.isStatus()) {
-                session.setAttribute("account", account2);
-                session.setAttribute("uid", account2.getCustomerId());
-
-                if ("ON".equals(rem)) {
-                    cusername.setMaxAge(60 * 60 * 24 * 7);
-                    cpassword.setMaxAge(60 * 60 * 24 * 7);
-                    crem.setMaxAge(60 * 60 * 24 * 7);
-                } else {
-                    cusername.setMaxAge(0);
-                    cpassword.setMaxAge(0);
-                    crem.setMaxAge(0);
-                }
-
-                response.addCookie(cusername);
-                response.addCookie(cpassword);
-                response.addCookie(crem);
-
-                response.sendRedirect("/timibank/home");
-            } else {
-                String err = "Your account is inactivated. Please contact admin to activate your account!";
-                request.setAttribute("err", err);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }
     }

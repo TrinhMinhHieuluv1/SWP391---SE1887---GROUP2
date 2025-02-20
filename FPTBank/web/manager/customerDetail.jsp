@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -604,6 +604,7 @@
                                             <th>email</th>
                                             <th>CCCD</th>
                                             <th>Address</th>
+                                             <th>Date Of Birth</th>
                                             <th>Credit Score</th>
                                             <th>Balance</th>
                                             <th>Status</th>
@@ -616,14 +617,14 @@
                                             <tr>
                                                 <td>
 
-                                                    <a>${customer.getCustomerid()}</a>
+                                                    <a>${customer.getCustomerId()}</a>
 
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center gap-3">
                                                         <div class="product-box" style="position: relative;">
 
-                                                            <img class="clickable-image" style="height: 100px; width: 150px;" src="${customer.getUser().getImage()}" alt="" id="myImage">
+                                                            <img class="clickable-image" style="height: 150px; width: 130px;" src="${customer.getImage()}" alt="" id="myImage">
 
                                                             <button class="zoom-icon" onclick="openModal(this)">
                                                                 <i class="fa fa-expand"></i>
@@ -631,18 +632,18 @@
                                                         </div>
                                                     </div>
                                                 </td>
-
-                                                <td>${customer.getUser().getFullName()}</td>
-                                                <td>${customer.getUser().getPhone()}</td>
-                                                <td>${customer.getUser().getEmail()}</td>
-                                                <td>${customer.getUser().getCCCD()}</td>
-                                                <td>${customer.getUser().getAddress()}</td>
-                                                <td>${customer.getCreditscore()}</td>
+                                                <td>${customer.getFullName()}</td>
+                                                <td>${customer.getPhone()}</td>
+                                                <td>${customer.getEmail()}</td>
+                                                <td>${customer.getCCCD()}</td>
+                                                <td>${customer.getAddress()}</td>
+                                                <td>${customer.getDateOfBirth()}</td>
+                                                <td>${customer.getCreditScore()}</td>
                                                 <td>${customer.getBalance()}</td>
-                                                <c:if test="${customer.getUser().isStatus() == false}">
+                                                <c:if test="${customer.isStatus() == false}">
                                                     <td>Not Active</td>
                                                 </c:if>
-                                                <c:if test="${customer.getUser().isStatus() != false}">
+                                                <c:if test="${customer.isStatus() != false}">
 
                                                     <td>Active</td>
                                                 </c:if>   

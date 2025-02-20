@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import model.Customer;
 import model.Emails;
+import model.User;
+
+import model.Emails;
+
 import model.User;
 
 /**
@@ -22,7 +30,7 @@ import model.User;
  */
 @WebServlet(name = "ForgotPass", urlPatterns = {"/forgotPass"})
 public class ForgotPass extends HttpServlet {
-
+   Random random = new Random();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,7 +44,6 @@ public class ForgotPass extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -79,10 +86,17 @@ public class ForgotPass extends HttpServlet {
         String code = getRandom();
         Emails email = new Emails();
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.selectAnUserByConditions(0, "", "", emailr);
-        if (user != null) {
-            email.sendMess(emailr, "Recovery Password", code);
-            request.setAttribute("emailr", emailr);
+        CustomerDAO cusDAO = new CustomerDAO();
+        
+        Customer customer = cusDAO.selectCustomerByConditions(0,"","",emailr.trim());
+        User user = userDAO.selectAnUserByConditions(0,"","",emailr.trim());
+        if(!isValidEmail(emailr)){
+            String err= "Invalid format!";
+            request.setAttribute("err", err);
+            request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
+        }else if (user != null||customer!=null) {
+            email.sendMess(emailr.trim(), "Recovery Password", code);
+            request.setAttribute("emailr", emailr.trim());
             request.setAttribute("code", code);
             request.getRequestDispatcher("pincode.jsp").forward(request, response);
         }else{
@@ -92,11 +106,14 @@ public class ForgotPass extends HttpServlet {
         }
 
     }
+        public static boolean isValidEmail(String email) {
+        String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"; 
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     public String getRandom() {
-        Random random = new Random();
-
-        // Tạo chuỗi số ngẫu nhiên
         StringBuilder randomNumbers = new StringBuilder();
         for (int i = 0; i < 6; i++) {
             randomNumbers.append(random.nextInt(10));

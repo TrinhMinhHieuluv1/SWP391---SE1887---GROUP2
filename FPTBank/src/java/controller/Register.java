@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
+import model.Customer;
 import model.User;
 import org.json.simple.JSONArray;
 
@@ -60,14 +62,14 @@ public class Register extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        UserDAO udao = new UserDAO();
+        CustomerDAO cDAO = new CustomerDAO();
         JSONArray usernameArray = new JSONArray();
         JSONArray phoneArray = new JSONArray();
         JSONArray cccdArray = new JSONArray();
-        for (User user : udao.selectAllUser()) {
-            usernameArray.add(user.getUsername());
-            phoneArray.add(user.getPhone());
-            cccdArray.add(user.getCCCD());
+        for (Customer customer : cDAO.selectAllCustomer()) {
+            usernameArray.add(customer.getUsername());
+            phoneArray.add(customer.getPhone());
+            cccdArray.add(customer.getCCCD());
         }
         request.setAttribute("usernameArray", usernameArray);
         request.setAttribute("phoneArray", phoneArray);

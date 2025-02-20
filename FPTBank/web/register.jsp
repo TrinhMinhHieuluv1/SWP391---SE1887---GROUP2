@@ -40,6 +40,14 @@
                     alert("Confirm password doesn't match password. Try again!");
                     event.preventDefault();
                 }
+                if (validateUsername() === false) {
+                    alert("Invalid username. Try again!");
+                    event.preventDefault();
+                }
+                if (validatePassword() === false) {
+                    alert("Invalid password. Try again!");
+                    event.preventDefault();
+                }
                 if (validatePhone() === false) {
                     alert("Invalid phone number. Try again!");
                     event.preventDefault();
@@ -83,7 +91,7 @@
                     return true;
                 }
             }
-            
+
             function checkPhone() {
                 const phoneToCheck = document.getElementById('phone').value;
                 const err = document.getElementById('duplicated-phone');
@@ -96,7 +104,7 @@
                     return true;
                 }
             }
-            
+
             function checkCCCD() {
                 const cccdToCheck = document.getElementById('CCCD').value;
                 const err = document.getElementById('duplicated-cccd');
@@ -108,6 +116,36 @@
                     err.style.display = 'none';
                     return true;
                 }
+            }
+
+            // Function to validate Username
+            function validateUsername() {
+                const username = document.getElementById('username').value;
+                const err = document.getElementById('err-username');
+                const usernameRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':",.<>?/]{6,20}$/;
+                if (usernameRegex.test(username)) {
+                    err.style.display = 'none';
+                    return true;
+                } else {
+                    err.style.display = 'block';
+                    return false;
+                }
+                ;
+            }
+
+            // Function to validate Password
+            function validatePassword() {
+                const password = document.getElementById('password').value;
+                const err = document.getElementById('err-password');
+                const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&*!])[a-zA-Z\d@#$%^&*!]{8,16}$/;
+                if (passwordRegex.test(password)) {
+                    err.style.display = 'none';
+                    return true;
+                } else {
+                    err.style.display = 'block';
+                    return false;
+                }
+                ;
             }
 
             // Function to validate phone number
@@ -248,12 +286,14 @@
                         <div class="row justify-content-center">
                             <div class="col-xl-5">
                                 <form action="register" method="post" onsubmit="validateForm(event)">
-                                    <input id="username" class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" required oninput="checkUsername()">
+                                    <input id="username" class="mil-input mil-up mil-mb-15" type="text" placeholder="Username" name="username" required oninput="checkUsername(); validateUsername()">
+                                    <div id="err-username" style="color: red; display: none">Username phải từ 6-20 ký tự, chỉ chứa chữ cái, số và các ký tự, không được có dấu cách!</div>
                                     <div id="duplicated-username" style="color: red; display: none">Username already exists. Please choose another!</div>
                                     <div style="position: relative; display: inline-block; width: 100%;">
-                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Password" name="password" required>
+                                        <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" class="mil-input mil-up mil-mb-15" id="password" type="password" placeholder="Password" name="password" required oninput="validatePassword()">
                                         <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('password')"></span>
                                     </div>
+                                    <div id="err-password" style="color: red; display: none">Mật khẩu phải có 8-16 ký tự, chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt!</div>
                                     <div style="position: relative; display: inline-block; width: 100%;">
                                         <input style="width: 100%; padding-right: 40px; box-sizing: border-box;" type="password" id="confirm-password" class="mil-input mil-up mil-mb-15" placeholder="Confirm Password" name="confirm-password" oninput="checkConfirmPassword()" required>
                                         <span style="position: absolute; top: 40%; right: 10px;transform: translateY(-50%);cursor: pointer;color: #666;" toggle="#confirm-password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword('confirm-password')" style=""></span>

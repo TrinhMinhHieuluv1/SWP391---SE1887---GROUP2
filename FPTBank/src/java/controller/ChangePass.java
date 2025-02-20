@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Customer;
 import model.User;
 
 /**
@@ -75,11 +77,17 @@ public class ChangePass extends HttpServlet {
         String emailr = request.getParameter("emailr");
         String new_password = request.getParameter("new-password");
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.selectAnUserByConditions(0, "", "", emailr);
+        CustomerDAO cusDAO = new CustomerDAO();
+        User user = userDAO.selectAnUserByConditions(0,"","",emailr.trim());
+        Customer customer = cusDAO.selectCustomerByConditions(0,"","",emailr.trim());
         if (user != null) {
             user.setPassword(new_password);
             userDAO.updateAUser(user);
             response.sendRedirect("/timibank/login");
+        }else if( customer!=null){
+            customer.setPassword(new_password);
+            cusDAO.updateACustomer(customer);
+              response.sendRedirect("/timibank/login");
         }
 
     }

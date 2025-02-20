@@ -161,6 +161,13 @@
                     <h1 class="form-title">Add News</h1>
                 </div>
 
+                <label for="NewsCategory" style="margin-left: 20px">News Category: </label>
+                <select name="NewsCategoryID" id="NewsCategory" required >
+                    <c:forEach items="${requestScope.ncList}" var="nc">
+                        <option value="${nc.getNewsCategoryID()}">${nc.getNewsCategoryName()}</option>
+                    </c:forEach>
+                </select>
+
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" name="Title" 
@@ -213,7 +220,7 @@
                 document.getElementById('file-image').value = '';
                 document.getElementById('file-image').removeAttribute('required');
             }
-            
+
             function updateImagePreviewByFile() {
                 let formData = new FormData();
                 let file_image = document.getElementById('file-image');

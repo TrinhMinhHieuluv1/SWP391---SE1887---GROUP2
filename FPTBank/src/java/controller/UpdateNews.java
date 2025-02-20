@@ -104,8 +104,6 @@ public class UpdateNews extends HttpServlet {
         try {
             NewsID = Integer.parseInt(NewsID_raw);
         } catch (NumberFormatException e) {
-                        response.getWriter().print(NewsID_raw);
-
             response.getWriter().print(e);
             return;
         }

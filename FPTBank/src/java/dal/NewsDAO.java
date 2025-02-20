@@ -152,14 +152,15 @@ public class NewsDAO extends DBContext {
 
     //Update a news
     public void updateANews(News newsToUpdate) {
-        String sql = "UPDATE [News] SET Description=?, Image=?, Status=?, NumberOfAccess=? WHERE NewsID=?";
+        String sql = "UPDATE [News] SET Title=?, Description=?, Image=?, Status=?, NumberOfAccess=? WHERE NewsID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, newsToUpdate.getDescription());
-            st.setString(2, newsToUpdate.getImage());
-            st.setBoolean(3, newsToUpdate.isStatus());
-            st.setInt(4, newsToUpdate.getNumberOfAccess());
-            st.setInt(5, newsToUpdate.getNewsID());
+            st.setString(1, newsToUpdate.getTitle());
+            st.setString(2, newsToUpdate.getDescription());
+            st.setString(3, newsToUpdate.getImage());
+            st.setBoolean(4, newsToUpdate.isStatus());
+            st.setInt(5, newsToUpdate.getNumberOfAccess());
+            st.setInt(6, newsToUpdate.getNewsID());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
