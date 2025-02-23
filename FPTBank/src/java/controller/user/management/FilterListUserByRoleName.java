@@ -1,5 +1,6 @@
-package controller;
+package controller.user.management;
 
+import controller.*;
 import dal.UserDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -7,7 +8,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import model.User;
 import utils.UserRoleUtils;
@@ -16,8 +16,8 @@ import utils.UserRoleUtils;
  *
  * @author SCN
  */
-@WebServlet(name = "SortListUserByFullName", urlPatterns = {"/admin/sort_fullname"})
-public class SortListUserByFullName extends HttpServlet {
+@WebServlet(name = "FilterListUserByRoleName", urlPatterns = {"/admin/filter_roleName"})
+public class FilterListUserByRoleName extends HttpServlet {
 
     private UserDAO uDao;
 
@@ -29,33 +29,35 @@ public class SortListUserByFullName extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String typeOfSort = request.getParameter("type1");
+        int idOfRole = -1;
+        if (request.getParameter("id") != null && !request.getParameter("id").isEmpty()) {
+            idOfRole = Integer.parseInt(request.getParameter("id"));
+        }
 
-        // get value typeOfSort được gửi từ svlet manage_users
-        String typeOfSortFromManageUser = request.getParameter("typeOfSort");
-        if (typeOfSortFromManageUser != null && !typeOfSortFromManageUser.isEmpty()) {
-            typeOfSort = typeOfSortFromManageUser;
+        String idOfRoleAfterShowEntries_raw = request.getParameter("idOfRole");
+        if (idOfRoleAfterShowEntries_raw != null && !idOfRoleAfterShowEntries_raw.isEmpty()) {
+            int idOfRoleAfterShowEntries = Integer.parseInt(idOfRoleAfterShowEntries_raw);
+            idOfRole = idOfRoleAfterShowEntries;
         }
 
         int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int pageSize;
 
         int entries = (int) request.getSession().getAttribute("entries");
-        if (entries != 10) {
-            pageSize = entries;
-        }
+        pageSize = entries;
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
         List<User> listUser;
-        listUser = uDao.sortListUser("FullName", typeOfSort, page, pageSize);
+        listUser = uDao.filterListUser("RoleID", idOfRole, page, pageSize);
 
-        int totalUsers = uDao.getTotalUsers(null, null);
-        int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
+        int totalUsersAfterFilter = uDao.getTotalUsers("RoleID", idOfRole);
+        int totalPages = (int) Math.ceil((double) totalUsersAfterFilter / pageSize);
 
         // số lượng của user theo từng role
+        int totalUsers = uDao.getTotalUsers(null, null);
         UserRoleUtils.setUserCountsForEachRole(request, uDao);
         request.setAttribute("totalUsers", totalUsers);
 
@@ -63,10 +65,9 @@ public class SortListUserByFullName extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
 
+        request.setAttribute("idOfRole", idOfRole);
         request.setAttribute("listUsers", listUser);
-        request.setAttribute("typeOfSortByName", typeOfSort);
         request.getRequestDispatcher("ManagementUsers.jsp").forward(request, response);
-
     }
 
     @Override
