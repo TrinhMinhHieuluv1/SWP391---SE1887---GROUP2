@@ -34,8 +34,6 @@
         <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
         <link rel="icon" href="img/favicon.png" type="image/x-icon">
 
-
-
         <!-- Toarst -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -43,6 +41,11 @@
 
 
         <style>
+            /* Chặn thanh kéo ngang */
+            body {
+                overflow-x: hidden;
+            }
+
             /* Notification styles */
             .notification {
                 position: fixed;
@@ -59,14 +62,20 @@
                 gap: 15px;
                 z-index: 10000;
                 transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-                min-width: 400px;
+                width: auto;
+                max-width: 90vw; /* Giới hạn để không vượt quá màn hình */
                 border: 1px solid rgba(255, 255, 255, 0.2);
                 backdrop-filter: blur(10px);
+                box-sizing: border-box;
             }
+
+            /* Khi hiển thị */
             .notification.show {
                 top: 30px;
                 animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
             }
+
+            /* Keyframes cho shake */
             @keyframes shake {
                 10%, 90% {
                     transform: translateX(calc(-50% + 1px));
@@ -81,6 +90,8 @@
                     transform: translateX(calc(-50% - 4px));
                 }
             }
+
+            /* Icon */
             .notification-icon {
                 width: 45px;
                 height: 45px;
@@ -92,6 +103,7 @@
                 flex-shrink: 0;
                 animation: pulse 2s infinite;
             }
+
             @keyframes pulse {
                 0% {
                     transform: scale(1);
@@ -103,27 +115,41 @@
                     transform: scale(1);
                 }
             }
+
             .notification-icon i {
                 color: #dc3545;
                 font-size: 1.4em;
             }
+
             .notification-content {
                 flex-grow: 1;
+                max-width: calc(100% - 80px); /* Giới hạn để tránh tràn */
+                overflow: hidden;
             }
+
             .notification-title {
                 color: white;
                 font-weight: 600;
                 margin: 0 0 5px 0;
                 font-size: 1.1em;
                 text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                white-space: nowrap; /* Ngăn xuống dòng */
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
+
             .notification-message {
                 color: rgba(255, 255, 255, 0.95);
                 margin: 0;
                 font-size: 0.95em;
                 line-height: 1.4;
                 text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                white-space: nowrap; /* Ngăn xuống dòng */
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
+
+            /* Nút đóng */
             .notification-close {
                 color: rgba(255, 255, 255, 0.8);
                 background: rgba(255, 255, 255, 0.1);
@@ -140,17 +166,23 @@
                 transition: all 0.3s ease;
                 margin-left: 5px;
             }
+
             .notification-close:hover {
                 color: white;
                 background: rgba(255, 255, 255, 0.2);
                 transform: rotate(90deg);
             }
+
+            /* Responsive */
             @media (max-width: 480px) {
                 .notification {
-                    min-width: 90%;
-                    margin: 0 20px;
+                    width: 90%;
+                    min-width: auto;
+                    max-width: 90vw;
+                    padding: 15px;
                 }
             }
+
         </style>
 
     </head>
@@ -298,7 +330,7 @@
                     <div class="col-xl-6">
                         <div class="mil-banner-text">
                             <h6 class="mil-text-gradient-2 mil-mb-20">You want to borrow money, want to invest</h6>
-                            <h1 class="mil-display mil-text-gradient-3 mil-mb-60">WELCOME TO FPT BANK</h1>
+                            <h1 class="mil-display mil-text-gradient-3 mil-mb-60">WELCOME TO TIMI BANK</h1>
                             <div class="mil-buttons-frame">
                                 <a href="register.jsp" class="mil-btn mil-md mil-add-arrow">Try</a>
                                 <a href="https://www.youtube.com/watch?v=jnUDgs3wwFA" class="mil-btn mil-md mil-light mil-add-play has-popup-video">Guide</a>

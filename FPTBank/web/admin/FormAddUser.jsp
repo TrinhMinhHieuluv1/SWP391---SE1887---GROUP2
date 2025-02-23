@@ -185,14 +185,22 @@
                 <span id="phoneError" class="error"></span>
             </div>
 
-
             <!-- Image -->
             <div>
                 <label for="img">Upload Image</label>
-                <input type="file" id="img" name="img" accept=".jpg,.jpeg,.png" required title="Vui lòng upload ảnh !!">
+                <input 
+                    type="file" 
+                    id="img" 
+                    name="img" 
+                    accept=".jpg,.jpeg,.png" 
+                    required 
+                    title="Vui lòng upload ảnh !!"
+                    onchange="validateFile()"
+                    >
+                <span id="imgError" class="error"></span>
             </div>
 
-
+            
             <!-- Email -->
             <div>
                 <label for="mail">Email</label>
@@ -509,6 +517,42 @@
             });
         }
 
+        function validateFile() {
+            const fileInput = document.getElementById("img");
+            const errorSpan = document.getElementById("imgError");
+
+            // Lấy file đầu tiên được chọn
+            const file = fileInput.files[0];
+
+            if (file) {
+                const minSize = 50 * 1024;        // 50KB
+                const maxSize = 10 * 1024 * 1024; // 10MB
+
+                // Lấy phần mở rộng của file
+                const validExtensions = ['jpg', 'jpeg', 'png'];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                if (!validExtensions.includes(fileExtension)) {
+                    errorSpan.innerText = "Only (.jpg, .jpeg, .png) are allowed !!";
+                    errorSpan.style.color = "red";
+                    errorSpan.style.fontSize = "13px";
+                } else if (file.size > maxSize) {
+                    errorSpan.innerText = "The max size of image is 10MB !!";
+                    errorSpan.style.color = "red";
+                    errorSpan.style.fontSize = "13px";
+                } else if (file.size < minSize) {
+                    errorSpan.innerText = "The min size of image is 50KB !!";
+                    errorSpan.style.color = "red";
+                    errorSpan.style.fontSize = "13px";
+                } else {
+                    errorSpan.innerText = "Valid image !!";
+                    errorSpan.style.color = "green";
+                    errorSpan.style.fontSize = "13px";
+                }
+            }
+        }
+
+
 
         // Hàm kiểm tra xem tất cả các ô có lỗi hay không
         function validateForm(event) {
@@ -518,7 +562,7 @@
             const errorElements = document.querySelectorAll('.error');
             errorElements.forEach(function (errorElement) {
                 if (errorElement.style.color === 'red') {
-                    isValid = false; 
+                    isValid = false;
                 }
             });
 

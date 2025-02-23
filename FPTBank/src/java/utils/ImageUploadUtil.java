@@ -20,12 +20,15 @@ public class ImageUploadUtil {
      * @throws ServletException Nếu xảy ra lỗi khi xử lý file
      * @throws IOException Nếu xảy ra lỗi khi ghi file
      *
-     * String pathHost = getServletContext().getRealPath(""); String finalPath =
-     * pathHost.replace("build\\", "") String uploadPath = finalPath +
-     * "uploads";
      */
+//     String pathHost = getServletContext().getRealPath(""); 
+//     String finalPath = pathHost.replace("build\\", "");
+//     String uploadPath = finalPath + "uploads";
+    
     public static String uploadImage(HttpServletRequest request, String inputName, String uploadFolderPath)
             throws ServletException, IOException {
+
+        String filePartError;
 
         // Tạo thư mục upload nếu chưa tồn tại
         File uploadDir = new File(uploadFolderPath);
@@ -34,18 +37,20 @@ public class ImageUploadUtil {
         }
 
         // Lấy thông tin file từ form
-        Part filePart = request.getPart(inputName); //Tên input trong form
+        Part filePart = request.getPart(inputName);
         if (filePart == null) {
-            throw new ServletException("No file found with input name: " + inputName);
+            filePartError = "No file found !!";
+            return filePartError;
         }
-        // lấy ra tên ảnh đc upload lên
+
+        // Lấy ra tên ảnh được upload lên
         String fileName = filePart.getSubmittedFileName();
         if (fileName != null && !fileName.isEmpty()) {
 
             // Đường dẫn lưu file
             File filePath = new File(uploadFolderPath + File.separator + fileName);
 
-            // file ảnh đã tồn tại trc đó
+            // File ảnh đã tồn tại trước đó
             if (filePath.exists()) {
                 String newFileName = System.currentTimeMillis() + "_" + fileName; // Thêm thời gian vào tên file ảnh
                 filePath = new File(uploadFolderPath + File.separator + newFileName);
@@ -57,5 +62,6 @@ public class ImageUploadUtil {
             return fileName; // Trả về tên file sau khi upload thành công
         }
         return null; // Không có file nào được upload
+
     }
 }
