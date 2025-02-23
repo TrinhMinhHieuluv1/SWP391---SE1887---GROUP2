@@ -1,5 +1,6 @@
-package controller;
+package controller.user.management;
 
+import controller.*;
 import dal.UserDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;

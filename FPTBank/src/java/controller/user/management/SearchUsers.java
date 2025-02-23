@@ -1,5 +1,6 @@
-package controller;
+package controller.user.management;
 
+import controller.*;
 import dal.UserDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -38,16 +39,14 @@ public class SearchUsers extends HttpServlet {
         String keyword_raw = request.getParameter("keyword");
 
         int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int pageSize;
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
         int entries = (int) request.getSession().getAttribute("entries");
-        if (entries != 10) {
-            pageSize = entries;
-        }
+        pageSize = entries;
 
         // get value keyword được gửi từ svlet manage_users
         String keywordFromManageUser = request.getParameter("key");

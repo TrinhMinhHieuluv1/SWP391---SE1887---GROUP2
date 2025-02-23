@@ -44,33 +44,57 @@ public class authentication implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        // Láº¥y Ä‘Æ°á»�ng dáº«n yÃªu cáº§u
+        // Lấy đường dẫn yêu cầu
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
+        // Log đường dẫn để kiểm tra
+        System.out.println("Path: " + path);
 
         // Kiểm tra quyền truy cập nếu đường dẫn thuộc /admin/*
         if (path.startsWith("/admin")) {
-            HttpSession session = httpRequest.getSession(false); // lấy ra session hiện tại mà k tạo mới ( trả về null nếu k có session )
-            // Kiểm tra nếu session tồn tại và có thông tin admin
+            HttpSession session = httpRequest.getSession(false);
+
+            // Log session để kiểm tra
+            System.out.println("Session: " + session);
+
+            // Kiểm tra nếu session tồn tại và có thông tin account
             if (session != null && session.getAttribute("account") != null) {
-                User user = (User) session.getAttribute("account");
-                // Nếu là admin, tiếp tục xử lý
-                if (user.getRoleID() == 1) {
-                    chain.doFilter(request, response);
+                Object account = session.getAttribute("account");
+
+                // Log account để kiểm tra
+                System.out.println("Account: " + account);
+
+                // Kiểm tra account có thuộc kiểu User không
+                if (account instanceof User) {
+                    User user = (User) account;
+
+                    // Log roleID để kiểm tra
+                    System.out.println("RoleID: " + user.getRoleID());
+
+                    // Nếu là admin, tiếp tục xử lý
+                    if (user.getRoleID() == 1) {
+                        chain.doFilter(request, response);
+                        return;
+                    }
+                } else {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/home?RoleErr=true");
                     return;
                 }
             }
 
-            // Nếu không phải admin, chuyển hướng đến trang đăng nhập
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
+            // Nếu không có session và ko phải admin logout ra thì -> roleErr
+            if (!path.equals("/admin/logout")) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/home?RoleErr=true");
+            } else { // khi admin logout ra thì về home
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
+            }
             return;
         }
 
-        // Náº¿u khÃ´ng pháº£i Ä‘Æ°á»�ng dáº«n /admin/*, tiáº¿p tá»¥c xá»­ lÃ½ bÃ¬nh thÆ°á»�ng
+        // Nếu không phải đường dẫn /admin/*, tiếp tục xử lý bình thường
         chain.doFilter(request, response);
     }
 

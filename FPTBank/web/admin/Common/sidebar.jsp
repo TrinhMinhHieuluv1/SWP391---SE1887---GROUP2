@@ -352,7 +352,7 @@
     <div class="sidebar-bottom dropdown dropup-center dropup">
         <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
             <div class="user-img">
-                <img src="assets/images/avatars/01.png" alt="">
+                <img src="${account.getImage()}" alt="Avatar admin"">
             </div>
             <div class="user-info">
                 <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>
