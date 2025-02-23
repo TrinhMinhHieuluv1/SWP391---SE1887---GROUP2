@@ -68,7 +68,7 @@ public class authenticationManager implements Filter {
                 }
             }else{
                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/home?RoleErr=true");
-            return;
+                    return;
             }
 
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/login?RoleErr=true");

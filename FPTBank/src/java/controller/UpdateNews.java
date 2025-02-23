@@ -112,11 +112,11 @@ public class UpdateNews extends HttpServlet {
         Part filePart = request.getPart("file-image");
         String imagePath;
         if (urlImage != null && !urlImage.isEmpty()) {
-            imagePath = si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
-            si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+            imagePath = si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+            si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
         } else {
-            imagePath = si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
-            si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\image\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+            imagePath = si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
+            si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
         }
         newsToUpdate.setTitle(request.getParameter("Title"));
         newsToUpdate.setDescription(request.getParameter("Description"));
