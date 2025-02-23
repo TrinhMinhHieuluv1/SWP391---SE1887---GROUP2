@@ -1,5 +1,6 @@
-package controller;
+package controller.user.management;
 
+import controller.*;
 import dal.UserDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -35,12 +36,28 @@ public class ManagementUsers extends HttpServlet {
         return false; // Nếu không xử lý, trả về false
     }
 
+    private List<Integer> calculatePageSize() {
+        List<Integer> listOfPageSize = new ArrayList<>();
+        int totalUsers = uDao.getTotalUsers(null, null);
+
+        double[] percentages = {0.1, 0.3, 0.5, 0.7, 1.0}; // 10%,30%,50%,70%,100% of total users
+        for (double percentage : percentages) {
+            listOfPageSize.add((int) Math.ceil(totalUsers * percentage));
+        }
+
+        return listOfPageSize;
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // get page size for each percent (10%,30%,50%,70%)
+        List<Integer> listOfPageSize = calculatePageSize();
+
         int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int pageSize = listOfPageSize.get(0); // gán page size mặc định lúc đầu = 10% of total user
+        
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
@@ -81,6 +98,9 @@ public class ManagementUsers extends HttpServlet {
 
         // lưu entries vào trong session
         request.getSession().setAttribute("entries", pageSize);
+
+        // lưu pagesize for each percent
+        request.getSession().setAttribute("listOfPageSize", listOfPageSize);
         request.setAttribute("listUsers", listUsers);
         request.getRequestDispatcher("ManagementUsers.jsp").forward(request, response);
     }
