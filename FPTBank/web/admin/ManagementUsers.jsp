@@ -854,7 +854,7 @@
             <div class="sidebar-bottom dropdown dropup-center dropup">
                 <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
                     <div class="user-img">
-                        <img src="assets/images/avatars/01.png" alt="">
+                        <img src="${account.getImage()}" alt="Avatar admin"">
                     </div>
 
 
@@ -1045,11 +1045,9 @@
             <form id="entriesForm" action="manage_users" method="GET">
                 <label for="entries">Show Entries</label>
                 <select id="entries" name="entries" onchange="this.form.submit()">
-                    <option value="" >10</option>
-                    <option value="15" ${(entries == 15)?'selected':''}>15</option>
-                    <option value="25" ${(entries == 25)?'selected':''}>25</option>
-                    <option value="50" ${(entries == 50)?'selected':''}>50</option>
-                    <option value="100" ${(entries == 100)?'selected':''}>100</option>
+                    <c:forEach items="${listOfPageSize}" var="ps">
+                        <option value="${ps}" ${(ps == entries)?'selected':''}>${ps}</option>
+                    </c:forEach>                   
                 </select>
 
                 <input type="hidden" name="typeOfSortByName" value="${typeOfSortByName}">
@@ -1076,7 +1074,6 @@
                                         <th class="text-center" >FULL NAME</th>
                                         <th class="text-center" >PHONE</th>
                                         <th class="text-center" >EMAIL</th>
-                                        <th class="text-center" >ADDRESS</th>
                                         <th class="text-center" >Gender</th>
                                         <th class="text-center" >ROLE</th>          
                                         <th class="text-center" >STATUS</th>
@@ -1095,7 +1092,6 @@
                                             <td class="text-center">${u.getFullName()}</td>
                                             <td class="text-center">${u.getPhone()}</td>
                                             <td class="text-center">${u.getEmail()}</td>
-                                            <td class="text-center">${u.getAddress()}</td>
 
                                             <td class="text-center">
                                                 <c:if test="${u.isGender() == true}">

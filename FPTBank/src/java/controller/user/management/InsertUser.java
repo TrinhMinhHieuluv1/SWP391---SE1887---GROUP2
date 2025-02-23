@@ -1,5 +1,6 @@
-package controller;
+package controller.user.management;
 
+import controller.*;
 import dal.UserDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -27,6 +28,7 @@ import utils.ImageUploadUtil;
 public class InsertUser extends HttpServlet {
 
     private UserDAO userDao;
+
     public void init() throws ServletException {
         userDao = new UserDAO();
     }
@@ -117,6 +119,16 @@ public class InsertUser extends HttpServlet {
         // add user
         User userToAdd = new User(0, username, password, name, img, phone, email, dob, isMale, address, cccd, roleID, true, manager, null);
 
+        // check file upload
+        if (fileName.equals("No file found !!")) {
+            request.getSession().setAttribute("error", "No file found !!");
+            request.getSession().setAttribute("userToAdd", userToAdd);
+            String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+            request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+            response.sendRedirect("insert_users");
+            return;
+        }
+
         // check for seller
         if (roleID == 2 && manager == null) {
             request.getSession().setAttribute("error", "Seller must have a manager !!");
@@ -153,21 +165,6 @@ public class InsertUser extends HttpServlet {
             }
             case 0 -> {
                 request.getSession().setAttribute("error", "Insert fail !!");
-            }
-            case 2 -> {
-                request.getSession().setAttribute("error", "Username has existed !!");
-            }
-            case 3 -> {
-                request.getSession().setAttribute("error", "Identity card has existed !!");
-            }
-            case 4 -> {
-                request.getSession().setAttribute("error", "Email has existed !!");
-            }
-            case 5 -> {
-                request.getSession().setAttribute("error", "Phone number has existed !!");
-            }
-            default -> {
-                // Để xử lý trường hợp mặc định nếu cần thiết
             }
         }
 
