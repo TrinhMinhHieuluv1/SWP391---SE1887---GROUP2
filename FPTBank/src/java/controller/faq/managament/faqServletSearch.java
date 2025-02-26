@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller.faq.managament;
 
 import dal.FAQDAO;
@@ -12,48 +13,43 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Set;
 import model.FAQ;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "FaqUpdate", urlPatterns = {"/seller/faq-update"})
-public class FaqUpdate extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+@WebServlet(name="faqServletSearch", urlPatterns={"/faq-servlet-search"})
+public class faqServletSearch extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet FaqUpdate</title>");
+            out.println("<title>Servlet faqServletSearch</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet FaqUpdate at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet faqServletSearch at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,26 +57,49 @@ public class FaqUpdate extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        FAQDAO faqDao = new FAQDAO();
-        String faqID_raw = request.getParameter("FaqID");
-        if (faqID_raw != null && !faqID_raw.isEmpty()) {
-            int faqID = Integer.parseInt(faqID_raw);
-            FAQ faqbyID = faqDao.getFAQByID(faqID);
+    throws ServletException, IOException {
+        String searchKeyword = request.getParameter("searchKeyword");
+         
 
-            List<String> listType = faqDao.getFAQType();
-
-            request.setAttribute("listType", listType);
-
-            request.setAttribute("faqToUpdate", faqbyID);
-            request.getRequestDispatcher("faq-update.jsp").forward(request, response);
+        // Định dạng lại chuỗi searchKeyword
+        if (searchKeyword != null) {
+            searchKeyword = searchKeyword.trim(); // Xóa dấu cách đầu và cuối
+            searchKeyword = searchKeyword.replaceAll("\\s+", " "); // Thay thế nhiều dấu cách bằng một dấu cách
         }
 
+        int page = 1; // trang đầu tiên
+        int pageSize = 5; // 1 trang có 10 users
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        int entries = (int) request.getSession().getAttribute("entries");
+        if (entries != 5) {
+            pageSize = entries;
+        }
+
+        String keywordFromFAQ = request.getParameter("key");
+        if (keywordFromFAQ != null && !keywordFromFAQ.isEmpty()) {
+            searchKeyword = keywordFromFAQ;
+        }
+        
+        FAQDAO faqDAO = new FAQDAO();
+        List<FAQ> listFAQ = faqDAO.searchFAQsByQuestion(searchKeyword, page, pageSize);
+
+        int totalUsers = faqDAO.getTotalFAQAfterSearching(searchKeyword);
+
+        int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
+        
+        
+ // set phân trang
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("listFAQ", listFAQ);
+        request.setAttribute("keyword", searchKeyword);
+        request.getRequestDispatcher("faq.jsp").forward(request, response);
     }
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -88,36 +107,12 @@ public class FaqUpdate extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-         int faqID = Integer.parseInt(request.getParameter("FaqID"));
-        String type = request.getParameter("type");
-        String question = request.getParameter("question");
-        String answer = request.getParameter("answer");
- 
-          HttpSession session = request.getSession();
-         FAQDAO faqDao = new FAQDAO();   
-        FAQ faqToUpdate = faqDao.getFAQByID(faqID);
-        faqToUpdate.setType(type);
-        faqToUpdate.setQuestion(question);
-        faqToUpdate.setAnswer(answer);
-
-        faqDao.updateFAQ(faqToUpdate);
-        // Update FAQ vào cơ sở dữ liệu
-        boolean isUpdated = faqDao.updateFAQBoolean(faqToUpdate);
-
-        if (isUpdated) {                  
-            session.setAttribute("message", "FAQ Updated successfully!");
-        } else {
-            session.setAttribute("message", "Failed to Update FAQ. Please try again.");
-        }
-        response.sendRedirect("/timibank/seller/faq-management");
+    throws ServletException, IOException {
+        processRequest(request, response);
     }
-        
-    
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

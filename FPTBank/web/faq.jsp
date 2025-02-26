@@ -39,9 +39,56 @@
     </head>
 
     <style>
+        .mine-checkbox {
+            margin-left: 20px;
+        }
+
+        .mine-checkbox input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-item label {
+            margin-left: 5px;
+        }
+
+        .checkbox-bar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f4f4f4;
+            padding: 10px;
+        }
+
+        .filter-group {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
         .filter-controls h3{
             text-align: center;
         }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #333;
+            margin-right: 15px;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+
         .search-container {
             position: relative;
 
@@ -82,6 +129,34 @@
             text-align: center;
             text-decoration: none;
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+        }
+
+        .pagination a {
+            padding: 9px 10px;
+            margin: 0 5px;
+            background-color: #f4f4f4;
+
+            color: #333;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .pagination a:hover {
+            background-color: yellowgreen;
+        }
+
+        .pagination a.active {
+            background-color: green;
+            color: #fff;
+            border-radius: 30px;
+        }
 
 
     </style>
@@ -97,70 +172,95 @@
 
             <!-- content -->
             <div class="mil-features faq-wrap">
-                <form action="faq"  class="filter-controls">
-                    <!-- Search Box -->
-                    <div class="search-container"  >
-                        <i class="fa fa-search"></i>
-                        <input   type="text" name="searchKeyword" value="${param.searchKeyword}" placeholder="Tìm câu hỏi nhanh ..." class="search-input">
-                        <button class="add-news-btn" type="submit" >Search </button>
-                    </div>
-                    <div class="container faq-question__contents" >
-                        <ol class="faq-question__ques-list">
-                            <c:forEach items="${listFAQ}" var="faq">
-                                <li class="faq-question__ques-item">
-                                    <div class="faq-question__ques-wrap">
-                                        <p class="faq-question__ques-title">${faq.getQuestion()}</p>
-                                        <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
-                                    </div>
-                                    <div class="faq-question__ques-ans">
-                                        ${faq.getAnswer()}
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ol>
-                    </div>
 
+                <form action="faq-servlet-search"  class="filter-controls">  
+                    <div class="search-container"  > 
+                        <i class="fa fa-search"></i>
+                        <input   type="text" name="searchKeyword"  value="${keyword}" placeholder="Tìm câu hỏi nhanh ..." class="search-input">
+                        <button style="color: white; background-color: #008000" class="add-news-btn" type="submit" >Search </button>
+                    </div>
                 </form>
 
-                <div class="container">
-                    <h2 class="faq-heading">Quan tâm nhiều nhất</h2>
-                    <div class="faq-question js-tabs">
-                        <ul class="faq-question__tab-list">
-                            <c:forEach items="${faqTypes}" var="type">
-                                <li class="faq-question__tab">
-                                    <c:choose>
-                                        <c:when test="${type == 'borrow'}">Vay</c:when>
-                                        <c:when test="${type == 'savings'}">Gửi</c:when>
-                                        <c:when test="${type == 'account'}">Tài khoản</c:when>
-                                        <c:when test="${type == 'card'}">Thẻ</c:when>
-                                        <c:otherwise>${type}</c:otherwise>
-                                    </c:choose>
-                                </li>
-                            </c:forEach>
-                        </ul>
-
-                        <div class="faq-question__contents">
-                            <c:forEach items="${faqData}" var="faqList">
-                                <div class="faq-question__content">
-                                    <ol class="faq-question__ques-list">
-                                        <c:forEach items="${faqList}" var="faq">
-                                            <li class="faq-question__ques-item">
-                                                <div class="faq-question__ques-wrap">
-                                                    <p class="faq-question__ques-title">${faq.getQuestion()}</p>
-                                                    <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
-                                                </div>
-                                                <div class="faq-question__ques-ans">
-                                                    ${faq.getAnswer()}
-                                                </div>
-                                            </li>
-                                        </c:forEach>
-                                    </ol>
-                                </div>
-                            </c:forEach>
+                <form action="faq-servlet-type" method="get" class="filter-controls">
+                    <div class="filter-group">
+                        <h3>Câu hỏi về</h3>
+                        <div class="checkbox-bar">
+                            <%
+                                String selectedType = request.getAttribute("selectedType") != null ? request.getAttribute("selectedType").toString() : "";
+                            %>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="faq1" name="faqType" value="account" class="faq-checkbox"
+                                       <%= "account".equals(selectedType) ? "checked" : "" %>>
+                                <label for="faq1">Tài khoản ngân hàng</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="faq2" name="faqType" value="borrow" class="faq-checkbox"
+                                       <%= "borrow".equals(selectedType) ? "checked" : "" %>>
+                                <label for="faq2">Vay tiền</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="faq3" name="faqType" value="savings" class="faq-checkbox"
+                                       <%= "savings".equals(selectedType) ? "checked" : "" %>>
+                                <label for="faq3">Gửi tiền</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="faq4" name="faqType" value="card" class="faq-checkbox"
+                                       <%= "card".equals(selectedType) ? "checked" : "" %>>
+                                <label for="faq4">Thẻ</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <button style="color: white; background-color: #008000" class="add-news-btn" type="submit">SearchType</button>
+                            </div>
                         </div>
                     </div>
+                </form>     
 
+                <div class="search-container"  > 
+                    <!--show entry-->
+                    <form id="entriesForm" action="faq" method="GET" accept-charset="UTF-8">
+                        <label for="entries">Show Entries</label>
+                        <select  id="entries" name="entries" onchange="this.form.submit()">
+                            <c:forEach items="${listOfPageSize}" var="ps">
+                                <option value="${ps}" ${(ps == entries)?'selected':''}>${ps}</option>
+                            </c:forEach>                   
+                        </select>
+                        <input type="hidden" name="searchKey" value="${keyword}">
+                        <input type="hidden" name="searchType" value="${selectedType}">
+                    </form>
                 </div>
+
+                <div class="container faq-question__contents" >
+                    <ol class="faq-question__ques-list">
+                        <c:forEach items="${listFAQ}" var="faq">
+                            <li class="faq-question__ques-item">
+                                <div class="faq-question__ques-wrap">
+                                    <p class="faq-question__ques-title">${faq.getQuestion()}</p>
+                                    <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
+                                </div>
+                                <div class="faq-question__ques-ans">
+                                    ${faq.getAnswer()}
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ol>
+                </div>
+
+                <div class="pagination">
+                    <c:if test="${currentPage > 1}">
+                        <a href="?page=${currentPage - 1}&searchKeyword=${keyword}&faqType=${selectedType}&entries=${entries}"  class="prev" > Previous</a>
+                    </c:if>
+
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <a href="?page=${i}&searchKeyword=${keyword}&faqType=${selectedType}&entries=${entries}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <a href="?page=${currentPage + 1}&searchKeyword=${keyword}&faqType=${selectedType}&entries=${entries}" class="next">Next</a>
+                    </c:if>
+                </div>
+
+
+
             </div>
 
 
@@ -168,103 +268,57 @@
 
 
             <!-- footer -->
-            <footer class="mil-p-160-0 footer" id="footer">
-                <div class="container">
-                    <div class="row mil-footer-top">
-                        <div class="col-xl-2">
-                            <a href="#." class=" mil-footer-logo mil-mb-60">
-                                <img src="img/logo1.png" alt="Plax" width="150">
-                            </a>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Liên kết hữu ích</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="index.jsp">Home</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="about.jsp">About Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="contact.jsp">Contact Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="faq.jsp">FAQs</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="price.jsp">Pricing</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Hỗ trợ</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15" >
-                                    <a href="mailto:nguyenquangthoai04@gmail.com" class="modal__link">Email: nguyenquangthoai04@gmail.com</a> 
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="tel:0967368980" class="modal__link">Liên hệ: 0967368980</a>                                        </li>
-
-                            </ul>
-                        </div>
-                        <div class="col-xl-4 mil-mb-80">
-                            <h6 class="mil-mb-60">Gửi Hỗ trợ</h6>
-                            <p class="mil-text-xs mil-soft mil-mb-15">Hãy miêu tả những thứ bạn cần hỗ trợ </p>
-                            <form action="showfb" method="post" class="mil-subscripe-form-footer">
-                                <!-- Email Input -->
-                                <div class="mb-3">
-                                    <input class="form-control form-control__input mil-input" type="email" placeholder="Email" name="email" required>
-                                </div>
-                                <!-- Tiêu đề Input -->
-                                <div class="mb-3">
-                                    <input  class="form-control form-control__input mil-input" type="text" placeholder="Tiêu đề" name="tieude" required>
-                                </div>
-                                <!-- Nội dung Input -->
-                                <div class="mb-3">
-                                    <textarea class="form-control form-control__textarea" rows="3" placeholder="Nội dung" name="noidung" required></textarea>                                    
-                                </div>
-
-                                <div class="form-control__row--reverse">
-                                    <!-- Submit Button -->
-                                    <button type="submit" class="form-control__btn form-control__btn--green mil-btn mil-ssm">
-                                        <i class="far fa-envelope-open form-control__icon"></i> Gửi
-                                    </button>
-                                    <!-- Checkbox -->
-                                    <div class="mil-checkbox-frame">
-                                        <div class="mil-checkbox">
-                                            <input type="checkbox" id="checkbox" checked>
-                                            <label for="checkbox"></label>
-                                        </div>
-                                        <p class="mil-text-xs mil-soft">Đăng ký để nhận tin tức mới nhất</p>
-
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-
-                    </div>
-                    <div class="mil-footer-bottom">
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <p class="mil-text-s mil-soft">© 2025 TIMI Finance & Fintech Design</p>
-                            </div>
-                            <div class="col-xl-6">
-                                <button type="button" class=" mil-btn mil-ssm footer--toggle--btn" onclick="toggleFooter()">
-                                    <span class="text-expand">Thu gọn chân trang</span>
-                                    <span class="text-collapsed" style="display: none">Mở rộng chân trang</span>
-                                    <span class="icon-arrow-right">
-
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <%@ include file="footer.jsp"%>
 
             <!-- footer end -->
         </div>
+        <script>
+            function changePage(page) {
+                const form = document.querySelector(".filter-controls"); // Chỉ lấy form đầu tiên
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "page";
+                input.value = page;
+                form.appendChild(input);
+                form.submit();
+            }
+
+            // Toast message animation
+            document.addEventListener('DOMContentLoaded', function () {
+                const toast = document.getElementById('toastMessage');
+                if (toast) {
+                    // Show toast
+                    setTimeout(() => {
+                        toast.classList.add('show');
+                    }, 100);
+
+                    // Hide toast after 3 seconds
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        // Remove toast from DOM after animation
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 500);
+                    }, 3000);
+                }
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const checkboxes = document.querySelectorAll(".faq-checkbox");
+
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        checkboxes.forEach(cb => {
+                            if (cb !== this) {
+                                cb.checked = false;
+                            }
+                        });
+                    });
+                });
+            });
+
+        </script>
+
     </div>
     <script src="./js/scripts.js"></script>
 

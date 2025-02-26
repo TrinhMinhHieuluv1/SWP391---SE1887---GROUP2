@@ -13,5 +13,8 @@ public class Mail {
     public static final String APP_EMAIL = "thoaituanhung074@gmail.com";
 
     public static final String APP_PASSWORD = "ehmm dspq nivo wfxi";
-    public static final String EMAIL_SP = "nguyenquangthoai04@gmail.com";
+    
+    public static final String EMAIL_SP = "timibank.se1887@gmail.com";
+
+    
 }
