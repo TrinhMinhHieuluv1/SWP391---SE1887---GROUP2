@@ -4,6 +4,7 @@
  */
 package controller;
 
+import Tools.HashString;
 import dal.CustomerDAO;
 import dal.UserDAO;
 import java.io.IOException;
@@ -97,8 +98,10 @@ public class Login extends HttpServlet {
         Cookie crem = new Cookie("crem", rem);
         UserDAO udao = new UserDAO();
         CustomerDAO cdao = new CustomerDAO();
+        HashString hs = new HashString();
         if (role.equals("staff")) {
-            User account = udao.checkAuthen(username, password);
+            //String hashedPassword = hs.hashString(password);
+            User account = udao.checkAuthen(username, password  );
             if (account == null) {
                 String err = "Username or password is incorrect. Please try again!";
                 request.setAttribute("err", err);
@@ -144,7 +147,8 @@ public class Login extends HttpServlet {
                 }
             }
         } else {
-            Customer account = cdao.checkAuthen(username, password);
+            String hashedPassword = hs.hashString(password);
+            Customer account = cdao.checkAuthen(username, hashedPassword);
             if (account == null) {
                 String err = "Username or password is incorrect. Please try again!";
                 request.setAttribute("err", err);
@@ -179,16 +183,14 @@ public class Login extends HttpServlet {
         }
     }
 
-        /**
-         * Returns a short description of the servlet.
-         *
-         * @return a String containing servlet description
-         */
-        @Override
-        public String getServletInfo
-        
-            () {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
-        }// </editor-fold>
+    }// </editor-fold>
 
-    }
+}

@@ -14,7 +14,6 @@ import model.Customer;
 import model.Feedback;
 import dal.CustomerDAO;
 import model.Service;
-import dal.ServiceDAO;
 
 /**
  *

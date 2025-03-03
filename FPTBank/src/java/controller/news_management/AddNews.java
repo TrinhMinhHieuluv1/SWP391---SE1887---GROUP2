@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.news_management;
 
 import Tools.SaveImage;
+import dal.NewsCategoryDAO;
 import dal.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,18 +15,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.util.List;
 import model.News;
+import model.User;
 import jakarta.servlet.annotation.MultipartConfig;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "UpdateNews", urlPatterns = {"/seller/update-news"})
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 10MB
+@WebServlet(name = "AddNews", urlPatterns = {"/seller/add-news"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 2MB
         maxFileSize = 1024 * 1024 * 50, // 50MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
-public class UpdateNews extends HttpServlet {
+public class AddNews extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +47,10 @@ public class UpdateNews extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateNews</title>");
+            out.println("<title>Servlet AddNews</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateNews at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddNews at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,25 +68,9 @@ public class UpdateNews extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        NewsDAO ndao = new NewsDAO();
-        String NewsID_raw = request.getParameter("NewsID");
-        String changeStatus = request.getParameter("changeStatus");
-        if (NewsID_raw != null && !NewsID_raw.isEmpty()) {
-            int NewsID = Integer.parseInt(NewsID_raw);
-            News newsToUpdate = ndao.selectANewsByNewsID(NewsID);
-            if (changeStatus != null && changeStatus.equals("true")) {
-                if (newsToUpdate.isStatus()) {
-                    newsToUpdate.setStatus(false);
-                } else {
-                    newsToUpdate.setStatus(true);
-                }
-                ndao.updateANews(newsToUpdate);
-                response.sendRedirect("/timibank/seller/news-management?fromUpdate=true");
-                return;
-            }
-            request.setAttribute("newsToUpdate", newsToUpdate);
-            request.getRequestDispatcher("update-news.jsp").forward(request, response);
-        }
+        NewsCategoryDAO ncDAO = new NewsCategoryDAO();
+        request.setAttribute("ncList", ncDAO.categoryList);
+        request.getRequestDispatcher("add-news.jsp").forward(request, response);
     }
 
     /**
@@ -99,18 +86,18 @@ public class UpdateNews extends HttpServlet {
             throws ServletException, IOException {
         NewsDAO ndao = new NewsDAO();
         SaveImage si = new SaveImage();
-        int NewsID=0;
-        String NewsID_raw = request.getParameter("NewsID");
-        try {
-            NewsID = Integer.parseInt(NewsID_raw);
-        } catch (NumberFormatException e) {
-            response.getWriter().print(e);
-            return;
-        }
-        News newsToUpdate = ndao.selectANewsByNewsID(NewsID);
+        NewsCategoryDAO ncDAO = new NewsCategoryDAO();
+
+        String Title = request.getParameter("Title");
+        String Description = request.getParameter("Description");
         String urlImage = request.getParameter("url-image");
+        String NewsCategoryID_raw = request.getParameter("NewsCategoryID");
         Part filePart = request.getPart("file-image");
-        String imagePath;
+        News newsToAdd = new News(0, (User) request.getSession().getAttribute("account"), Title, Description, "", true, null, 0, ncDAO.selectANewsCategoryByID(Integer.parseInt(NewsCategoryID_raw)));
+        ndao.addANews(newsToAdd);
+        List<News> newsList = ndao.selectAllNews();
+        News newsToUpdate = newsList.get(newsList.size() - 1);
+        String imagePath = "";
         if (urlImage != null && !urlImage.isEmpty()) {
             imagePath = si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
             si.saveImageByUrl(urlImage, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
@@ -118,12 +105,9 @@ public class UpdateNews extends HttpServlet {
             imagePath = si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
             si.saveImageByFile(filePart, "D:\\SWP391---SE1887---GROUP2\\FPTBank\\build\\web\\img\\Image_For_News\\" + newsToUpdate.getNewsID(), newsToUpdate.getNewsID() + "");
         }
-        newsToUpdate.setTitle(request.getParameter("Title"));
-        newsToUpdate.setDescription(request.getParameter("Description"));
         newsToUpdate.setImage(imagePath);
         ndao.updateANews(newsToUpdate);
-        response.sendRedirect("/timibank/seller/news-management?fromUpdate=true");
-
+        response.sendRedirect("/timibank/seller/news-management?fromAdd=true");
     }
 
     /**
