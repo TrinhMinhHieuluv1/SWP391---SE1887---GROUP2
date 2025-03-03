@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.news_management;
 
 import dal.NewsCategoryDAO;
 import dal.NewsDAO;
@@ -106,7 +106,7 @@ public class NewsManagement extends HttpServlet {
 
         //Pagination
         String pageSize_raw = request.getParameter("pageSize");
-        int pageSize = 10;
+        int pageSize = (int)Math.round((double)newsListBeforePagition.size()/100)*10;
         try {
             pageSize = Integer.parseInt(pageSize_raw);
         } catch (NumberFormatException e) {
@@ -127,10 +127,17 @@ public class NewsManagement extends HttpServlet {
                 page = 1;
             }
         }
-
+        
         List<News> newsList = newsListBeforePagition.subList((page - 1) * pageSize, Math.min(newsListBeforePagition.size(), page * pageSize));
+        int[] pageSizeArray = {(int)Math.round((double)newsListBeforePagition.size()/100)*10,
+                            (int)Math.round((double)newsListBeforePagition.size()/100)*20,
+                            (int)Math.round((double)newsListBeforePagition.size()/100)*30,
+                            (int)Math.round((double)newsListBeforePagition.size()/100)*40,
+                            (int)Math.round((double)newsListBeforePagition.size()/100)*50};
+        request.setAttribute("numberOfNews", newsListBeforePagition.size());
         request.setAttribute("ncList", ncDAO.selectAllNewsCategory());
         request.setAttribute("pageSize", pageSize);
+        request.setAttribute("pageSizeArray", pageSizeArray);
         request.setAttribute("newsList", newsList);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
