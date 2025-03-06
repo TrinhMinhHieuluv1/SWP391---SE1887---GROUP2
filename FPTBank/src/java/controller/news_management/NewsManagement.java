@@ -106,7 +106,12 @@ public class NewsManagement extends HttpServlet {
 
         //Pagination
         String pageSize_raw = request.getParameter("pageSize");
-        int pageSize = (int)Math.round((double)newsListBeforePagition.size()/100)*10;
+        int pageSize;
+        if (newsListBeforePagition.size() <= 100) {
+            pageSize = 10;
+        } else {
+            pageSize = (int)Math.round((double)newsListBeforePagition.size()/100)*10;
+        }
         try {
             pageSize = Integer.parseInt(pageSize_raw);
         } catch (NumberFormatException e) {
@@ -127,7 +132,7 @@ public class NewsManagement extends HttpServlet {
                 page = 1;
             }
         }
-        
+
         List<News> newsList = newsListBeforePagition.subList((page - 1) * pageSize, Math.min(newsListBeforePagition.size(), page * pageSize));
         int[] pageSizeArray = {(int)Math.round((double)newsListBeforePagition.size()/100)*10,
                             (int)Math.round((double)newsListBeforePagition.size()/100)*20,

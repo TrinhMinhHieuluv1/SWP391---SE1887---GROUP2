@@ -763,6 +763,7 @@
 
                             params.set(param, value);
                             params.delete('fromUpdate');
+                            params.delete('page');
 
                             window.location.href = 'news-management?' + params.toString();
                         }

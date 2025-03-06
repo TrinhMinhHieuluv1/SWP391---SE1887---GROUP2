@@ -101,7 +101,7 @@ public class Login extends HttpServlet {
         HashString hs = new HashString();
         if (role.equals("staff")) {
             //String hashedPassword = hs.hashString(password);
-            User account = udao.checkAuthen(username, password  );
+            User account = udao.checkAuthen(username, password);
             if (account == null) {
                 String err = "Username or password is incorrect. Please try again!";
                 request.setAttribute("err", err);
@@ -147,8 +147,8 @@ public class Login extends HttpServlet {
                 }
             }
         } else {
-            String hashedPassword = hs.hashString(password);
-            Customer account = cdao.checkAuthen(username, hashedPassword);
+            //String hashedPassword = hs.hashString(password);
+            Customer account = cdao.checkAuthen(username, password);
             if (account == null) {
                 String err = "Username or password is incorrect. Please try again!";
                 request.setAttribute("err", err);

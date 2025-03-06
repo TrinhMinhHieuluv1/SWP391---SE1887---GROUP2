@@ -356,8 +356,4 @@ public class FeedbackDAO extends DBContext {
         return listfeedback;
     }
 
-    public static void main(String[] args) {
-        FeedbackDAO dao = new FeedbackDAO();
-        dao.addFeedback(1, 1, 5, "abc", "abc", true);
-    }
 }
