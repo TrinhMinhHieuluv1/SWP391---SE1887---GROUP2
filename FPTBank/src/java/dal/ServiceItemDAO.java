@@ -131,14 +131,4 @@ public class ServiceItemDAO extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
-        ServiceItemDAO sidao = new ServiceItemDAO();
-//        ServiceItem siToAdd = new ServiceItem(0, "Saving 5", BigDecimal.valueOf(1000000000), 12, 100, 10, BigDecimal.ZERO, 0, 0, 0, "Unsecured Loan", true);
-        ServiceItem siTo = sidao.selectAServiceItemByID(12);
-        siTo.setServiceItemName("Secured Loan 4");
-        sidao.updateAServiceItem(siTo);
-        for (ServiceItem si : sidao.selectAllServiceItem()) {
-            System.out.println(si.getServiceItemName());
-        }
-    }
 }

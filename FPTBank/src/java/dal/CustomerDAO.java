@@ -250,7 +250,5 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    public static void main(String[] args) {
-        CustomerDAO cdao = new CustomerDAO();
-    }
+    
 }

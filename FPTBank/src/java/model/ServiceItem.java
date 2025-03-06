@@ -129,5 +129,10 @@ public class ServiceItem {
     public void setStatus(boolean Status) {
         this.Status = Status;
     }
+
+    @Override
+    public String toString() {
+        return "ServiceItem{" + "ServiceItemID=" + ServiceItemID + ", ServiceItemName=" + ServiceItemName + ", MaxAmount=" + MaxAmount + ", MaxPeriod=" + MaxPeriod + ", MinCreditScore=" + MinCreditScore + ", LatePaymentRate=" + LatePaymentRate + ", MinAmount=" + MinAmount + ", MinPeriod=" + MinPeriod + ", EarlyWithdrawRate=" + EarlyWithdrawRate + ", InterestRate=" + InterestRate + ", Type=" + Type + ", Status=" + Status + '}';
+    }
     
 }
