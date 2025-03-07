@@ -4,6 +4,20 @@
  */
 
 //checkvalidate
+function validateEmail() {
+    let username = document.getElementById("emailLoan").value;
+    let errorSpan = document.getElementById("emailError");
+    let pattern = /^(?!.*\.\.)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!pattern.test(username)) {
+        errorSpan.innerText = "Email is invalid";
+        errorSpan.style.color = "red";
+        errorSpan.style.fontSize = "13px";
+    } else {
+        errorSpan.innerText = "";
+    }
+}
+
+
 function validateLoanRate() {
     let username = document.getElementById("loanRate").value;
     let errorSpan = document.getElementById("nameError");

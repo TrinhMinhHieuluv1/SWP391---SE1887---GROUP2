@@ -235,7 +235,10 @@
                             <li class="faq-question__ques-item">
                                 <div class="faq-question__ques-wrap">
                                     <p class="faq-question__ques-title">${faq.getQuestion()}</p>
-                                    <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
+ 
+                                    
+                                    
+                                  <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
                                 </div>
                                 <div class="faq-question__ques-ans">
                                     ${faq.getAnswer()}
