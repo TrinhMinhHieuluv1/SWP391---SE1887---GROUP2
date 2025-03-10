@@ -548,9 +548,9 @@
                     </select>
                     <label for="number" style="margin-left: 30px;" >Number in Page:</label>
                     <select class="form-control" id="statusFilter" name="pagesize">
-                        <option value="5" ${param.number == '5' ? 'selected' : ''}>5</option>
-                        <option value="10" ${param.number == '5' ? 'selected' : ''}>10</option>
-                        <option value="15" ${param.number == '5' ? 'selected' : ''}>15</option>
+                        <c:forEach var="num" items="${requestScope.listint}">
+                            <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
+                        </c:forEach>
                     </select>
                     <label for="status" style="margin-left: 30px;">Status of Response:</label>
                     <select class="form-control" id="statusFilter" name="statusresponse">
