@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
+
 //checkvalidate
 function validateEmail() {
     let username = document.getElementById("emailLoan").value;
@@ -44,22 +45,7 @@ function validateTerm() {
     }
 }
 
-//thansg
-document.addEventListener("DOMContentLoaded", () => {
-    const selectElement = document.getElementById('numberSelect');
 
-    if (!selectElement) {
-        console.error("Không tìm thấy phần tử có id 'numberSelect'.");
-        return; // Dừng thực thi nếu không tìm thấy phần tử
-    }
-
-    for (let i = 1; i <= 180; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        selectElement.appendChild(option);
-    }
-});
 function load(selector, path) {
     const cached = localStorage.getItem(path);
     if (cached) {
@@ -283,16 +269,7 @@ function createCarousel(sectionId, data) {
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const dateInput = document.getElementById("date");
-    if (dateInput) {
-        dateInput.addEventListener("click", function () {
-            this.showPicker();
-        });
-    } else {
-        console.error('Không tìm thấy phần tử với id="date"');
-    }
-});
+
 
 // Đóng mở modal
 /**
@@ -496,5 +473,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+//thansg
+document.addEventListener("DOMContentLoaded", () => {
+    const selectElement = document.getElementById('numberSelect');
 
+    if (!selectElement) {
+        console.error("Không tìm thấy phần tử có id 'numberSelect'.");
+        return; // Dừng thực thi nếu không tìm thấy phần tử
+    }
+
+    for (let i = 1; i <= 180; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        selectElement.appendChild(option);
+    }
+});
    
+   document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById("date");
+    if (dateInput) {
+        dateInput.addEventListener("click", function () {
+            this.showPicker();
+        });
+    } else {
+        console.error('Không tìm thấy phần tử với id="date"');
+    }
+});
