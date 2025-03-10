@@ -110,8 +110,8 @@ public class ServiceItemDAO extends DBContext {
         } catch (SQLException e) {
         }
     }
-    
-    public void updateAServiceItem(ServiceItem serviceItemToUpdate){
+
+    public void updateAServiceItem(ServiceItem serviceItemToUpdate) {
         String sql = "UPDATE [ServiceItem] SET "
                 + "ServiceItemName=?, MaxAmount=?, MaxPeriod=?, MinCreditScore=?, LatePaymentRate=?, MinAmount=?, MinPeriod=?, EarlyWithdrawRate=?, InterestRate=? WHERE ServiceItemID=?";
         try {
@@ -129,6 +129,40 @@ public class ServiceItemDAO extends DBContext {
             st.executeUpdate();
         } catch (SQLException e) {
         }
+    }
+
+    public List<ServiceItem> getServiceItemList(BigDecimal Amount, String Type) {
+        List<ServiceItem> serviceItemList = new ArrayList<>();
+        String sql = "";
+        if (Type.equals("Saving")) {
+            sql = "SELECT * FROM [ServiceItem] WHERE (Type=?) AND (MinAmount<?)";
+        } else {
+            sql = "SELECT * FROM [ServiceItem] WHERE (Type=?) AND (MaxAmount>?)";
+        }
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, Type);
+            st.setBigDecimal(2, Amount);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                ServiceItem serviceItemToAdd
+                        = new ServiceItem(rs.getInt("ServiceItemID"),
+                                rs.getString("ServiceItemName"),
+                                rs.getBigDecimal("MaxAmount"),
+                                rs.getInt("MaxPeriod"),
+                                rs.getInt("MinCreditScore"),
+                                rs.getFloat("LatePaymentRate"),
+                                rs.getBigDecimal("MinAmount"),
+                                rs.getInt("MinPeriod"),
+                                rs.getFloat("EarlyWithdrawRate"),
+                                rs.getFloat("InterestRate"),
+                                rs.getString("Type"),
+                                rs.getBoolean("Status"));
+                serviceItemList.add(serviceItemToAdd);
+            }
+        } catch (SQLException e) {
+        }
+        return serviceItemList;
     }
 
 }
