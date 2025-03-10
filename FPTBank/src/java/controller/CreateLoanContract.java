@@ -1,10 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
-import dal.CustomerDAO;
+import dal.AssetDAO;
+import dal.LoanTermDAO;
+import dal.SalaryDAO;
+import dal.ServiceItemDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,21 +12,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.time.Instant;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
+import model.Asset;
 import model.Customer;
-import model.Emails;
-import org.apache.tomcat.jakartaee.commons.lang3.tuple.Pair;
-import org.json.simple.JSONArray;
+import model.LoanTerm;
+import model.Salary;
+import model.ServiceItem;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "RegisterEmail", urlPatterns = {"/register-email"})
-public class RegisterEmail extends HttpServlet {
+@WebServlet(name = "CreateLoanContract", urlPatterns = {"/create-loan-contract"})
+public class CreateLoanContract extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +43,10 @@ public class RegisterEmail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterEmail</title>");
+            out.println("<title>Servlet CreateLoanContract</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegisterEmail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateLoanContract at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,13 +64,35 @@ public class RegisterEmail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CustomerDAO cdao = new CustomerDAO();
-        JSONArray emailArray = new JSONArray();
-        for (Customer customer : cdao.selectAllCustomer()) {
-            emailArray.add(customer.getEmail());
+        HttpSession session = request.getSession();
+        AssetDAO adao = new AssetDAO();
+        SalaryDAO sdao = new SalaryDAO();
+        ServiceItemDAO sidao = new ServiceItemDAO();
+        LoanTermDAO ltdao = new LoanTermDAO();
+
+        //Resource for both Secured and Unsecured Loan
+        String Type = request.getParameter("Type");
+        Customer account = (Customer) session.getAttribute("account");
+        List<ServiceItem> serviceItemList = sidao.selectAllServiceItem();
+        request.setAttribute("serviceItemList", serviceItemList);
+        
+        //Resource for Secured Loan
+        if (Type != null && !Type.isEmpty() && Type.equals("Secured")) {
+            List<Asset> assetList = adao.getAssetListForCustomer(account.getCustomerId());
+            request.setAttribute("assetList", assetList);
+            List<LoanTerm> loanTermList = ltdao.selectLoanTermListByCondition("Secured Loan");
+            request.setAttribute("loanTermList", loanTermList);
+        } 
+        
+        //Resource for Unsecured Loan
+        else {
+            Salary salary = sdao.getSalaryForCustomer(account.getCustomerId());
+            request.setAttribute("salary", salary);
+            List<LoanTerm> loanTermList = ltdao.selectLoanTermListByCondition("Unsecured Loan");
+            request.setAttribute("loanTermList", loanTermList);
         }
-        request.setAttribute("emailArray", emailArray);
-        request.getRequestDispatcher("register-email.jsp").forward(request, response);
+        
+        request.getRequestDispatcher("createLoanContract.jsp").forward(request, response);
     }
 
     /**
@@ -87,27 +106,7 @@ public class RegisterEmail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Emails sendEmailTools = new Emails();
-        Random rd = new Random();
-
-        StringBuilder pinCode = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            pinCode.append(rd.nextInt(10));
-        }
-        String email = request.getParameter("email");
-        sendEmailTools.sendMess(email.trim(), "Verification code from TimiBank", "This code to verify your email: " + pinCode);
-        session.setAttribute("pinCode-" + email, Pair.of(email, pinCode));
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                String email = request.getParameter("email");
-                session.removeAttribute("pinCode-" + email);
-            }
-        };
-        timer.schedule(timerTask, 1000*60*5);
-        response.sendRedirect("/timibank/register-email-check?email=" + email);
+        processRequest(request, response);
     }
 
     /**

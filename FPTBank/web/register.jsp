@@ -317,7 +317,7 @@
                                     <input type="text" class="mil-input mil-up mil-mb-15" name="CCCD" placeholder="CCCD" id="CCCD" oninput="validateCCCD(); checkCCCD()" required>
                                     <div id="err-cccd" style="color: red; display: none">CCCD has to have 12 digits. Try again!</div>
                                     <div id="duplicated-cccd" style="color: red; display: none">CCCD already exists. Please choose another!</div>
-                                    <input required type="checkbox"> <p class="mil-text-xs mil-soft" style="margin-bottom: 10px; display: inline">Do you agree to <a href="services.jsp" class="mil-accent">our terms and conditions</a>.</p>
+                                    <input required type="checkbox"> <p class="mil-text-xs mil-soft" style="margin-bottom: 10px; display: inline">Do you agree to <a href="/timibank/TermAndService/TermAndService.pdf" target="_blank" class="mil-accent">our terms and conditions</a>.</p>
                                     <div class="mil-up mil-mb-30">
                                         <button type="submit" class="mil-btn mil-md mil-fw">Create Account</button>
                                     </div>
@@ -331,7 +331,7 @@
                     </div>
                 </div>
                 <!-- register form end -->
-
+                
                 <div class="mil-space-fix"></div>
 
             </div>

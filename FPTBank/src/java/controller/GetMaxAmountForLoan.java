@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
-import dal.CustomerDAO;
+import dal.LoanTermDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,22 +8,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.time.Instant;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import model.Customer;
-import model.Emails;
-import org.apache.tomcat.jakartaee.commons.lang3.tuple.Pair;
-import org.json.simple.JSONArray;
+import java.math.BigDecimal;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "RegisterEmail", urlPatterns = {"/register-email"})
-public class RegisterEmail extends HttpServlet {
+@WebServlet(name = "GetMaxAmountForLoan", urlPatterns = {"/get-max-amount"})
+public class GetMaxAmountForLoan extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +34,10 @@ public class RegisterEmail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterEmail</title>");
+            out.println("<title>Servlet GetMaxAmountForLoan</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegisterEmail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetMaxAmountForLoan at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,13 +55,7 @@ public class RegisterEmail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CustomerDAO cdao = new CustomerDAO();
-        JSONArray emailArray = new JSONArray();
-        for (Customer customer : cdao.selectAllCustomer()) {
-            emailArray.add(customer.getEmail());
-        }
-        request.setAttribute("emailArray", emailArray);
-        request.getRequestDispatcher("register-email.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -87,27 +69,18 @@ public class RegisterEmail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Emails sendEmailTools = new Emails();
-        Random rd = new Random();
-
-        StringBuilder pinCode = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            pinCode.append(rd.nextInt(10));
+        LoanTermDAO ltdao = new LoanTermDAO();
+        String Type = request.getParameter("Type");
+        String Asset_raw = request.getParameter("Asset");
+        String Salary_raw = request.getParameter("Salary");
+        BigDecimal MaxAmount = BigDecimal.ZERO, Asset = BigDecimal.ZERO, Salary = BigDecimal.ZERO;
+        try {
+            Asset = BigDecimal.valueOf(Long.parseLong(Asset_raw));
+            Salary = BigDecimal.valueOf(Long.parseLong(Salary_raw));
+            MaxAmount = ltdao.getMaxAmountForLoan(Type, Asset, Salary);
+        } catch (NumberFormatException e) {
         }
-        String email = request.getParameter("email");
-        sendEmailTools.sendMess(email.trim(), "Verification code from TimiBank", "This code to verify your email: " + pinCode);
-        session.setAttribute("pinCode-" + email, Pair.of(email, pinCode));
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                String email = request.getParameter("email");
-                session.removeAttribute("pinCode-" + email);
-            }
-        };
-        timer.schedule(timerTask, 1000*60*5);
-        response.sendRedirect("/timibank/register-email-check?email=" + email);
+        response.getWriter().write(MaxAmount.toString());
     }
 
     /**
