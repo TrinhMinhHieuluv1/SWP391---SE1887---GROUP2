@@ -252,6 +252,41 @@
         .monthly-table tr:hover {
             background-color: #f1f1f1;
         }
+        #downloadexcel {
+            display: none; /* Ẩn form ban đầu */
+            margin-top: 10px;
+            width: fit-content;
+        }
+
+        /* Toast Message Styles */
+        .toast-message {
+            position: fixed;
+            top: -100px; /* Start above viewport */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transition: top 0.5s ease-in-out;
+        }
+
+        .toast-message.show {
+            top: 20px; /* Slide down to this position */
+        }
+
+        .toast-message i {
+            font-size: 24px;
+        }
+
+
     </style>
 
     <body>
@@ -275,12 +310,21 @@
                 }
                 return true;
             }
+            
+
         </script>
         <div id="smooth-wrapper" class="mil-wrapper">
             <%@ include file="header.jsp"%>
 
             <!-- top panel end -->
-
+            <!--show message-->
+            <c:if test="${not empty sessionScope.message1}">
+                <div id="toastMessage" class="toast-message">
+                    <i class="fa fa-check-circle"></i>
+                    ${sessionScope.message1}
+                </div>
+                <c:remove var="message1" scope="session" />
+            </c:if>
             <!-- content -->
             <div id="smooth-content">
                 <div class="cal-container">
@@ -301,11 +345,39 @@
                     </c:if>
 
                     <div class="cal-content ">
-                        <form action="congcu2" method="post" class="cal-form">
+                        <form action="congcu2"  id="myForm" class="cal-form">
+
+                            <div class="form-group">
+                                <label for="nameLoan" class="form-group__label">Tên Người dùng</label>
+                                <div class="form-group__input-wrap">
+                                    <input type="text" class="form-group__input" id="nameLoan" name="nameLoan" value="${nameLoan}" 
+                                           required>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailLoan" class="form-group__label">Email</label>
+                                <div class="form-group__input-wrap">
+                                    
+
+                                    <input type="email" class="form-group__input" id="emailLoan" name="emailLoan" value="${emailLoan}" 
+                                           required
+                                           pattern="^(?!.*\.\.)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                                           title="Email is invalid"
+                                           oninput="validateEmail()">
+                                    <span id="emailError"  class="sub-text-input"></span>
+                                </div>
+                                          
+                                          
+                                          
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="loanAmount" class="form-group__label">Số tiền vay</label>
                                 <div class="form-group__input-wrap">
-                                    <input type="text" class="form-group__input" id="loanAmount" name="loanAmount" value="${loanAmount}" 
+                                    <input type="text" class="form-group__input" id="loanAmount" name="loanAmount" value="${loanAmount}"  
                                            oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
                                     <span class="sub-text-input">VNĐ</span>
                                 </div>
@@ -345,7 +417,12 @@
                                 </div>
 
                             </div>
-                        
+                            <input type="hidden" name="TotalloanResult" value="${loanResult}" > 
+                            <input type="hidden" name="TotalPayment" value="${total}" >
+                            <input type="hidden" name="dateScheducle" value="${todayhour}" >
+
+
+
                             <div class="form-group">
                                 <label for="disbursementDate" class="form-group__label">Ngày giải ngân</label>
                                 <div class="form-group__input-wrap">
@@ -353,9 +430,15 @@
                                            value="<%= today %>" required> <!-- Hiển thị ngày hiện tại -->
                                 </div>
                             </div>
-                            <button type="submit" class="btn-submit">THỰC HIỆN</button>
+                            <button type="submit"  onclick="setMethod('post')" class="btn-submit">THỰC HIỆN</button>
+
+                            <button type="submit" id="save" onclick="setMethod('get')" class="btn-submit">Click xác nhận để tải thông tin xuống</button>
+
+
                         </form>
-                              <table class="result-table">
+
+
+                        <table class="result-table">
                             <tr>
                                 <th>Số tiền vay</th>
                                 <td>${loanAmount} VNĐ</td>
@@ -386,10 +469,23 @@
                             </tr>
                         </table>
                     </div>
-                            <br><!-- comment -->
+                    <form  action="export" method="get">
+                        <input type="hidden" name="dateScheducle2" value="${dateScheducle2}">
+                        <c:if test="${ms == 'Add sucesslly'}" >
+
+                            <button type="submit" class="btn-submit">Đồng ý tải xuống Excel</button>
+                        </c:if>
+
+                        <br/><!-- comment -->
+                    </form>
+
+
+
+
+                    <br><!-- comment -->
                     <!-- Bảng hiển thị kết quả tổng -->
                     <c:if test="${not empty loanResult}">
-                      
+
 
                         <!-- Bảng chi tiết từng tháng -->
                         <h3>Chi tiết từng tháng</h3>
@@ -411,17 +507,17 @@
                                     <td>${payment.interest} VNĐ</td>
                                     <td>${payment.totalPayment} VNĐ</td>
                                 </tr>
-                               
+
                             </c:forEach>
-                                 <tr>
-                                    <td style="color: red;"> Tổng tiền </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>${loanAmount} VNĐ</td>
-                                    <td>${loanResult} VNĐ</td>
-                                    <td>${total} VNĐ</td>
-                                    
-                                </tr>
+                            <tr>
+                                <td style="color: red;"> Tổng tiền </td>
+                                <td></td>
+                                <td></td>
+                                <td>${loanAmount} VNĐ</td>
+                                <td>${loanResult} VNĐ</td>
+                                <td>${total} VNĐ</td>
+
+                            </tr>
                         </table>
                     </c:if>
                     <div class="details-title">DIỄN GIẢI CHI TIẾT CÁCH TÍNH LÃI SUẤT VAY NGÂN HÀNG:</div>
@@ -477,7 +573,32 @@
                 <!-- footer -->
                 <%@ include file="footer.jsp"%>
                 <!-- footer end -->
+                <script>
+                    function setMethod(method) {
+                        const form = document.getElementById('myForm');
+                        form.method = method; // Cập nhật method cho form
+                    }
+                    // Toast message animation
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const toast = document.getElementById('toastMessage');
+                        if (toast) {
+                            // Show toast
+                            setTimeout(() => {
+                                toast.classList.add('show');
+                            }, 100);
 
+                            // Hide toast after 3 seconds
+                            setTimeout(() => {
+                                toast.classList.remove('show');
+                                // Remove toast from DOM after animation
+                                setTimeout(() => {
+                                    toast.remove();
+                                }, 500);
+                            }, 3000);
+                        }
+                    });
+
+                </script>
             </div>
             <!-- content end -->
         </div>
