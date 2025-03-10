@@ -16,6 +16,8 @@ import model.Salary;
  * @author tiend
  */
 public class SalaryDAO extends DBContext{
+    
+    CustomerDAO customerDAO = new CustomerDAO();
      public List<Salary> selectAllSalary() {
         List<Salary> salarys = new ArrayList<>();
         try {
@@ -27,8 +29,9 @@ public class SalaryDAO extends DBContext{
             while (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
-                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 salary.setImage(resultSet.getString("Image"));
+                salary.setTitle(resultSet.getString("Title"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
                 salary.setComments(resultSet.getString("Comments"));
@@ -45,18 +48,18 @@ public class SalaryDAO extends DBContext{
         return null;
     }
       public boolean updateSalary(Salary salary) {
-        String sql = "UPDATE Salary SET CustomerId = ?, Image = ?, Description = ?, "
-                + "Value = ?,Comments = ?, ValuationAmount = ?, Used = ?, Status = ?,PdfPath=?, CreatedAt = ? WHERE SalaryId = ?";
+        String sql = "UPDATE Salary SET CustomerId = ?, Image = ?, Tilte = ?, Description = ?, "
+                + "Value = ?,Comments = ?, ValuationAmount = ?, Used = ?, Status = ?,CreatedAt = ? WHERE SalaryId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, salary.getCustomerId());
+            pstmt.setInt(1, salary.getCustomer().getCustomerId());
             pstmt.setString(2, salary.getImage());
-            pstmt.setString(3, salary.getDescription());
-            pstmt.setBigDecimal(4, salary.getValue());
-            pstmt.setString(5, salary.getComments());
-            pstmt.setBigDecimal(6, salary.getValuationAmount());
-            pstmt.setBoolean(7, salary.isUsed());
-            pstmt.setString(8, salary.getStatus());
-            pstmt.setString(9, salary.getPdfPath());
+             pstmt.setString(3, salary.getTitle());
+            pstmt.setString(4, salary.getDescription());
+            pstmt.setBigDecimal(5, salary.getValue());
+            pstmt.setString(6, salary.getComments());
+            pstmt.setBigDecimal(7, salary.getValuationAmount());
+            pstmt.setBoolean(8, salary.isUsed());
+            pstmt.setString(9, salary.getStatus());
             pstmt.setTimestamp(10, new java.sql.Timestamp(salary.getCreatedAt().getTime()));
             pstmt.setInt(11, salary.getId());
 
@@ -78,15 +81,15 @@ public class SalaryDAO extends DBContext{
             if (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
-                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 salary.setImage(resultSet.getString("Image"));
+                salary.setTitle(resultSet.getString("Title"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
                 salary.setComments(resultSet.getString("Comments"));
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
-                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 return salary;
             }
@@ -98,23 +101,24 @@ public class SalaryDAO extends DBContext{
     }
  public List<Salary> getSalarySortedByDate(String ascending) throws SQLException {
         List<Salary> salarys = new ArrayList<>();
-        String query = "SELECT * FROM Salary ORDER BY CreatedAt " + ascending;
-
+        String query = "SELECT * FROM Salary s "
+                + " join Customer c on s.CustomerId = c.CustomerId"
+                + " ORDER BY c.CreatedAt " + ascending;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
-                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 salary.setImage(resultSet.getString("Image"));
+                   salary.setTitle(resultSet.getString("Title"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
                 salary.setComments(resultSet.getString("Comments"));
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
-                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -137,15 +141,15 @@ public class SalaryDAO extends DBContext{
             while (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
-                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 salary.setImage(resultSet.getString("Image"));
+                   salary.setTitle(resultSet.getString("Title"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
                 salary.setComments(resultSet.getString("Comments"));
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
-                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -168,15 +172,15 @@ public class SalaryDAO extends DBContext{
             while (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
-                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 salary.setImage(resultSet.getString("Image"));
+                   salary.setTitle(resultSet.getString("Title"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
                 salary.setComments(resultSet.getString("Comments"));
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
-                salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }
@@ -202,15 +206,15 @@ public class SalaryDAO extends DBContext{
             while (resultSet.next()) {
                Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
-                salary.setCustomerId(resultSet.getInt("CustomerId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 salary.setImage(resultSet.getString("Image"));
+                salary.setTitle(resultSet.getString("Title"));
                 salary.setDescription(resultSet.getString("Description"));
                 salary.setValue(resultSet.getBigDecimal("Value"));
                 salary.setComments(resultSet.getString("Comments"));
                 salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 salary.setUsed(resultSet.getBoolean("Used"));
                 salary.setStatus(resultSet.getString("Status"));
-                 salary.setPdfPath(resultSet.getString("PdfPath"));
                 salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 salarys.add(salary);
             }

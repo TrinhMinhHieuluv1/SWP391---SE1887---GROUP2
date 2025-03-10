@@ -17,8 +17,11 @@ import model.Asset;
  */
 public class AssetDAO extends DBContext {
 
+    CustomerDAO customerDAO = new CustomerDAO();
+
     public List<Asset> selectAllAssets() {
         List<Asset> assets = new ArrayList<>();
+
         try {
             String sql = "SELECT  * FROM Asset";
             PreparedStatement st = connection.prepareStatement(sql);
@@ -27,15 +30,15 @@ public class AssetDAO extends DBContext {
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
                 asset.setComments(resultSet.getString("Comments"));
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
-                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -48,19 +51,19 @@ public class AssetDAO extends DBContext {
     }
 
     public boolean updateAsset(Asset asset) {
-        String sql = "UPDATE Asset SET CustomerID = ?, Image = ?, Description = ?, "
+        String sql = "UPDATE Asset SET CustomerID = ?, Image = ?,Title= ?, Description = ?, "
                 + "Value = ?, Comments = ?, ValuationAmount = ?, Used = ?, "
-                + "Status = ?,PdfPath=?, CreatedAt = ? WHERE AssetID = ?";
+                + "Status = ?, CreatedAt = ? WHERE AssetID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, asset.getCustomerId());
+            pstmt.setInt(1, asset.getCustomer().getCustomerId());
             pstmt.setString(2, asset.getImage());
-            pstmt.setString(3, asset.getDescription());
-            pstmt.setBigDecimal(4, asset.getValue());
-            pstmt.setString(5, asset.getComments());
-            pstmt.setBigDecimal(6, asset.getValuationAmount());
-            pstmt.setBoolean(7, asset.isUsed());
-            pstmt.setString(8, asset.getStatus());
-            pstmt.setString(9, asset.getPdfPath());
+            pstmt.setString(3, asset.getTitle());
+            pstmt.setString(4, asset.getDescription());
+            pstmt.setBigDecimal(5, asset.getValue());
+            pstmt.setString(6, asset.getComments());
+            pstmt.setBigDecimal(7, asset.getValuationAmount());
+            pstmt.setBoolean(8, asset.isUsed());
+            pstmt.setString(9, asset.getStatus());
             pstmt.setTimestamp(10, new java.sql.Timestamp(asset.getCreatedAt().getTime()));
             pstmt.setInt(11, asset.getId());
 
@@ -83,18 +86,49 @@ public class AssetDAO extends DBContext {
             if (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
                 asset.setComments(resultSet.getString("Comments"));
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
-                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 return asset;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<Asset> getAssetByCId(int customerId) {
+        List<Asset> assets = new ArrayList<>();
+        String sql = "SELECT * FROM Asset WHERE CustomerID = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,15 +146,15 @@ public class AssetDAO extends DBContext {
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
                 asset.setComments(resultSet.getString("Comments"));
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
-                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -135,23 +169,24 @@ public class AssetDAO extends DBContext {
 
     public List<Asset> getAssetsSortedByDate(String ascending) throws SQLException {
         List<Asset> assets = new ArrayList<>();
-        String query = "SELECT * FROM Asset ORDER BY CreatedAt " + ascending;
-
+        String query = "SELECT a.* FROM Asset a "
+                + " join Customer c on a.CustomerId = c.CustomerId"
+                + " ORDER BY c.CreatedAt  " + ascending;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
                 asset.setComments(resultSet.getString("Comments"));
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
-                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -163,6 +198,7 @@ public class AssetDAO extends DBContext {
         return null;
 
     }
+
     public List<Asset> getAssetsByStatus(String status) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset WHERE Status = ?";
@@ -174,15 +210,15 @@ public class AssetDAO extends DBContext {
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
                 asset.setComments(resultSet.getString("Comments"));
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
-                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -194,6 +230,7 @@ public class AssetDAO extends DBContext {
         return null;
 
     }
+
     public List<Asset> getAssetsByUsed(boolean status) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset WHERE Used = ?";
@@ -205,15 +242,15 @@ public class AssetDAO extends DBContext {
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
                 asset.setComments(resultSet.getString("Comments"));
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
-                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }
@@ -230,24 +267,26 @@ public class AssetDAO extends DBContext {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT a.* FROM Asset a "
                 + " join Customer c on a.CustomerId = c.CustomerId"
-                + " WHERE a.Description LIKE ? or c.FullName LIKE ?";
+                + " WHERE a.Title LIKE ? or c.FullName LIKE ? or c.Email LIKE ? or c.Phone like ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, "%" + description + "%");
             pstmt.setString(2, "%" + description + "%");
+            pstmt.setString(3, "%" + description + "%");
+            pstmt.setString(4, "%" + description + "%");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-                asset.setCustomerId(resultSet.getInt("CustomerId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
                 asset.setValue(resultSet.getBigDecimal("Value"));
                 asset.setComments(resultSet.getString("Comments"));
                 asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
                 asset.setUsed(resultSet.getBoolean("Used"));
                 asset.setStatus(resultSet.getString("Status"));
-                asset.setPdfPath(resultSet.getString("PdfPath"));
                 asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
                 assets.add(asset);
             }

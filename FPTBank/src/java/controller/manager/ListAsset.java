@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.manager;
 
 import dal.AssetDAO;
-import dal.UserDAO;
+import dal.PdfDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,9 +16,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Asset;
+import model.Customer;
+import model.PdfLis;
 
 /**
  *
@@ -66,6 +69,24 @@ public class ListAsset extends HttpServlet {
             throws ServletException, IOException {
         AssetDAO dao = new AssetDAO();
         List<Asset> data = dao.selectAllAssets();
+        descriptionSetup(data);
+        PdfDAO pdfDAO = new PdfDAO();
+
+        Map<Customer, List<Asset>> customerAssetsMap = new HashMap<>();
+        for (Asset asset : data) {
+            List<PdfLis> listPDF = pdfDAO.getpdfByAssetId(asset.getId());
+            asset.setListpdf(listPDF);
+            Customer owner = asset.getCustomer();
+            customerAssetsMap.putIfAbsent(owner, new ArrayList<>());
+            customerAssetsMap.get(owner).add(asset);
+
+        }
+
+        request.setAttribute("customerAssetsMap", customerAssetsMap);
+        request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
+    }
+
+    public void descriptionSetup(List<Asset> data) {
         for (Asset asset : data) {
             StringBuilder result = new StringBuilder();
             String descript = asset.getDescription();
@@ -75,23 +96,7 @@ public class ListAsset extends HttpServlet {
             }
             result.deleteCharAt(result.toString().length() - 1);
             asset.setDescription(result.toString());
-
         }
-        String uploadPath = getServletContext().getRealPath("assetPDF");
-        File uploadDir = new File(uploadPath);
-        String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
-        String assetId = "assetid";
-        List<String> filteredList = new ArrayList<>();
-        for (String filename : filenames) {
-            if (filename.contains(assetId)) {
-                filename = filename.replaceAll(".pdf", "");
-                filename = filename.replaceAll("\\d.*", "");
-                filteredList.add(filename);
-            }
-        }
-        request.setAttribute("filenames", filteredList);
-        request.setAttribute("data", data);
-        request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
     }
 
     /**
@@ -120,10 +125,11 @@ public class ListAsset extends HttpServlet {
                 dao.updateAsset(a);
             }
             if (value != null && !value.isEmpty()) {
-                double va  = Double.parseDouble(value);
+                   String loanAmountStr = value.replace(".", "");
+                double va  = Double.parseDouble(loanAmountStr);
                 a.setValuationAmount(BigDecimal.valueOf(va));
                 dao.updateAsset(a);
-            }else{
+            } else {
                 double valu = Double.parseDouble(a.getValue().toString());
                 a.setValuationAmount(BigDecimal.valueOf(valu));
                 dao.updateAsset(a);
@@ -142,33 +148,22 @@ public class ListAsset extends HttpServlet {
                     //
                     break;
             }
-             List<Asset> data = dao.selectAllAssets();
+            List<Asset> data = dao.selectAllAssets();
+            descriptionSetup(data);
+            PdfDAO pdfDAO = new PdfDAO();
+
+            Map<Customer, List<Asset>> customerAssetsMap = new HashMap<>();
             for (Asset asset : data) {
-                StringBuilder result = new StringBuilder();
-                String descript = asset.getDescription();
-                String[] des = descript.split("\n");
-                for (String de : des) {
-                    result.append(de.trim()).append("<br>-");
-                }
-                result.deleteCharAt(result.toString().length() - 1);
-                asset.setDescription(result.toString());
+                List<PdfLis> listPDF = pdfDAO.getpdfByAssetId(asset.getId());
+                asset.setListpdf(listPDF);
+                Customer owner = asset.getCustomer();
+                customerAssetsMap.putIfAbsent(owner, new ArrayList<>());
+                customerAssetsMap.get(owner).add(asset);
 
             }
-            String uploadPath = getServletContext().getRealPath("assetPDF");
-            File uploadDir = new File(uploadPath);
-            String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
-            String asseti = "assetid";
-            List<String> filteredList = new ArrayList<>();
-            for (String filename : filenames) {
-                if (filename.contains(asseti)) {
-                    filename = filename.replaceAll(".pdf", "");
-                    filename = filename.replaceAll("\\d.*", "");
-                    filteredList.add(filename);
-                }
-            }
-            request.setAttribute("filenames", filteredList);
-           
-            request.setAttribute("data", data);
+
+            request.setAttribute("customerAssetsMap", customerAssetsMap);
+
             request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
 
         } catch (Exception e) {
