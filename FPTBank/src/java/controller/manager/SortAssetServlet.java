@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.manager;
 
-import dal.SalaryDAO;
-import dal.UserDAO;
+import dal.AssetDAO;
+import dal.CustomerDAO;
+import dal.PdfDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,16 +17,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import model.Asset;
-import model.Salary;
+import model.Customer;
+import model.PdfLis;
 
 /**
  *
  * @author tiend
  */
-@WebServlet(name = "SortSalaryServlet", urlPatterns = {"/manager/sortSala"})
-public class SortSalaryServlet extends HttpServlet {
+@WebServlet(name = "SortAssetServlet", urlPatterns = {"/manager/sort"})
+public class SortAssetServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +50,10 @@ public class SortSalaryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SortSalaryServlet</title>");
+            out.println("<title>Servlet SortAssetServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SortSalaryServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SortAssetServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,57 +71,67 @@ public class SortSalaryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SalaryDAO dao = new SalaryDAO();
+        AssetDAO dao = new AssetDAO();
+        PdfDAO pdfDAO = new PdfDAO();
+        String sortOrder = request.getParameter("sortOrder");
         String sortDate = request.getParameter("sortDate");
         String status = request.getParameter("status");
         String use = request.getParameter("used");
         String search = request.getParameter("search");
         try {
-            List<Salary> data = new ArrayList<>();
+            List<Asset> data = new ArrayList<>();
+
             if (sortDate != null) {
-                data = dao.getSalarySortedByDate(sortDate);
-                request.setAttribute("data", data);
+                data = dao.getAssetsSortedByDate(sortDate);
             }
             if (status != null) {
-                data = dao.getSalaryByStatus(status);
-                request.setAttribute("data", data);
+                data = dao.getAssetsByStatus(status);
             }
             if (use != null) {
                 boolean used = Boolean.parseBoolean(use);
-                data = dao.getSalaryByUse(used);
-                request.setAttribute("data", data);
+                data = dao.getAssetsByUsed(used);
             }
             if (search != null && !search.isEmpty()) {
-                data = dao.searchSalaryByDescription(normalizeString(search));
-                request.setAttribute("data", data);
-            } 
-            for (Salary sala : data) {
-                StringBuilder result = new StringBuilder();
-                String descript = sala.getDescription();
-                String[] des = descript.split("\n");
-                for (String de : des) {
-                    result.append(de.trim()).append("<br>-");
-                }
-                result.deleteCharAt(result.toString().length() - 1);
-                sala.setDescription(result.toString());
-
+                search = normalizeString(search);
+                data = dao.searchAssetsByDescription(search);
             }
-            String uploadPath = getServletContext().getRealPath("assetPDF");
-            File uploadDir = new File(uploadPath);
-            String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
-            String salaId = "salaryid";
-            List<String> filteredList = new ArrayList<>();
-            for (String filename : filenames) {
-                if (filename.contains(salaId)) {
-                    filename = filename.replaceAll(".pdf", "");
-                    filename = filename.replaceAll("\\d.*", "");
-                    filteredList.add(filename);
-                }
+            descriptionSetup(data);
+            Map<Customer, List<Asset>> customerAssetsMap = createCustomerAssetsMap(data, pdfDAO);
+            if (sortOrder != null) {
+                data = dao.selectAllAssets();
+                Map<Customer, List<Asset>> customerAssetsMap2 = createCustomerAssetsMap(data, pdfDAO);
+                customerAssetsMap = sortCustomerAssetsMap(customerAssetsMap2, sortOrder);
             }
-            request.setAttribute("filenames", filteredList);
-            request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
+            request.setAttribute("customerAssetsMap", customerAssetsMap);
+            request.getRequestDispatcher("manageAsset.jsp").forward(request, response);
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }
+
+    }
+
+    private Map<Customer, List<Asset>> createCustomerAssetsMap(List<Asset> data, PdfDAO pdfDAO) {
+        Map<Customer, List<Asset>> customerAssetsMap = new HashMap<>();
+        for (Asset asset : data) {
+            List<PdfLis> listPDF = pdfDAO.getpdfByAssetId(asset.getId());
+            asset.setListpdf(listPDF);
+            Customer owner = asset.getCustomer();
+            customerAssetsMap.putIfAbsent(owner, new ArrayList<>());
+            customerAssetsMap.get(owner).add(asset);
+        }
+        return customerAssetsMap;
+    }
+
+    public void descriptionSetup(List<Asset> data) {
+        for (Asset asset : data) {
+            StringBuilder result = new StringBuilder();
+            String descript = asset.getDescription();
+            String[] des = descript.split("\n");
+            for (String de : des) {
+                result.append(de.trim()).append("<br>-");
+            }
+            result.deleteCharAt(result.toString().length() - 1);
+            asset.setDescription(result.toString());
         }
     }
 
@@ -124,6 +140,25 @@ public class SortSalaryServlet extends HttpServlet {
             return "";
         }
         return keyword.trim().replaceAll("\\s+", " ");
+    }
+
+    private Map<Customer, List<Asset>> sortCustomerAssetsMap(Map<Customer, List<Asset>> customerAssetsMap, String sortOrder) {
+        List<Map.Entry<Customer, List<Asset>>> customerList = new ArrayList<>(customerAssetsMap.entrySet());
+
+        // Sắp xếp theo sortOrder
+        if ("asc".equals(sortOrder)) {
+            customerList.sort(Comparator.comparingInt(entry -> entry.getValue().size()));
+        } else if ("desc".equals(sortOrder)) {
+            customerList.sort((entry1, entry2) -> Integer.compare(entry2.getValue().size(), entry1.getValue().size()));
+        }
+
+        // Tạo lại HashMap từ danh sách đã sắp xếp
+        Map<Customer, List<Asset>> sortedCustomerAssetsMap = new LinkedHashMap<>();
+        for (Map.Entry<Customer, List<Asset>> entry : customerList) {
+            sortedCustomerAssetsMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedCustomerAssetsMap;
     }
 
     /**

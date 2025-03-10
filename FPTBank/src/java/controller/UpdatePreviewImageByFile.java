@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
  *
  * @author HP
  */
-@WebServlet(name = "UploadImageToServer", urlPatterns = {"/seller/update-preview-image-by-file"})
+@WebServlet(name = "UploadImageToServer", urlPatterns = {"/update-preview-image-by-file"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 2MB
         maxFileSize = 1024 * 1024 * 100, // 50MB
         maxRequestSize = 1024 * 1024 * 100)
