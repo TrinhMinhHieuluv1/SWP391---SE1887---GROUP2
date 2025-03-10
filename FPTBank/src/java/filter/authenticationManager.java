@@ -44,36 +44,44 @@ public class authenticationManager implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         // Lấy đường dẫn yêu cầu
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-        // Cho phép truy cập tự do đến trang đăng nhập
-        if (path.equals("/home")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
+        // Kiểm tra quyền truy cập nếu đường dẫn thuộc /admin/*
         if (path.startsWith("/manager")) {
             HttpSession session = httpRequest.getSession(false);
 
+            // Kiểm tra nếu session tồn tại và có thông tin account
             if (session != null && session.getAttribute("account") != null) {
-                User user = (User) session.getAttribute("account");
-                if (user.getRoleID()==3) {
-                    chain.doFilter(request, response);
+                Object account = session.getAttribute("account");
+
+                // Kiểm tra account có thuộc kiểu User không
+                if (account instanceof User) {
+                    User user = (User) account;
+
+                    if (user.getRoleID() == 3) {
+                        chain.doFilter(request, response);
+                        return;
+                    }
+
+                    // cho phép admin vào
+                    if (user.getRoleID() == 1) {
+                        chain.doFilter(request, response);
+                        return;
+                    }
+                } else {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/home?RoleErr=true");
                     return;
                 }
-            }else{
-                   httpResponse.sendRedirect(httpRequest.getContextPath() + "/home?RoleErr=true");
-            return;
             }
 
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login?RoleErr=true");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home?RoleErr=true");
             return;
         }
+
         chain.doFilter(request, response);
     }
 

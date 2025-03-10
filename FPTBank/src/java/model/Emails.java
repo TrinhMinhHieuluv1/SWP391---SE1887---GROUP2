@@ -19,8 +19,8 @@ import java.util.Properties;
  * @author tiend
  */
 public class Emails {
-    public static final String pass = "fknt abjo jzsy tjva";
-    public  static final String from="tiendung18112k4@gmail.com";
+    public static final String pass = "gogr xbbh xieg mbmf";
+    public static final String from = "timibank.se1887@gmail.com";
     
     public String to,subject,content;
 
@@ -37,7 +37,7 @@ public class Emails {
         return from;
     }
 
-   
+
 
     public String getTo() {
         return to;
@@ -95,7 +95,7 @@ public class Emails {
             
             return true;
         } catch (Exception e) {
-            System.out.println("Gap loi trong van qua tring gui email");
+            System.out.println("Cann't send email!");
             e.printStackTrace();
             return false;
         }

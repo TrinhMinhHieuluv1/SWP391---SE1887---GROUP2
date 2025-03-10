@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Feedback;
-import org.apache.catalina.ha.ClusterSession;
+
 
 /**
  *
@@ -99,11 +99,17 @@ public class ManageFeedback extends HttpServlet {
             pageSize = numberinpage;
         }
         int totalfeedback = list.size();
+        List<Integer> listint = new ArrayList<>();
+        listint.add((int) Math.ceil((double) totalfeedback / 100 * 10));
+        listint.add((int) Math.ceil((double) totalfeedback / 100 * 30));
+        listint.add((int) Math.ceil((double) totalfeedback / 100 * 50));
+        listint.add((int) Math.ceil((double) totalfeedback / 100 * 70));
+        listint.add((int) Math.ceil((double) totalfeedback / 100 * 100));
         int totalPages = totalfeedback % pageSize == 0? totalfeedback/pageSize: (totalfeedback/pageSize) + 1;
         int start = (page - 1)*pageSize;
         int end = page*pageSize > totalfeedback ? totalfeedback : page*pageSize;
         list = dao.getListByPage(list, start, end);
-        
+        request.setAttribute("listint", listint);
         request.setAttribute("searchKeyword", search_raw);
         request.setAttribute("filterStatus", status_raw);
         request.setAttribute("statusresponse", status_res);

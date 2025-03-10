@@ -73,25 +73,25 @@ public class MyFeedback extends HttpServlet {
         String search = request.getParameter("search");
         String status = request.getParameter("status");
         String number = request.getParameter("pagesize");
-        if( date_raw1 == null){
+        if (date_raw1 == null) {
             date_raw1 = "";
         }
-        if(date_raw2 == null){
+        if (date_raw2 == null) {
             date_raw2 = "";
         }
-        if(date_raw2 == null){
+        if (date_raw2 == null) {
             date_raw2 = "";
         }
-        if(status == null){
+        if (status == null) {
             status = "";
         }
-        if(search == null){
+        if (search == null) {
             search = "";
         }
         int uid = (int) session.getAttribute("uid");
         CustomerDAO cdao = new CustomerDAO();
         FeedbackDAO dao = new FeedbackDAO();
-        List<Feedback> listf = dao.filterFeedback(date_raw1, date_raw2, status, search ,uid);
+        List<Feedback> listf = dao.filterFeedback(date_raw1, date_raw2, status, search, uid);
         int page = 1;
         int pageSize = 5;
         if (request.getParameter("page") != null) {
@@ -100,15 +100,20 @@ public class MyFeedback extends HttpServlet {
         if (number != null && !number.trim().isEmpty()) {
             pageSize = Integer.parseInt(number);
         }
-        
-        
 
         int totalUsers = listf.size();
+        List<Integer> listint = new ArrayList<>();
+        listint.add((int) Math.ceil((double) totalUsers / 100 * 10));
+        listint.add((int) Math.ceil((double) totalUsers / 100 * 30));
+        listint.add((int) Math.ceil((double) totalUsers / 100 * 50));
+        listint.add((int) Math.ceil((double) totalUsers / 100 * 70));
+        listint.add((int) Math.ceil((double) totalUsers / 100 * 100));
 
-        int totalPages = totalUsers % pageSize == 0? totalUsers/pageSize: (totalUsers/pageSize) + 1;
-        int start = (page - 1)*pageSize;
-        int end = page*pageSize > totalUsers ? totalUsers : page*pageSize;
+        int totalPages = totalUsers % pageSize == 0 ? totalUsers / pageSize : (totalUsers / pageSize) + 1;
+        int start = (page - 1) * pageSize;
+        int end = page * pageSize > totalUsers ? totalUsers : page * pageSize;
         listf = dao.getListByPage(listf, start, end);
+        request.setAttribute("listint", listint);
         request.setAttribute("listfeedback", listf);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
@@ -117,7 +122,7 @@ public class MyFeedback extends HttpServlet {
         request.setAttribute("search", search);
         request.setAttribute("status", status);
         request.setAttribute("pagesize", pageSize);
-         request.getRequestDispatcher("feedback.jsp").forward(request, response);
+        request.getRequestDispatcher("feedback.jsp").forward(request, response);
     }
 
     /**

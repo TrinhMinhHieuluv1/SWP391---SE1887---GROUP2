@@ -68,7 +68,7 @@ public class NewsDAO extends DBContext {
 
         //Search by keyword match to author's fullname or news's title
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            sql = sql + " AND ((FullName LIKE N'%" + searchKeyword + "%') OR (n.Title LIKE N'%" + searchKeyword + "%'))";
+            sql = sql + " AND ((u.FullName LIKE N'%" + searchKeyword + "%') OR (n.Title LIKE N'%" + searchKeyword + "%'))";
         }
 
         //Filter by news's status
@@ -130,6 +130,7 @@ public class NewsDAO extends DBContext {
             }
         } catch (SQLException e) {
         }
+        System.out.println(newsList.size());
         return newsList;
     }
 

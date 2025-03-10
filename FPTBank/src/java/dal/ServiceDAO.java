@@ -60,12 +60,4 @@ public class ServiceDAO extends DBContext {
 
         return services;
     }
-
-    public static void main(String[] args) {
-        ServiceDAO dao = new ServiceDAO();
-        List<Service> list = dao.selectALLService();
-        for (Service service : list) {
-            System.out.println(service);
-        }
-    }
 }

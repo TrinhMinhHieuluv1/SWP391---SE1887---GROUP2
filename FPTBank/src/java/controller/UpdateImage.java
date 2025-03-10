@@ -106,11 +106,11 @@ public class UpdateImage extends HttpServlet {
         Part fileImage = request.getPart("image");
         String fileName = fileImage.getSubmittedFileName();
 
-        if (!fileName.endsWith(".jpg")) {
+        if (!fileName.endsWith(".jpg") || fileName == null || fileName.isEmpty()) {
             request.setAttribute("status", false);
             request.setAttribute("error", "Only upload file .jpg");
 
-        }
+        }else
         if (account instanceof User) {
             String source = "img/avatar/" + fileName;
             UserDAO dao = new UserDAO();

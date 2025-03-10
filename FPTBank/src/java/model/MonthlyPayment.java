@@ -52,4 +52,9 @@ public class MonthlyPayment {
     public String getPaymentDate() {
         return paymentDate;
     }
+
+    @Override
+    public String toString() {
+        return "MonthlyPayment{" + "month=" + month + ", remainingPrincipal=" + remainingPrincipal + ", principal=" + principal + ", interest=" + interest + ", totalPayment=" + totalPayment + ", paymentDate=" + paymentDate + '}';
+    }
 }
