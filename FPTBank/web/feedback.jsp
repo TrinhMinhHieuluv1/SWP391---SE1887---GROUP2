@@ -257,9 +257,9 @@
                     <input class="form-control" id="inputFullName" name="search" type="text" style="margin-left: 30px; " placeholder="Searching">
                     <label for="dateInput" style="white-space: nowrap; font-weight: bold;">Number in page:</label>
                     <select class="form-control" id="statusFilter2" name="pagesize">
-                        <option value="5" ${param.pagesize == 5 ?'selected':''}>5</option>
-                        <option value="10" ${param.pagesize == 10 ?'selected':''}>10</option>
-                        <option value="15" ${param.pagesize == 15 ?'selected':''}>15</option>
+                        <c:forEach var="num" items="${requestScope.listint}">
+                            <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
+                        </c:forEach>
                     </select>
 
                     <button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 30px;">Filter</button>
