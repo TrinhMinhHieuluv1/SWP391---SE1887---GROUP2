@@ -200,7 +200,7 @@
                 <span id="imgError" class="error"></span>
             </div>
 
-            
+
             <!-- Email -->
             <div>
                 <label for="mail">Email</label>
@@ -271,7 +271,7 @@
                     <option value="2">Seller</option>
                     <option value="3">Manager</option>
                     <option value="4">Provider Insurance</option>
-                    <option value="5">Customer</option>
+                    <!--                    <option value="5">Customer</option>-->
                 </select>
             </div>
 
@@ -553,7 +553,6 @@
         }
 
 
-
         // Hàm kiểm tra xem tất cả các ô có lỗi hay không
         function validateForm(event) {
             let isValid = true;
@@ -575,12 +574,6 @@
 
         // Lắng nghe sự kiện submit form
         document.querySelector('form').addEventListener('submit', validateForm);
-
-
-
-
-
-
 
     </script>
 

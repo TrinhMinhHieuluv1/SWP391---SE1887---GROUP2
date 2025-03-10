@@ -569,19 +569,21 @@
                                       </ul>
                                     </li>-->
                     <li class="menu-label">UI Elements</li>
-                    <!--                <li>
-                                      <a href="javascript:;" class="has-arrow">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
-                                        </div>
-                                        <div class="menu-title">Widgets</div>
-                                      </a>
-                                      <ul>
-                                        <li> <a href="widget-data.html"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
-                                        </li>
-                                        <li> <a href="widget-static.html"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
-                                        </li>
-                                      </ul>
-                                    </li>-->
+                    <li>
+                        <a href="javascript:;" class="has-arrow">
+                            <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
+                            </div>
+                            <div class="menu-title">Widgets</div>
+                        </a>
+                        <ul>
+                            <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
+                            </li>
+                            <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
                     <li>
                         <a href="javascript:;" class="has-arrow">
                             <div class="parent-icon"><span class="material-symbols-outlined">shopping_cart</span>
@@ -593,16 +595,26 @@
                                                 </li>
                                                 <li> <a href="ecommerce-products.html"><span class="material-symbols-outlined">arrow_right</span>Products</a>
                                                 </li>-->
-                            <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Users</a>
+
+
+                            <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Staffs</a>
+                            <li> <a href="manage_customers"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
+
+
+                                <!--                    </li>
+                                                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
+                                                    </li>
+                                                    <li> <a href="ecommerce-orders.html"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
+                                                    </li>
+                                                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>-->
+
+
                             </li>
-                            <!--                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
-                                                </li>
-                                                <li> <a href="ecommerce-orders.html"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
-                                                </li>
-                                                <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>
-                                                </li>-->
                         </ul>
                     </li>
+
+
+
                     <!--                <li>
                                       <a class="has-arrow" href="javascript:;">
                                         <div class="parent-icon"><span class="material-symbols-outlined">redeem</span>
@@ -644,6 +656,10 @@
                                         </li>
                                       </ul>
                                     </li>-->
+
+
+
+
                     <!--                <li>
                                       <a class="has-arrow" href="javascript:;">
                                         <div class="parent-icon"><span class="material-symbols-outlined">add_reaction</span>
@@ -659,6 +675,7 @@
                                         </li>
                                       </ul>
                                     </li>-->
+
 
 
                     <!--                <li class="menu-label">Forms & Tables</li>
@@ -690,8 +707,10 @@
                                         <li> <a href="form-repeater.html"><span class="material-symbols-outlined">arrow_right</span>Form Repeater</a>
                                         </li>
                                       </ul>
-                                    </li>
-                                    <li>
+                                    </li>-->
+
+
+                    <!--                <li>
                                       <a class="has-arrow" href="javascript:;">
                                         <div class="parent-icon"><span class="material-symbols-outlined">backup_table</span>
                                         </div>
@@ -703,8 +722,10 @@
                                         <li> <a href="table-datatable.html"><span class="material-symbols-outlined">arrow_right</span>Data Table</a>
                                         </li>
                                       </ul>
-                                    </li>
-                                    <li class="menu-label">Pages</li>
+                                    </li>-->
+
+
+                    <!--                <li class="menu-label">Pages</li>
                                     <li>
                                       <a class="has-arrow" href="javascript:;">
                                         <div class="parent-icon"><span class="material-symbols-outlined">lock_open</span>
@@ -737,163 +758,162 @@
                                           </ul>
                                         </li>
                                       </ul>
-                                    </li>
-                                    <li>
-                                      <a href="user-profile.html">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">account_circle</span>
-                                        </div>
-                                        <div class="menu-title">User Profile</div>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a href="timeline.html">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">hotel_class</span>
-                                        </div>
-                                        <div class="menu-title">Timeline</div>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a class="has-arrow" href="javascript:;">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">warning</span>
-                                        </div>
-                                        <div class="menu-title">Errors</div>
-                                      </a>
-                                      <ul>
-                                        <li> <a href="pages-error-403.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>403 Error</a>
-                                        </li>
-                                        <li> <a href="pages-error-404.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>404 Error</a>
-                                        </li>
-                                        <li> <a href="pages-error-500.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>500 Error</a>
-                                        </li>
-                                        <li> <a href="pages-coming-soon.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Coming Soon</a>
-                                        </li>
-                                      </ul>
-                                    </li>
-                                    <li>
-                                      <a href="faq.html">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">call</span>
-                                        </div>
-                                        <div class="menu-title">FAQ</div>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a href="pricing-table.html">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">currency_bitcoin</span>
-                                        </div>
-                                        <div class="menu-title">Pricing</div>
-                                      </a>
-                                    </li>
-                                    <li class="menu-label">Charts & Maps</li>
-                                    <li>
-                                      <a class="has-arrow" href="javascript:;">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
-                                        </div>
-                                        <div class="menu-title">Charts</div>
-                                      </a>
-                                      <ul>
-                                        <li> <a href="charts-apex.html"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
-                                        </li>
-                                        <li> <a href="charts-chartjs.html"><span class="material-symbols-outlined">arrow_right</span>Chartjs</a>
-                                        </li>
-                                      </ul>
-                                    </li>
-                                    <li>
-                                      <a class="has-arrow" href="javascript:;">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">distance</span>
-                                        </div>
-                                        <div class="menu-title">Maps</div>
-                                      </a>
-                                      <ul>
-                                        <li> <a href="map-google-maps.html"><span class="material-symbols-outlined">arrow_right</span>Google Maps</a>
-                                        </li>
-                                        <li> <a href="map-vector-maps.html"><span class="material-symbols-outlined">arrow_right</span>Vector Maps</a>
-                                        </li>
-                                      </ul>
-                                    </li>
-                                    <li class="menu-label">Others</li>
-                                    <li>
-                                      <a class="has-arrow" href="javascript:;">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">toc</span>
-                                        </div>
-                                        <div class="menu-title">Menu Levels</div>
-                                      </a>
-                                      <ul>
-                                        <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level One</a>
-                                          <ul>
-                                            <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Two</a>
-                                              <ul>
-                                                <li> <a href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Three</a>
-                                                </li>
-                                              </ul>
-                                            </li>
-                                          </ul>
-                                        </li>
-                                      </ul>
-                                    </li>
-                                    <li>
-                                      <a href="javascript:;">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">receipt_long</span>
-                                        </div>
-                                        <div class="menu-title">Documentation</div>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a href="javascript:;">
-                                        <div class="parent-icon"><span class="material-symbols-outlined">shop</span>
-                                        </div>
-                                        <div class="menu-title">Support</div>
-                                      </a>
                                     </li>-->
+
+
+                    <!--                                    <li>
+                                                          <a href="user-profile.html">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">account_circle</span>
+                                                            </div>
+                                                            <div class="menu-title">User Profile</div>
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a href="timeline.html">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">hotel_class</span>
+                                                            </div>
+                                                            <div class="menu-title">Timeline</div>
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a class="has-arrow" href="javascript:;">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">warning</span>
+                                                            </div>
+                                                            <div class="menu-title">Errors</div>
+                                                          </a>
+                                                          <ul>
+                                                            <li> <a href="pages-error-403.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>403 Error</a>
+                                                            </li>
+                                                            <li> <a href="pages-error-404.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>404 Error</a>
+                                                            </li>
+                                                            <li> <a href="pages-error-500.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>500 Error</a>
+                                                            </li>
+                                                            <li> <a href="pages-coming-soon.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Coming Soon</a>
+                                                            </li>
+                                                          </ul>
+                                                        </li>
+                                                        <li>
+                                                          <a href="faq.html">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">call</span>
+                                                            </div>
+                                                            <div class="menu-title">FAQ</div>
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a href="pricing-table.html">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">currency_bitcoin</span>
+                                                            </div>
+                                                            <div class="menu-title">Pricing</div>
+                                                          </a>
+                                                        </li>-->
+
+
+                    <li class="menu-label">Charts & Maps</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:;">
+                            <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
+                            </div>
+                            <div class="menu-title">Charts</div>
+                        </a>
+                        <ul>
+                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
+                            </li>
+                            <li> <a href="getData_Cus"><span class="material-symbols-outlined">arrow_right</span>Statistic of customers</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <!--                                    <li>
+                                                          <a class="has-arrow" href="javascript:;">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">distance</span>
+                                                            </div>
+                                                            <div class="menu-title">Maps</div>
+                                                          </a>
+                                                          <ul>
+                                                            <li> <a href="map-google-maps.html"><span class="material-symbols-outlined">arrow_right</span>Google Maps</a>
+                                                            </li>
+                                                            <li> <a href="map-vector-maps.html"><span class="material-symbols-outlined">arrow_right</span>Vector Maps</a>
+                                                            </li>
+                                                          </ul>
+                                                        </li>
+                                                        <li class="menu-label">Others</li>
+                                                        <li>
+                                                          <a class="has-arrow" href="javascript:;">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">toc</span>
+                                                            </div>
+                                                            <div class="menu-title">Menu Levels</div>
+                                                          </a>
+                                                          <ul>
+                                                            <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level One</a>
+                                                              <ul>
+                                                                <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Two</a>
+                                                                  <ul>
+                                                                    <li> <a href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Three</a>
+                                                                    </li>
+                                                                  </ul>
+                                                                </li>
+                                                              </ul>
+                                                            </li>
+                                                          </ul>
+                                                        </li>
+                                                        <li>
+                                                          <a href="javascript:;">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">receipt_long</span>
+                                                            </div>
+                                                            <div class="menu-title">Documentation</div>
+                                                          </a>
+                                                        </li>
+                                                        <li>
+                                                          <a href="javascript:;">
+                                                            <div class="parent-icon"><span class="material-symbols-outlined">shop</span>
+                                                            </div>
+                                                            <div class="menu-title">Support</div>
+                                                          </a>
+                                                        </li>-->
                 </ul>
                 <!--end navigation-->
+
+
             </div>
-
-
-
 
             <div class="sidebar-bottom dropdown dropup-center dropup">
                 <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
                     <div class="user-img">
-                        <img src="${account.getImage()}" alt="Avatar admin"">
+                        <img src="assets/images/avatars/01.png" alt="">
                     </div>
-
-
                     <div class="user-info">
                         <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>
                         <p class="mb-0 user-designation">${sessionScope.account.email}</p>
                     </div>
-
-
                 </div>
+
                 <ul class="dropdown-menu dropdown-menu-end">
 
                     <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
                                 account_circle
                             </span><span>Profile</span></a>
                     </li>
+                    <!--                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
+                                                    tune
+                                                </span><span>Settings</span></a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
+                                                    dashboard
+                                                </span><span>Dashboard</span></a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
+                                                    account_balance
+                                                </span><span>Earnings</span></a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
+                                                    cloud_download
+                                                </span><span>Downloads</span></a>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown-divider mb-0"></div>
+                                        </li>-->
 
-                    <!--                <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                      tune
-                                      </span><span>Settings</span></a>
-                                    </li>-->
-
-                    <!--                <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                      dashboard
-                                      </span><span>Dashboard</span></a>
-                                    </li>-->
-
-                    <!--                <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                      account_balance
-                                      </span><span>Earnings</span></a>
-                                    </li>-->
-
-                    <!--                <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                      cloud_download
-                                      </span><span>Downloads</span></a>
-                                    </li>-->
-                    <!--                <li>
-                                      <div class="dropdown-divider mb-0"></div>
-                                    </li>-->
                     <li><a class="dropdown-item" href="logout"><span class="material-symbols-outlined me-2">
                                 logout
                             </span><span>Logout</span></a>
@@ -914,7 +934,7 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Users</li>
+                            <li class="breadcrumb-item active" aria-current="page">Staffs</li>
                         </ol>
                     </nav>
                 </div>
@@ -947,7 +967,6 @@
                 <a href="filter_roleName?id=2"><span class="me-1">Sellers</span><span class="text-secondary">(${numOfSeller})</span></a>
                 <a href="filter_roleName?id=3"><span class="me-1">Managers</span><span class="text-secondary">(${numOfManager})</span></a>
                 <a href="filter_roleName?id=4"><span class="me-1">Provider Insurances</span><span class="text-secondary">(${numOfProviderInsurance})</span></a>
-                <a href="filter_roleName?id=5"><span class="me-1">Customers</span><span class="text-secondary">(${numOfCustomer})</span></a>
             </div>
 
             <div class="row g-3">
@@ -955,7 +974,7 @@
                     <!-- Search User -->    
                     <div class="col-auto">
                         <form action="search_users" method="GET" class="position-relative">
-                            <input class="form-control px-5" type="search" name="keyword" placeholder="Search Users" value="${keyword}"> 
+                            <input class="form-control px-5" type="search" name="keyword" placeholder="Search staffs" value="${keyword}"> 
                             <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                         </form>
                     </div>
@@ -1016,7 +1035,7 @@
                                 <li><a class="dropdown-item" href="filter_roleName?id=2">Seller</a></li>
                                 <li><a class="dropdown-item" href="filter_roleName?id=3">Manager</a></li>
                                 <li><a class="dropdown-item" href="filter_roleName?id=4">Provider Insurance</a></li>
-                                <li><a class="dropdown-item" href="filter_roleName?id=5">Customer</a></li>
+<!--                                <li><a class="dropdown-item" href="filter_roleName?id=5">Customer</a></li>-->
                                 <!--                                <li><hr class="dropdown-divider"></li>
                                                                 <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
                             </ul>
@@ -1040,9 +1059,8 @@
 
             </div><!--end row-->
 
-
-
-            <form id="entriesForm" action="manage_users" method="GET">
+            
+            <form id="entriesForm" action="manage_users" method="GET" accept-charset="UTF-8">
                 <label for="entries">Show Entries</label>
                 <select id="entries" name="entries" onchange="this.form.submit()">
                     <c:forEach items="${listOfPageSize}" var="ps">
