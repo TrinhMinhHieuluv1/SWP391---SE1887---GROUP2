@@ -3,7 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
+
 //checkvalidate
+function validateEmail() {
+    let username = document.getElementById("emailLoan").value;
+    let errorSpan = document.getElementById("emailError");
+    let pattern = /^(?!.*\.\.)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!pattern.test(username)) {
+        errorSpan.innerText = "Email is invalid";
+        errorSpan.style.color = "red";
+        errorSpan.style.fontSize = "13px";
+    } else {
+        errorSpan.innerText = "";
+    }
+}
+
+
 function validateLoanRate() {
     let username = document.getElementById("loanRate").value;
     let errorSpan = document.getElementById("nameError");
@@ -30,22 +45,7 @@ function validateTerm() {
     }
 }
 
-//thansg
-document.addEventListener("DOMContentLoaded", () => {
-    const selectElement = document.getElementById('numberSelect');
 
-    if (!selectElement) {
-        console.error("Không tìm thấy phần tử có id 'numberSelect'.");
-        return; // Dừng thực thi nếu không tìm thấy phần tử
-    }
-
-    for (let i = 1; i <= 180; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        selectElement.appendChild(option);
-    }
-});
 function load(selector, path) {
     const cached = localStorage.getItem(path);
     if (cached) {
@@ -269,16 +269,7 @@ function createCarousel(sectionId, data) {
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const dateInput = document.getElementById("date");
-    if (dateInput) {
-        dateInput.addEventListener("click", function () {
-            this.showPicker();
-        });
-    } else {
-        console.error('Không tìm thấy phần tử với id="date"');
-    }
-});
+
 
 // Đóng mở modal
 /**
@@ -482,5 +473,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+//thansg
+document.addEventListener("DOMContentLoaded", () => {
+    const selectElement = document.getElementById('numberSelect');
 
+    if (!selectElement) {
+        console.error("Không tìm thấy phần tử có id 'numberSelect'.");
+        return; // Dừng thực thi nếu không tìm thấy phần tử
+    }
+
+    for (let i = 1; i <= 180; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        selectElement.appendChild(option);
+    }
+});
    
+   document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById("date");
+    if (dateInput) {
+        dateInput.addEventListener("click", function () {
+            this.showPicker();
+        });
+    } else {
+        console.error('Không tìm thấy phần tử với id="date"');
+    }
+});

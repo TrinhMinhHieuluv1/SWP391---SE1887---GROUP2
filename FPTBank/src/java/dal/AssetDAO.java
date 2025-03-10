@@ -298,4 +298,36 @@ public class AssetDAO extends DBContext {
         return null;
 
     }
+
+    public List<Asset> getAssetListForCustomer(int CustomerID) {
+        List<Asset> assets = new ArrayList<>();
+
+        try {
+            String sql = "SELECT  * FROM Asset WHERE (CustomerID=?) AND (Used=0) AND (Status='Approved')";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, CustomerID);
+            ResultSet resultSet = st.executeQuery();
+
+            while (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

@@ -51,8 +51,8 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    
-    public List<Customer> selectAllCustomer(){
+
+    public List<Customer> selectAllCustomer() {
         List<Customer> cList = new ArrayList<>();
         String sql = "SELECT * FROM Customer";
         try {
@@ -81,8 +81,32 @@ public class CustomerDAO extends DBContext {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }       
+        }
         return cList;
+    }
+    
+    public void addACustomer(Customer customerToAdd) {
+        String sql = "INSERT INTO [dbo].[Customer] (Username, [Password], FullName, [Image], Phone, Email, DateOfBirth, Gender, Address, CCCD, CreditScore, Balance, RoleID, Status) VALUES "
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, customerToAdd.getUsername());
+            st.setString(2, customerToAdd.getPassword());
+            st.setString(3, customerToAdd.getFullName());
+            st.setString(4, customerToAdd.getImage());
+            st.setString(5, customerToAdd.getPhone());
+            st.setString(6, customerToAdd.getEmail());
+            st.setDate(7, customerToAdd.getDateOfBirth());
+            st.setBoolean(8, customerToAdd.isGender());
+            st.setString(9, customerToAdd.getAddress());
+            st.setString(10, customerToAdd.getCCCD());
+            st.setInt(11, customerToAdd.getCreditScore());
+            st.setBigDecimal(12, customerToAdd.getBalance());
+            st.setInt(13, 5);
+            st.setBoolean(14, customerToAdd.isStatus());
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
     }
 
     public void updateACustomer(Customer customerToUpdate) {
@@ -94,7 +118,7 @@ public class CustomerDAO extends DBContext {
             st.setString(3, customerToUpdate.getImage());
             st.setString(4, customerToUpdate.getPhone());
             st.setString(5, customerToUpdate.getEmail());
-            st.setDate(6, (Date) customerToUpdate.getDateOfBirth());
+            st.setDate(6, customerToUpdate.getDateOfBirth());
             st.setBoolean(7, customerToUpdate.isGender());
             st.setString(8, customerToUpdate.getAddress());
             st.setString(9, customerToUpdate.getCCCD());
@@ -182,7 +206,7 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace(); // Hoặc dùng logger để ghi log lỗi
         }
     }
-    
+
     public Customer selectCustomerByConditions(int id, String Username, String Phone, String Email) {
         String sql = "SELECT * FROM [Customer] WHERE 1=1";
         if (id != 0) {
@@ -226,4 +250,262 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
+
+    public ArrayList<Customer> getListCustomerByPage(int page, int pageSize) {
+        ArrayList<Customer> listCustomer = new ArrayList<>();
+        String sql = "select * from [Customer] order by [CustomerID] offset ? rows fetch next ? rows only";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, (page - 1) * pageSize);
+            stmt.setInt(2, pageSize);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer(
+                        rs.getInt("CustomerId"),
+                        rs.getInt("CreditScore"),
+                        rs.getInt("RoleID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getDate("CreatedAt"),
+                        rs.getBoolean("Gender"),
+                        rs.getBoolean("Status"),
+                        rs.getBigDecimal("Balance")
+                );
+
+                listCustomer.add(customer);
+
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listCustomer;
+    }
+
+    // sort list user by fullname/created at/Credit Score
+    public List<Customer> sortListCustomer(String sortBy, String typeOfSort, int page, int pageSize) {
+        List<Customer> listCustomer = new ArrayList<>();
+
+        String column;
+        if (sortBy.equalsIgnoreCase("CreatedAt")) {
+            column = "CreatedAt";
+        } else if (sortBy.equalsIgnoreCase("CreditScore")) {
+            column = "CreditScore";
+        } else {
+            column = "FullName";
+        }
+        String order = typeOfSort.equalsIgnoreCase("asc") ? "ASC" : "DESC";
+
+        String sql = "SELECT * FROM [dbo].[Customer] ORDER BY " + column + " " + order
+                + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, (page - 1) * pageSize); // Số dòng cần bỏ qua
+            st.setInt(2, pageSize); // Số lượng user trên mỗi trang
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Customer customer = new Customer(
+                        rs.getInt("CustomerId"),
+                        rs.getInt("CreditScore"),
+                        rs.getInt("RoleID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getDate("CreatedAt"),
+                        rs.getBoolean("Gender"),
+                        rs.getBoolean("Status"),
+                        rs.getBigDecimal("Balance")
+                );
+                listCustomer.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCustomer;
+    }
+
+    public List<Customer> filterListUser(String filterType, int filterValue, int page, int pageSize) {
+        List<Customer> listCustomer = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[Customer] "
+                + "WHERE " + filterType + " = ? "
+                + "ORDER BY [CustomerID] "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setInt(1, filterValue);
+            st.setInt(2, (page - 1) * pageSize);
+            st.setInt(3, pageSize);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Customer customer = new Customer(
+                        rs.getInt("CustomerId"),
+                        rs.getInt("CreditScore"),
+                        rs.getInt("RoleID"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"),
+                        rs.getString("Phone"),
+                        rs.getString("Email"),
+                        rs.getString("Address"),
+                        rs.getString("CCCD"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getDate("CreatedAt"),
+                        rs.getBoolean("Gender"),
+                        rs.getBoolean("Status"),
+                        rs.getBigDecimal("Balance")
+                );
+                listCustomer.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCustomer;
+    }
+
+    public int getTotalCustomer(String fieldName, Integer fieldValue) {
+        String sql = "SELECT count(*) FROM [dbo].[Customer]";
+        // Nếu có điều kiện lọc, thêm WHERE vào SQL
+        if (fieldName != null && fieldName != null) {
+            sql += " WHERE " + fieldName + " = ?";
+        }
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            // Nếu có điều kiện lọc, set giá trị tham số
+            if (fieldValue != null && fieldValue != null) {
+                stmt.setInt(1, fieldValue);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Customer> searchCustomers(String keyword, int page, int pageSize) {
+        List<Customer> listCustomers = new ArrayList<>();
+
+        String sql = """
+         SELECT * FROM [dbo].[Customer] 
+         WHERE Username LIKE ? 
+            OR FullName LIKE ? 
+            OR Email LIKE ? 
+            OR Phone LIKE ? 
+            OR FORMAT([DateOfBirth], 'dd-MM-yyyy') LIKE ?
+            OR Gender = CASE 
+                           WHEN ? = 'male' THEN 1 
+                           WHEN ? = 'female' THEN 0 
+                        END
+            OR [CCCD] LIKE ? 
+            OR Address LIKE ?
+            OR FORMAT(CreatedAt, 'dd-MM-yyyy') LIKE ?
+         ORDER BY [CustomerID] 
+         OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+    """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            for (int i = 1; i <= 5; i++) {
+                st.setString(i, "%" + keyword + "%");
+            }
+            st.setString(6, keyword); // Gender
+            st.setString(7, keyword); // Gender
+            st.setString(8, "%" + keyword + "%");
+            st.setString(9, "%" + keyword + "%");
+            st.setString(10, "%" + keyword + "%");
+            st.setInt(11, (page - 1) * pageSize);
+            st.setInt(12, pageSize);
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Customer customer = new Customer(
+                            rs.getInt("CustomerId"),
+                            rs.getInt("CreditScore"),
+                            rs.getInt("RoleID"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("FullName"),
+                            rs.getString("Image"),
+                            rs.getString("Phone"),
+                            rs.getString("Email"),
+                            rs.getString("Address"),
+                            rs.getString("CCCD"),
+                            rs.getDate("DateOfBirth"),
+                            rs.getDate("CreatedAt"),
+                            rs.getBoolean("Gender"),
+                            rs.getBoolean("Status"),
+                            rs.getBigDecimal("Balance")
+                    );
+
+                    listCustomers.add(customer);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listCustomers;
+    }
+
+    public int getTotalCustomerAfterSearching(String keyword) {
+        String sql = """
+         SELECT COUNT(*) FROM [dbo].[Customer] 
+         WHERE Username LIKE ? 
+            OR FullName LIKE ? 
+            OR Email LIKE ? 
+            OR Phone LIKE ? 
+            OR FORMAT([DateOfBirth], 'dd-MM-yyyy') LIKE ?
+            OR Gender = CASE 
+                           WHEN ? = 'male' THEN 1 
+                           WHEN ? = 'female' THEN 0 
+                        END
+            OR [CCCD] LIKE ? 
+            OR Address LIKE ?
+            OR FORMAT(CreatedAt, 'dd-MM-yyyy') LIKE ?
+    """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            for (int i = 1; i <= 5; i++) {
+                stmt.setString(i, "%" + keyword + "%");
+            }
+            stmt.setString(6, keyword); // Gender
+            stmt.setString(7, keyword); // Gender
+            stmt.setString(8, "%" + keyword + "%");
+            stmt.setString(9, "%" + keyword + "%");
+            stmt.setString(10, "%" + keyword + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return 0;
+    }
+
 }

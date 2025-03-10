@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         version="6.0">
-    
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <filter>
         <filter-name>authentication</filter-name>
         <filter-class>filter.authentication</filter-class>
@@ -12,6 +7,14 @@
     <filter-mapping>
         <filter-name>authentication</filter-name>
         <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>RequireEmailToCustomer</filter-name>
+        <filter-class>filter.RequireEmailToCustomer</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RequireEmailToCustomer</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     
     <filter>
@@ -22,7 +25,6 @@
         <filter-name>authenticationManager</filter-name>
         <url-pattern>/manager/*</url-pattern>
     </filter-mapping>
-    
     <filter>
         <filter-name>authenticationSeller</filter-name>
         <filter-class>filter.authenticationSeller</filter-class>
@@ -31,7 +33,14 @@
         <filter-name>authenticationSeller</filter-name>
         <url-pattern>/seller/*</url-pattern>
     </filter-mapping>
-    
+    <filter>
+        <filter-name>AuthenticationInsuran</filter-name>
+        <filter-class>filter.authenticationInsurance</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationInsuran</filter-name>
+        <url-pattern>/insurance/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>congcu</servlet-name>
         <servlet-class>controller.calSaving</servlet-class>
@@ -40,7 +49,7 @@
         <servlet-name>congcu2</servlet-name>
         <servlet-class>controller.calLoan</servlet-class>
     </servlet>
-<!--    <servlet>
+    <!--    <servlet>
         <servlet-name>tinhvay</servlet-name>
         <servlet-class>controller.tinhvay</servlet-class>
     </servlet>-->
@@ -60,7 +69,7 @@
         <servlet-name>congcu2</servlet-name>
         <url-pattern>/congcu2</url-pattern>
     </servlet-mapping>
-<!--    <servlet-mapping>
+    <!--    <servlet-mapping>
         <servlet-name>tinhvay</servlet-name>
         <url-pattern>/tinhvay</url-pattern>
     </servlet-mapping>-->
