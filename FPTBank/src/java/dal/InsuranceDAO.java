@@ -126,6 +126,18 @@ public class InsuranceDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, insuranceID);
+
+    public void updateInsurance(Insurance insurance) {
+        String sql = "UPDATE Insurance SET ProviderID=?, Type=?, FeeRate=?, CoverageRate=?, MaxAmountOfLoan=?, Status=? WHERE InsuranceID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, insurance.getProviderID());
+            st.setString(2, insurance.getType());
+            st.setFloat(3, insurance.getFeeRate());
+            st.setFloat(4, insurance.getCoverageRate());
+            st.setDouble(5, insurance.getMaxAmountOfLoan());
+            st.setBoolean(6, insurance.isStatus());
+            st.setInt(7, insurance.getInsuranceID());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -474,4 +486,14 @@ public boolean updateInsurance(Insurance insurance) {
       
 
 }
+    public void deleteInsurance(int insuranceID) {
+        String sql = "DELETE FROM Insurance WHERE InsuranceID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, insuranceID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

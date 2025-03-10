@@ -346,13 +346,4 @@ public class FAQDAO extends DBContext {
         return listFAQ;
     }
 
-    public static void main(String[] args) {
-        FAQDAO fdao = new FAQDAO();
-
-        FAQ newFAQ = fdao.getFAQByID(23);
-
-        fdao.updateFAQ(newFAQ);
-
-    }
-
 }

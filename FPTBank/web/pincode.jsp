@@ -67,7 +67,12 @@
             <h2>Enter Verification Code</h2>
             <h4>Your verification code is sent via to email</h4>
             <h4>${requestScope.emailr}</h4>
-            <form action="checkPin" method="POST">
+            <c:if test="${requestScope.registerEmail == true}">
+                <form action="register-email-check" method="POST">
+            </c:if>
+            <c:if test="${requestScope.registerEmail != true}">
+                <form action="checkPin" method="POST">
+            </c:if>
                 <div class="input-group">
                     <input type="text" name="pin1" maxlength="1" oninput="moveFocus(this)">
                     <input type="text" name="pin2" maxlength="1" oninput="moveFocus(this)">

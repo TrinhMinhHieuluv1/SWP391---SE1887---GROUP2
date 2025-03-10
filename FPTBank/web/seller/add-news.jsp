@@ -156,7 +156,7 @@
     </head>
     <body>
         <div class="container">
-            <form action="add-news" method="post" class="update-form" onsubmit="return prepareSubmit()" enctype="multipart/form-data">
+            <form action="add-news" method="post" class="update-form" onsubmit="prepareSubmit(event)" enctype="multipart/form-data">
                 <div class="form-header">
                     <h1 class="form-title">Add News</h1>
                 </div>
@@ -171,7 +171,8 @@
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" name="Title" 
-                           class="form-control" required>
+                           class="form-control" required onchange="validateTitle()">
+                    <div id="title-err" style="color: red; display: none">Title can't be empty or only contain space. Try again!</div>
                 </div>
 
                 <div class="form-group">
@@ -184,6 +185,7 @@
                     <label for="url-image">Image URL</label>
                     <input type="text" id="url-image" name="url-image" 
                            class="form-control" required onchange="updateImagePreviewByUrl(this.value)"><br><br>
+                    <div id="URL-err" style="color: red; display: none">URL must end with '.jpg' or '.png'</div>
                     <input id="file-image" type="file" name="file-image" accept="image/jpeg, image/png" required onchange="updateImagePreviewByFile()"><br>
                     <img id="imagePreview" src="" class="image-preview">
                 </div>
@@ -216,6 +218,7 @@
             // Function to update image preview
             function updateImagePreviewByUrl(url) {
                 const preview = document.getElementById('imagePreview');
+                validateURL(url);
                 preview.src = url.replaceAll('//', '/');
                 document.getElementById('file-image').value = '';
                 document.getElementById('file-image').removeAttribute('required');
@@ -247,8 +250,32 @@
 
             }
 
+            function validateTitle() {
+                const title = document.getElementById('title').value;
+                const title_err = document.getElementById('title-err');
+                if (title.trim() !== '' && title.length!==0) {
+                    title_err.style.display = 'none';
+                    return true;
+                } else {
+                    title_err.style.display = 'block';
+                    return false;
+                }
+            }
+
+            function validateURL() {
+                const url = document.getElementById('url-image').value;
+                const URL_err = document.getElementById('URL-err');
+                if (url.endsWith('.jpg') || url.endsWith('.png')) {
+                    URL_err.style.display = 'none';
+                    return true;
+                } else {
+                    URL_err.style.display = 'block';
+                    return false;
+                }
+            }
+
             // Prepare form submission
-            function prepareSubmit() {
+            function prepareSubmit(event) {
                 // Get CKEditor content
                 const description = CKEDITOR.instances.description.getData();
 
@@ -257,7 +284,14 @@
 
                 // Set cleaned description directly to textarea
                 CKEDITOR.instances.description.setData(cleanDescription);
-
+                if (validateURL() === false) {
+                    alert("URL must end with '.jpg' or '.png'. Try again!");
+                    event.preventDefault();
+                }
+                if (validateTitle() === false) {
+                    alert("Title can't be empty or only contain space. Try again!");
+                    event.preventDefault();
+                }
             }
         </script>
     </body>
