@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
@@ -51,13 +52,15 @@ public class ManagementUsers extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
         // get page size for each percent (10%,30%,50%,70%)
         List<Integer> listOfPageSize = calculatePageSize();
 
         int page = 1; // trang đầu tiên
         int pageSize = listOfPageSize.get(0); // gán page size mặc định lúc đầu = 10% of total user
-        
+
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
@@ -80,7 +83,10 @@ public class ManagementUsers extends HttpServlet {
         if (handleRequestParameter(request, response, "idOfRole", "filter_roleName?idOfRole=", pageSize)) {
             return;
         }
-        if (handleRequestParameter(request, response, "keyword", "search_users?key=", pageSize)) {
+        if (request.getParameter("keyword") != null && !request.getParameter("keyword").isEmpty()) {
+            request.getSession().setAttribute("entries", pageSize);
+            String encodedKeyword = URLEncoder.encode(request.getParameter("keyword"), "UTF-8");
+            response.sendRedirect("search_users?key=" + encodedKeyword);
             return;
         }
 
