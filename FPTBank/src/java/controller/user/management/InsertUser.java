@@ -20,8 +20,8 @@ import utils.ImageUploadUtil;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50 // 50MB
+        maxFileSize = 1024 * 1024 * 50, // 50MB
+        maxRequestSize = 1024 * 1024 * 100 // 100MB
 )
 
 @WebServlet(name = "InsertUser", urlPatterns = {"/admin/insert_users"})
@@ -45,7 +45,6 @@ public class InsertUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         // get list manager
         List<User> listManager = userDao.selectAllUsersByRole(3);
 
@@ -65,17 +64,19 @@ public class InsertUser extends HttpServlet {
             throws ServletException, IOException {
 
         String pathHost = getServletContext().getRealPath("");
-
         String finalPath = pathHost.replace("build\\", "");
         String uploadPath = finalPath + "uploads";
 
         String fileName = ImageUploadUtil.uploadImage(request, "img", uploadPath);
-        String img;
+        String img ="";
 
-        if (fileName != null) {
+        if (fileName != null && !fileName.startsWith("Invalid") && !fileName.startsWith("No") && !fileName.startsWith("Error")) {
             img = "../uploads/" + fileName;
-        } else {
-            request.getSession().setAttribute("error", "File upload failed!");
+        }
+        if (fileName == null) {
+            String errorMessage;
+            errorMessage = "File upload failed! Please try again.";
+            request.getSession().setAttribute("error", errorMessage);
             response.sendRedirect("insert_users");
             return;
         }
@@ -118,15 +119,43 @@ public class InsertUser extends HttpServlet {
 
         // add user
         User userToAdd = new User(0, username, password, name, img, phone, email, dob, isMale, address, cccd, roleID, true, manager, null);
-
-        // check file upload
-        if (fileName.equals("No file found !!")) {
-            request.getSession().setAttribute("error", "No file found !!");
-            request.getSession().setAttribute("userToAdd", userToAdd);
-            String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
-            request.getSession().setAttribute("dateOfBirth", dateOfBirth);
-            response.sendRedirect("insert_users");
-            return;
+        
+        // check file name extension
+        String errorMessage;
+        if (fileName != null) {
+            if (fileName.startsWith("Invalid file format")) {
+                errorMessage = "Invalid file format! Please upload only .jpg, .jpeg, or .png files.";
+                request.getSession().setAttribute("error", errorMessage);
+                request.getSession().setAttribute("userToAdd", userToAdd);
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            } else if (fileName.startsWith("File size exceeds")) {
+                errorMessage = "File size exceeds 10MB limit! Please select a smaller file.";
+                request.getSession().setAttribute("error", errorMessage);
+                request.getSession().setAttribute("userToAdd", userToAdd);
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            } else if (fileName.startsWith("No file found")) {
+                errorMessage = "No file found! Please select a file to upload.";
+                request.getSession().setAttribute("error", errorMessage);
+                request.getSession().setAttribute("userToAdd", userToAdd);
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            } else if (fileName.startsWith("Error uploading")) {
+                errorMessage = "Failed to upload file. Please try again later: " + fileName.substring("Error uploading file: ".length());
+                request.getSession().setAttribute("error", errorMessage);
+                request.getSession().setAttribute("userToAdd", userToAdd);
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            }
         }
 
         // check for seller
@@ -163,6 +192,46 @@ public class InsertUser extends HttpServlet {
                     }
                 }
             }
+            case 2 -> {
+                request.getSession().setAttribute("error", "Username already exists. Please enter another Username !!");
+                request.getSession().setAttribute("userToAdd", userToAdd);
+
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            }
+
+            case 3 -> {
+                request.getSession().setAttribute("error", "CCCD already exists. Please enter another CCCD !!");
+                request.getSession().setAttribute("userToAdd", userToAdd);
+
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            }
+
+            case 4 -> {
+                request.getSession().setAttribute("error", "Email already exists. Please enter another email !!");
+                request.getSession().setAttribute("userToAdd", userToAdd);
+
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            }
+
+            case 5 -> {
+                request.getSession().setAttribute("error", "Phone number already exists. Please enter another phone number !!");
+                request.getSession().setAttribute("userToAdd", userToAdd);
+
+                String dateOfBirth = setDateOfBirthToString(userToAdd.getDateOfBirth());
+                request.getSession().setAttribute("dateOfBirth", dateOfBirth);
+                response.sendRedirect("insert_users");
+                return;
+            }
+
             case 0 -> {
                 request.getSession().setAttribute("error", "Insert fail !!");
             }

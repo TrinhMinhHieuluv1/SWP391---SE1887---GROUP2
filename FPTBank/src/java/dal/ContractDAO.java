@@ -1,11 +1,13 @@
 package dal;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import model.Contract;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Insurance;
 
 public class ContractDAO extends DBContext {
 

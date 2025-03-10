@@ -77,7 +77,7 @@ public class SearchUsers extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
 
-        request.setAttribute("keyword", keyword_raw);
+        request.setAttribute("keyword", keyword);
         request.setAttribute("listUsers", listUsers);
 
         request.getRequestDispatcher("ManagementUsers.jsp").forward(request, response);

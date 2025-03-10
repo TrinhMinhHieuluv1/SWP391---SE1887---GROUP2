@@ -54,32 +54,22 @@ public class authenticationInsurance implements Filter {
         // Lấy đường dẫn yêu cầu
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-        // Log đường dẫn để kiểm tra
-        System.out.println("Path: " + path);
-
-        // Kiểm tra quyền truy cập nếu đường dẫn thuộc /insuran/*
+        // Kiểm tra quyền truy cập nếu đường dẫn thuộc /admin/*
         if (path.startsWith("/insurance")) {
             HttpSession session = httpRequest.getSession(false);
-
-            // Log session để kiểm tra
-            System.out.println("Session: " + session);
-
             // Kiểm tra nếu session tồn tại và có thông tin account
             if (session != null && session.getAttribute("account") != null) {
                 Object account = session.getAttribute("account");
-
-                // Log account để kiểm tra
-                System.out.println("Account: " + account);
-
                 // Kiểm tra account có thuộc kiểu User không
                 if (account instanceof User) {
                     User user = (User) account;
-
-                    // Log roleID để kiểm tra
-                    System.out.println("RoleID: " + user.getRoleID());
-
-                    // Nếu là admin (RoledID = 4), tiếp tục xử lý
                     if (user.getRoleID() == 4) {
+                        chain.doFilter(request, response);
+                        return;
+                    }
+
+                    // cho phép admin vào
+                    if (user.getRoleID() == 1) {
                         chain.doFilter(request, response);
                         return;
                     }
@@ -90,11 +80,8 @@ public class authenticationInsurance implements Filter {
             }
 
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/home?RoleErr=true");
-
             return;
         }
-
-        // Nếu không phải đường dẫn /insuran/*, tiếp tục xử lý bình thường
         chain.doFilter(request, response);
     }
 

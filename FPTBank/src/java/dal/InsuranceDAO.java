@@ -126,7 +126,6 @@ public class InsuranceDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, insuranceID);
-
     public void updateInsurance(Insurance insurance) {
         String sql = "UPDATE Insurance SET ProviderID=?, Type=?, FeeRate=?, CoverageRate=?, MaxAmountOfLoan=?, Status=? WHERE InsuranceID=?";
         try {
@@ -486,6 +485,7 @@ public boolean updateInsurance(Insurance insurance) {
       
 
 }
+
     public void deleteInsurance(int insuranceID) {
         String sql = "DELETE FROM Insurance WHERE InsuranceID = ?";
         try {
