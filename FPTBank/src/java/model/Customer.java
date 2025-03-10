@@ -6,6 +6,7 @@ package model;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Objects;
 
 /**
  *
@@ -174,7 +175,18 @@ public class Customer {
     public void setBalance(BigDecimal Balance) {
         this.Balance = Balance;
     }
+ @Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Customer customer = (Customer) obj;
+    return Objects.equals(CustomerId, customer.CustomerId); // So sánh theo ID
+}
 
+@Override
+public int hashCode() {
+    return Objects.hash(CustomerId); // Sử dụng ID để tính toán hash
+}
     @Override
     public String toString() {
         return "Customer{" + "CustomerId=" + CustomerId + ", CreditScore=" + CreditScore + ", RoleID=" + RoleID + ", Username=" + Username + ", Password=" + Password + ", FullName=" + FullName + ", Image=" + Image + ", Phone=" + Phone + ", Email=" + Email + ", Address=" + Address + ", CCCD=" + CCCD + ", DateOfBirth=" + DateOfBirth + ", CreatedAt=" + CreatedAt + ", Gender=" + Gender + ", Status=" + Status + ", Balance=" + Balance + '}';

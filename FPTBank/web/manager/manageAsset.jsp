@@ -6,7 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@page import="com.google.gson.Gson" %>
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en" data-bs-theme="light">
     <head>
@@ -34,19 +37,127 @@
         <link href="assets/css/minimal-theme.css" rel="stylesheet">
         <link href="assets/css/shadow-theme.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        
+
         <style>
-            detail-icon {
+
+            :root {
+                --primary-green: #006837;    /* Xanh lá đậm (tông màu chuyên nghiệp) */
+                --secondary-green: #4CAF50;  /* Xanh lá sáng cho tương tác */
+                --accent-gold: #FFD700;      /* Vàng kim loại nhấn */
+                --text-dark: #2C3E50;        /* Chữ chính - Xám đậm */
+                --background-light: #F0FAF0; /* Nền xanh lá nhạt */
+                --border-green: #C8E6C9;     /* Viền xanh nhạt */
+            }
+
+            thead.table-light th {
+                color: #2C3E50;
+                align-items: center;
+                justify-content: center;
+                text-shadow: 0 2px 4px rgba(0, 60, 30, 0.4);
+                position: relative;
+            }
+
+
+
+            /* ========== CUSTOMER ROWS ========== */
+            tr.customer-row {
+                background-color: white;
+                border-left: 5px solid var(--primary-green);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                width: 100%;
+                max-width: 1200px; /* Hoặc giá trị cụ thể như 1200px */
+                table-layout: fixed;
+                box-sizing: border-box;
+            }
+
+            tr.customer-row:hover {
+                transform: translateX(10px);
+                box-shadow: 0 4px 15px rgba(0, 104, 55, 0.1);
+                background-color: #F8FFF8;
+                display: table-row; /* Khôi phục lại display mặc định */
+                width: auto;
+            }
+
+            tr.customer-row td {
+                padding: 1.5rem 2.5rem;  /* Tăng 35% */
+                font-size: 1.0rem;  /* ~20.7px */
+                line-height: 1.9;
+                color: var(--text-dark);
+                border-bottom: 1px solid var(--border-green);
+            }
+
+            /* ========== ASSET LIST ========== */
+            .asset-list {
+                background-color: var(--background-light);
+                border-width: 4px;
+                border: 2px solid var(--border-green);
+                width: 1150px;
+                max-width: none; /* Xóa giới hạn max-width */
+                margin: 2rem 0; /* Điều chỉnh margin */
+                border-radius: 0; /* Xóa bo góc nếu cần */
+                box-shadow: inset 0 2px 4px rgba(0, 104, 55, 0.05);
+            }
+
+            .asset-list th {
+                padding: 1.5rem 2rem;
+                font-size: 1.0rem;
+                background-color: #E8F5E9;
+                color: var(--primary-green);
+            }
+
+            /* ========== INTERACTIVE ELEMENTS ========== */
+            .detail-icon {
+                font-size: 1.3rem;
+                pointer-events: auto;
                 cursor: pointer;
-                color: #007bff;
-                font-size: 1.2em;
-                transition: color 0.3s ease;
+                margin: 0 1rem;
+                color: var(--primary-green);
+                transition: all 0.3s ease;
             }
 
             .detail-icon:hover {
-                color: #0056b3;
+                color: var(--secondary-green);
+                transform: scale(1.2);
             }
 
+            button[type="submit"] {
+                background: var(--secondary-green);
+                color: white;
+                padding: 10px 10px;
+                padding: 0.6rem 1.7rem;
+                font-size: 0.7rem;
+                box-shadow: 0 4px 6px rgba(76, 175, 80, 0.2);
+                transition: all 0.3s ease;
+            }
+
+            button[type="submit"]:hover {
+                background: #45A049;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 8px rgba(76, 175, 80, 0.3);
+            }
+
+            .table td, .table th {
+                vertical-align: middle;
+                padding: 0.75rem;
+            }
+
+
+            .text-truncate {
+                max-width: 150px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .form-control-sm {
+                min-height: 30px;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .badge {
+                font-weight: 500;
+                padding: 0.5em 0.75em;
+            }
             .modal {
                 display: none; /* Ẩn modal mặc định */
                 position: fixed; /* Cố định vị trí */
@@ -99,7 +210,6 @@
                 object-fit: cover;
                 border-radius: 8px;
             }
-
             .modal-info {
                 flex: 1;
             }
@@ -107,59 +217,24 @@
             .modal-info p {
                 margin: 10px 0;
             }
-            /*            #modalImage {
-                            width: 100%;
-                            height: auto;
-                            align-items: center;
-                            justify-content: center;
-                            border-radius: 8px;
-                            margin-bottom: 15px;
-                        }*/
-
             #modalDescription,
             #modalValue,
             #modalDate {
                 font-size: 1em;
                 margin: 10px 0;
             }
-            .form-control {
-                width: 80%;
-                padding: 5px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 14px;
-            }
-            .comment-input {
-                width: 100%;
-                height: 50px;
-                padding: 10px;
-                border: 1px solid #ced4da;
-                border-radius: 5px;
-                resize: none; /* Không cho phép thay đổi kích thước */
-                font-size: 16px;
-            }
-            .comment-input:focus {
-                border-color: #80bdff;
-                outline: none;
+            .pdf-link {
+                color: #e74c3c;
+                text-decoration: none;
             }
 
+            .pdf-link:hover {
+                text-decoration: underline;
+            }
+            li {
+                margin: 5px 0; /* Khoảng cách giữa các mục */
+            }
         </style>
-
-        <script>
-//            function openModal(button) {
-//                var modal = document.getElementById("modal");
-//                var modalImage = document.getElementById("modalImage");
-//                var image = button.parentElement.querySelector('.clickable-image'); // Lấy hình ảnh từ thẻ cha
-//                modalImage.src = image.src; // Lấy đường dẫn ảnh từ hình ảnh đã nhấn
-//                modal.style.display = "flex"; // Hiện modal
-//            }
-//
-//            function closeModal() {
-//                document.getElementById("modal").style.display = "none"; // Ẩn modal khi nhấn bên ngoài
-//            }
-//
-
-        </script> 
         <script>
             function submitSortForm(order) {
                 document.getElementById('sortOrder').value = order; // Gán giá trị cho trường ẩn
@@ -199,25 +274,101 @@
                 }
             }
         </script>
-
         <script>
-            function showAssetDetails(image, description, value, date,id) {
-                document.getElementById("modalImage").src = image;
-                document.getElementById("modalDescription").innerHTML = description;
-                document.getElementById("modalValue").innerText = value;
-                document.getElementById("modalDate").innerText = date;
-                document.getElementById("modalidAss").innerText = id;
-                document.getElementById("assetDetailModal").style.display = "block";
-            }
+            window.showAssetDetails = function (image, description, value, date, listpdf) {
+                const modal = document.getElementById("assetDetailModal");
+                if (!modal) {
+                    console.error("Không tìm thấy modal!");
+                    return;
+                }
+
+                // Hiển thị thông tin cơ bản
+                document.getElementById("modalImage").src = image || 'placeholder.jpg';
+                document.getElementById("modalDescription").innerHTML = description || 'Không có mô tả';
+                document.getElementById("modalValue").textContent = value || 'N/A';
+                document.getElementById("modalDate").textContent = date || 'N/A';
+
+                const pdfListContainer = document.getElementById("pdfList");
+                if (!pdfListContainer) {
+                    console.error("Không tìm thấy pdfList!");
+                    return;
+                }
+
+                // Kiểm tra nếu listpdf không rỗng
+                if (typeof listpdf === 'string' && listpdf.trim() === "") {
+                    console.warn('listpdf là chuỗi rỗng');
+                    pdfListContainer.innerHTML = "<li>Không có file PDF</li>";
+                    modal.style.display = "block";
+                    return;
+                }
+
+                // Phân tích chuỗi JSON thành mảng
+                let pdfArray;
+                try {
+                    pdfArray = JSON.parse(listpdf);
+                } catch (error) {
+                    console.error('Lỗi phân tích JSON:', error);
+                    pdfListContainer.innerHTML = "<li>Không có file PDF</li>";
+                    modal.style.display = "block";
+                    return;
+                }
+
+                // Kiểm tra xem pdfArray có phải là mảng không
+                if (Array.isArray(pdfArray)) {
+                    pdfListContainer.innerHTML = "";
+                    pdfArray.forEach(pdf => {
+                        if (pdf.PdfName) {
+                            const listItem = document.createElement("li");
+                            let encodedFileName = encodeURIComponent(pdf.PdfName);
+
+                            console.log("encodedFileName" + encodedFileName);
+                            // Tạo thẻ <a> bằng createElement
+                            const link = document.createElement("a");
+                            link.href = `viewPdf?fileName=` + encodedFileName;
+                            link.target = "_blank";
+                            link.className = "pdf-link";
+                            console.log("[Debug] link.href:", link.href);
+                            // Tạo icon và text
+                            const icon = document.createElement("i");
+                            icon.className = "fas fa-file-pdf";
+                            const span = document.createElement("span");
+                            span.textContent = pdf.PdfName;
+
+                            // Ghép các phần tử
+                            link.appendChild(icon);
+                            link.appendChild(span);
+                            listItem.appendChild(link);
+                            pdfListContainer.appendChild(listItem);
+                        }
+                    });
+                } else {
+                    console.warn('listpdf is not an array:', pdfArray);
+                    pdfListContainer.innerHTML = "<li>Không có file PDF</li>";
+                }
+
+                modal.style.display = "block";
+            };
             function closeAssetModal() {
                 document.getElementById("assetDetailModal").style.display = "none";
             }
+// ✅ Đăng ký sự kiện click SAU KHI hàm đã được định nghĩa
+            document.addEventListener("click", function (event) {
+                console.log("Clicked element:", event.target); // Log phần tử được click
+                if (event.target.classList.contains("detail-icon-ass")) {
+                    console.log("Detail icon clicked!"); // Log khi click vào icon
+                    const icon = event.target;
+                    const image = icon.dataset.image;
+                    const description = icon.dataset.description;
+                    const value = icon.dataset.value;
+                    const createdAt = icon.dataset.createdAt;
+                    const listPdf = icon.dataset.listPdf;
 
-        </script>
-        <script>
+                    // Gọi hàm đã được định nghĩa
+                    showAssetDetails(image, description, value, createdAt, listPdf);
+                }
+            });
             document.addEventListener("DOMContentLoaded", function () {
                 const commentElements = document.querySelectorAll(".comment-text");
-
                 commentElements.forEach((element) => {
                     const fullComment = element.getAttribute("data-full-comment");
                     if (fullComment.length > 50) {
@@ -228,7 +379,7 @@
         </script>
         <script>
             function showFullComment(comment) {
-                 var formattedComment = comment.replace(/\n/g, '<br>');
+                var formattedComment = comment.replace(/\n/g, '<br>');
                 document.getElementById('fullCommentContent').innerHTML = formattedComment;
                 document.getElementById('commentDetailModal').style.display = 'block';
             }
@@ -238,27 +389,13 @@
             }
 
         </script>
-        <script>
-            function viewPdf(filenames) {
-                // Lấy giá trị từ span
-                var modalValue = document.getElementById("modalidAss").innerText;
-
-                // Kết hợp giá trị từ span với filenames
-                var fileName =  filenames+modalValue ; // Điều chỉnh tùy theo cách bạn muốn kết hợp
-
-                // Chuyển hướng đến URL
-                window.location.href = "viewPdf?fileName=" + encodeURIComponent(fileName);
-            }
-        </script>
         <script type="text/javascript">
 
-           function formatNumber(input) {
+            function formatNumber(input) {
                 // Loại bỏ tất cả các ký tự không phải số
                 let value = input.value.replace(/[^0-9]/g, '');
-
                 // Thêm dấu phẩy sau mỗi 3 chữ số
                 value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
                 // Gán giá trị đã định dạng lại vào input
                 input.value = value;
             }
@@ -270,6 +407,16 @@
                     return false;
                 }
                 return true;
+            }
+        </script>
+        <script>
+            function toggleAssets(icon) {
+                const assetList = icon.closest('tr').nextElementSibling.querySelector('.asset-list');
+                if (assetList.style.display === "none" || assetList.style.display === "") {
+                    assetList.style.display = "block"; // Hiển thị danh sách
+                } else {
+                    assetList.style.display = "none"; // Ẩn danh sách
+                }
             }
         </script>
     </head>
@@ -688,7 +835,7 @@
                 <div class="logo-name flex-grow-1">
                     <h5 class="mb-0">Roksyn</h5>
                 </div>
-                <div class="sidebar-close ">
+                <div class="sidebar-close">
                     <span class="material-symbols-outlined">close</span>
                 </div>
             </div>
@@ -814,12 +961,12 @@
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Value
+                                Amount of Asset
                             </button>
                             <form action="sort" method="get" id="sortForm">
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" onclick="submitSortForm('asc')">Low to High</a></li>
-                                    <li><a class="dropdown-item" onclick="submitSortForm('desc')">High to Low</a></li>
+                                    <li><a class="dropdown-item" onclick="submitSortForm('asc')">Ascending</a></li>
+                                    <li><a class="dropdown-item" onclick="submitSortForm('desc')">Decreasing</a></li>
                                 </ul>
                                 <input type="hidden" name="sortOrder" id="sortOrder">
                             </form>
@@ -839,7 +986,7 @@
                         </div>
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Used
+                                Asset Used For a Service
                             </button>
                             <form action="sort" method="get" id="sortForm3">
                                 <ul class="dropdown-menu">
@@ -872,111 +1019,184 @@
                     <div class="card-body">
                         <div class="product-table">
                             <div class="table-responsive white-space-nowrap">
-                                <table class="table align-middle">
+                                <table class="table align-middle" style="table-layout: fixed;">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Customer ID</th>
-                                            <th>Asset ID</th>
-                                            <th>Comments</th>
-                                            <th>Valuation Amount</th>
-                                            <th>Used</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                            <th>Confirm</th>
+                                            <th style="width: 30%;padding-left: 3%">Customer Name</th>
+                                            <th style="width: 30%;padding-left: 3%">Amount of Asset</th>
+                                            <th style="width: 30%;padding-left: 3%">List Asset</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <c:if test="${requestScope.customerAssetsMap!= null}">
+                                            <c:forEach var="entry" items="${requestScope.customerAssetsMap.entrySet()}">
+                                                <c:set var="customer" value="${entry.key}" />
+                                                <c:set var="assets" value="${entry.value}" />
+
+                                                <!-- Customer Row -->
+                                                <tr class="customer-row">
+                                                    <td>
+                                                        <a href="customer?cid=${customer.getCustomerId()}" class="d-flex align-items-center text-decoration-none">
+                                                            <i class="bi bi-person-circle me-2"></i>
+                                                            <span>${customer.getFullName()}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <span>Total Assets (${assets.size()})</span>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <button type="button" onclick="toggleAssets(this)">View Detail</button>
+                                                    </td>
 
 
-                                        <c:if test="${requestScope.data!= null}">
-                                            <c:forEach items="${requestScope.data}" var="asset">
-                                                <tr>
-                                            <form action="listAsset" method="post">
-                                                <td>
+                                                </tr>
 
-                                                    <a href="customer?cid=${asset.getCustomerId()}"class="bi bi-person-circle" title="Xem chi tiết">
-                                                        ${asset.getCustomerId()}</a>
+                                                <!-- Asset List -->
+                                                <tr class="asset-list-row">
+                                                    <td colspan="2">
+                                                        <div class="asset-list" style="display: none;">
+                                                            <table class="table table-sm table-hover">
+                                                                <thead>
+                                                                    <tr class="bg-light">
+                                                                        <th style="width: 20%">Asset Name</th>
+                                                                        <th style="width: 25%">Comments</th>
+                                                                        <th style="width: 15%">Valuation</th>
+                                                                        <th style="width: 10%">Used for a service</th>
+                                                                        <th style="width: 10%">Status</th>
+                                                                        <th style="width: 12%">Action</th>
+                                                                        <th style="width: 8%">Confirm</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <c:forEach items="${assets}" var="asset">
+                                                                        <tr>
 
-                                                </td>
-                                                <td>
-                                                    <i class="fas fa-info-circle detail-icon" 
-                                                       onclick="showAssetDetails('${asset.getImage()}', '${asset.getDescription()}', '${asset.getValue()}', '${asset.getCreatedAt()}', '${asset.getId()}')"
-                                                       title="Xem chi tiết">
-                                                    </i>
-                                                    <span>${asset.getId()}</span>
-                                                </td>
+                                                                            <!-- Asset Name -->
+                                                                            <td class="align-middle">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <i class="fas fa-info-circle detail-icon detail-icon-ass me-2" 
+                                                                                       data-image="${asset.getImage()}"
+                                                                                       data-description="${asset.getDescription()}"
+                                                                                       data-value='<fmt:formatNumber value="${asset.getValue()}" 
+                                                                                                         pattern="###,###"/>'
+                                                                                       data-created-at="${asset.getCreatedAt()}"
+                                                                                       data-list-pdf='<c:out value="${asset.getListpdfJs()}" escapeXml="true"/>'
+                                                                                       title="Xem chi tiết"
+                                                                                       style="pointer-events: auto; z-index: 1;">
+                                                                                    </i>
+                                                                                    <span>${asset.getTitle()}</span>
+                                                                                </div>
 
+                                                                            </td>
+                                                                    <form action="listAsset" method="post">
+                                                                        <!-- Comments -->
+                                                                        <td class="align-middle">
+                                                                            <c:choose>
+                                                                                <c:when test="${empty asset.getComments()}">
+                                                                                    <textarea class="form-control form-control-sm" 
+                                                                                              name="comment_${asset.getId()}"
+                                                                                              placeholder="Add comment..."
+                                                                                              required></textarea>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <c:if test="${asset.getStatus() =='Approved'}">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <span class="text-truncate me-2" style="max-width: 150px;">
+                                                                                                ${asset.getComments()}
+                                                                                            </span>
+                                                                                            <i class="fas fa-info-circle detail-icon" 
+                                                                                               onclick="showFullComment('${asset.getComments()}')"
+                                                                                               title="Full comment"></i>
+                                                                                        </div>
+                                                                                    </c:if>
+                                                                                    <c:if test="${asset.getStatus() !='Approved'}">
+                                                                                        <textarea class="form-control form-control-sm" 
+                                                                                                  name="comment_${asset.getId()}"
+                                                                                                  required>${asset.getComments()}</textarea>
+                                                                                    </c:if>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </td>
 
-                                                <td>
-                                                    <c:choose>
-                                                        
-                                                        <c:when test="${empty asset.getComments()}">
-                                                            <textarea type="text" class="comment-input"
-                                                                      placeholder="Nhập comment"
-                                                                      name="comment_${asset.getId()}"required></textarea> 
-                                                        </c:when>
-                                                        
-                                                        <c:otherwise>
-                                                            <span class="comment-text " data-full-comment="${asset.getComments()}">
-                                                                ${asset.getComments()}
-                                                            </span>
-                                                            <i class="fas fa-info-circle detail-icon" 
-                                                               onclick="showFullComment('${asset.getComments()}')"
-                                                               title="Xem chi tiết"> 
-                                                            </i>
+                                                                        <!-- Valuation -->
+                                                                        <td class="align-middle">
+                                                                            <c:choose>
+                                                                                <c:when test="${empty asset.getValuationAmount()}">
+                                                                                    <input type="text" 
+                                                                                           class="form-control form-control-sm" 
+                                                                                           oninput="formatNumber(this)" onkeypress="return validateInput(event)"
+                                                                                           name="valuationAmount_${asset.getId()}"
+                                                                                           placeholder="Enter amount">
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <c:if test="${asset.getStatus() =='Approved'}">
+                                                                                        <fmt:formatNumber value="${asset.getValuationAmount()}" 
+                                                                                                          pattern="###,###"/>
+                                                                                    </c:if>
+                                                                                    <c:if  test="${asset.getStatus() !='Approved'}">
+                                                                                        <input type="text" 
+                                                                                               class="form-control form-control-sm" 
+                                                                                               oninput="formatNumber(this)" onkeypress="return validateInput(event)"
+                                                                                               name="valuationAmount_${asset.getId()}"
+                                                                                               value="<fmt:formatNumber value="${asset.getValuationAmount()}" 
+                                                                                                          pattern="###,###"/>"
+                                                                                               placeholder="Enter amount"/>
+                                                                                                                                                                                      
 
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
+                                                                                    </c:if>
 
-                                                <td>  
-                                                    <c:choose>
-                                                        <c:when test="${empty asset.getValuationAmount()}">
-                                                            <input type="number" class="form-control"  id="AmountAsset"
-                                                                   placeholder="Nhập giá trị định giá"
-                                                                   name="valuationAmount_${asset.getId()}" />
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span >
-                                                                <fmt:formatNumber value=" ${asset.getValuationAmount()}" pattern="###,###"/>
-                                                               
-                                                            </span>
-                                                        
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                <c:if test="${asset.isUsed() == false}">
-                                                    <td>Non-Use</td>
-                                                </c:if>
-                                                <c:if test="${asset.isUsed() != false}">
-                                                    <td>Used</td>
-                                                </c:if>
-                                                <td>${asset.getStatus()}</td>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </td>
 
-                                                <input hidden type="text" name="assetid" value="${asset.getId()}">
-                                                <td>
-                                                    <div class="form-group">
-                                                        <select class="form-select" id="assetAction${asset.getId()}"name="action" required>
-                                                            <option value="">Select an action</option>
-                                                            <option value="Adjusting">Adjusting</option>
-                                                            <option value="Approved">Approved</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                               <c:if test="${asset.getStatus() eq 'Approved'}">
-                                                    <td><button type="submit" style="display:none;">Confirm</button></td>
-                                                </c:if>
-                                                <c:if test="${asset.getStatus() ne 'Approved'}">
-                                                    <td><button type="submit">Confirm</button></td>
-                                                </c:if>  
-                                            </form>
+                                                                        <!-- Used -->
+                                                                        <td class="align-middle">
+                                                                            ${asset.isUsed() ? 'Used' : 'Non-Use'}
+                                                                        </td>
 
-                                            </tr> 
-                                        </c:forEach>
+                                                                        <!-- Status -->
+                                                                        <td class="align-middle">
+                                                                            <span class="badge ${asset.getStatus() == 'Approved' ? 'bg-success' : 'bg-warning'}">
+                                                                                ${asset.getStatus()}
+                                                                            </span>
+                                                                        </td>
 
-                                    </c:if>
+                                                                        <!-- Action -->
+                                                                        <td class="align-middle">
+                                                                            <select class="form-select form-select-sm" 
+                                                                                    name="action" 
+                                                                                    ${asset.getStatus() == 'Approved' ? 'disabled' : ''} required>
+                                                                                <option value="">Select action</option>
+                                                                                <option value="Adjusting" ${asset.getStatus() == 'Adjusting' ? 'selected' : ''}>
+                                                                                    Adjusting
+                                                                                </option>
+                                                                                <option value="Approved" ${asset.getStatus() == 'Approved' ? 'selected' : ''}>
+                                                                                    Approved
+                                                                                </option>
+                                                                            </select>
+                                                                        </td>
 
-
+                                                                        <!-- Confirm -->
+                                                                        <td class="align-middle">
+                                                                            <input type="hidden" name="assetid" value="${asset.getId()}">
+                                                                            <button type="submit" 
+                                                                                    class="btn btn-sm ${asset.getStatus() != 'Approved' ? 'btn-primary' : 'd-none'}">
+                                                                                Confirm
+                                                                            </button>
+                                                                        </td>
+                                                                    </form>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:if>
                                     </tbody>
                                 </table>
                             </div>
@@ -989,14 +1209,13 @@
                         <div class="modal-body">
                             <img id="modalImage" src="" alt="" class="modal-image">
                             <div class="modal-info">
-                                <span id="modalidAss"></span>
                                 <p><strong>Date of request:</strong> <span id="modalDate"></span></p>
                                 <p><strong>Description:</strong> <span id="modalDescription"></span></p>
                                 <p><strong>Value:</strong> <span id="modalValue"></span></p>
-                                
-                                <td>
-                                    <a href="#" onclick="viewPdf('${requestScope.filenames[0]}')">Xem thêm</a>
-                                </td>
+                                <div class="pdf-section">
+                                    <div style="color: var(--text-dark)">List of PDF:</div>
+                                    <ul id="pdfList"></ul>
+                                </div>
                             </div>
                         </div>
                     </div>
