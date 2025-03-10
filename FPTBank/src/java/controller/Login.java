@@ -136,6 +136,9 @@ public class Login extends HttpServlet {
                         case 4:
                             response.sendRedirect("/timibank/insurance_provider");
                             break;
+                        case 6: 
+                            response.sendRedirect("/timibank/invoice");
+                            break;
                     }
                 } else {
                     String err = "Your account is inactivated. Please contact admin to activate your account!";
