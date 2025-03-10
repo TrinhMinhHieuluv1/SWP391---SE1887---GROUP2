@@ -1,10 +1,8 @@
 <component name="libraryTable">
   <library name="lib for java">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib for java/gson-2.12.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib for java/jackson-core-2.13.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib for java/jakarta.servlet.jsp.jstl-api-2.0.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib for java/sqljdbc42.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib for java/jakarta.activation-2.0.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib for java/jakarta.servlet-api-6.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib for java/jakarta.mail-2.0.1.jar!/" />
@@ -14,6 +12,7 @@
       <root url="jar://$PROJECT_DIR$/lib for java/jackson-annotations-2.13.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib for java/jakarta.servlet.jsp.jstl-2.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib for java/jackson-databind-2.13.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib for java/sqljdbc42.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
