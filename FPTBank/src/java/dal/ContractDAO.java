@@ -171,20 +171,4 @@ public class ContractDAO extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
-        ContractDAO ctdao = new ContractDAO();
-        CustomerDAO cdao = new CustomerDAO();
-        AssetDAO adao = new AssetDAO();
-        SalaryDAO sdao = new SalaryDAO();
-        InsuranceDAO idao = new InsuranceDAO();
-//        Contract contractToAdd = new Contract(0, cdao.getCustomerByID(1), BigDecimal.valueOf(1000000000), 12, 1, 0, 10, "Secured Loan", "Contract 1: Secured Loan", adao.getAssetById(1), sdao.getSalaryById(1), idao.getInsuranceByID(1), false, "Fixed", 1, null);
-//        ctdao.addAContract(contractToAdd);
-        Contract contract = ctdao.selectAContractByID(11);
-        contract.setInterestRate(20);
-        System.out.println(contract.getInterestRate());
-        ctdao.updateAContract(contract);
-        for (Contract c : ctdao.selectAllContract()) {
-            System.out.println(c.getDescription());
-        }
-    }
 }

@@ -543,17 +543,17 @@
 
         <div class="news-management">
             <h1 class="page-title">FAQ Management</h1>
-            
+
             <!-- Filter Controls -->
             <form action="faq-search-question" method="get" class="filter-controls">
                 <!-- Search Box -->
                 <div class="search-container"  >
                     <i class="fa fa-search"></i>
-                    <input   type="text" name="searchKeyword" value="${param.searchKeyword}" placeholder="Search questions..." class="search-input">
+                    <input   type="text" name="searchKeyword" value="${keyword}" placeholder="Search questions..." class="search-input">
                     <button class="add-news-btn" type="submit" >Search </button>
                 </div>
             </form>
-                    
+
             <!--filter theo type-->
             <form action="faq-search-type" method="get" class="filter-controls">
                 <div class="filter-group">
@@ -594,19 +594,17 @@
             <button class="add-news-btn" onclick="window.location.href = '/timibank/seller/faq-add'">Add FAQ</button>
 
             <!--show entry-->
-            <form id="entriesForm" action="faq-management" method="GET">
+            <form id="entriesForm" action="faq-management" method="GET" accept-charset="UTF-8">
                 <label for="entries">Show Entries</label>
-                <select  id="entries" name="entries" onchange="this.form.submit()">
-                    <option value="" >10</option>
-                    <option value="15" ${(entries == 15)?'selected':''}>15</option>
-                    <option value="25" ${(entries == 25)?'selected':''}>25</option>
-                    <option value="50" ${(entries == 50)?'selected':''}>50</option>
-                    <option value="100" ${(entries == 100)?'selected':''}>100</option>
+                <select id="entries" name="entries" onchange="this.form.submit()">
+                    <c:forEach items="${listOfPageSize}" var="ps">
+                        <option value="${ps}" ${(ps == entries)?'selected':''}>${ps}</option>
+                    </c:forEach>                   
                 </select>
                 <input type="hidden" name="searchKey" value="${keyword}">
                 <input type="hidden" name="searchType" value="${selectedType}">
             </form>
-            
+
             <!-- News Table -->
             <form action="faq-update"> 
                 <table class="news-table" border="1">

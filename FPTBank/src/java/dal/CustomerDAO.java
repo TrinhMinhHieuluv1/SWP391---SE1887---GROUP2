@@ -84,6 +84,30 @@ public class CustomerDAO extends DBContext {
         }
         return cList;
     }
+    
+    public void addACustomer(Customer customerToAdd) {
+        String sql = "INSERT INTO [dbo].[Customer] (Username, [Password], FullName, [Image], Phone, Email, DateOfBirth, Gender, Address, CCCD, CreditScore, Balance, RoleID, Status) VALUES "
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, customerToAdd.getUsername());
+            st.setString(2, customerToAdd.getPassword());
+            st.setString(3, customerToAdd.getFullName());
+            st.setString(4, customerToAdd.getImage());
+            st.setString(5, customerToAdd.getPhone());
+            st.setString(6, customerToAdd.getEmail());
+            st.setDate(7, customerToAdd.getDateOfBirth());
+            st.setBoolean(8, customerToAdd.isGender());
+            st.setString(9, customerToAdd.getAddress());
+            st.setString(10, customerToAdd.getCCCD());
+            st.setInt(11, customerToAdd.getCreditScore());
+            st.setBigDecimal(12, customerToAdd.getBalance());
+            st.setInt(13, 5);
+            st.setBoolean(14, customerToAdd.isStatus());
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
 
     public void updateACustomer(Customer customerToUpdate) {
         String sql = "UPDATE [Customer] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, Status=? WHERE CustomerID=?";
@@ -94,7 +118,7 @@ public class CustomerDAO extends DBContext {
             st.setString(3, customerToUpdate.getImage());
             st.setString(4, customerToUpdate.getPhone());
             st.setString(5, customerToUpdate.getEmail());
-            st.setDate(6, (Date) customerToUpdate.getDateOfBirth());
+            st.setDate(6, customerToUpdate.getDateOfBirth());
             st.setBoolean(7, customerToUpdate.isGender());
             st.setString(8, customerToUpdate.getAddress());
             st.setString(9, customerToUpdate.getCCCD());

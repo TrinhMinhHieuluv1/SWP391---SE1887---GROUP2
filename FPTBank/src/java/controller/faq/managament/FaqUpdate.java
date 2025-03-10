@@ -94,14 +94,8 @@ public class FaqUpdate extends HttpServlet {
         String question = request.getParameter("question");
         String answer = request.getParameter("answer");
  
-                HttpSession session = request.getSession();
-         FAQDAO faqDao = new FAQDAO();
-        if (faqDao.isQuestionExists(question)) {
-            // Nếu câu hỏi đã tồn tại, chuyển hướng người dùng về trang quản lý FAQ với thông báo lỗi
-            session.setAttribute("error", "Failed to update FAQ.Question is exist. Please try again.");
-            response.sendRedirect("/timibank/seller/faq-management");
-            
-        } else {
+          HttpSession session = request.getSession();
+         FAQDAO faqDao = new FAQDAO();   
         FAQ faqToUpdate = faqDao.getFAQByID(faqID);
         faqToUpdate.setType(type);
         faqToUpdate.setQuestion(question);
@@ -119,7 +113,7 @@ public class FaqUpdate extends HttpServlet {
         response.sendRedirect("/timibank/seller/faq-management");
     }
         
-    }
+    
 
     /**
      * Returns a short description of the servlet.
