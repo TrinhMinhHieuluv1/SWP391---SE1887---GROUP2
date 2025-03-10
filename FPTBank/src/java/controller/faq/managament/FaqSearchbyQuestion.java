@@ -60,8 +60,6 @@ public class FaqSearchbyQuestion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-request.setCharacterEncoding("UTF-8");
-response.setCharacterEncoding("UTF-8");
         String searchKeyword = request.getParameter("searchKeyword");
          
 
@@ -97,7 +95,7 @@ response.setCharacterEncoding("UTF-8");
  // set phân trang
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-          request.setAttribute("listFAQ", listFAQ);
+        request.setAttribute("listFAQ", listFAQ);
         request.setAttribute("keyword", searchKeyword);
         request.getRequestDispatcher("faq-management.jsp").forward(request, response);
     }

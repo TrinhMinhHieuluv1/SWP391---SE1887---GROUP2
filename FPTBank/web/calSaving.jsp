@@ -204,6 +204,34 @@
             font-weight: bold;
             color: black;
         }
+          /* Toast Message Styles */
+            .toast-message {
+                position: fixed;
+                top: -100px; /* Start above viewport */
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #4CAF50;
+                color: white;
+                padding: 16px 32px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                z-index: 1000;
+                transition: top 0.5s ease-in-out;
+            }
+
+            .toast-message.show {
+                top: 20px; /* Slide down to this position */
+            }
+
+            .toast-message i {
+                font-size: 24px;
+            }
+        
     </style>
     <body>
         <script type="text/javascript">
@@ -232,7 +260,8 @@
 
             <%@ include file="header.jsp"%>
             <!-- top panel end -->
-
+            <!--show message-->
+      
             <!-- content -->
             <div id="smooth-content">
                 <div class="cal-container">
@@ -254,7 +283,30 @@
                     <div class="cal-content">
 
 
-                        <form action="congcu" method="post" class="cal-form">
+                        <form action="congcu" id="myForm" class="cal-form">
+
+                            <div class="form-group">
+                                <label for="nameSaving" class="form-group__label">Tên Người dùng</label>
+                                <div class="form-group__input-wrap">
+                                    <input type="text" class="form-group__input" id="nameSaving" name="nameSaving" value="${nameSaving}" 
+                                           required>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailSaving" class="form-group__label">Email</label>
+                                <div class="form-group__input-wrap">
+                                    
+                                    <input type="email" class="form-group__input" id="emailLoan" name="emailSaving" value="${emailSaving}" 
+                                           required
+                                           pattern="^(?!.*\.\.)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                                           title="Email is invalid"
+                                           oninput="validateEmail()">
+                                    <span id="emailError"  class="sub-text-input"></span>
+                                </div>
+                                    
+                            </div>
                             <div class="form-group">
                                 <label for="loanAmount" class="form-group__label">Số tiền gửi</label>
                                 <div class="form-group__input-wrap">
@@ -285,8 +337,8 @@
                                            pattern="^[1-9]\d*$" 
                                            title="LoanRate phải là số nguyên dương, không chứa chữ cái, không kí tự đặc biệt "
                                            oninput="validateTerm()">
-                                     <span id="nameError2"  class="sub-text-input"></span>
-                                    <!--<input  type="number" class="form-group__input" id="duration" name="duration" min="1" value="${duration}" required>-->
+                                    <span id="nameError2"  class="sub-text-input"></span>
+                                   <!--<input  type="number" class="form-group__input" id="duration" name="duration" min="1" value="${duration}" required>-->
                                     <select id="durationUnit" name="durationUnit" class="form-group__select">
                                         <option value="days" ${durationUnit == 'days' ? 'selected' : ''}>Ngày</option>
                                         <option value="months" ${durationUnit == 'months' ? 'selected' : ''}>Tháng</option>
@@ -295,7 +347,12 @@
 
                                 </div>
                             </div>
-                            <button type="submit" class="btn-submit">THỰC HIỆN</button>
+                            <button type="submit" onclick="setMethod('post')"  class="btn-submit">THỰC HIỆN</button>
+                            <button type="submit" onclick="setMethod('get')"  class="btn-submit">Bấm để tải xuống Excel </button>
+                            <input type="hidden" name="totalAmount" value="${totalAmount}">
+                            <input type="hidden" name="interestPerDay" value="${interestPerDay}">
+                            <input type="hidden" name="interestPerMonth" value="${interestPerMonth}">
+                            <input type="hidden" name="interestPerYear" value="${interestPerYear}">
                         </form>
                         <table class="result-table">
                             <tr>
@@ -314,6 +371,9 @@
                                 <td style="color: red;">${totalAmount} VNĐ</td>
                             </tr>
                         </table>
+
+
+
 
                     </div>
                     <br/>
@@ -334,6 +394,32 @@
                 <!-- footer end -->
 
             </div>
+            <script>
+                function setMethod(method) {
+                    const form = document.getElementById('myForm');
+                    form.method = method; // Cập nhật method cho form
+                }
+                  // Toast message animation
+            document.addEventListener('DOMContentLoaded', function () {
+                const toast = document.getElementById('toastMessage');
+                if (toast) {
+                    // Show toast
+                    setTimeout(() => {
+                        toast.classList.add('show');
+                    }, 100);
+
+                    // Hide toast after 3 seconds
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        // Remove toast from DOM after animation
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 500);
+                    }, 3000);
+                }
+            });
+            </script>
+
             <!-- content end -->
         </div>
         <!-- wrapper end -->

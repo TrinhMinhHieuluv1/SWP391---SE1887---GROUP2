@@ -4,14 +4,19 @@
  */
 package model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Salary {
 
     private int Id; // SalaryId
-    private int CustomerId; // CustomerId
+    private Customer Customer; // Customer
     private String Image; // Image
+    private String Title; // Image
     private String Description; // Description
     private BigDecimal Value; // Value
     private String Comments;
@@ -19,23 +24,22 @@ public class Salary {
     private boolean Used;
     private String Status;
     private Date CreatedAt;
-    private String PdfPath;
+      private List<PdfLis> listpdf = new ArrayList<>();
+    
     public Salary() {
         this.Used = false;
         this.Status = "Pending";
-        this.PdfPath="";
         this.CreatedAt = new Date();
     }
 
-    public Salary(int CustomerId, String Image, String Description, BigDecimal Value, String Comments, BigDecimal ValuationAmount) {
-        this.CustomerId = CustomerId;
+    public Salary(Customer Customer, String Image, String Title, String Description, BigDecimal Value) {
+        this.Customer = Customer;
         this.Image = Image;
+        this.Title = Title;
         this.Description = Description;
         this.Value = Value;
-        this.Comments = Comments;
-        this.ValuationAmount = ValuationAmount;
-
     }
+    
 
     // Getters and Setters
     public int getId() {
@@ -47,12 +51,12 @@ public class Salary {
         this.Id = id;
     }
 
-    public int getCustomerId() {
-        return CustomerId;
+    public Customer getCustomer() {
+        return Customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.CustomerId = customerId;
+    public void setCustomer(Customer Customer) {
+        this.Customer = Customer;
     }
 
     public String getImage() {
@@ -120,17 +124,28 @@ public class Salary {
         this.Status = Status;
     }
 
-    public String getPdfPath() {
-        return PdfPath;
+    public String getTitle() {
+        return Title;
     }
 
-    public void setPdfPath(String PdfPath) {
-        this.PdfPath = PdfPath;
+    public void setTitle(String Title) {
+        this.Title = Title;
     }
 
+    public List<PdfLis> getListpdf() {
+        return listpdf;
+    }
+
+    public void setListpdf(List<PdfLis> listpdf) {
+        this.listpdf = listpdf;
+    }
+     public String getListpdfJs() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this.listpdf);
+    }
     @Override
     public String toString() {
-        return "Salary{" + "Id=" + Id + ", CustomerId=" + CustomerId + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + ", PdfPath=" + PdfPath + '}';
+        return "Salary{" + "Id=" + Id + ", Customer=" + Customer + ", Image=" + Image + ", Title=" + Title + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + '}';
     }
-
+    
 }

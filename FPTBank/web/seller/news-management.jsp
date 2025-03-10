@@ -18,20 +18,25 @@
         <meta name="author" content="bslthemes" />
 
         <!-- switzer font css -->
-        <link rel="stylesheet" href="fonts/css/switzer.css" type="text/css" media="all">
+        <link rel="stylesheet" href="/fonts/css/switzer.css" type="text/css" media="all">
         <!-- font awesome css -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">        <!-- bootstrap grid css -->
-        <link rel="stylesheet" href="css/plugins/bootstrap-grid.css" type="text/css" media="all">
+        <link rel="stylesheet" href="/fonts/css/font-awesome.min.css" type="text/css" media="all">
+        <!-- bootstrap grid css -->
+        <link rel="stylesheet" href="/css/plugins/bootstrap-grid.css" type="text/css" media="all">
         <!-- swiper css -->
-        <link rel="stylesheet" href="css/plugins/swiper.min.css" type="text/css" media="all">
+        <link rel="stylesheet" href="/css/plugins/swiper.min.css" type="text/css" media="all">
         <!-- magnific popup -->
-        <link rel="stylesheet" href="css/plugins/magnific-popup.css" type="text/css" media="all">
+        <link rel="stylesheet" href="/css/plugins/magnific-popup.css" type="text/css" media="all">
         <!-- plax css -->
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+        <link rel="stylesheet" href="/css/style.css" type="text/css" media="all">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">       
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
-        <link rel="icon" href="img/favicon.png" type="image/x-icon">
+        <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
+        <link rel="icon" href="/img/favicon.png" type="image/x-icon">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <style>
@@ -553,16 +558,21 @@
                         <input type="checkbox" name="filterMine" value="true" ${param.filterMine == 'true'? 'checked' : ''} onchange="updateURLParameter('filterMine', this.checked)">
                         Show only my news
                     </label>
-                        
+
                     <label for="pageSize">Items per page:</label>
                     <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
-                        <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
-                        <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
-                        <option value="15" ${param.pageSize == 15 ? 'selected' : ''}>15</option>
-                        <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
-                        <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
-                        <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
-                        <option value="100" ${param.pageSize == 100 ? 'selected' : ''}>100</option>
+                        <c:if test="${requestScope.numberOfNews <= 100}">
+                            <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
+                            <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
+                            <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
+                            <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
+                            <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
+                        </c:if>
+                        <c:if test="${requestScope.numberOfNews > 100}">
+                            <c:forEach items="${requestScope.pageSizeArray}" var="pageSizeElement">
+                                <option value="${pageSizeElement}" ${param.pageSize == pageSizeElement ? 'selected' : ''}>${pageSizeElement}</option>
+                            </c:forEach>
+                        </c:if>
                     </select>
                 </div>
             </form>
@@ -670,96 +680,117 @@
             </div>
         </div>
 
+        <script src="./js/scripts.js"></script>
+
+        <!-- jquery js -->
+        <script src="/js/plugins/jquery.min.js"></script>
+
+        <!-- swiper css -->
+        <script src="/js/plugins/swiper.min.js"></script>
+        <!-- gsap js -->
+        <script src="/js/plugins/gsap.min.js"></script>
+        <!-- scroll smoother -->
+        <script src="/js/plugins/ScrollSmoother.min.js"></script>
+        <!-- scroll trigger js -->
+        <script src="/js/plugins/ScrollTrigger.min.js"></script>
+        <!-- scroll to js -->
+        <script src="/js/plugins/ScrollTo.min.js"></script>
+        <!-- magnific -->
+        <script src="/js/plugins/magnific-popup.js"></script>
+        <!-- plax js -->
+        <script src="/js/main.js"></script>
+
         <script>
-            function changePage(page) {
-                const form = document.querySelector('.filter-controls');
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'page';
-                input.value = page;
-                form.appendChild(input);
-                form.submit();
-            }
+                        function changePage(page) {
+                            const form = document.querySelector('.filter-controls');
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = 'page';
+                            input.value = page;
+                            form.appendChild(input);
+                            form.submit();
+                        }
 
-            function showNewsModal(title, description, image) {
-                const modal = document.getElementById('newsModal');
-                const modalTitle = document.getElementById('modalTitle');
-                const modalDescription = document.getElementById('modalDescription');
-                const modalImage = document.getElementById('modalImage');
+                        function showNewsModal(title, description, image) {
+                            const modal = document.getElementById('newsModal');
+                            const modalTitle = document.getElementById('modalTitle');
+                            const modalDescription = document.getElementById('modalDescription');
+                            const modalImage = document.getElementById('modalImage');
 
-                modalTitle.innerHTML = title;
-                modalDescription.innerHTML = description;
-                modalImage.src = image;
+                            modalTitle.innerHTML = title;
+                            modalDescription.innerHTML = description;
+                            modalImage.src = image;
 
-                modal.style.display = 'block';
-            }
+                            modal.style.display = 'block';
+                        }
 
-            function closeNewsModal() {
-                const modal = document.getElementById('newsModal');
-                modal.style.display = 'none';
-            }
+                        function closeNewsModal() {
+                            const modal = document.getElementById('newsModal');
+                            modal.style.display = 'none';
+                        }
 
-            // Close modal when clicking outside of it
-            window.onclick = function (event) {
-                const modal = document.getElementById('newsModal');
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            };
+                        // Close modal when clicking outside of it
+                        window.onclick = function (event) {
+                            const modal = document.getElementById('newsModal');
+                            if (event.target == modal) {
+                                modal.style.display = 'none';
+                            }
+                        };
 
-            // Toast message animation
-            document.addEventListener('DOMContentLoaded', function () {
-                const toast = document.getElementById('toastMessage');
-                if (toast) {
-                    // Show toast
-                    setTimeout(() => {
-                        toast.classList.add('show');
-                    }, 100);
+                        // Toast message animation
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const toast = document.getElementById('toastMessage');
+                            if (toast) {
+                                // Show toast
+                                setTimeout(() => {
+                                    toast.classList.add('show');
+                                }, 100);
 
-                    // Hide toast after 3 seconds
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                        // Remove toast from DOM after animation
-                        setTimeout(() => {
-                            toast.remove();
-                        }, 500);
-                    }, 3000);
-                }
-            });
+                                // Hide toast after 3 seconds
+                                setTimeout(() => {
+                                    toast.classList.remove('show');
+                                    // Remove toast from DOM after animation
+                                    setTimeout(() => {
+                                        toast.remove();
+                                    }, 500);
+                                }, 3000);
+                            }
+                        });
 
-            function updateURLParameter(param, value) {
-                let url = new URL(window.location.href);
-                let params = new URLSearchParams(url.search);
+                        function updateURLParameter(param, value) {
+                            let url = new URL(window.location.href);
+                            let params = new URLSearchParams(url.search);
 
-                params.set(param, value);
-                params.delete('fromUpdate');
+                            params.set(param, value);
+                            params.delete('fromUpdate');
+                            params.delete('page');
 
-                window.location.href = 'news-management?' + params.toString();
-            }
+                            window.location.href = 'news-management?' + params.toString();
+                        }
 
-            function changeStatus(NewsID, element) {
-                $.ajax({
-                    url: 'update-news',
-                    type: 'GET',
-                    data: {
-                        NewsID: NewsID,
-                        changeStatus: "true"
-                    }
+                        function changeStatus(NewsID, element) {
+                            $.ajax({
+                                url: 'update-news',
+                                type: 'GET',
+                                data: {
+                                    NewsID: NewsID,
+                                    changeStatus: "true"
+                                }
 
-                });
-                const status = document.getElementById("status-" + NewsID);
-                if (status.textContent.trim() === 'Active') {
-                    status.textContent = 'Inactive';
-                    element.textContent = 'Activate';
-                    element.classList.remove('inactivate-btn');
-                    element.classList.add('activate-btn');
-                } else {
-                    status.textContent = 'Active';
-                    element.textContent = 'Inactivate';
-                    element.classList.remove('activate-btn');
-                    element.classList.add('inactivate-btn');
-                }
-            }
+                            });
+                            const status = document.getElementById("status-" + NewsID);
+                            if (status.textContent.trim() === 'Active') {
+                                status.textContent = 'Inactive';
+                                element.textContent = 'Activate';
+                                element.classList.remove('inactivate-btn');
+                                element.classList.add('activate-btn');
+                            } else {
+                                status.textContent = 'Active';
+                                element.textContent = 'Inactivate';
+                                element.classList.remove('activate-btn');
+                                element.classList.add('inactivate-btn');
+                            }
+                        }
         </script>
     </body>
 </html>
