@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.manager;
 
+import dal.PdfDAO;
 import dal.SalaryDAO;
 import dal.UserDAO;
 import java.io.IOException;
@@ -16,8 +17,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Asset;
+import model.Customer;
+import model.PdfLis;
 import model.Salary;
 
 /**
@@ -66,7 +71,26 @@ public class ListSalary extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SalaryDAO dao = new SalaryDAO();
+
         List<Salary> data = dao.selectAllSalary();
+        descriptionSetup(data);
+        PdfDAO pdfDAO = new PdfDAO();
+        Map<Customer, List<Salary>> customerSalarysMap = new HashMap<>();
+        for (Salary sala : data) {
+            
+            List<PdfLis> listPDF = pdfDAO.getpdfBySalaryId(sala.getId());
+            sala.setListpdf(listPDF);
+            
+            Customer owner = sala.getCustomer();
+            customerSalarysMap.putIfAbsent(owner, new ArrayList<>());
+            customerSalarysMap.get(owner).add(sala);
+
+        }
+        request.setAttribute("customerSalarysMap", customerSalarysMap);
+        request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
+    }
+
+    public void descriptionSetup(List<Salary> data) {
         for (Salary sala : data) {
             StringBuilder result = new StringBuilder();
             String descript = sala.getDescription();
@@ -76,23 +100,7 @@ public class ListSalary extends HttpServlet {
             }
             result.deleteCharAt(result.toString().length() - 1);
             sala.setDescription(result.toString());
-
         }
-        String uploadPath = getServletContext().getRealPath("assetPDF");
-        File uploadDir = new File(uploadPath);
-        String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
-        String salaId = "salaryid";
-        List<String> filteredList = new ArrayList<>();
-        for (String filename : filenames) {
-            if (filename.contains(salaId)) {
-                filename = filename.replaceAll(".pdf", "");
-                filename = filename.replaceAll("\\d.*", "");
-                filteredList.add(filename);
-            }
-        }
-        request.setAttribute("filenames", filteredList);
-        request.setAttribute("data", data);
-        request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
     }
 
     /**
@@ -118,11 +126,11 @@ public class ListSalary extends HttpServlet {
                 a.setComments(comment);
                 dao.updateSalary(a);
             }
-            if (value != null && !value.isEmpty())  {
+            if (value != null && !value.isEmpty()) {
                 double va  = Double.parseDouble(value);
                 a.setValuationAmount(BigDecimal.valueOf(va));
                 dao.updateSalary(a);
-            }else{
+            } else {
                 double valu = Double.parseDouble(a.getValue().toString());
                 a.setValuationAmount(BigDecimal.valueOf(valu));
                 dao.updateSalary(a);
@@ -141,32 +149,18 @@ public class ListSalary extends HttpServlet {
                     break;
             }
             List<Salary> data = dao.selectAllSalary();
+            descriptionSetup(data);
+            PdfDAO pdfDAO = new PdfDAO();
+            Map<Customer, List<Salary>> customerSalarysMap = new HashMap<>();
             for (Salary sala : data) {
-                StringBuilder result = new StringBuilder();
-                String descript = sala.getDescription();
-                String[] des = descript.split("\n");
-                for (String de : des) {
-                    result.append(de.trim()).append("<br>-");
-                }
-                result.deleteCharAt(result.toString().length() - 1);
-                sala.setDescription(result.toString());
-            }
-            
-            String uploadPath = getServletContext().getRealPath("assetPDF");
-            File uploadDir = new File(uploadPath);
-            String[] filenames = uploadDir.list((dir, name) -> name.toLowerCase().endsWith(".pdf"));
-            String salaId = "salaryid";
-            List<String> filteredList = new ArrayList<>();
-            for (String filename : filenames) {
-                if (filename.contains(salaId)) {
-                    filename = filename.replaceAll(".pdf", "");
-                    filename = filename.replaceAll("\\d.*", "");
-                    filteredList.add(filename);
-                }
-            }
-            request.setAttribute("filenames", filteredList);
+                List<PdfLis> listPDF = pdfDAO.getpdfBySalaryId(sala.getId());
+                sala.setListpdf(listPDF);
+                Customer owner = sala.getCustomer();
+                customerSalarysMap.putIfAbsent(owner, new ArrayList<>());
+                customerSalarysMap.get(owner).add(sala);
 
-            request.setAttribute("data", data);
+            }
+            request.setAttribute("customerSalarysMap", customerSalarysMap);
             request.getRequestDispatcher("manageSalary.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

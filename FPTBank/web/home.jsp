@@ -300,9 +300,10 @@
                                             <li><a href="profile.jsp">My Profile</a></li>
                                             <li><a href="/timibank/change-password">Change Password</a></li>
                                             <li><a href="/timibank/myfeedback">My Feedback</a></li>
+                                            <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                <li><a href="/timibank/myassetsalary">My Asset and Salary</a></li>
+                                            </c:if>
                                             <li><a href="/timibank/logout">Sign out</a></li>
-
-
                                         </ul>
                                     </li>   
                                 </ul>

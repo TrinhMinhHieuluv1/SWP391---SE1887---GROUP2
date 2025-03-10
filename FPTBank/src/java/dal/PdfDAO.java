@@ -53,6 +53,15 @@ public class PdfDAO extends DBContext {
             e.printStackTrace(); // Xử lý lỗi tại đây
         }
     }
+        public void deletePdfLisByName(String pdfname) {
+        String sql = "DELETE FROM PdfLis WHERE PdfName = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1,pdfname);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý lỗi tại đây
+        }
+    }
 
     // Get all
     public List<PdfLis> getAllPdfLis() {

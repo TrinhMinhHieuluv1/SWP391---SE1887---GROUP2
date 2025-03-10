@@ -105,6 +105,37 @@ public class AssetDAO extends DBContext {
         return null;
     }
 
+    public List<Asset> getAssetByCId(int customerId) {
+        List<Asset> assets = new ArrayList<>();
+        String sql = "SELECT * FROM Asset WHERE CustomerID = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public List<Asset> getAssetsSortedByValue(String ascending) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset ORDER BY Value " + ascending;
@@ -115,7 +146,7 @@ public class AssetDAO extends DBContext {
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
-               asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 asset.setImage(resultSet.getString("Image"));
                 asset.setTitle(resultSet.getString("Title"));
                 asset.setDescription(resultSet.getString("Description"));
@@ -138,7 +169,7 @@ public class AssetDAO extends DBContext {
 
     public List<Asset> getAssetsSortedByDate(String ascending) throws SQLException {
         List<Asset> assets = new ArrayList<>();
-         String query = "SELECT a.* FROM Asset a "
+        String query = "SELECT a.* FROM Asset a "
                 + " join Customer c on a.CustomerId = c.CustomerId"
                 + " ORDER BY c.CreatedAt  " + ascending;
         try {
@@ -236,11 +267,13 @@ public class AssetDAO extends DBContext {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT a.* FROM Asset a "
                 + " join Customer c on a.CustomerId = c.CustomerId"
-                + " WHERE a.Title LIKE ? or c.FullName LIKE ?";
+                + " WHERE a.Title LIKE ? or c.FullName LIKE ? or c.Email LIKE ? or c.Phone like ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, "%" + description + "%");
             pstmt.setString(2, "%" + description + "%");
+            pstmt.setString(3, "%" + description + "%");
+            pstmt.setString(4, "%" + description + "%");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
                 Asset asset = new Asset();
