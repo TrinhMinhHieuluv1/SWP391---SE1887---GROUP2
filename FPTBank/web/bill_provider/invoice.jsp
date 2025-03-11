@@ -71,8 +71,8 @@
     <body>
         <div class="sidebar">
             <img src="img/logo1.png" alt="Plax" width="200">
-            <a href="/timibank/invoice"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="/timibank/invoice"><i class="fas fa-file-invoice"></i> Invoices</a>
+            <a href="/timibank/bill_provider/invoice"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/timibank/bill_provider/invoice"><i class="fas fa-file-invoice"></i> Invoices</a>
         </div>
         <form>
             
@@ -80,7 +80,7 @@
         <div class="content">
             <h2 style="text-align:  center;">List of Bill</h2>
             <a href="createinvoice"><button style="background-color: green; color: white;">Create+</button></a>
-            <form action="invoice" method="get">
+            <form action="/timibank/bill_provider/invoice" method="get">
                 <table>
                 <thead>
                     <tr>
