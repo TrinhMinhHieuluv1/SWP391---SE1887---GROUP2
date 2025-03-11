@@ -119,7 +119,7 @@ public class UpdateProfile extends HttpServlet {
             error = "Update Successfully, Please to back to your profile";
             session.setAttribute("account", accountCustomer);
         }
-        request.setAttribute("error", error);
+        request.setAttribute("error2", error);
         request.getRequestDispatcher("updateprofile.jsp").forward(request, response);
     }
 
