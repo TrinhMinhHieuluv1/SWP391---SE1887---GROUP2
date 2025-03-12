@@ -10,15 +10,24 @@ import model.User;
  *
  * @author ACER
  */
-public class CompanyName {
-     private String CompanyName;
+public class CompanyBillProvider {
+    private int CompanyID;
+    private String CompanyName;
     private User User;
 
-    public CompanyName(String CompanyName, User User) {
+    public CompanyBillProvider(int CompanyID, String CompanyName, User User) {
+        this.CompanyID = CompanyID;
         this.CompanyName = CompanyName;
         this.User = User;
     }
 
+    public int getCompanyID() {
+        return CompanyID;
+    }
+
+    public void setCompanyID(int CompanyID) {
+        this.CompanyID = CompanyID;
+    }
     
     public String getCompanyName() {
         return CompanyName;
@@ -38,6 +47,8 @@ public class CompanyName {
 
     @Override
     public String toString() {
-        return "CompanyName{" + "CompanyName=" + CompanyName + ", User=" + User + '}';
+        return "CompanyBillProvider{" + "CompanyID=" + CompanyID + ", CompanyName=" + CompanyName + ", User=" + User + '}';
     }
+
+    
 }
