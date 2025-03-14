@@ -5,7 +5,9 @@
 package model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import model.Customer;
+import java.sql.Timestamp;
 import model.User;
 
 /**
@@ -13,20 +15,24 @@ import model.User;
  * @author ACER
  */
 public class DetailBill {
-     private int BillID, Status;
-    private String Title, Description, StartDate, EndDate, CreatedAt;
+    private int BillID, Status, StatusOfBill;
+    private String Title, Description;
+    private Date  StartDate, EndDate, CreatedAt;
+    private Timestamp PaymentDate;
     private BigDecimal Total;
     private Customer Customer;
     private User Provider;
 
-    public DetailBill(int BillID, int Status, String Title, String Description, String StartDate, String EndDate, String CreatedAt, BigDecimal Total, Customer Customer, User Provider) {
+    public DetailBill(int BillID, int Status, int StatusOfBill, String Title, String Description, Date StartDate, Date EndDate, Date CreatedAt, Timestamp PaymentDate, BigDecimal Total, Customer Customer, User Provider) {
         this.BillID = BillID;
         this.Status = Status;
+        this.StatusOfBill = StatusOfBill;
         this.Title = Title;
         this.Description = Description;
         this.StartDate = StartDate;
         this.EndDate = EndDate;
         this.CreatedAt = CreatedAt;
+        this.PaymentDate = PaymentDate;
         this.Total = Total;
         this.Customer = Customer;
         this.Provider = Provider;
@@ -34,8 +40,9 @@ public class DetailBill {
 
     
 
-    public DetailBill(String Title, String Description, String StartDate, String EndDate, BigDecimal Total, Customer Customer, User Provider) {
-       
+    
+
+    public DetailBill(String Title, String Description, Date StartDate, Date EndDate, BigDecimal Total, Customer Customer, User Provider) {
         this.Title = Title;
         this.Description = Description;
         this.StartDate = StartDate;
@@ -45,17 +52,23 @@ public class DetailBill {
         this.Provider = Provider;
     }
 
-    public User getProvider() {
-        return Provider;
+    public Timestamp getPaymentDate() {
+        return PaymentDate;
     }
 
-    public void setProvider(User Provider) {
-        this.Provider = Provider;
+    public void setPaymentDate(Timestamp PaymentDate) {
+        this.PaymentDate = PaymentDate;
     }
 
     
-
     
+    public int getStatusOfBill() {
+        return StatusOfBill;
+    }
+
+    public void setStatusOfBill(int StatusOfBill) {
+        this.StatusOfBill = StatusOfBill;
+    }
 
     public int getBillID() {
         return BillID;
@@ -89,31 +102,29 @@ public class DetailBill {
         this.Description = Description;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return StartDate;
     }
 
-    public void setStartDate(String StartDate) {
+    public void setStartDate(Date StartDate) {
         this.StartDate = StartDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return EndDate;
     }
 
-    public void setEndDate(String EndDate) {
+    public void setEndDate(Date EndDate) {
         this.EndDate = EndDate;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return CreatedAt;
     }
 
-    public void setCreatedAt(String CreatedAt) {
+    public void setCreatedAt(Date CreatedAt) {
         this.CreatedAt = CreatedAt;
     }
-
-    
 
     public BigDecimal getTotal() {
         return Total;
@@ -131,8 +142,20 @@ public class DetailBill {
         this.Customer = Customer;
     }
 
+    public User getProvider() {
+        return Provider;
+    }
+
+    public void setProvider(User Provider) {
+        this.Provider = Provider;
+    }
+
     @Override
     public String toString() {
-        return "DetailBill{" + "BillID=" + BillID + ", Status=" + Status + ", Title=" + Title + ", Description=" + Description + ", StartDate=" + StartDate + ", EndDate=" + EndDate + ", CreatedAt=" + CreatedAt + ", Total=" + Total + ", Customer=" + Customer + '}';
+        return "DetailBill{" + "BillID=" + BillID + ", Status=" + Status + ", StatusOfBill=" + StatusOfBill + ", Title=" + Title + ", Description=" + Description + ", StartDate=" + StartDate + ", EndDate=" + EndDate + ", CreatedAt=" + CreatedAt + ", Total=" + Total + ", Customer=" + Customer + ", Provider=" + Provider + '}';
     }
+
+    
+
+    
 }
