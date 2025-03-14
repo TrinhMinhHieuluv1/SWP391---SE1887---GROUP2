@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Customer;
 import model.User;
 
 /**
@@ -43,11 +44,12 @@ public class About extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        CustomerDAO cusDAO = new CustomerDAO();
         UserDAO userDAO = new UserDAO();
         List<User> teamMembers = userDAO.selectAllUsersByRole(2); // Lấy user có roleID = 2
-   int teamSeller = userDAO.selectAllUsersByRole(2).size(); // seller
+        int teamSeller = userDAO.selectAllUsersByRole(2).size(); // seller
         int teamManage = userDAO.selectAllUsersByRole(3).size();//manager
-        int teamCustomer = userDAO.selectAllUsersByRole(5).size();// customer
+        int teamCustomer = cusDAO.selectAllCustomer().size();// customer       
         request.setAttribute("teamSeller", teamSeller);
         request.setAttribute("teamManage", teamManage);
         request.setAttribute("teamCustomer", teamCustomer);
@@ -59,15 +61,16 @@ public class About extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CustomerDAO cusDAO = new CustomerDAO();
-         UserDAO userDAO = new UserDAO();
+        UserDAO userDAO = new UserDAO();
         List<User> teamMembers = userDAO.selectAllUsersByRole(2); // Lấy user có roleID = 2
-   int teamSeller = userDAO.selectAllUsersByRole(2).size(); // seller
+        int teamSeller = userDAO.selectAllUsersByRole(2).size(); // seller
         int teamManage = userDAO.selectAllUsersByRole(3).size();//mânger
-        int teamCustomer = userDAO.selectAllUsersByRole(5).size();// customer
+        int teamCustomer = cusDAO.selectAllCustomer().size();// customer       
         request.setAttribute("teamSeller", teamSeller);
         request.setAttribute("teamManage", teamManage);
         request.setAttribute("teamCustomer", teamCustomer);
         request.setAttribute("teamMembers", teamMembers);
+
         request.getRequestDispatcher("about.jsp").forward(request, response); // Đẩy sang JSP
     }
 
