@@ -8,7 +8,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <!-- footer -->
-<footer class="mil-p-160-0 footer" id="footer">
+<footer class="mil-p-160-0 footer" id="footer"
+        <c:if test="${sessionScope.account.getRoleID() == 4}"> style="background-color:#f9f586;" </c:if>
+        <c:if test="${sessionScope.account.getRoleID() == 5}"> style="background-color: #f0fff0;" </c:if>  
+        <c:if test="${sessionScope.account.getRoleID() == 3}"> style="background-color: #e2d1c3;" </c:if>  
+        <c:if test="${sessionScope.account.getRoleID() == 2}"> style="background-color: #fed6e3;" </c:if>  
+        <c:if test="${sessionScope.account.getRoleID() == 1}"> style="background-color: #D7FFFE;" </c:if>  >
     <div class="container">
         <div class="row mil-footer-top">
             <div class="col-xl-2">
@@ -40,7 +45,7 @@
                 <h6 class="mil-mb-60">Hỗ trợ</h6>
                 <ul class="mil-footer-list">
                     <li class="mil-text-m mil-soft mil-mb-15" >
-                        <a href="mailto:nguyenquangthoai04@gmail.com" class="modal__link">Email: nguyenquangthoai04@gmail.com</a> 
+                        <a href="mailto:timibank.se1887@gmail.com" class="modal__link">Email:timibank.se1887@gmail.com</a> 
                     </li>
                     <li class="mil-text-m mil-soft mil-mb-15">
                         <a href="tel:0967368980" class="modal__link">Liên hệ: 0967368980</a>                                        </li>
@@ -66,11 +71,11 @@
                     <div class="mb-3">
                         <textarea class="form-control form-control__textarea" rows="3" placeholder="Nội dung" name="noidung" required></textarea>                                    
                     </div>
-                            <!--mã cap cha-->
+                    <!--mã cap cha-->
                     <div class="g-recaptcha" data-sitekey="6LcVf94qAAAAAHVxQmDpyNe7nzc7DEC88pgrmnb4"></div>
-			<div id="error"></div>
-                        
-                        
+                    <div id="error"></div>
+
+
                     <div class="form-control__row--reverse">
                         <!-- Submit Button -->
                         <button type="submit" class="form-control__btn form-control__btn--green mil-btn mil-ssm">
@@ -131,6 +136,7 @@
             </div>
         </div>
     </div>
+     <script src="./js/scripts.js"></script>
 </footer>
 
 <!-- footer end -->
