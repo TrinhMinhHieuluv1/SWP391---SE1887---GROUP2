@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -110,7 +111,7 @@ public class CustomerDAO extends DBContext {
     }
 
     public void updateACustomer(Customer customerToUpdate) {
-        String sql = "UPDATE [Customer] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, Status=? WHERE CustomerID=?";
+        String sql = "UPDATE [Customer] SET Password=?, FullName=?, Image=?, Phone=?, Email=?, DateOfBirth=?, Gender=?, Address=?, CCCD=?, Status=?, Balance=? WHERE CustomerID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, customerToUpdate.getPassword());
@@ -123,7 +124,8 @@ public class CustomerDAO extends DBContext {
             st.setString(8, customerToUpdate.getAddress());
             st.setString(9, customerToUpdate.getCCCD());
             st.setBoolean(10, customerToUpdate.isStatus());
-            st.setInt(11, customerToUpdate.getCustomerId());
+            st.setBigDecimal(11, customerToUpdate.getBalance());
+            st.setInt(12, customerToUpdate.getCustomerId());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -507,5 +509,9 @@ public class CustomerDAO extends DBContext {
 
         return 0;
     }
-
+    public static void main(String[] args) {
+        CustomerDAO dao = new CustomerDAO();
+        boolean a = dao.isFieldExistsToUpdate("Email", "User10@example.com", 1);
+        System.out.println(a);
+    }
 }
