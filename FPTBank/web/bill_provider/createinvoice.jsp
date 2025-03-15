@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,15 +34,46 @@
                 margin-left: 260px;
                 padding: 20px;
             }
+            .table-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* Cột đầu tiên (label) rộng 150px, cột thứ hai (input) chiếm phần còn lại */
+                gap: 5px;
+                border: 1px solid #ddd; /* Viền ngoài bảng */
+                border-radius: 8px; /* Bo góc nhẹ */
+                padding: 10px;
+                max-width: 100%; /* Độ rộng tối đa */
+                background-color: #f9f9f9; /* Màu nền nhạt */
+            }
+
+            .table-header {
+                font-weight: bold;
+                padding: 8px;
+                background: #e0e0e0; /* Nền xám nhạt cho header */
+                border-right: 1px solid #ddd; /* Viền phải */
+                display: flex;
+                align-items: center;
+            }
+
+            .table-cell {
+                padding: 8px;
+            }
+
+            .table-cell input {
+                width: 100%;
+                padding: 6px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+            }
         </style>
     </head>
     <body>
         <div class="sidebar">
 
             <img src="img/logo1.png" alt="Plax" width="200">
-            <a href="/timibank/invoice"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/timibank/bill_provider/invoice"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
 
-            <a href="/timibank/invoice"><i class="fas fa-file-invoice"></i> Invoices</a>
+            <a href="/timibank/bill_provider/invoice"><i class="fas fa-file-invoice"></i> Invoices</a>
 
         </div>
         <div class="content">
@@ -54,7 +86,7 @@
                             <select name="customerid" id="customerSelect" class="form-control">
                                 <option>--Select Customer--</option>
                                 <c:forEach var="customer" items="${requestScope.listC}">
-                                    <option value="${customer.getCustomerId()}" 
+                                    <option value="${customer.getCustomerId()}" ${param.customerid == customer.getCustomerId() ? 'selected' : ''}
                                             data-phone="${customer.getPhone()}" 
                                             data-email="${customer.getEmail()}" 
                                             data-address="${customer.getAddress()}" 
@@ -75,65 +107,93 @@
                         </div>
                     </div>
                     <script>
-                        document.getElementById("customerSelect").addEventListener("change", function () {
-                            let selectedOption = this.options[this.selectedIndex];
-                            document.getElementById("phoneInput").value = selectedOption.getAttribute("data-phone") || "";
-                            document.getElementById("emailInput").value = selectedOption.getAttribute("data-email") || "";
-                            document.getElementById("addressInput").value = selectedOption.getAttribute("data-address") || "";
-                            document.getElementById("dobInput").value = selectedOption.getAttribute("data-dob") || "";
-                            document.getElementById("cccdInput").value = selectedOption.getAttribute("data-cccd") || "";
-                            document.getElementById("genderInput").value = selectedOption.getAttribute("data-gender") || "";
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let customerSelect = document.getElementById("customerSelect");
+                            function updateCustomerInfo() {
+                                let selectedOption = customerSelect.options[customerSelect.selectedIndex];
+                                document.getElementById("phoneInput").value = selectedOption.getAttribute("data-phone") || "";
+                                document.getElementById("emailInput").value = selectedOption.getAttribute("data-email") || "";
+                                document.getElementById("addressInput").value = selectedOption.getAttribute("data-address") || "";
+                                document.getElementById("dobInput").value = selectedOption.getAttribute("data-dob") || "";
+                                document.getElementById("cccdInput").value = selectedOption.getAttribute("data-cccd") || "";
+                                document.getElementById("genderInput").value = selectedOption.getAttribute("data-gender") || "";
+                            }
+
+                            // Gọi ngay khi trang load
+                            updateCustomerInfo();
+
+                            // Gọi khi chọn khách hàng mới
+                            customerSelect.addEventListener("change", updateCustomerInfo);
                         });
                     </script>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Address</label>
-                            <input id="addressInput" class="form-control"></input>
+                            <input id="addressInput" class="form-control" readonly></input>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Date Of Birth</label>
-                            <input id="dobInput" class="form-control"></input>
+                            <input id="dobInput" class="form-control" readonly></input>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>CCCD</label>
-                            <input id="cccdInput" class="form-control"></input>
+                            <input id="cccdInput" class="form-control" readonly></input>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Gender</label>
-                            <input id="genderInput" class="form-control"></input>
+                            <input id="genderInput" class="form-control" readonly></input>
                         </div>
                     </div>
 
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
+                    <div class="table-container">
+                        <div class="table-row">
+                            <div class="table-header">Title</div>
+                            <div class="table-cell"><input type="text" name="title" value="${not empty param.title ? param.title : requestScope.bill.title}" class="form-control"></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-header">Description</div>
+                            <div class="table-cell"><input type="text" name="description" value="${not empty param.description ? param.description : requestScope.bill.description}" class="form-control"></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-header">Start Date</div>
+                            <div class="table-cell"><input type="date" name="startdate" value="${not empty param.startdate ? param.startdate : (not empty requestScope.bill.startDate ? requestScope.bill.startDate : '')}" class="form-control"></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-header">End Date</div>
+                            <div class="table-cell"><input type="date" name="enddate" value="${not empty param.enddate ? param.enddate : (not empty requestScope.bill.endDate ? requestScope.bill.endDate : '')}" class="form-control"></div>
+                        </div>
 
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>StartDate</th>
-                                <th>EndDate</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
+                        <div class="table-row">
+                            <div class="table-header">Total</div>
+                            <div class="table-cell">
+                                <input type="text" id="total" name="total" 
+                                       value="<fmt:formatNumber value='${param.total != null ? param.total : requestScope.bill.total}' pattern='#,###.00'/>"
+                                       class="form-control" oninput="formatNumber(this)">
+                            </div>
+                        </div>
+                        <script>
+                            function formatNumber(input) {
+                                let value = input.value.replace(/\./g, ''); // Xóa dấu . cũ nếu có
+                                value = value.replace(/\D/g, ''); // Chỉ giữ lại số
 
-                                <td><input type="text" name="title" class="form-control"></td>
-                                <td><input type="text" name="description" class="form-control"></td>
-                                <td><input type="date" name="startdate" class="form-control"></td>
-                                <td><input type="date" name="enddate" class="form-control"></td>
-                                <td><input type="text" name="total" class="font-control"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                if (value) {
+                                    // Thêm dấu . mỗi 3 số
+                                    value = parseInt(value, 10).toLocaleString('de-DE');
+                                }
+
+                                input.value = value;
+                            }
+                        </script>
+
+                    </div>
                     <% if(request.getAttribute("error")!=null)  {%>
                     <a style="color:red; font-style: italic; "><%out.println(request.getAttribute("error"));%></a>
                     <%}%>
                     <br>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" name="action" value="Add" class="btn btn-primary">Save</button>
                 </form>
             </div>
         </div>
