@@ -170,21 +170,18 @@
                             <div class="table-header">Total</div>
                             <div class="table-cell">
                                 <input type="text" id="total" name="total" 
-                                       value="<fmt:formatNumber value='${param.total != null ? param.total : requestScope.bill.total}' pattern='#,###.00'/>"
+                                       value="${param.total != null ? param.total : requestScope.bill.total}"
                                        class="form-control" oninput="formatNumber(this)">
                             </div>
                         </div>
                         <script>
                             function formatNumber(input) {
-                                let value = input.value.replace(/\./g, ''); // Xóa dấu . cũ nếu có
+                                let value = input.value.replace(/,/g, '').replace(/\s/g, ''); // Xóa dấu , cũ nếu có
                                 value = value.replace(/\D/g, ''); // Chỉ giữ lại số
 
                                 if (value) {
-                                    // Thêm dấu . mỗi 3 số
-                                    value = parseInt(value, 10).toLocaleString('de-DE');
+                                    input.value = parseInt(value, 10).toLocaleString('en-US'); // Định dạng theo kiểu Mỹ
                                 }
-
-                                input.value = value;
                             }
                         </script>
 
