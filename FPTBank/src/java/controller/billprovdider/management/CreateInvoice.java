@@ -101,9 +101,9 @@ public class CreateInvoice extends HttpServlet {
             } else if (error.length() == 0) { // Chỉ xử lý nếu không có lỗi
                 int cid = Integer.parseInt(customerid);
                 DetailBill lastbill = dao.getLastDetailBill(cid, uid);
-
-                total_raw = total_raw.replace(".", "");
-                double total = Double.parseDouble(total_raw);
+                total_raw = total_raw.replace(",", "");
+                System.out.println(total_raw); 
+               double total = Double.parseDouble(total_raw);
                 BigDecimal totalamount = BigDecimal.valueOf(total);
                 java.sql.Date startdate = java.sql.Date.valueOf(startdate_raw);
                 java.sql.Date enddate = java.sql.Date.valueOf(enddate_raw);
@@ -142,11 +142,11 @@ public class CreateInvoice extends HttpServlet {
     }
 
     public boolean isNumeric(String str) {
-        if (str == null || str.trim().isEmpty()) {
-            return false; // Chuỗi rỗng hoặc null
-        }
-        return str.matches("\\d+(\\.\\d+)?"); // Cho phép số nguyên hoặc số thập phân
+    if (str == null || str.trim().isEmpty()) {
+        return false; // Chuỗi rỗng hoặc null
     }
+    return str.matches("\\d+(,\\d+)?"); // Cho phép số nguyên hoặc số thập phân với dấu ,
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.
