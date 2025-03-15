@@ -91,13 +91,10 @@ public class UpdateInvoice extends HttpServlet {
             } else if (enddate_raw == null || enddate_raw.isEmpty()) {
                 error = "Please fill out the end date";
             } else if (total_raw == null || total_raw.isEmpty()) {
-                error = "Please fill out the total";
-            } else if (isNumeric(total_raw) == false) {
-                error = "Please fill out total or only number.";
+                error = "Please fill out the total or only number";
             } else if (error.length() == 0) {
-                
                 DetailBill lastbill = dao.getLastDetailBill(bill.getCustomer().getCustomerId(), uid);
-                total_raw = total_raw.replace(".", "");
+                total_raw = total_raw.replace(",", "");
                 double total_raw2 = Double.parseDouble(total_raw);
                 BigDecimal total = BigDecimal.valueOf(total_raw2);
                 java.sql.Date startdate = java.sql.Date.valueOf(startdate_raw);
@@ -114,17 +111,17 @@ public class UpdateInvoice extends HttpServlet {
                 if ((yearsBetween * 12 + monthsBetween) < 1) {
                     error = "Bill for Electric must be at least 1 month. ";
                 }
-                if(error.length() == 0){
-                int status = Integer.parseInt(status_raw);
-                bill.setTitle(title_raw);
-                bill.setDescription(description_raw);
-                bill.setStartDate(startdate);
-                bill.setEndDate(enddate);
-                bill.setTotal(total);
-                bill.setStatus(status);
-                dao.updateDetailBill(bill);
-                error = "Update successfully";
-                request.setAttribute("bill", bill);
+                if (error.length() == 0) {
+                    int status = Integer.parseInt(status_raw);
+                    bill.setTitle(title_raw);
+                    bill.setDescription(description_raw);
+                    bill.setStartDate(startdate);
+                    bill.setEndDate(enddate);
+                    bill.setTotal(total);
+                    bill.setStatus(status);
+                    dao.updateDetailBill(bill);
+                    error = "Update successfully";
+                    request.setAttribute("bill", bill);
                 }
             }
         }
@@ -133,12 +130,7 @@ public class UpdateInvoice extends HttpServlet {
 
     }
 
-    public static boolean isNumeric(String str) {
-        if (str == null || str.trim().isEmpty()) {
-            return false; // Chuỗi rỗng hoặc null
-        }
-        return str.matches("\\d+(\\.\\d+)?"); // Cho phép số nguyên hoặc số thập phân
-    }
+   
 
     /**
      * Handles the HTTP <code>POST</code> method.
