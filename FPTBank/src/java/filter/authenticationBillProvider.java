@@ -124,7 +124,7 @@ public class authenticationBillProvider implements Filter {
                         return;
                     }
 
-                    // cho phép admin vào
+                    
                     if (user.getRoleID() == 1) {
                         chain.doFilter(request, response);
                         return;
