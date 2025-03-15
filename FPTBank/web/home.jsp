@@ -299,10 +299,15 @@
                                         <ul>
                                             <li><a href="profile.jsp">My Profile</a></li>
                                             <li><a href="/timibank/change-password">Change Password</a></li>
-                                            <li><a href="/timibank/myfeedback">My Feedback</a></li>
-                                            <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                <li><a href="/timibank/invoiceshowcustomer">My Bill</a></li>
+                                                </c:if>
+                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                <li><a href="/timibank/myfeedback">My Feedback</a></li>
+                                                </c:if>
+                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
                                                 <li><a href="/timibank/myassetsalary">My Asset and Salary</a></li>
-                                            </c:if>
+                                                </c:if>
                                             <li><a href="/timibank/logout">Sign out</a></li>
                                         </ul>
                                     </li>   
