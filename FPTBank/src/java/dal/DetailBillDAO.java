@@ -303,9 +303,116 @@ public class DetailBillDAO extends DBContext {
         return null;
     }
 
+    public List<Integer> getUniqueCustomerIDs() {
+        List<Integer> customerIDs = new ArrayList<>();
+        String sql = "SELECT DISTINCT CustomerID FROM DetailBill";
+
+        try (PreparedStatement pre = connection.prepareStatement(sql); ResultSet rs = pre.executeQuery();) {
+            while (rs.next()) {
+                int customerID = rs.getInt("CustomerID");
+                customerIDs.add(customerID);  // Thêm CustomerID vào danh sách
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return customerIDs;  // Trả về danh sách CustomerID
+    }
+
+    public BigDecimal getTotalSum(int providerID) {
+        BigDecimal totalSum = BigDecimal.ZERO;
+        String sql = "SELECT SUM(Total) AS TotalSum FROM DetailBill WHERE StatusOfBill = 0 AND ProviderID = ?";
+
+        try (PreparedStatement pre = connection.prepareStatement(sql)){
+                pre.setInt(1, providerID);
+                ResultSet rs = pre.executeQuery() ;
+            if (rs.next()) {
+                totalSum = rs.getBigDecimal("TotalSum");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalSum;  // Trả về tổng Total
+    }
+
+    public BigDecimal getTotalByYearAndMonth(int year, int month) {
+        BigDecimal totalSum = BigDecimal.ZERO;
+        String sql = "SELECT SUM(Total) AS TotalSum "
+                + "FROM DetailBill "
+                + "WHERE YEAR(CreatedAt) = ? AND MONTH(CreatedAt) = ? AND StatusOfBill = 0";
+
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+            // Thiết lập giá trị cho tham số trong câu lệnh SQL
+            pre.setInt(1, year); // Set năm
+            pre.setInt(2, month); // Set tháng
+
+            // Thực thi câu lệnh SQL
+            ResultSet rs = pre.executeQuery();
+
+            // Nếu có kết quả, lấy tổng `Total`
+            if (rs.next()) {
+                totalSum = rs.getBigDecimal("TotalSum");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalSum;  // Trả về tổng `Total` của năm và tháng
+    }
+
+    public int getCustomerByYearAndMonth(int year, int month) {
+        int totalSum = 0;
+        String sql = "SELECT COUNT(DISTINCT CustomerID) AS TotalSum "
+                + "FROM DetailBill "
+                + "WHERE YEAR(CreatedAt) = ? AND MONTH(CreatedAt) = ?";
+
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+            // Thiết lập giá trị cho tham số trong câu lệnh SQL
+            pre.setInt(1, year); // Set năm
+            pre.setInt(2, month); // Set tháng
+
+            // Thực thi câu lệnh SQL
+            ResultSet rs = pre.executeQuery();
+
+            // Nếu có kết quả, lấy tổng `Total`
+            if (rs.next()) {
+                totalSum = rs.getInt("TotalSum");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalSum;  // Trả về tổng `Total` của năm và tháng
+    }
+
+    public int getBillCountByStatusOfBill(int statusOfBill, int ProviderID) {
+        int billCount = 0;
+        String sql = "SELECT COUNT(*) AS BillCount "
+                + "FROM DetailBill "
+                + "WHERE StatusOfBill = ? AND ProviderID = ?";
+
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+            // Thiết lập giá trị cho tham số trong câu lệnh SQL
+            pre.setInt(1, statusOfBill); // Set giá trị cho StatusOfBill
+            pre.setInt(2, ProviderID);
+            // Thực thi câu lệnh SQL
+            ResultSet rs = pre.executeQuery();
+
+            // Nếu có kết quả, lấy số lượng bill
+            if (rs.next()) {
+                billCount = rs.getInt("BillCount");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return billCount;  // Trả về số lượng bill có StatusOfBill = 0 hoặc giá trị bạn truyền vào
+    }
+
     public static void main(String[] args) {
-         DetailBillDAO dao = new DetailBillDAO();
-         DetailBill bill = dao.getLastDetailBill(1, 9);
-         System.out.println(bill);
+        DetailBillDAO dao = new DetailBillDAO();
+        int list = dao.getBillCountByStatusOfBill(1, 9);
+        System.out.println(list);
     }
 }
