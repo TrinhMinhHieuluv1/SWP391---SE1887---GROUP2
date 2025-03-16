@@ -189,8 +189,9 @@
                     </thead>
                     <c:forEach var="bill" items="${requestScope.listB}">
                         <tbody>
+                            <c:set var="count" value="${count + 1}" />
                             <tr>
-                                <td>${bill.getBillID()}</td>
+                                <td>${count}</td>
                                 <td>${bill.getCreatedAt()}</td>
                                 <td>${bill.getCustomer().getFullName()}</td>
                                 <td>${bill.getTotal()}</td>
