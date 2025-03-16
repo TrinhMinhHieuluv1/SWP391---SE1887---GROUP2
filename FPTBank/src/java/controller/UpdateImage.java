@@ -113,6 +113,15 @@ public class UpdateImage extends HttpServlet {
         String error = "";
         if (fileName == null) {
             error = "File upload failed! Please try again.";
+        }
+        if (fileName.startsWith("Invalid file format")) {
+            error = "Invalid file format! Please upload only .jpg, .jpeg, or .png files.";
+        } else if (fileName.startsWith("File size exceeds")) {
+            error = "File size exceeds 10MB limit! Please select a smaller file.";
+        } else if (fileName.startsWith("No file found")) {
+            error = "No file found! Please select a file to upload.";
+        } else if (fileName.startsWith("Error uploading")) {
+            error = "Failed to upload file. Please try again later: " + fileName.substring("Error uploading file: ".length());
         } else if (account instanceof User) {
             img = "../uploadsImg/" + fileName;
             UserDAO dao = new UserDAO();
