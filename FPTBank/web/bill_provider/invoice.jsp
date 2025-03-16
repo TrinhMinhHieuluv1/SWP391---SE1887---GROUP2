@@ -140,7 +140,7 @@
     <body>
         <div class="sidebar">
             <img src="img/logo1.png" alt="Plax" width="200">
-            <a href="/timibank/bill_provider/invoice"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/timibank/bill_provider/dashboardbillprovider"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             <a href="/timibank/bill_provider/invoice"><i class="fas fa-file-invoice"></i> Invoices</a>
         </div>
 
