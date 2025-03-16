@@ -4,6 +4,7 @@
  */
 package controller.billprovdider.management;
 
+import dal.CompanyBillProviderDAO;
 import dal.CustomerDAO;
 import dal.DetailBillDAO;
 import dal.UserDAO;
@@ -24,6 +25,7 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import model.CompanyBillProvider;
 import model.Customer;
 import model.DetailBill;
 
@@ -83,6 +85,7 @@ public class CreateInvoice extends HttpServlet {
         String action = request.getParameter("action");
         DetailBillDAO dao = new DetailBillDAO();
         CustomerDAO cdao = new CustomerDAO();
+        CompanyBillProviderDAO bdao = new CompanyBillProviderDAO();
         UserDAO udao = new UserDAO();
         String error = "";
         if ("Add".equals(action)) {
@@ -130,8 +133,16 @@ public class CreateInvoice extends HttpServlet {
                     DetailBill bill = new DetailBill(title, description, startdate, enddate, totalamount,
                             cdao.getCustomerByID(cid),
                             udao.selectAnUserByConditions(uid, "", "", ""));
-                    dao.add(bill);
-                    error = "Add bill successfully.";
+                    
+                    CompanyBillProvider company = bdao.getCompanyById("ProviderID", uid);
+                    boolean mail = sendMailbillProvider.guiMailforCreatingBill(cdao.getCustomerByID(cid).getEmail(), bill.getBillID(), title, description, startdate, enddate, bill.getCreatedAt(), totalamount, company.getCompanyName(), cdao.getCustomerByID(cid));
+                    if(mail){
+                        error = "Add bill successfully and your customer is receive this email about bill";
+                        dao.add(bill);
+                    }else{
+                        error = "Add bill failed";
+                    }
+                        
                 }
             }
         }
