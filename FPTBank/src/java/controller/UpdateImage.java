@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import model.Customer;
 import model.User;
+import utils.ImageUploadUtil;
 
 /**
  *
@@ -25,9 +26,9 @@ import model.User;
  */
 @WebServlet(name = "UpdateImage", urlPatterns = {"/updateimage"})
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 10,      // 10MB
-    maxRequestSize = 1024 * 1024 * 50    // 50MB
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class UpdateImage extends HttpServlet {
 
@@ -103,30 +104,34 @@ public class UpdateImage extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Object account = session.getAttribute("account");
-        Part fileImage = request.getPart("image");
-        String fileName = fileImage.getSubmittedFileName();
+        String pathHost = getServletContext().getRealPath("");
+        String finalPath = pathHost.replace("build\\", "");
+        String uploadPath = finalPath + "uploadsImg";
 
-        if (!fileName.endsWith(".jpg") || fileName == null || fileName.isEmpty()) {
-            request.setAttribute("status", false);
-            request.setAttribute("error", "Only upload file .jpg");
-
-        }else
-        if (account instanceof User) {
-            String source = "img/avatar/" + fileName;
+        String fileName = ImageUploadUtil.uploadImage(request, "image", uploadPath);
+        String img = "";
+        String error = "";
+        if (fileName == null) {
+            error = "File upload failed! Please try again.";
+        } else if (account instanceof User) {
+            img = "../uploadsImg/" + fileName;
             UserDAO dao = new UserDAO();
-            ((User) account).setImage(source);
+            ((User) account).setImage(img);
             dao.updateAUser((User) account);
-            request.setAttribute("status", true);
-            request.setAttribute("error", "Upload Success");
+            error = "Upload Success";
         } else if (account instanceof Customer) {
-            String source = "img/avatar/" + fileName;
+            img = "../uploadsImg/" + fileName;
             CustomerDAO dao = new CustomerDAO();
-            ((Customer) account).setImage(source);
+            ((Customer) account).setImage(img);
             dao.updateCustomer((Customer) account);
+            error = "Upload Success";
             request.setAttribute("status", true);
-            request.setAttribute("error", "Upload Success");
         }
-        request.getRequestDispatcher("updateprofile.jsp").forward(request, response);
+
+        request.setAttribute(
+                "error2", error);
+        request.getRequestDispatcher(
+                "updateprofile.jsp").forward(request, response);
     }
 
     /**

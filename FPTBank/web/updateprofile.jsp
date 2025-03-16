@@ -249,7 +249,7 @@
                                     <img class="img-account-profile rounded-circle mb-2" src="${sessionScope.account.image}" alt="">
                                     <!-- Profile picture help block-->
                                     <div class="mb-3">           
-                                        <input style="color: white;" id="inputUsername" name="image" type="file" accept="images/avatar/*">
+                                        <input style="color: white;" id="inputUsername" name="image" type="file" accept="uploadsImg/*" >
                                     </div>
                                     <% if(request.getAttribute("error2")!=null)  {%>
                                     <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error2"));%></a>
