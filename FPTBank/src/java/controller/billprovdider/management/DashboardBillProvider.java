@@ -69,8 +69,8 @@ public class DashboardBillProvider extends HttpServlet {
         int uid = (int) session.getAttribute("uid");
         String year_raw = request.getParameter("year");
         String yearcustomer_raw = request.getParameter("yearcustomer");
-        int year = 0;
-        int yearcustomer = 0;
+        int year = 2025;
+        int yearcustomer = 2025;
         if (year_raw != null && !year_raw.isEmpty()) {
             try {
                 year = Integer.parseInt(year_raw);
