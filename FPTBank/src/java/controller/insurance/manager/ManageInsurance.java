@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package manageInsurance;
+package controller.insurance.manager;
 
 import dal.InsuranceDAO;
 import java.io.IOException;
@@ -62,8 +62,10 @@ public class ManageInsurance extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
 
         InsuranceDAO a = new InsuranceDAO();
+       int insuranceID= (int) session.getAttribute("uid");
 
         String searchIsu = request.getParameter("searchIsu");
         String typeIns = request.getParameter("typeIns");
@@ -89,46 +91,46 @@ public class ManageInsurance extends HttpServlet {
 
             if (typeIns != null && !typeIns.isEmpty()) {
                 if ("Secured Loan".equals(typeIns)) {
-                    sortedList = a.searchByTypeByPage(typeIns, page, pageSize);  // Viết hàm này để sắp xếp giảm dần
+                    sortedList = a.searchByTypeByPage(insuranceID,typeIns, page, pageSize);  // Viết hàm này để sắp xếp giảm dần
                 } else {
-                    sortedList = a.searchByTypeByPage(typeIns, page, pageSize);   // Viết hàm này để sắp xếp tăng dần
+                    sortedList = a.searchByTypeByPage(insuranceID,typeIns, page, pageSize);   // Viết hàm này để sắp xếp tăng dần
                 }
-                totalInsu = a.getTotalAfterSearchByType(typeIns);
+                totalInsu = a.getTotalAfterSearchByName(insuranceID,typeIns);
                 request.setAttribute("typeIns", typeIns);
 
             } else if (status != null && !status.isEmpty()) {
-                sortedList = a.findByStatusByPage("true".equals(status), page, pageSize);
-                totalInsu = a.getTotalAfterSearchStatus(status);
+                sortedList = a.findByStatusByPage(insuranceID,"true".equals(status), page, pageSize);
+                totalInsu = a.getTotalAfterSearchStatus(insuranceID,status);
                 request.setAttribute("status", status);
 
             } else if (searchIsu != null && !searchIsu.isEmpty()) {
-                sortedList = a.searchByNameByPage(searchIsu, page, pageSize);
-                totalInsu = a.getTotalAfterSearchByName(searchIsu);
+                sortedList = a.searchByNameByPage(insuranceID,searchIsu, page, pageSize);
+                totalInsu = a.getTotalAfterSearchByName(insuranceID,searchIsu);
 
                 request.setAttribute("searchIsu", searchIsu);
 
             } else if (sortFee != null && !sortFee.isEmpty()) {
                 boolean isDescending = "desc".equals(sortFee); // true nếu là "desc", false nếu là "asc"
-                sortedList = a.sortByFeeRate(page, pageSize, isDescending);
-                totalInsu = a.getAllInsurance().size();
+                sortedList = a.sortByFeeRate(insuranceID,page, pageSize, isDescending);
+                totalInsu = a.getInsuranceByProviderID(insuranceID).size();
 
                 request.setAttribute("sortFee", sortFee);
 
             } else if (CoverageRate != null && !CoverageRate.isEmpty()) {
                 boolean isDescending = "desc".equals(CoverageRate); // true nếu là "desc", false nếu là "asc"
-                sortedList = a.sortByCoverageRate(page, pageSize, isDescending);
-                totalInsu = a.getAllInsurance().size();
+                sortedList = a.sortByCoverageRate(insuranceID,page, pageSize, isDescending);
+                totalInsu = a.getInsuranceByProviderID(insuranceID).size();
 
                 request.setAttribute("CoverageRate", CoverageRate);
             } else if (MaxAmountOfLoan != null && !MaxAmountOfLoan.isEmpty()) {
-                sortedList = a.sortByMaxAmountOfLoan(page, pageSize, "false".equals(MaxAmountOfLoan));
-                totalInsu = a.getAllInsurance().size();
+                sortedList = a.sortByMaxAmountOfLoan(insuranceID,page, pageSize, "false".equals(MaxAmountOfLoan));
+                totalInsu = a.getInsuranceByProviderID(insuranceID).size();
 
                 request.setAttribute("MaxAmountOfLoan", MaxAmountOfLoan);
 
             } else {
-                sortedList = a.getAllInsuranceByPage(page, pageSize);
-                totalInsu = a.getAllInsurance().size();
+                sortedList = a.getAllInsuranceByProviderIDByPage(insuranceID, page, pageSize);
+                totalInsu = a.getInsuranceByProviderID(insuranceID).size();
             }
 
             int totalPages = (int) Math.ceil((double) totalInsu / pageSize);

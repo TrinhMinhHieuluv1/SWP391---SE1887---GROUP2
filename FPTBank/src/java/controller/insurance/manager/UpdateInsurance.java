@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package manageInsurance;
+package controller.insurance.manager;
 
 import dal.InsuranceDAO;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class UpdateInsurance extends HttpServlet {
         String type = request.getParameter("type");
         String feerate = request.getParameter("feerate").replaceAll("[^\\d,.]", "");
         String coverage = request.getParameter("coverage").replaceAll("[^\\d,.]", "");
-        String maxamount = request.getParameter("maxamount").replaceAll("[^\\d.]", "");
+        String maxamount = request.getParameter("maxamount").replaceAll("[^\\d.,]", "").replaceAll("(\\d)[.,](?=\\d{3})", "$1");
 
 // Chuyển đổi dữ liệu từ String sang các kiểu số
         int isuidi = Integer.parseInt(isuid);
@@ -78,8 +78,8 @@ public class UpdateInsurance extends HttpServlet {
         double maxamountd = Double.parseDouble(maxamount);
 
 // Kiểm tra điều kiện feerate và coverage phải < 100
-        if (feeratef >= 100 || coveragef >= 100) {
-            session.setAttribute("error", "Update failed! FeeRate and CoverageRate must be less than 100%.");
+        if (feeratef >= 30 || coveragef >= 100) {
+            session.setAttribute("error", "Update failed! FeeRate must be be less than 30% and CoverageRate must be less than 100%.");
             response.sendRedirect("showinsurance"); // Quay lại trang hiển thị với thông báo lỗi
             return; // Thoát khỏi hàm để không thực hiện cập nhật
         }
@@ -96,8 +96,8 @@ public class UpdateInsurance extends HttpServlet {
         boolean isUpdated = a.updateInsurance(insurance);
         if (isUpdated) {
             session.setAttribute("message", "Update Insurance Successfully!");
-        } 
-        response.sendRedirect("showinsurance");
+        }
+        request.getRequestDispatcher("manageInsurance.jsp").forward(request, response);
     }
 
     /**
@@ -111,7 +111,60 @@ public class UpdateInsurance extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        HttpSession session = request.getSession();
+
+        InsuranceDAO a = new InsuranceDAO();
+        int insuranceID = (int) session.getAttribute("uid");
+        String insuranceName = request.getParameter("insuranceName1");
+        String type = request.getParameter("type1");
+        String feerate = request.getParameter("feerate1").replaceAll("[^\\d,.]", "");
+        String coverage = request.getParameter("coverage1").replaceAll("[^\\d,.]", "");
+        String maxamount = request.getParameter("maxamount1").replaceAll("[^\\d.]", "");
+
+// Chuyển đổi dữ liệu từ String sang các kiểu số
+        float feeratef = Float.parseFloat(feerate);
+        float coveragef = Float.parseFloat(coverage);
+        double maxamountd = Double.parseDouble(maxamount);
+
+        if (insuranceName != null) {
+            insuranceName = insuranceName.trim(); // Xóa dấu cách đầu và cuối
+            insuranceName = insuranceName.replaceAll("\\s+", " "); // Thay thế nhiều dấu cách bằng một dấu cách
+        }
+
+// Kiểm tra điều kiện feerate và coverage phải < 100
+        if (feeratef >= 30 || coveragef >= 100) {
+            session.setAttribute("error", "Add failed! FeeRate must be less than 30% and CoverageRate must be less than 100%.");
+            response.sendRedirect("showinsurance"); // Quay lại trang hiển thị với thông báo lỗi
+            return; // Thoát khỏi hàm để không thực hiện cập nhật
+        }
+
+// Kiểm tra xem insuranceName đã tồn tại chưa
+        if (a.isInsuranceNameExists(insuranceName)) {
+            session.setAttribute("error", "Add failed! Insurance Name already exists.");
+            response.sendRedirect("showinsurance"); // Quay lại trang hiển thị với thông báo lỗi
+            return; // Thoát khỏi hàm để không thực hiện cập nhật
+        }
+
+// Nếu hợp lệ, tiếp tục cập nhật
+        Insurance insurance = new Insurance();
+
+        insurance.setProviderID(insuranceID); // ID của bản ghi cần cập nhật
+        insurance.setInsuranceName(insuranceName);
+        insurance.setType(type);
+        insurance.setFeeRate(feeratef); // Giá trị mới cho FeeRate
+        insurance.setCoverageRate(coveragef); // Giá trị mới cho CoverageRate
+        insurance.setMaxAmountOfLoan(maxamountd); // Giá trị mới cho MaxAmountOfLoan
+        insurance.setStatus(true); // Trạng thái hoạt động
+
+// Gọi hàm updateInsurance và kiểm tra kết quả
+        boolean isAdd = a.addInsurance(insurance);
+        if (isAdd) {
+            session.setAttribute("message", "Add Insurance Successfully!");
+        } else {
+            session.setAttribute("error", "Add failed! Please try again.");
+        }
+        response.sendRedirect("showinsurance");
     }
 
     /**

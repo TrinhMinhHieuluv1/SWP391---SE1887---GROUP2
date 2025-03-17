@@ -1,17 +1,18 @@
 <%-- 
-    Document   : login
-    Created on : Jan 13, 2025, 3:18:30 AM
-    Author     : HP
+    Document   : providerInfor
+    Created on : Mar 14, 2025, 11:24:34 PM
+    Author     : ADMIN
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Manage Asset</title>
+        <title>Manage Isurance</title>
 
         <!--plugins-->
         <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
@@ -24,6 +25,11 @@
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="assets/css/icons.css">
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/x-icon">
+        <link rel="icon" href="assets/images/logo-icon.png" type="image/x-icon">
+
+                <link rel="stylesheet" href="../css/style.css" type="text/css" media="all">
 
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
         <link href="assets/css/extra-icons.css" rel="stylesheet">
@@ -33,54 +39,145 @@
         <link href="assets/css/minimal-theme.css" rel="stylesheet">
         <link href="assets/css/shadow-theme.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <style>
-            .product-box {
-                position: relative;
-            }
-            .zoom-icon {
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                background-color: rgba(255, 255, 255, 0.8);
-                border: none;
-                cursor: pointer;
-                padding: 5px;
-                border-radius: 50%;
-            }
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.8);
-                justify-content: center;
-                align-items: center;
-            }
-            .modal img {
-                max-width: 90%;
-                max-height: 90%;
-            }
-        </style>
 
-        <script>
-            function openModal(button) {
-                var modal = document.getElementById("modal");
-                var modalImage = document.getElementById("modalImage");
-                var image = button.parentElement.querySelector('.clickable-image'); // Lấy hình ảnh từ thẻ cha
-                modalImage.src = image.src; // Lấy đường dẫn ảnh từ hình ảnh đã nhấn
-                modal.style.display = "flex"; // Hiện modal
-            }
-
-            function closeModal() {
-                document.getElementById("modal").style.display = "none"; // Ẩn modal khi nhấn bên ngoài
-            }
-        </script>
     </head>
+  
+    <script>
+
+            function changePage(page) {
+                const form = document.querySelector(".filter-controls"); // Chỉ lấy form đầu tiên
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "page";
+                input.value = page;
+                form.appendChild(input);
+                form.submit();
+            }
+
+            // Toast message animation
+            document.addEventListener('DOMContentLoaded', function () {
+                const toast = document.getElementById('toastMessage');
+                if (toast) {
+                    // Show toast
+                    setTimeout(() => {
+                        toast.classList.add('show');
+                    }, 100);
+
+                    // Hide toast after 3 seconds
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        // Remove toast from DOM after animation
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 500);
+                    }, 6000);
+                }
+            });
+
+        </script>
+    <style>
+        
+        .btn-primary,.progress-bar{
+            background-color: #008000;
+        }
+             /* Toast Message Styles */
+            .toast-message {
+                position: fixed;
+                top: -100px; /* Start above viewport */
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #4CAF50;
+                color: white;
+                padding: 16px 32px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                z-index: 1000;
+                transition: top 0.5s ease-in-out;
+            }
+
+            .toast-message.show {
+                top: 20px; /* Slide down to this position */
+            }
+
+            .toast-message i {
+                font-size: 24px;
+            }
+            
+            
+         .modal__content {
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                max-width: 500px;
+                margin: auto;
+            }
+
+            .modal__close {
+                float: right;
+                font-size: 24px;
+                cursor: pointer;
+                background: none;
+                border: none;
+                color: #333;
+            }
+
+            .modal__close:hover {
+                color: #000;
+            }
+
+            .modal__text {
+                margin-bottom: 15px;
+                font-size: 15px;
+            }
+
+            .modal__text label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+
+            }
+             .modal__text input,
+            .modal__text select {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+                color: #555;
+            }
+
+            .modal__text input:focus,
+            .modal__text select:focus {
+                border-color: #007bff;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
+    </style> 
+        
     <body>
 
+        <!--show message-->
+        <c:if test="${not empty sessionScope.message}">
+            <div id="toastMessage" class="toast-message">
+                <i class="fa fa-check-circle"></i>
+                ${sessionScope.message}
+            </div>
+            <c:remove var="message" scope="session" />
+        </c:if>
+
+        <c:if test="${not empty sessionScope.error}">
+            <div id="toastMessage" class="toast-message1">
+                <i class="fa fa-check-circle"></i>
+                ${sessionScope.error}
+            </div>
+            <c:remove var="error" scope="session" />
+        </c:if>
         <!--start header-->
         <header class="top-header">
             <nav class="navbar navbar-expand justify-content-between">
@@ -92,11 +189,6 @@
                     <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50">search</span>
                 </div>
                 <ul class="navbar-nav top-right-menu gap-2">
-                    <li class="nav-item d-lg-none d-block" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <a class="nav-link" href="javascript:;"><span class="material-symbols-outlined">
-                                search
-                            </span></a>
-                    </li>
                     <li class="nav-item dark-mode">
                         <a class="nav-link dark-mode-icon" href="javascript:;"><span class="material-symbols-outlined">dark_mode</span></a>
                     </li>
@@ -484,11 +576,10 @@
                             </span></a>
                     </li>
                 </ul>
+
             </nav>
         </header>
         <!--end header-->
-
-
         <!--start sidebar-->
         <aside class="sidebar-wrapper">
             <div class="sidebar-header">
@@ -496,47 +587,57 @@
                     <img src="assets/images/logo-icon.png" class="logo-img" alt="">
                 </div>
                 <div class="logo-name flex-grow-1">
-                    <h5 class="mb-0">Timibank</h5>
+                    <h5 class="mb-0">Bank</h5>
                 </div>
-                <div class="sidebar-close ">
+                <div class="sidebar-close">
                     <span class="material-symbols-outlined">close</span>
                 </div>
             </div>
             <div class="sidebar-nav" data-simplebar="true">
 
-                <!--navigation-->
                 <ul class="metismenu" id="menu">
                     <li>
-                        <a href="home">
+                        <a href="/timibank/home.jsp">
                             <div class="parent-icon"><span class="material-symbols-outlined">home</span>
                             </div>
-                            <div class="menu-title">Dashboard</div>
+                            <div class="menu-title">Back to home</div>
                         </a>
                     </li>
+
+
+
                     <li>
-                        <a href="listAsset" class="has-arrow">
+                        <a href="#" class="has-arrow">
                             <div class="parent-icon"><span class="material-symbols-outlined">shopping_cart</span>
                             </div>
                             <div class="menu-title">Management</div>
                         </a>
                         <ul>
-                            <!--                    <li> <a href="ecommerce-add-product.html"><span class="material-symbols-outlined">arrow_right</span>Add Product</a>
-                                                </li>
-                                                <li> <a href="ecommerce-products.html"><span class="material-symbols-outlined">arrow_right</span>Products</a>
-                                                </li>-->
+
+
+                            <li> <a href="insurancedetail"><span class="material-symbols-outlined">arrow_right</span>Provider Information</a>
+                            </li>
+                            <li> <a href="showinsurance"><span class="material-symbols-outlined">arrow_right</span>Manage Insurance</a>
+                            </li>
+
+                        </ul>
+                    </li> 
+
+
+                    <li class="menu-label">Charts & Maps</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:;">
+                            <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
+                            </div>
+                            <div class="menu-title">Charts</div>
+                        </a>
+                        <ul>
+
+                            <li> <a href="getdatainsurance"><span class="material-symbols-outlined">arrow_right</span>Statistic of Insurance</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li> <a href="/manager/listAsset"><span class="material-symbols-outlined">arrow_right</span>Asset</a>
-                    </li>
-                    <li> <a href="/manager/listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
-                    </li>
-                    <!--                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
-                                        </li>
-                                        <li> <a href="ecommerce-orders.html"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
-                                        </li>
-                                        <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>
-                                        </li>-->
-                </ul>
-                </li> 
+
                 </ul>
                 <!--end navigation-->
 
@@ -576,7 +677,7 @@
                     <li>
                         <div class="dropdown-divider mb-0"></div>
                     </li>
-                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
+                    <li><a class="dropdown-item" href="/timibank/logout"><span class="material-symbols-outlined me-2">
                                 logout
                             </span><span>Logout</span></a>
                     </li>
@@ -588,76 +689,126 @@
 
         <!--start main content-->
         <main class="page-content">
-
-            <div class="row g-3">
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <div class="product-table">
-                            <div class="table-responsive white-space-nowrap">
-                                <table class="table align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Customer ID</th>
-                                            <th>Image</th>
-                                            <th>Name</th>
-                                            <th>phone</th>
-                                            <th>email</th>
-                                            <th>CCCD</th>
-                                            <th>Address</th>
-                                             <th>Date Of Birth</th>
-                                            <th>Credit Score</th>
-                                            <th>Balance</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:set value="${requestScope.dataC}" var="customer"/>
-                                        <c:if test="${requestScope.dataC!= null}" >
-
-                                            <tr>
-                                                <td>
-
-                                                    <a>${customer.getCustomerId()}</a>
-
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center gap-3">
-                                                        <div class="product-box" style="position: relative;">
-
-                                                            <img class="clickable-image" style="height: 150px; width: 130px;" src="${customer.getImage()}" alt="" id="myImage">
-
-                                                            <button class="zoom-icon" onclick="openModal(this)">
-                                                                <i class="fa fa-expand"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>${customer.getFullName()}</td>
-                                                <td>${customer.getPhone()}</td>
-                                                <td>${customer.getEmail()}</td>
-                                                <td>${customer.getCCCD()}</td>
-                                                <td>${customer.getAddress()}</td>
-                                                <td>${customer.getDateOfBirth()}</td>
-                                                <td>${customer.getCreditScore()}</td>
-                                                <td>${customer.getBalance()}</td>
-                                                <c:if test="${customer.isStatus() == false}">
-                                                    <td>Not Active</td>
-                                                </c:if>
-                                                <c:if test="${customer.isStatus() != false}">
-
-                                                    <td>Active</td>
-                                                </c:if>   
-                                            </tr> 
-                                        </c:if>
-                                    </tbody>
-                                </table>
-                            </div>
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Pages</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Settings</button>
+                        <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
+                            <a class="dropdown-item" href="javascript:;">Another action</a>
+                            <a class="dropdown-item" href="javascript:;">Something else here</a>
+                            <div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
                         </div>
                     </div>
                 </div>
-                <div class="modal" id="modal" onclick="closeModal()">
-                    <img id="modalImage" src="" alt="Phóng to hình ảnh">
+            </div>
+            <!--end breadcrumb-->
+
+            <div class="row">
+                <div class="col-12 col-lg-8 col-xl-9">
+                    <div class="card overflow-hidden">
+                        <div class="profile-cover bg-dark position-relative mb-4">
+                            <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x">
+                                <img src="${user.getImage()}" alt="...">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mt-5 d-flex align-items-start justify-content-between">
+                                <div class="">
+                                    <h3 class="mb-2">${user.getFullName()}</h3>
+                                    <p class="mb-1">Insurance Founder</p>
+                                    <p>${user.getAddress()}</p>
+                                    <div class="">
+                                        <a href="/timibank/profile.jsp" class="btn btn-primary"></i>Profile Management</a>           
+                                        <a href="showinsurance" class="btn btn-primary"></i>Insurance Management</a>           
+                                    </div>
+                                </div>
+                                <div class="">
+
+                                    <button class="btn btn-primary js-toggle"  toggle-target="#modal-guiadmin"><i class="bi bi-chat me-2"></i>Send Message For Admin</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="mb-2">About Me</h4>
+                            <p class="">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
+                            <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.</p>
+                            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-12 col-lg-4 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="mb-3">Location</h5>
+                            <p class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>${user.getAddress()}</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="mb-3">Connect</h5>
+                            <p class=""><i class="bi bi-browser-edge me-2"></i>${user.getEmail()}</p>
+                            <p class=""><i class="bi bi-facebook me-2"></i>Facebook</p>
+                            <p class=""><i class="bi bi-twitter me-2"></i>Twitter</p>
+                            <p class="mb-0"><i class="bi bi-linkedin me-2"></i>${user.getPhone()}</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="mb-3">Skills</h5>
+                            <div class="mb-3">
+                                <p class="mb-1">Web Design</p>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <p class="mb-1">HTML5</p>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 55%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <p class="mb-1">PHP7</p>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <p class="mb-1">CSS3</p>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-0">
+                                <p class="mb-1">Photoshop</p>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div><!--end row-->
+
         </main>
         <!--end main content-->
 
@@ -666,6 +817,75 @@
         <div class="overlay btn-toggle-menu"></div>
         <!--end overlay-->
 
+        
+        <div id="modal-guiadmin" class="modal modal--large hide">
+                <div class="modal__content">
+                    <button class="modal__close js-toggle" toggle-target="#modal-guiadmin">&times;</button>
+                    <div style="color: #008000;
+                         text-align: center;">
+                        <h2  style="color: #008000;
+                     text-align: center;">Gửi yêu cầu Hỗ trợ cho Admin</h2>
+                    </div>
+
+                    <form action="SendAdmin" method="post" class="mil-subscripe-form-footer" id="form">
+                    <!-- Email Input -->
+                    <div class="mb-3">
+                        <input class="form-control form-control__input mil-input" type="email" placeholder="Email" name="email" required>
+                    </div>
+                    <!-- Tiêu đề Input -->
+                    <div class="mb-3">
+                        <input  class="form-control form-control__input mil-input" type="text" placeholder="Tiêu đề" name="tieude" value="Provider Insurance ID=${user.getUserID()} yêu cầu hỗ trợ" readonly="">
+                    </div>
+                    <!-- Nội dung Input -->
+                    <div class="mb-3">
+                        <textarea class="form-control form-control__textarea" rows="3" placeholder="Nội dung" name="noidung" required></textarea>                                    
+                    </div>
+                    <!--mã cap cha-->
+                    <div class="g-recaptcha" data-sitekey="6LcVf94qAAAAAHVxQmDpyNe7nzc7DEC88pgrmnb4"></div>
+                    <div id="error"></div>
+
+
+                    <div class="form-control__row--reverse">
+                        <!-- Submit Button -->
+                        <button type="submit" class="form-control__btn form-control__btn--green mil-btn mil-ssm">
+                            <i class="far fa-envelope-open form-control__icon"></i> Gửi
+                        </button>
+                        <!-- Checkbox -->
+                        <div class="mil-checkbox-frame">
+                            <div class="mil-checkbox">
+                                <input type="checkbox" id="checkbox" checked>
+                                <label for="checkbox"></label>
+                            </div>
+                            <p class="mil-text-xs mil-soft">Đăng ký để nhận tin tức mới nhất</p>
+
+                        </div>
+                    </div>
+
+                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                    <script>
+                        window.onload = function () {
+                            let isValid = false;
+                            const form = document.getElementById("form");
+                            const error = document.getElementById("error");
+
+                            form.addEventListener("submit", function (event) {
+                                event.preventDefault();
+                                const response = grecaptcha.getResponse();
+                                if (response) {
+                                    form.submit();
+                                } else {
+                                    error.innerHTML = "Please check";
+                                }
+                            });
+                        }
+                    </script>
+
+
+                </form>
+                </div>
+                <div class="modal__overlay js-toggle" toggle-target="#modal-guiadmin"></div>
+            </div>
+        
         <!-- Search Modal -->
         <div class="modal" id="exampleModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -714,7 +934,6 @@
         </div>
 
 
-
         <!--start theme customization-->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="ThemeCustomizer" aria-labelledby="ThemeCustomizerLable">
             <div class="offcanvas-header border-bottom">
@@ -749,6 +968,7 @@
             </div>
         </div>
         <!--end theme customization-->
+
         <!--plugins-->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
@@ -758,6 +978,6 @@
         <!--BS Scripts-->
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/main.js"></script>
+         <script src="../js/scripts.js"></script>
     </body>
-
 </html>
