@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package manageInsurance;
+package controller.insurance.manager;
 
+import com.oracle.wls.shaded.org.apache.bcel.generic.INEG;
 import dal.InsuranceDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Insurance;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "InsuranceDetail", urlPatterns = {"/insurance/insurancedetail"})
-public class InsuranceDetail extends HttpServlet {
+@WebServlet(name = "ShowInsurance", urlPatterns = {"/insurance/showinsurance"})
+public class ShowInsurance extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +41,10 @@ public class InsuranceDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InsuranceDetail</title>");            
+            out.println("<title>Servlet ShowInsurance</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InsuranceDetail at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ShowInsurance at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,12 +62,28 @@ public class InsuranceDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String providerId = request.getParameter("providerId");
-        UserDAO d = new UserDAO();
-        int proId = Integer.parseInt(providerId);
-        User usenew = d.getManagerForSeller(proId);        
-        request.setAttribute("user", usenew);
+        HttpSession session = request.getSession();
+        
+        InsuranceDAO a = new InsuranceDAO();
+     
+       int insuranceID= (int) session.getAttribute("uid");
+        int page = 1; // trang đầu tiên
+        int pageSize = 10; // 1 trang có 10 users
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+ List<Insurance> sortedList = a.getAllInsuranceByProviderIDByPage(insuranceID, page, pageSize);
+        int loanSize = a.getInsuranceByProviderID(insuranceID).size();
+
+        int totalPages = (int) Math.ceil((double) loanSize / pageSize);
+
+        // set phân trang
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        request.setAttribute("ListInsu", sortedList);
         request.getRequestDispatcher("manageInsurance.jsp").forward(request, response);
+
     }
 
     /**
@@ -79,8 +97,7 @@ public class InsuranceDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+        processRequest(request, response);
     }
 
     /**
