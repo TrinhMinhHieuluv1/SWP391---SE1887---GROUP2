@@ -156,29 +156,27 @@
                 <div class="chart-container">
                     <h2 style="text-align: center;">Total Revenue</h2>
                     <select style="width: 80px; height: 40px; border-radius: 2px; margin-left: 100px;" name="year" onchange="this.form.submit()">
-                        <option value="2021" ${param.year == '2021' ? 'selected' : ''}>2021</option>
-                        <option value="2022" ${param.year == '2022' ? 'selected' : ''}>2022</option>
-                        <option value="2023" ${param.year == '2023' ? 'selected' : ''}>2023</option>
-                        <option value="2024" ${param.year == '2024' ? 'selected' : ''}>2024</option>
                         <option value="2025" ${param.year == '2025' ? 'selected' : ''}>2025</option>
-                        <option value="2026" ${param.year == '2026' ? 'selected' : ''}>2026</option>
-                        <option value="2027" ${param.year == '2027' ? 'selected' : ''}>2027</option>
-                    </select>
-                    <div> <canvas id="barChart"></canvas>
-                    <h2 style="text-align: center;">Total Customer</h2>
-                    <select style="width: 80px; height: 40px; border-radius: 2px; margin-left: 100px;" name="yearcustomer" onchange="this.form.submit()">
-                        <option value="2021" ${param.yearcustomer == '2021' ? 'selected' : ''}>2021</option>
-                        <option value="2022" ${param.yearcustomer == '2022' ? 'selected' : ''}>2022</option>
-                        <option value="2023" ${param.yearcustomer == '2023' ? 'selected' : ''}>2023</option>
-                        <option value="2024" ${param.yearcustomer == '2024' ? 'selected' : ''}>2024</option>
-                        <option value="2025" ${param.yearcustomer == '2025' ? 'selected' : ''}>2025</option>
-                        <option value="2026" ${param.yearcustomer == '2026' ? 'selected' : ''}>2026</option>
-                        <option value="2027" ${param.yearcustomer == '2027' ? 'selected' : ''}>2027</option>
+                        <option value="2024" ${param.year == '2024' ? 'selected' : ''}>2024</option>
+                        <option value="2023" ${param.year == '2023' ? 'selected' : ''}>2023</option>
+                        <option value="2022" ${param.year == '2022' ? 'selected' : ''}>2022</option>
+                        <option value="2021" ${param.year == '2021' ? 'selected' : ''}>2021</option>
                     </select>
 
-                    <canvas id="lineChart"></canvas>
-                    <h2 style="text-align: center;">Total Status of Bill</h2>
-                    <canvas style="width: 400px;" id="pieChart"></canvas></div>
+                    <div> <canvas id="barChart"></canvas>
+                        <h2 style="text-align: center;">Total Customer</h2>
+                        <select style="width: 80px; height: 40px; border-radius: 2px; margin-left: 100px;" name="yearcustomer" onchange="this.form.submit()">
+                            <option value="2025" ${param.yearcustomer == '2025' ? 'selected' : ''}>2025</option>
+                            <option value="2024" ${param.yearcustomer == '2024' ? 'selected' : ''}>2024</option>
+                            <option value="2023" ${param.yearcustomer == '2023' ? 'selected' : ''}>2023</option>
+                            <option value="2022" ${param.yearcustomer == '2022' ? 'selected' : ''}>2022</option>
+                            <option value="2021" ${param.yearcustomer == '2021' ? 'selected' : ''}>2021</option>
+                        </select>
+
+
+                        <canvas id="lineChart"></canvas>
+                        <h2 style="text-align: center;">Total Status of Bill</h2>
+                        <canvas style="width: 400px;" id="pieChart"></canvas></div>
 
                 </div>
                 <script>
@@ -247,7 +245,7 @@
                             labels: ['Paid', 'Unpaid'],
                             datasets: [{
                                     data: [paidRate, unpaidRate],
-                                    backgroundColor: [ 'blue', 'green']
+                                    backgroundColor: ['blue', 'green']
                                 }]
                         }
                     });

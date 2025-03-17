@@ -173,8 +173,8 @@
                     <input class="form-control" type="date" name="date2" placeholder="Date"></input>
                 </div>
                 <button type="submit" style="background-color: green; color: white">Filter</button>
-            
-            
+
+
                 <table>
                     <thead>
                         <tr>
@@ -197,17 +197,19 @@
                                 <td>${bill.getTotal()}</td>
                                 <td>${bill.getStatusOfBill() == 1 ? "Unpaid" : "Paid"}</td>
                                 <td>${bill.getStatus() == 1 ? "Active" : "InActive"}</td>
-                                <td><a href="updateinvoice?billID=${bill.getBillID()}&customerID=${bill.getCustomer().getCustomerId()}" 
-                           style="display: inline-block; background-color: green; color: white;
-                           border-radius: 5px; padding: 5px 10px; text-decoration: none;">
-                            Update
-                        </a></td>
-                        <td><a href="billdetail?billID=${bill.getBillID()}&providerID=${bill.getProvider().getUserID()}" 
-                           style="display: inline-block; background-color: green; color: white;
-                           border-radius: 5px; padding: 5px 10px; text-decoration: none;">
-                            Detail
-                        </a></td>
-                        </tr>
+                                <c:if test="${bill.getStatusOfBill() == 1}">
+                                    <td><a href="updateinvoice?billID=${bill.getBillID()}&customerID=${bill.getCustomer().getCustomerId()}" 
+                                           style="display: inline-block; background-color: green; color: white;
+                                           border-radius: 5px; padding: 5px 10px; text-decoration: none;">
+                                            Update
+                                        </a></td>
+                                    </c:if>
+                                <td><a href="billdetail?billID=${bill.getBillID()}&providerID=${bill.getProvider().getUserID()}" 
+                                       style="display: inline-block; background-color: green; color: white;
+                                       border-radius: 5px; padding: 5px 10px; text-decoration: none;">
+                                        Detail
+                                    </a></td>
+                            </tr>
                         </tbody>
                     </c:forEach>
                 </table>
