@@ -41,8 +41,8 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     </head>
-     <style>
-   body {
+    <style>
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -71,7 +71,7 @@
         }
         .content {
             font-size: 20px;
-            
+
             color: #333;
             line-height: 1.5;
             margin-bottom: 20px;
@@ -129,8 +129,8 @@
             font-weight: bold;
             color: #007bff;
         }
-        
-  </style>
+
+    </style>
     <body>
 
 
@@ -144,69 +144,13 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-            <div class="mil-progress-track">
-                <div class="mil-progress"></div>
-            </div>
+            
             <!-- scroll progress end -->
 
             <!-- back to top -->
-            <div class="progress-wrap active-progress"></div>
 
             <!-- top panel end -->
-            <div class="mil-top-panel" id="mil-top-panel">
-                <div class="container">
-                    <a href="index.jsp" class="mil-logo">
-                        <img src="img/logo1.png" alt="Plax" width="200">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children">
-                                <a href="#.">Home</a>
-                                <ul>
-                                    <li><a href="index.jsp">Mở tài khoản</a></li>
-                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.jsp">Type 3</a></li>
-                                    <li><a href="home-4.jsp">Type 4</a></li>
-                                    <li><a href="home-5.jsp">Type 5</a></li>
-
-                                </ul>
-                            </li>
-                            <li class="mil-active">
-                                <a href="about">About</a>
-                            </li>
-                            <li>
-                                <a href="services.jsp">Services</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="contact.jsp">Contact</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mil-menu-buttons">
-                        <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
-                        <div class="mil-menu-btn">
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <%@ include file="header.jsp"%>
 
             <!-- top panel end -->
 
@@ -261,82 +205,83 @@
                         </nav>
                     </div>
                 </div>
-        <div class="container">
-   <div class="title">
-    THẺ TIMI - CHI TIÊU GIẢM GIÁ HÀNG ĐẦU VIỆT NAM THÁNG 12
-   </div>
-   <div class="date">
-    <i class="fas fa-calendar-alt">
-    </i>
-    <span>
-     01.12.2024
-    </span>
-   </div>
-   <div class="content">
-    Biết tin gì chưa? Sở hữu thẻ TIMI là sở hữu ngay kho deal chi tiêu giảm giá siêu khủng!
-   </div>
-   <div class="content">
-    Lưu ngay toàn bộ ưu đãi thẻ TIMI - chi tiêu giảm giá hàng đầu Việt Nam
-    <a href="prefer.jsp">
-     tại đây
-    </a>
-    <br/>
-    Đặc biệt, bật mí cho chủ thẻ
-    <span class="highlight">
-     Top 30 ưu đãi nổi bật
-    </span>
-    cùng loạt deal giảm giá đến 50% và nhiều voucher tiền triệu khi chi tiêu mua sắm những thương hiệu uy tín nhất với thẻ MB:
-   </div>
-   <div class="banner">
-    <img alt="Banner Image" height="100" src="img\about\uudai1.1.png" width="800"/>
-   </div>
-   <div class="offers">
-    <img alt="Top 30 Ưu Đãi" height="200" src="img\about\uudai1.png" width="800"/>
-   </div>
-            <br/>
-            <div>
-                <div class="content">
-Chủ thẻ Timi Bank thì không thể bỏ qua top deal đỉnh sau:                </div>
-                <div class="banner">
-                    <img alt="Banner Image" height="100" src="img\about\uudai2.png" width="800"/>
-                </div>
-                <br/><!-- comment -->
-                 <div class="content">
-                    Chủ thẻ TIMI BANK cũng có cực nhiều deal hot “bỏ túi” đó!
-                </div>
-                <div class="banner">
-                    <img alt="Banner Image" height="100" src="img\about\uudai3.png" width="800"/>
-                </div>
-                <br/><!-- comment -->
-                
-                <div>
-                    Đừng quên update lịch chi tiêu giảm giá cùng thẻ TM để “chạm là giảm giá – quẹt là hoàn tiền” nha!
+                <div class="container">
+                    <div class="title">
+                        THẺ TIMI - CHI TIÊU GIẢM GIÁ HÀNG ĐẦU VIỆT NAM THÁNG 12
+                    </div>
+                    <div class="date">
+                        <i class="fas fa-calendar-alt">
+                        </i>
+                        <span>
+                            01.12.2024
+                        </span>
+                    </div>
+                    <div class="content">
+                        Biết tin gì chưa? Sở hữu thẻ TIMI là sở hữu ngay kho deal chi tiêu giảm giá siêu khủng!
+                    </div>
+                    <div class="content">
+                        Lưu ngay toàn bộ ưu đãi thẻ TIMI - chi tiêu giảm giá hàng đầu Việt Nam
+                        <a href="prefer.jsp">
+                            tại đây
+                        </a>
+                        <br/>
+                        Đặc biệt, bật mí cho chủ thẻ
+                        <span class="highlight">
+                            Top 30 ưu đãi nổi bật
+                        </span>
+                        cùng loạt deal giảm giá đến 50% và nhiều voucher tiền triệu khi chi tiêu mua sắm những thương hiệu uy tín nhất với thẻ MB:
+                    </div>
+                    <div class="banner">
+                        <img alt="Banner Image" height="100" src="img\about\uudai1.1.png" width="800"/>
+                    </div>
+                    <div class="offers">
+                        <img alt="Top 30 Ưu Đãi" height="200" src="img\about\uudai1.png" width="800"/>
+                    </div>
+                    <br/>
+                    <div>
+                        <div class="content">
+                            Chủ thẻ Timi Bank thì không thể bỏ qua top deal đỉnh sau:                </div>
+                        <div class="banner">
+                            <img alt="Banner Image" height="100" src="img\about\uudai2.png" width="800"/>
+                        </div>
+                        <br/><!-- comment -->
+                        <div class="content">
+                            Chủ thẻ TIMI BANK cũng có cực nhiều deal hot “bỏ túi” đó!
+                        </div>
+                        <div class="banner">
+                            <img alt="Banner Image" height="100" src="img\about\uudai3.png" width="800"/>
+                        </div>
+                        <br/><!-- comment -->
 
-Khám phá thêm tại mục Ưu đãi/App TMBank: 
- 
-<a class="highlight" href="prefer.jsp">
-     tại đây
-    </a>
-                </div>
-                
-            </div>
-              <script src="js/plugins/jquery.min.js"></script>
+                        <div>
+                            Đừng quên update lịch chi tiêu giảm giá cùng thẻ TM để “chạm là giảm giá – quẹt là hoàn tiền” nha!
 
-            <!-- swiper css -->
-            <script src="js/plugins/swiper.min.js"></script>
-            <!-- gsap js -->
-            <script src="js/plugins/gsap.min.js"></script>
-            <!-- scroll smoother -->
-            <script src="js/plugins/ScrollSmoother.min.js"></script>
-            <!-- scroll trigger js -->
-            <script src="js/plugins/ScrollTrigger.min.js"></script>
-            <!-- scroll to js -->
-            <script src="js/plugins/ScrollTo.min.js"></script>
-            <!-- magnific -->
-            <script src="js/plugins/magnific-popup.js"></script>
-            <!-- plax js -->
-            <script src="js/main.js"></script>
+                            Khám phá thêm tại mục Ưu đãi/App TMBank: 
 
-            <script src="./js/scripts.js"></script>
-    </body>
-</html>
+                            <a class="highlight" href="prefer.jsp">
+                                tại đây
+                            </a>
+                        </div>
+                <%@ include file="footer.jsp"%>
+
+                    </div>
+                    <script src="js/plugins/jquery.min.js"></script>
+
+                    <!-- swiper css -->
+                    <script src="js/plugins/swiper.min.js"></script>
+                    <!-- gsap js -->
+                    <script src="js/plugins/gsap.min.js"></script>
+                    <!-- scroll smoother -->
+                    <script src="js/plugins/ScrollSmoother.min.js"></script>
+                    <!-- scroll trigger js -->
+                    <script src="js/plugins/ScrollTrigger.min.js"></script>
+                    <!-- scroll to js -->
+                    <script src="js/plugins/ScrollTo.min.js"></script>
+                    <!-- magnific -->
+                    <script src="js/plugins/magnific-popup.js"></script>
+                    <!-- plax js -->
+                    <script src="js/main.js"></script>
+
+                    <script src="./js/scripts.js"></script>
+                    </body>
+                    </html>

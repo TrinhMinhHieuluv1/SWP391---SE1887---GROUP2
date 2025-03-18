@@ -93,68 +93,13 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-            <div class="mil-progress-track">
-                <div class="mil-progress"></div>
-            </div>
+           
             <!-- scroll progress end -->
 
             <!-- back to top -->
-            <div class="progress-wrap active-progress"></div>
 
             <!-- top panel end -->
-            <div class="mil-top-panel">
-                <div class="container">
-                    <a href="/timibank/home" class="mil-logo">
-                        <img src="img/logo1.png" alt="Plax" width="200">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children">
-                                <a href="/timibank/home">Home</a>
-                                <ul>
-                                    <li><a href="index.html">Mở tài khoản</a></li>
-                                    <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.html">Type 3</a></li>
-                                    <li><a href="home-4.html">Type 4</a></li>
-                                    <li><a href="home-5.html">Type 5</a></li>
-
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="about.html">About</a>
-                            </li>
-                            <li>
-                                <a href="services.html">Services</a>
-                            </li>
-                            <li>
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.html">Blog list</a></li>
-                                    <li><a href="publication.html">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="contact.html">Contact</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.html">Career</a></li>
-                                    <li><a href="career-details.html">Career details</a></li>
-                                    <li><a href="price.html">Pricing</a></li>
-                                    <li><a href="register.html">Register</a></li>
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mil-menu-buttons">
-                        <div class="mil-menu-btn">
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <%@ include file="header.jsp"%>
             <!-- top panel end -->
 
             <!-- content -->
@@ -205,7 +150,7 @@
                 </div>
                 <!-- register form end -->
 
-                <div class="mil-space-fix"></div>
+                                <%@ include file="footer.jsp"%>
 
             </div>
             <!-- content end -->
