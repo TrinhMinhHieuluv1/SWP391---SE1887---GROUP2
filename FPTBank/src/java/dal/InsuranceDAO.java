@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,29 +121,6 @@ public class InsuranceDAO extends DBContext {
 //            e.printStackTrace();
 //        }
 //    }
-
-    public void deleteInsurance(int insuranceID) {
-        String sql = "DELETE FROM Insurance WHERE InsuranceID = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, insuranceID);
-    public void updateInsurance(Insurance insurance) {
-        String sql = "UPDATE Insurance SET ProviderID=?, Type=?, FeeRate=?, CoverageRate=?, MaxAmountOfLoan=?, Status=? WHERE InsuranceID=?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, insurance.getProviderID());
-            st.setString(2, insurance.getType());
-            st.setFloat(3, insurance.getFeeRate());
-            st.setFloat(4, insurance.getCoverageRate());
-            st.setDouble(5, insurance.getMaxAmountOfLoan());
-            st.setBoolean(6, insurance.isStatus());
-            st.setInt(7, insurance.getInsuranceID());
-            st.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<Insurance> searchByNameByPage(String keyword, int page, int pageSize) {
         ArrayList<Insurance> insuranceList = new ArrayList<>();
         String sql = "SELECT * FROM Insurance WHERE InsuranceName LIKE ? ORDER BY InsuranceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -213,8 +191,6 @@ public class InsuranceDAO extends DBContext {
         }
         return insuranceList;
     }
-
-   
 
     public ArrayList<Insurance> sortByFeeRate(int page, int pageSize, boolean isDescending) {
         ArrayList<Insurance> insuranceList = new ArrayList<>();
@@ -361,21 +337,22 @@ public class InsuranceDAO extends DBContext {
         }
         return 0;
     }
-    
-   public boolean updateStatus(int insuranceID, boolean status) {
-    String sql = "UPDATE Insurance SET Status = ? WHERE InsuranceID = ?";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setBoolean(1, status); // Thiết lập giá trị Status mới
-        st.setInt(2, insuranceID); // Thiết lập InsuranceID
-        int rowsUpdated = st.executeUpdate(); // Thực thi câu lệnh SQL và lấy số dòng được cập nhật
-        return rowsUpdated > 0; // Trả về true nếu có ít nhất một dòng được cập nhật
-    } catch (SQLException e) {
-        e.printStackTrace(); // In ra lỗi nếu có
-        return false; // Trả về false nếu có lỗi xảy ra
+
+    public boolean updateStatus(int insuranceID, boolean status) {
+        String sql = "UPDATE Insurance SET Status = ? WHERE InsuranceID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setBoolean(1, status); // Thiết lập giá trị Status mới
+            st.setInt(2, insuranceID); // Thiết lập InsuranceID
+            int rowsUpdated = st.executeUpdate(); // Thực thi câu lệnh SQL và lấy số dòng được cập nhật
+            return rowsUpdated > 0; // Trả về true nếu có ít nhất một dòng được cập nhật
+        } catch (SQLException e) {
+            e.printStackTrace(); // In ra lỗi nếu có
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
     }
-}
-public User getUserByProviderId(int providerId) {
+
+    public User getUserByProviderId(int providerId) {
         String sql = "SELECT DISTINCT u.* FROM [User] u "
                 + "INNER JOIN Insurance i ON u.UserID = i.ProviderID "
                 + "WHERE i.ProviderID = ?";
@@ -394,34 +371,34 @@ public User getUserByProviderId(int providerId) {
         return null; // Trả về null nếu không tìm thấy người dùng
     }
 
-public boolean updateInsurance(Insurance insurance) {
-    // Chỉ cập nhật các trường Type, FeeRate, CoverageRate, và MaxAmountOfLoan
-    String sql = "UPDATE Insurance SET Type=?, FeeRate=?, CoverageRate=?, MaxAmountOfLoan=? WHERE InsuranceID=?";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setString(1, insurance.getType());
-        st.setFloat(2, insurance.getFeeRate());
-        st.setFloat(3, insurance.getCoverageRate());
-        st.setDouble(4, insurance.getMaxAmountOfLoan());
-        st.setInt(5, insurance.getInsuranceID());
+    public boolean updateInsurance(Insurance insurance) {
+        // Chỉ cập nhật các trường Type, FeeRate, CoverageRate, và MaxAmountOfLoan
+        String sql = "UPDATE Insurance SET Type=?, FeeRate=?, CoverageRate=?, MaxAmountOfLoan=? WHERE InsuranceID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, insurance.getType());
+            st.setFloat(2, insurance.getFeeRate());
+            st.setFloat(3, insurance.getCoverageRate());
+            st.setDouble(4, insurance.getMaxAmountOfLoan());
+            st.setInt(5, insurance.getInsuranceID());
 
-        // Thực thi câu lệnh UPDATE
-        int rowsUpdated = st.executeUpdate();
+            // Thực thi câu lệnh UPDATE
+            int rowsUpdated = st.executeUpdate();
 
-        // Trả về true nếu có ít nhất một hàng được cập nhật
-        return rowsUpdated > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Trả về false nếu có lỗi xảy ra
-        return false;
+            // Trả về true nếu có ít nhất một hàng được cập nhật
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Trả về false nếu có lỗi xảy ra
+            return false;
+        }
+
     }
 
-}
-   public static void main(String[] args) {
-    InsuranceDAO insuranceDAO = new InsuranceDAO();
-   
-        // Tạo một đối tượng InsuranceDAO
+    public static void main(String[] args) {
+        InsuranceDAO insuranceDAO = new InsuranceDAO();
 
+        // Tạo một đối tượng InsuranceDAO
         // Tạo một đối tượng Insurance với các giá trị cần cập nhật
         Insurance insurance = new Insurance();
         insurance.setInsuranceID(1); // ID của bản ghi cần cập nhật
@@ -437,9 +414,8 @@ public boolean updateInsurance(Insurance insurance) {
         } else {
             System.out.println("Cập nhật thất bại hoặc không có bản ghi nào được cập nhật.");
         }
-    
 
-    // Test sortByFeeRate
+        // Test sortByFeeRate
 //    System.out.println("Testing sortByFeeRate:");
 //    ArrayList<Insurance> feeRateList = insuranceDAO.sortByFeeRate(1, 10, true); // Sắp xếp giảm dần
 //    for (Insurance insurance : feeRateList) {
@@ -476,15 +452,8 @@ public boolean updateInsurance(Insurance insurance) {
 //    System.out.println("\nTesting getTotalAfterSearchStatus:");
 //    int totalByStatus = insuranceDAO.getTotalAfterSearchStatus("true"); // Tìm tổng số bản ghi có Status = true
 //    System.out.println("Total records with status 'true': " + totalByStatus);
-
-    
-
-    
-
         // Giả sử providerId = 1 tồn tại trong cơ sở dữ liệu
-      
-
-}
+    }
 
     public void deleteInsurance(int insuranceID) {
         String sql = "DELETE FROM Insurance WHERE InsuranceID = ?";
@@ -495,5 +464,32 @@ public boolean updateInsurance(Insurance insurance) {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Insurance> getInsuranceList(BigDecimal Amount, String Type) {
+        List<Insurance> insuranceList = new ArrayList<>();
+        String sql = "SELECT * FROM [Insurance] WHERE (Type=?) AND (MaxAmountOfLoan > ?) AND (Status=1)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, Type);
+            st.setBigDecimal(2, Amount);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Insurance insurance = new Insurance(
+                        rs.getInt("InsuranceID"),
+                        rs.getInt("ProviderID"),
+                        rs.getString("InsuranceName"),
+                        rs.getString("Type"),
+                        rs.getFloat("FeeRate"),
+                        rs.getFloat("CoverageRate"),
+                        rs.getDouble("MaxAmountOfLoan"),
+                        rs.getBoolean("Status")
+                );
+                insuranceList.add(insurance);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);;
+        }
+        return insuranceList;
     }
 }

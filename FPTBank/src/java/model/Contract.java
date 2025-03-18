@@ -21,11 +21,12 @@ public class Contract {
     private String MonthlyPaymentType;
     private int StatusID;
     private Date CreateAt;
+    private float InsuranceCoverage;
 
     public Contract() {
     }
 
-    public Contract(int ContractID, Customer Customer, BigDecimal Amount, int Period, float LatePaymentRate, float EarlyWithdrawRate, float InterestRate, String Type, String Description, Asset Asset, Salary Salary, Insurance Insurance, boolean MonthlyPayment, String MonthlyPaymentType, int StatusID, Date CreateAt) {
+    public Contract(int ContractID, Customer Customer, BigDecimal Amount, int Period, float LatePaymentRate, float EarlyWithdrawRate, float InterestRate, String Type, String Description, Asset Asset, Salary Salary, Insurance Insurance, boolean MonthlyPayment, String MonthlyPaymentType, int StatusID, Date CreateAt, float InsuranceCoverage) {
         this.ContractID = ContractID;
         this.Customer = Customer;
         this.Amount = Amount;
@@ -42,6 +43,7 @@ public class Contract {
         this.MonthlyPaymentType = MonthlyPaymentType;
         this.StatusID = StatusID;
         this.CreateAt = CreateAt;
+        this.InsuranceCoverage = InsuranceCoverage;
     }
 
     public int getContractID() {
@@ -171,5 +173,14 @@ public class Contract {
     public void setCreateAt(Date CreateAt) {
         this.CreateAt = CreateAt;
     }
+
+    public float getInsuranceCoverage() {
+        return InsuranceCoverage;
+    }
+
+    public void setInsuranceCoverage(float InsuranceCoverage) {
+        this.InsuranceCoverage = InsuranceCoverage;
+    }
+    
     
 }
