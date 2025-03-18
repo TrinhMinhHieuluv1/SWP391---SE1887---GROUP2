@@ -5,8 +5,8 @@ $(function () {
     // chart 1
     var options = {
         series: [{
-                name: 'Sales Overview',
-                data: [10, 25, 42, 12, 55, 30, 63, 27, 20]
+                name: 'Number of contract',
+                data: data1
             }],
         chart: {
             foreColor: '#9ba7b2',
@@ -17,7 +17,7 @@ $(function () {
             },
             toolbar: {
                 show: false
-            },
+            }
         },
         stroke: {
             width: 0,
@@ -25,7 +25,7 @@ $(function () {
         },
         plotOptions: {
             bar: {
-                horizontal: !1,
+                horizontal: false,
                 columnWidth: "30%",
                 endingShape: "rounded"
             }
@@ -48,7 +48,7 @@ $(function () {
                 gradientToColors: ['#01e195'],
                 inverseColors: true,
                 opacityFrom: 1,
-                opacityTo: 1,
+                opacityTo: 1
             }
         },
         colors: ['#0dfd6d'],
@@ -57,11 +57,21 @@ $(function () {
             enabledOnSeries: [1]
         },
         xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        },
+            categories: labels1,
+            title: {
+                text: "All of contract", // Đặt tiêu đề cho trục X
+                style: {
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    color: '#ffffff' // Màu chữ tiêu đề
+                }
+            }
+        }
     };
+
     var chart = new ApexCharts(document.querySelector("#chart1"), options);
     chart.render();
+
 
 
 
@@ -71,7 +81,7 @@ $(function () {
         series: dataOfFeedBack,
         chart: {
             height: 255,
-            type: 'pie' 
+            type: 'pie'
         },
         legend: {
             position: 'bottom',
@@ -81,12 +91,12 @@ $(function () {
         colors: ['#FFB6C1',
             '#FFD700',
             '#87CEFA',
-            '#98FB98','#FF8C00'],
+            '#98FB98', '#FF8C00'],
 
         dataLabels: {
             enabled: false
         },
-        labels: ['1 star', '2 star', '3 star', '4 star', '5 star'], 
+        labels: ['1 star', '2 star', '3 star', '4 star', '5 star'],
         responsive: [{
                 breakpoint: 480,
                 options: {
@@ -110,30 +120,23 @@ $(function () {
 
     var options = {
         series: [{
-                name: 'Monthly Views',
-                data: [10, 25, 42, 12, 55, 30, 63, 27, 20]
+                name: 'Revenue of month',
+                data: data3
             }],
         chart: {
             foreColor: '#9ba7b2',
             height: 250,
-            type: 'line',
+            type: 'area',
             zoom: {
                 enabled: false
             },
             toolbar: {
                 show: false
-            },
+            }
         },
         stroke: {
             width: 4,
             curve: 'smooth'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: !1,
-                columnWidth: "30%",
-                endingShape: "rounded"
-            }
         },
         grid: {
             borderColor: 'rgba(255, 255, 255, 0.15)',
@@ -153,22 +156,40 @@ $(function () {
                 gradientToColors: ['#01e195'],
                 inverseColors: true,
                 opacityFrom: 1,
-                opacityTo: 1,
+                opacityTo: 1
             }
         },
         colors: ['#0d6efd'],
         dataLabels: {
-            enabled: false,
-            enabledOnSeries: [1]
+            enabled: false
         },
         xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            categories: labels3
         },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                    return value.toLocaleString('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: function (value) {
+                    return value.toLocaleString('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+            }
+        }
     };
+
     var chart = new ApexCharts(document.querySelector("#chart3"), options);
     chart.render();
-
-
 
 
 
@@ -177,8 +198,8 @@ $(function () {
 
     var options = {
         series: [{
-                name: 'Monthly Users',
-                data: [2, 45, 30, 80, 55, 30, 63, 27, 5]
+                name: 'Revenue of month',
+                data: data4
             }],
         chart: {
             foreColor: '#9ba7b2',
@@ -189,18 +210,11 @@ $(function () {
             },
             toolbar: {
                 show: false
-            },
+            }
         },
         stroke: {
             width: 3,
             curve: 'smooth'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: !1,
-                columnWidth: "30%",
-                endingShape: "rounded"
-            }
         },
         grid: {
             borderColor: 'rgba(255, 255, 255, 0.15)',
@@ -220,7 +234,7 @@ $(function () {
                 gradientToColors: ['#01e195'],
                 inverseColors: false,
                 opacityFrom: 0.8,
-                opacityTo: 0.2,
+                opacityTo: 0.2
             }
         },
         colors: ['#0d6efd'],
@@ -229,18 +243,31 @@ $(function () {
             enabledOnSeries: [1]
         },
         xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            categories: labels4
         },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                    return value.toLocaleString('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: function (value) {
+                    return value.toLocaleString('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+            }
+        }
     };
     var chart = new ApexCharts(document.querySelector("#chart4"), options);
     chart.render();
-
-
-
-
-
-
-
 
 
 });

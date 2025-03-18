@@ -3,6 +3,7 @@
     Created on : Feb 13, 2025, 1:15:17 PM
     Author     : ADMIN
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -18,20 +19,20 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <!-- switzer font css -->
-        <link rel="stylesheet" href="fonts/css/switzer.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../fonts/css/switzer.css" type="text/css" media="all">
         <!-- font awesome css -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">        <!-- bootstrap grid css -->
-        <link rel="stylesheet" href="css/plugins/bootstrap-grid.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../css/plugins/bootstrap-grid.css" type="text/css" media="all">
         <!-- swiper css -->
-        <link rel="stylesheet" href="css/plugins/swiper.min.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../css/plugins/swiper.min.css" type="text/css" media="all">
         <!-- magnific popup -->
-        <link rel="stylesheet" href="css/plugins/magnific-popup.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../css/plugins/magnific-popup.css" type="text/css" media="all">
         <!-- plax css -->
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../css/style.css" type="text/css" media="all">
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
-        <link rel="icon" href="img/favicon.png" type="image/x-icon">
+        <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+        <link rel="icon" href="../img/favicon.png" type="image/x-icon">
 
         <style>
             .news-management {
@@ -565,12 +566,12 @@
             <form  action="mangeloan" method="get">
 
 
-                <label for="status">Trạng thái:</label>
+                <label for="status">status:</label>
                 <select id="status" name="status">
-                    <option value="true">Đã gửi</option>
-                    <option value="false">Chưa gửi</option>
+                    <option value="true">SENT</option>
+                    <option value="false">UNSENT</option>
                 </select>
-                <button class="add-news-btn" type="submit">Tìm kiếm</button>
+                <button class="add-news-btn" type="submit">Search</button>
 
 
             </form>
@@ -593,8 +594,8 @@
                 </button>
                 <form action="mangeloan" method="get" id="sortForm">
                     <ul class="dropdown-menu"  aria-labelledby="dropdownAmount">
-                        <li><a class="dropdown-item" href="#" onclick="submitSortForm('asc')">Tăng dần</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="submitSortForm('desc')">Giảm dần</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="submitSortForm('asc')">ASC</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="submitSortForm('desc')">DESC</a></li>
                     </ul>
                     <input type="hidden" name="sortOrder" id="sortOrderInput">
                 </form>
@@ -607,8 +608,8 @@
                 </button>
                 <form action="mangeloan" method="get" id="sortForm1">
                     <ul class="dropdown-menu" aria-labelledby="dropdownDate">
-                        <li><a class="dropdown-item" href="#" onclick="submitSortForm1('asc')">Cuối cùng</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="submitSortForm1('desc')">Bắt đầu</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="submitSortForm1('asc')">Last</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="submitSortForm1('desc')">Start</a></li>
                     </ul>
                     <input type="hidden" name="sortOrderDate" id="sortOrderDateInput">
                 </form>
@@ -619,9 +620,9 @@
 
 
             <form class="show-all-news-btn1"  action="mangeloan" method="get">
-                <label for="searchDate">Chọn ngày:</label>
+                <label for="searchDate">Choose date:</label>
                 <input value="${searchDate}" type="date" id="searchDate" name="searchDate" required>
-                <button type="submit">Tìm kiếm</button>
+                <button type="submit">Search</button>
             </form>
 
 
@@ -640,7 +641,7 @@
                 <thead>
                     <tr>
                         <th class="id-column center-align">ID</th>                    
-                        <th class="title-column">Tên</th>
+                        <th class="title-column">Name</th>
                         <th class="status-column">Email</th>
                         <th class="status-column">Amount</th>
                         <th class="status-column">Rate</th>
@@ -658,25 +659,25 @@
                             <td class="center-align">${f.getId()}</td>                        
                             <td class="created-time">${f.getName()}</td>
                             <td class="access-count">${f.getEmail()}</td>
-                            <td class="center-align">${f.getLoan_amount()}</td>                        
-                            <td class="created-time">${f.getInterest_rate()}</td>
-                            <td class="created-time">${f.getRepayment_method()}</td>
-                            <td class="access-count">${f.getDisbursement_date()}</td>
-                            <td class="access-count">
-                                <c:choose>
-                                    <c:when test="${f.isStatus() == false}">
-                                        <form method="post" action="emailEx"><button type="submit" name="loanID" value="${f.getId()}" class="btn btn-pending">Chưa gửi</button></form>
+                            <td class="center-align" ><fmt:formatNumber value="${f.getLoan_amount()}" pattern="#,###" /> VND</td>
+                            <td class="created-time">${f.getInterest_rate()} %</td>
+                             <td class="created-time">${f.getRepayment_method()}</td>
+                             <td class="access-count">${f.getDisbursement_date()}</td>
+                             <td class="access-count">
+                        <c:choose>
+                            <c:when test="${f.isStatus() == false}">
+                                <form method="post" action="emailEx"><button type="submit" name="loanID" value="${f.getId()}" class="btn btn-pending">UnSent</button></form>
 
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button class="btn btn-sent">Đã gửi</button>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="btn btn-sent">Sent</button>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
 
 
-                        </tr>
-                    </c:forEach>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
 
@@ -751,11 +752,11 @@
 
                 if (sortOrder) {
                     document.getElementById("sortOrderInput").value = sortOrder;
-                    document.getElementById("dropdownAmount").textContent = sortOrder === "asc" ? "Sắp xếp theo số lượng: Tăng dần" : "Sắp xếp theo số lượng: Giảm dần";
+                    document.getElementById("dropdownAmount").textContent = sortOrder === "asc" ? "ASC" : "DESC";
                 }
                 if (sortOrderDate) {
                     document.getElementById("sortOrderDateInput").value = sortOrderDate;
-                    document.getElementById("dropdownDate").textContent = sortOrderDate === "asc" ? "Sắp xếp theo ngày: Cuối cùng" : "Sắp xếp theo ngày: Bắt đầu";
+                    document.getElementById("dropdownDate").textContent = sortOrderDate === "asc" ? "LAST" : "START";
                 }
             });
 

@@ -20,27 +20,23 @@ import java.io.UnsupportedEncodingException;
 
 public class sendMail {
 
-    public static void guiSupport(String noidung, String tieuDe, String emailGui) {
+    public static boolean guiSupport(String noidung, String tieuDe, String emailGui) {
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");//yêu cầu xác thực mail
-        props.put("mail.smtp.host", Mail.HOST_NAME); //đặt tên máy chủ smtp 
-        props.put("mail.smtp.starttls.enable", "true"); //cho phép mã hóa kết nối vs máy chru smtp
-        props.put("mail.smtp.port", Mail.TSL_PORT); //đặt cổng để gửi mail pỏt 587
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.host", Mail.HOST_NAME);
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.port", Mail.TSL_PORT);
 
-        Session session;
-        session = Session.getInstance(props, new jakarta.mail.Authenticator() {
+        Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                System.out.println("Xác minh gg thành công" + System.currentTimeMillis());
                 return new PasswordAuthentication(Mail.APP_EMAIL, Mail.APP_PASSWORD);
             }
         });
 
         try {
-
             MimeMessage message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(Mail.EMAIL_SP));
-            System.out.println("Time:" + System.currentTimeMillis());
             message.setSubject(emailGui);
 
             String emailContent = "<!DOCTYPE html>\n"
@@ -121,16 +117,13 @@ public class sendMail {
                     + "</body>\n"
                     + "</html>";
 
-            System.out.println("Time:" + System.currentTimeMillis());
             message.setContent(emailContent, "text/html; charset=UTF-8");
-            System.out.println("Time:" + System.currentTimeMillis());
             Transport.send(message);
-            System.out.println("mail được gửi" + System.currentTimeMillis());
-
+            return true; // Gửi thành công
         } catch (MessagingException e) {
             e.printStackTrace();
+            return false; // Gửi thất bại
         }
-
     }
 
     public static boolean guiMail(String email) throws UnsupportedEncodingException {
@@ -142,7 +135,7 @@ public class sendMail {
 
         Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Mail.APP_EMAIL, Mail.APP_PASSWORD);
+                return new PasswordAuthentication("timibank.se1887@gmail.com", "dczj xqjz xmsa csdt");
             }
         });
 

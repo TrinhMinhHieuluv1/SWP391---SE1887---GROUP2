@@ -19,7 +19,7 @@ import java.util.Properties;
  * @author tiend
  */
 public class Emails {
-    public static final String pass = "gogr xbbh xieg mbmf";
+    public static final String pass = "dczj xqjz xmsa csdt";
     public static final String from = "timibank.se1887@gmail.com";
     
     public String to,subject,content;

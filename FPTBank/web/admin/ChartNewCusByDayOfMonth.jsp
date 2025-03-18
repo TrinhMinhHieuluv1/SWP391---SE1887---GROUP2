@@ -534,7 +534,7 @@
                                       </ul>
                                     </li>-->
                     <li class="menu-label">UI Elements</li>
-                    <li>
+<!--                    <li>
                         <a href="javascript:;" class="has-arrow">
                             <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
                             </div>
@@ -546,7 +546,7 @@
                             <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
 
 
                     <li>
@@ -781,8 +781,8 @@
                             <div class="menu-title">Charts</div>
                         </a>
                         <ul>
-                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
-                            </li>
+<!--                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
+                            </li>-->
                             <li> <a href="getData_Cus"><span class="material-symbols-outlined">arrow_right</span>Statistic of customers</a>
                             </li>
                         </ul>
@@ -845,7 +845,7 @@
             <div class="sidebar-bottom dropdown dropup-center dropup">
                 <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
                     <div class="user-img">
-                        <img src="assets/images/avatars/01.png" alt="">
+                         <img src="${sessionScope.account.getImage()}" alt="User Image">
                     </div>
                     <div class="user-info">
                         <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>
