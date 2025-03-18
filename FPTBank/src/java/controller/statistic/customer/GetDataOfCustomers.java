@@ -33,7 +33,6 @@ public class GetDataOfCustomers extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         ChartCalculator chart = new ChartCalculator();
 
         // pie chart ( status )
@@ -246,14 +245,13 @@ public class GetDataOfCustomers extends HttpServlet {
         for (Customer c : filteredCustomers) {
             if (c.getCreatedAt() != null) {
                 LocalDate createdAt = c.getCreatedAt().toLocalDate();
-                String monthShort = createdAt.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH); // "Jan", "Feb", ...
+                String monthShort = createdAt.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH); // "Jan", "Feb"
                 String yearMonthKey = createdAt.getYear() + "-" + monthShort; // "2024-Oct", "2025-Jan"
 
                 customerCountByMonth.put(yearMonthKey, customerCountByMonth.getOrDefault(yearMonthKey, 0) + 1);
             }
         }
 
-        // Sắp xếp theo thời gian (YYYY-MMM đúng thứ tự)
         List<String> sortedKeys = new ArrayList<>(customerCountByMonth.keySet());
 
         sortedKeys.sort(Comparator.comparing(key -> {
@@ -263,7 +261,6 @@ public class GetDataOfCustomers extends HttpServlet {
             return year * 12 + monthIndex;
         }));
 
-        // Chuyển về LinkedHashMap để giữ thứ tự
         Map<String, Integer> sortedMap = new LinkedHashMap<>();
         for (String key : sortedKeys) {
             sortedMap.put(key, customerCountByMonth.get(key));

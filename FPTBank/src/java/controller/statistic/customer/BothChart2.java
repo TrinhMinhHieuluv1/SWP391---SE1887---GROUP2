@@ -29,7 +29,7 @@ public class BothChart2 extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("application/json"); // Đặt kiểu dữ liệu trả về là JSON
+        response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         // bar chart ( credit score )
@@ -78,7 +78,7 @@ public class BothChart2 extends HttpServlet {
                 percentPoor, percentFair, percentGood, percentVeryGood, percentExcellent
         );
 
-        response.getWriter().write(jsonResponse); // Gửi dữ liệu JSON về client
+        response.getWriter().write(jsonResponse); 
 
     }
 

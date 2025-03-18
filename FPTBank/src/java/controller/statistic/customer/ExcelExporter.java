@@ -29,14 +29,12 @@ public class ExcelExporter {
                 totalCus += value;
             }
 
-            // Định dạng số thập phân
             DecimalFormat df = new DecimalFormat("#.##");
 
-            // Chuyển danh sách percentages sang mảng để dễ thao tác
+            // change list percent to array
             Double[] percentArray = percentages.toArray(new Double[0]);
 
             if (totalCus == 0) {
-                // Nếu không có khách nào, gán tất cả phần trăm = 0
                 Arrays.fill(percentArray, 0.0);
             } else {
                 // Tính tổng phần trăm hiện tại
@@ -65,10 +63,9 @@ public class ExcelExporter {
                 }
             }
 
-            // Find most common ranges (multiple ranges if they share the same max value)
+            // Find most common ranges
             double maxValue = chartData.isEmpty() ? 0 : Collections.max(chartData);
 
-            
             List<String> mostCommonRanges = new ArrayList<>();
             if (totalCus != 0) {
                 for (int i = 0; i < chartData.size(); i++) {
@@ -82,7 +79,16 @@ public class ExcelExporter {
 
             // Create header row
             Row headerRow = sheet.createRow(0);
-            String[] headers = {typeOfStatistic, "Number of Customers", "Percentage (%)"};
+            String[] headers;
+
+            if (typeOfStatistic.equalsIgnoreCase("Contract Data Range")) {
+                headers = new String[]{typeOfStatistic, "Number of contract", "Percentage (%)"};
+            } else if (typeOfStatistic.equalsIgnoreCase("Revenue Data Range")) {
+                headers = new String[]{typeOfStatistic, "Number of revenue", "Percentage (%)"};
+            } else {
+                headers = new String[]{typeOfStatistic, "Number of customer", "Percentage (%)"};
+            }
+
             for (int i = 0; i < headers.length; i++) {
                 Cell cell = headerRow.createCell(i);
                 cell.setCellValue(headers[i]);
@@ -109,7 +115,17 @@ public class ExcelExporter {
 
             // Add summary headers
             Row summaryHeader = sheet.createRow(rowNum++);
-            String[] summaryHeaders = {"Most Common Range", "Total of Customer", "Total of percentage"};
+
+            String[] summaryHeaders;
+
+            if (typeOfStatistic.equalsIgnoreCase("Contract Data Range")) {
+                summaryHeaders = new String[]{"Most Common Range", "Total of Contract", "Total of percentage"};
+            } else if (typeOfStatistic.equalsIgnoreCase("Revenue Data Range")) {
+                summaryHeaders = new String[]{"Most Common Range", "Total of Revenue", "Total of percentage"};
+            } else {
+                summaryHeaders = new String[]{"Most Common Range", "Total of Customer", "Total of percentage"};
+            }
+
             for (int i = 0; i < summaryHeaders.length; i++) {
                 summaryHeader.createCell(i).setCellValue(summaryHeaders[i]);
             }
