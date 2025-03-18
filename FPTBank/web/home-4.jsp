@@ -50,97 +50,13 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-            <div class="mil-progress-track">
-                <div class="mil-progress"></div>
-            </div>
+            
             <!-- scroll progress end -->
 
             <!-- back to top -->
-            <div class="progress-wrap active-progress"></div>
 
             <!-- top panel end -->
-            <div class="mil-top-panel mil-dark-2">
-                <div class="container">
-                    <a href="index.jsp" class="mil-logo">
-                        <img src="img/logo-light.png" alt="Plax" width="83" height="32">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children mil-active">
-                                <a href="#.">Home</a>
-                                <ul>
-                                    <li><a href="index.jsp">Mở tài khoản</a></li>
-                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.jsp">Type 3</a></li>
-                                    <li><a href="home-4.jsp">Type 4</a></li>
-                                    <li><a href="home-5.jsp">Type 5</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="about.jsp">About</a>
-                            </li>
-                            <li>
-                                <a href="services.jsp">Services</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <c:if test="${sessionScope.account != null}">
-                                <li>
-                                    <a href="contact.jsp">Feedback</a>
-                                </li>
-                            </c:if>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
-                                    <li><a href="coming-soon.jsp">Coming soon</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mil-menu-buttons">
-                        <c:if test="${sessionScope.acount == null}">
-                            <div class="mil-menu-buttons">
-                                <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
-                                <a href="register.jsp" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
-                            </div>
-                        </c:if>
-                        <c:if test="${sessionScope.account != null}">
-
-                            <nav class="mil-top-menu">
-                                <ul>
-                                    <li class="mil-has-children ">
-                                        <a href="#." class="mil-btn mil-sm">My Account</a>
-                                        <ul>
-                                            <li><a href="profile.jsp">My Profile</a></li>
-                                            <li><a href="/audio/change_pass">Change Password</a></li>
-                                            <li><a href="/audio/purchase">My Purchase</a></li>
-                                            <li><a href="feedback.jsp">My Feedback</a></li>
-                                            <li><a href="/audio/signout">Sign out</a></li>
-
-
-                                        </ul>
-                                    </li>   
-                                </ul>
-
-
-                            </nav>  
-
-
-                        </c:if>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+      <%@ include file="header.jsp"%>
     <!-- top panel end -->
 
     <!-- content -->
@@ -594,57 +510,8 @@
         <!-- faq end -->
 
         <!-- footer -->
-        <footer class="mil-footer-dark mil-p-160-0">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-9 mil-mb-60 mil-footer-space-fix">
-                        <a href="#." class="mil-footer-logo mil-logo-2 mil-mb-60">
-                            <img src="img/logo-light.png" alt="Plax" width="83" height="32">
-                        </a>
-                        <ul class="mil-footer-list mil-footer-list-2">
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                <a href="index.jsp">Home</a>
-                            </li>
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                <a href="about.jsp">About Us</a>
-                            </li>
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                <a href="contact.jsp">Contact Us</a>
-                            </li>
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                <a href="services.jsp">Services</a>
-                            </li>
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                <a href="price.jsp">Pricing</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xl-3 mil-mb-60">
-                        <ul class="mil-footer-list">
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                999 Rue du Cherche-Midi, 7755500666 Paris, <br>France
-                            </li>
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                +001 (808) 555-0111
-                            </li>
-                            <li class="mil-text-m mil-dark-soft mil-mb-15">
-                                support@plax.network
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mil-footer-bottom">
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <p class="mil-text-s mil-dark-soft">© 2024 Plax Finance & Fintech Design</p>
-                        </div>
-                        <div class="col-xl-6">
-                            <p class="mil-text-s mil-text-right mil-sm-text-left mil-dark-soft">Developed by <a href="https://bslthemes.com" target="blank">bslthemes</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+                            <%@ include file="footer.jsp"%>
+
         <!-- footer end -->
 
     </div>

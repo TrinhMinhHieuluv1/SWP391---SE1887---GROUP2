@@ -106,6 +106,8 @@ public class UpdateProfile extends HttpServlet {
             dao.updateAUser(accountUser);
             error = "Update Successfully, Please to back to your profile";
             session.setAttribute("account", accountUser);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+            return;
         }else if(account instanceof Customer){
             Customer accountCustomer = (Customer) account;
             accountCustomer.setFullName(fullname);
@@ -118,6 +120,8 @@ public class UpdateProfile extends HttpServlet {
             cdao.updateACustomer(accountCustomer);
             error = "Update Successfully, Please to back to your profile";
             session.setAttribute("account", accountCustomer);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("error", error);
         request.getRequestDispatcher("updateprofile.jsp").forward(request, response);

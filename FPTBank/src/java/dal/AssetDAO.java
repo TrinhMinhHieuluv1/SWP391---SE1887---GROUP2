@@ -4,6 +4,7 @@
  */
 package dal;
 
+import Tools.HashString;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -391,5 +392,5 @@ public class AssetDAO extends DBContext {
         }
 
         return null;
-    }
+    }   
 }

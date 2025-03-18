@@ -536,7 +536,7 @@
                 <!-- Search Box -->
                 <div class="search-container">
                     <i class="fa fa-search"></i>
-                    <input type="text" name="searchKeyword" placeholder="Search news..." class="search-input">
+                    <input type="text" name="searchKeyword" placeholder="Search feedback..." class="search-input">
                 </div>
 
                 <div class="filter-group" style="display: flex;">

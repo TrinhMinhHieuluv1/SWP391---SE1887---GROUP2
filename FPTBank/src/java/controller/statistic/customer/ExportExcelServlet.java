@@ -29,7 +29,6 @@ public class ExportExcelServlet extends HttpServlet {
         percentagesStr = (percentagesStr == null || percentagesStr.equals("null") || percentagesStr.trim().isEmpty()) ? "" : percentagesStr;
         fileDate = (fileDate == null || fileDate.equals("null") || fileDate.trim().isEmpty()) ? "NoDate" : fileDate;
 
-        // Chuyển chuỗi thành List
         List<String> labels = Arrays.asList(labelsStr.split(",")); // "A,B,C" → ["A", "B", "C"]
         List<Double> data = Arrays.stream(dataStr.split(","))
                 .filter(s -> !s.trim().isEmpty()) // Loại bỏ chuỗi rỗng
@@ -37,7 +36,7 @@ public class ExportExcelServlet extends HttpServlet {
                 .collect(Collectors.toList()); // thu thập kq từ stream thành List<Double>
 
         List<Double> percentages = Arrays.stream(percentagesStr.split(","))
-                .filter(s -> !s.trim().isEmpty()) // Loại bỏ chuỗi rỗng
+                .filter(s -> !s.trim().isEmpty()) 
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
 
