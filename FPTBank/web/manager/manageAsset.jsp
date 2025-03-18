@@ -1078,7 +1078,7 @@
                                                                             <td class="align-middle">
                                                                                 <div class="d-flex align-items-center">
                                                                                     <i class="fas fa-info-circle detail-icon detail-icon-ass me-2" 
-                                                                                       data-image="${asset.getImage()}"
+                                                                                       data-image="${pageContext.request.contextPath}/${asset.getImage()}"
                                                                                        data-description="${asset.getDescription()}"
                                                                                        data-value='<fmt:formatNumber value="${asset.getValue()}" 
                                                                                                          pattern="###,###"/>'

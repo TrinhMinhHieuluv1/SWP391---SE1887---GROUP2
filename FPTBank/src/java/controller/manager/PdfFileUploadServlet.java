@@ -7,20 +7,26 @@ package controller.manager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
  * @author tiend
  */
-@WebServlet(name = "PdfFileViewServlet", urlPatterns = {"/viewPdf"})
-public class PdfFileViewServlet extends HttpServlet {
+@WebServlet(name = "PdfFileUploadServlet", urlPatterns = {"/uploadFile"})
+@MultipartConfig(
+        maxFileSize = 1024 * 1024 * 50, // 50MB
+        maxRequestSize = 1024 * 1024 * 50
+)
+public class PdfFileUploadServlet extends HttpServlet {
 
     private static final String UPLOAD_DIR = "assetPDF";
 
@@ -37,13 +43,14 @@ public class PdfFileViewServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PdfFileViewServlet</title>");
+            out.println("<title>Servlet PdfFileUploadServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PdfFileViewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PdfFileUploadServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,31 +68,7 @@ public class PdfFileViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fileName = request.getParameter("fileName");      
-            String pathHost = getServletContext().getRealPath("");
-            String finalPath = pathHost.replace("build\\", "");
-            String uploadPath = finalPath + UPLOAD_DIR + File.separator + fileName.trim();
-            System.out.println("Upload Path: " + uploadPath);
-        File pdfFile = new File(uploadPath);
-
-        if (!pdfFile.exists()) {
-             response.getWriter().println("file khoong ton tai");
-            return;
-        }
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
-
-        try (FileInputStream inStream = new FileInputStream(pdfFile); OutputStream outStream = response.getOutputStream()) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inStream.read(buffer)) != -1) {
-                outStream.write(buffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Trả về lỗi 500
-            e.printStackTrace();
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -99,7 +82,42 @@ public class PdfFileViewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        Part filePart = request.getPart("file"); // Nhận tệp PDF từ form
+        String fileName = filePart.getSubmittedFileName();
+
+
+        String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf(".")); // Tên file không có đuôi
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".")); // Đuôi file
+        String uniqueFileName = fileNameWithoutExtension + fileExtension; // Tên file mới
+        String mimeType = filePart.getContentType();
+        if (!mimeType.equals("application/pdf")) {
+            response.getWriter().println("Lỗi: Chỉ cho phép tải lên file PDF.");
+            return;
+        }
+        if (!fileName.toLowerCase().endsWith(".pdf")) {
+            response.getWriter().println("Lỗi: Chỉ cho phép tải lên file PDF.");
+            return;
+        }
+        if (filePart.getSize() > 0) {
+            // Lưu tệp vào thư mục uploads
+            String pathHost = getServletContext().getRealPath("");
+            String finalPath = pathHost.replace("build\\", "");
+            String uploadPath = finalPath + UPLOAD_DIR;
+
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir(); // Tạo thư mục nếu chưa tồn tại
+            }
+
+            filePart.write(uploadPath + File.separator + uniqueFileName); // Lưu tệp
+
+            response.getWriter().println("Tệp đã được tải lên thành công: " + uniqueFileName);
+        } else {
+            response.getWriter().println("Tệp không hợp lệ hoặc vượt quá dung lượng cho phép.");
+        }
     }
 
     /**

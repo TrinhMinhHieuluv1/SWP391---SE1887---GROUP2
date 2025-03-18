@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.manager;
+package controller;
 
+import dal.NewsCategoryDAO;
+import dal.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,18 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+import java.util.List;
+import model.News;
+import model.NewsCategory;
 
 /**
  *
  * @author tiend
  */
-@WebServlet(name = "PdfFileViewServlet", urlPatterns = {"/viewPdf"})
-public class PdfFileViewServlet extends HttpServlet {
-
-    private static final String UPLOAD_DIR = "assetPDF";
+@WebServlet(name = "NewsServlet", urlPatterns = {"/news"})
+public class NewsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,13 +37,14 @@ public class PdfFileViewServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PdfFileViewServlet</title>");
+            out.println("<title>Servlet NewsServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PdfFileViewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet NewsServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,31 +62,13 @@ public class PdfFileViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fileName = request.getParameter("fileName");      
-            String pathHost = getServletContext().getRealPath("");
-            String finalPath = pathHost.replace("build\\", "");
-            String uploadPath = finalPath + UPLOAD_DIR + File.separator + fileName.trim();
-            System.out.println("Upload Path: " + uploadPath);
-        File pdfFile = new File(uploadPath);
-
-        if (!pdfFile.exists()) {
-             response.getWriter().println("file khoong ton tai");
-            return;
-        }
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
-
-        try (FileInputStream inStream = new FileInputStream(pdfFile); OutputStream outStream = response.getOutputStream()) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inStream.read(buffer)) != -1) {
-                outStream.write(buffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Trả về lỗi 500
-            e.printStackTrace();
-        }
+        NewsCategoryDAO dao = new NewsCategoryDAO();
+        NewsDAO newsDAO = new NewsDAO();
+        List<NewsCategory> list = dao.selectAllNewsCategory();
+        List<News> listnew = newsDAO.selectAllNews();
+        request.setAttribute("dataCate", list);
+        request.setAttribute("data", listnew);
+        request.getRequestDispatcher("news.jsp").forward(request, response);
     }
 
     /**
@@ -99,7 +82,26 @@ public class PdfFileViewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String id_raw = request.getParameter("idCate");
+        String opDate = request.getParameter("opDate");
+        NewsCategoryDAO dao = new NewsCategoryDAO();
+        NewsDAO newsDAO = new NewsDAO();
+        try {
+            if (id_raw != null) {
+                int id = Integer.parseInt(id_raw);
+                request.setAttribute("idCate", id);
+                request.setAttribute("opDate", opDate);
+                List<News> list = newsDAO.selectNewsListByConditions("", opDate, "active", "", id, 0);
+                List<NewsCategory> listcate = dao.selectAllNewsCategory();
+                request.setAttribute("dataCate", listcate);
+                request.setAttribute("data", list);
+            }
+
+            request.getRequestDispatcher("news.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
