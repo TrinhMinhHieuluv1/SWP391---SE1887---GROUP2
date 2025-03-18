@@ -150,96 +150,13 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-            <div class="mil-progress-track">
-                <div class="mil-progress"></div>
-            </div>
+           
             <!-- scroll progress end -->
 
             <!-- back to top -->
-            <div class="progress-wrap active-progress"></div>
 
             <!-- top panel end -->
-            <div class="mil-top-panel">
-                <div class="container">
-                    <a href="index.jsp" class="mil-logo">
-                        <img src="img/logo1.png" alt="Plax" width="200">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children mil-active">
-                                <a href="#.">Home</a>
-                                <ul>
-                                    <li><a href="index.jsp">Trang trủ</a></li>
-                                    <li><a href="home-2.jsp">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.jsp">Type 3</a></li>
-                                    <li><a href="home-4.jsp">Type 4</a></li>
-                                    <li><a href="home-5.jsp">Type 5</a></li>
-
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="about.jsp">About</a>
-                            </li>
-                            <li>
-                                <a href="services.jsp">Services</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <c:if test="${sessionScope.account != null}">
-                                <li>
-                                    <a href="contact.jsp">Feedback</a>
-                                </li>
-                            </c:if>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
-
-                                </ul>
-                            </li>
-
-                        </ul>
-                    </nav>
-
-                    <c:if test="${sessionScope.account == null}">
-                        <div class="mil-menu-buttons">
-                            <a href="login.jsp" class="mil-btn mil-sm">Log in</a>
-                            <a href="register.jsp" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
-                        </div>
-                    </c:if>
-                    <c:if test="${sessionScope.account != null}">
-
-                        <nav class="mil-top-menu">
-                            <ul>
-                                <li class="mil-has-children ">
-                                    <a href="#." class="mil-btn mil-sm">My Account</a>
-                                    <ul>
-                                        <li><a href="profile.jsp">My Profile</a></li>
-                                        <li><a href="/audio/change_pass">Change Password</a></li>
-                                        <li><a href="feedback.jsp">My Feedback</a></li>
-                                        <li><a href="/timibank/logout">Sign out</a></li>
-
-
-                                    </ul>
-                                </li>   
-                            </ul>
-
-
-                        </nav>  
-
-
-                    </c:if>
-
-                </div>
-            </div>
+            <%@ include file="header.jsp"%>
             <h2 style="color: green; text-align: center;">Your Feedback</h2>
             <!-- top panel end -->
             <a href="contact"><button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 260px; margin-bottom: 10px;">ADD Feedback +</button></a>
@@ -322,7 +239,10 @@
                     <a href="myfeedback?page=${currentPage + 1}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" class="next">Next</a>
                 </c:if>
             </div>
+                    <%@ include file="footer.jsp"%>
+                    </div>
             <!-- wrapper end -->
+                
 
             <!-- jquery js -->
             <script src="js/plugins/jquery.min.js"></script>
