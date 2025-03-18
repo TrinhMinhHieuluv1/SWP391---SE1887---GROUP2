@@ -469,7 +469,7 @@
             }
             
            
-        }
+
             .checkbox-bar {
                 display: flex;
                 justify-content: space-around;

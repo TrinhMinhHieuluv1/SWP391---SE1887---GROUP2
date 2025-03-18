@@ -27,7 +27,7 @@ public class ActiveChart3 extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("application/json"); // Đặt kiểu dữ liệu trả về là JSON
+        response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         // pie chart (Age)
         List<Customer> listOfCus = cDao.selectAllCustomer();
@@ -73,7 +73,7 @@ public class ActiveChart3 extends HttpServlet {
                 count18to24age, count25to34age, count35to60age, count60age
         );
 
-        response.getWriter().write(jsonResponse); // Gửi dữ liệu JSON về client
+        response.getWriter().write(jsonResponse); 
     }
 
     @Override
