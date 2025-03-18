@@ -4,6 +4,7 @@
     Author     : HP
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -629,20 +630,20 @@
                         <tr>
                             <td class="center-align">${contract.getContractID()}</td>
                             <td class="Type">${contract.getType()}</td>
-                            <td class="Amount">${contract.getAmount()}</td>
+                            <td class="Amount"><fmt:formatNumber value="${contract.getAmount()}" pattern="#,###"/></td>
                             <td class="Type">${contract.getPeriod()}</td>
                             <td class="Type">${contract.getInterestRate()}</td>
-                            <td class="Type">${contract.getMonthlyPayment()}</td>
-                            <td class="created-time">${contract.getCreatedAt()}</td>
-                            <td class="created-time">${contract.getStatus()}</td>
+                            <td class="Type">${contract.isMonthlyPayment()?"No monthly payment":(contract.getMonthlyPaymentType().equals("Fixed")?"Fixed Payment":"Reducing Balance Payment")}</td>
+                            <td class="created-time">${contract.getCreateAt()}</td>
+                            <td class="created-time">${contract.getStatusID()}</td>
                             <td class="action-column">
-                                <c:if test="${contract.getStatus() == 1 || contract.getStatus() == 2 || contract.getStatus() == 4}">
+                                <c:if test="${contract.getStatusID() == 1 || contract.getStatusID() == 2 || contract.getStatusID() == 4}">
                                     <div class="action-buttons-container">
-                                        <a href="/timibank/update-contract?ContractID=${contract.getContractID()}}" class="action-button update-btn">Update</a>
-                                        <c:if test="${contract.getStatus() == 1}">
+                                        <a href="/timibank/update-contract?ContractID=${contract.getContractID()}" class="action-button update-btn">Update</a>
+                                        <c:if test="${contract.getStatusID() == 1}">
                                             <button type="submit" class="action-button inactivate-btn" onclick="changeStatus(${contract.getContractID()}, this)">Cancel</button>
                                         </c:if>
-                                        <c:if test="${contract.getStatus() == 2 || contract.getStatus() == 4}">
+                                        <c:if test="${contract.getStatusID() == 2 || contract.getStatusID() == 4}">
                                             <button type="submit" class="action-button activate-btn" onclick="changeStatus(${contract.getContractID()}, this)">Re-send Request</button>
                                         </c:if>
                                     </div>
@@ -677,20 +678,20 @@
         </div>
 
         <!-- News Modal -->
-<!--        <div id="newsModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="modalTitle"></h2>
-                    <span class="close-modal" onclick="closeNewsModal()">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <div class="news-description" id="modalDescription"></div>
-                    <div class="news-image-container">
-                        <img id="modalImage" class="news-image" src="" alt="News Image">
+        <!--        <div id="newsModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="modalTitle"></h2>
+                            <span class="close-modal" onclick="closeNewsModal()">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="news-description" id="modalDescription"></div>
+                            <div class="news-image-container">
+                                <img id="modalImage" class="news-image" src="" alt="News Image">
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>-->
+                </div>-->
 
         <script src="./js/scripts.js"></script>
 
@@ -712,6 +713,97 @@
         <!-- plax js -->
         <script src="/js/main.js"></script>
 
-        
+        <script>
+                    function changePage(page) {
+                        const form = document.querySelector('.filter-controls');
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'page';
+                        input.value = page;
+                        form.appendChild(input);
+                        form.submit();
+                    }
+
+                    function showNewsModal(title, description, image) {
+                        const modal = document.getElementById('newsModal');
+                        const modalTitle = document.getElementById('modalTitle');
+                        const modalDescription = document.getElementById('modalDescription');
+                        const modalImage = document.getElementById('modalImage');
+
+                        modalTitle.innerHTML = title;
+                        modalDescription.innerHTML = description;
+                        modalImage.src = image;
+
+                        modal.style.display = 'block';
+                    }
+
+                    function closeNewsModal() {
+                        const modal = document.getElementById('contractModal');
+                        modal.style.display = 'none';
+                    }
+
+                    // Close modal when clicking outside of it
+                    window.onclick = function (event) {
+                        const modal = document.getElementById('contractModal');
+                        if (event.target == modal) {
+                            modal.style.display = 'none';
+                        }
+                    };
+
+                    // Toast message animation
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const toast = document.getElementById('toastMessage');
+                        if (toast) {
+                            // Show toast
+                            setTimeout(() => {
+                                toast.classList.add('show');
+                            }, 100);
+
+                            // Hide toast after 3 seconds
+                            setTimeout(() => {
+                                toast.classList.remove('show');
+                                // Remove toast from DOM after animation
+                                setTimeout(() => {
+                                    toast.remove();
+                                }, 500);
+                            }, 3000);
+                        }
+                    });
+
+                    function updateURLParameter(param, value) {
+                        let url = new URL(window.location.href);
+                        let params = new URLSearchParams(url.search);
+
+                        params.set(param, value);
+                        params.delete('fromUpdate');
+                        params.delete('page');
+
+                        window.location.href = 'news-management?' + params.toString();
+                    }
+
+                    function changeStatus(NewsID, element) {
+                        $.ajax({
+                            url: 'update-news',
+                            type: 'GET',
+                            data: {
+                                NewsID: NewsID,
+                                changeStatus: "true"
+                            }
+
+                        });
+                        const status = document.getElementById("status-" + NewsID);
+                        if (status.textContent.trim() === 'Active') {
+                            status.textContent = 'Inactive';
+                            element.textContent = 'Activate';
+                            element.classList.remove('inactivate-btn');
+                            element.classList.add('activate-btn');
+                        } else {
+                            status.textContent = 'Active';
+                            element.textContent = 'Inactivate';
+                            element.classList.remove('activate-btn');
+                            element.classList.add('inactivate-btn');
+                        }
+                    }
+        </script>
     </body>
 </html>
