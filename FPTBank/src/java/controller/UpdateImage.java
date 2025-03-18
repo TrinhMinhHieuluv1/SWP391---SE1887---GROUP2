@@ -106,7 +106,7 @@ public class UpdateImage extends HttpServlet {
         Object account = session.getAttribute("account");
         String pathHost = getServletContext().getRealPath("");
         String finalPath = pathHost.replace("build\\", "");
-        String uploadPath = finalPath + "uploadsImg";
+        String uploadPath = finalPath + "uploads";
 
         String fileName = ImageUploadUtil.uploadImage(request, "image", uploadPath);
         String img = "";
@@ -123,24 +123,24 @@ public class UpdateImage extends HttpServlet {
         } else if (fileName.startsWith("Error uploading")) {
             error = "Failed to upload file. Please try again later: " + fileName.substring("Error uploading file: ".length());
         } else if (account instanceof User) {
-            img = "../uploadsImg/" + fileName;
+            img = "../uploads/" + fileName;
             UserDAO dao = new UserDAO();
             ((User) account).setImage(img);
             dao.updateAUser((User) account);
             error = "Upload Success";
         } else if (account instanceof Customer) {
-            img = "../uploadsImg/" + fileName;
+            img = "../uploads/" + fileName;
             CustomerDAO dao = new CustomerDAO();
             ((Customer) account).setImage(img);
             dao.updateCustomer((Customer) account);
             error = "Upload Success";
             request.setAttribute("status", true);
         }
-
-        request.setAttribute(
-                "error2", error);
+        session.removeAttribute("account");
+        session.setAttribute("account", account);
+        request.setAttribute("error2", error);
         request.getRequestDispatcher(
-                "updateprofile.jsp").forward(request, response);
+                "home.jsp").forward(request, response);
     }
 
     /**

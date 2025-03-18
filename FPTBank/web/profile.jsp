@@ -104,7 +104,7 @@
                 border-radius: 10px;
                 border: none;
             }
-            
+
         </style>
     </head>
 
@@ -209,7 +209,8 @@
                         <div class="col-lg-4">
                             <div class="card shadow-sm">
                                 <div class="card-header bg-transparent text-center">
-                                    <img class="profile_img" src="${sessionScope.account.image}">
+
+                                    <img class="profile_img" src="${sessionScope.account.getImage().replace('../', '/timibank/')}" alt="User Image">
                                     <h3>${sessionScope.account.fullName}</h3>
                                 </div>
                             </div>
