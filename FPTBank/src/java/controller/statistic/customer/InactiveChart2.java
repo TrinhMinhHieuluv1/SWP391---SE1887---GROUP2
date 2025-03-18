@@ -27,7 +27,7 @@ public class InactiveChart2 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json"); // Đặt kiểu dữ liệu trả về là JSON
+        response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         // bar chart ( credit score )
@@ -46,7 +46,6 @@ public class InactiveChart2 extends HttpServlet {
             return;
         }
 
-        // Tính toán phân bố điểm tín dụng
         int numOfPoor = 0, numOfFair = 0, numOfGood = 0, numOfVeryGood = 0, numOfExcellent = 0;
         for (Customer c : listOfCus) {
             if (!c.isStatus()) {
@@ -79,7 +78,6 @@ public class InactiveChart2 extends HttpServlet {
         double percentVeryGood = listPercentChar2.get(3);
         double percentExcellent = listPercentChar2.get(4);
 
-        // Tạo phản hồi JSON với cả data2, total_cus và các giá trị phần trăm
         String jsonResponse = String.format(
                 "{\"data2\": [%d, %d, %d, %d, %d], \"total_cus\": %d, \"percentages\": [%.2f, %.2f, %.2f, %.2f, %.2f]}",
                 numOfPoor, numOfFair, numOfGood, numOfVeryGood, numOfExcellent, countInactive,

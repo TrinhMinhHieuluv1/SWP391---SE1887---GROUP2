@@ -53,9 +53,9 @@
                 display: block;
                 width: 150px;
                 padding: 10px;
-                background-color: #28a745;
+                background-color: #218838;
                 color: #fff;
-                border: none;
+                border: 2px solid #218838; /* Viền xanh đậm */
                 border-radius: 5px;
                 text-align: center;
                 text-decoration: none;
@@ -68,9 +68,104 @@
                 color: #fff;
             }
 
+            .btn-excel {
+                background-color: #218838; /* Màu xanh lá */
+                color: white;
+                padding: 6px 12px; /* Thu gọn nút xuất Excel */
+                font-size: 14px;
+            }
+
             .dropdown-menu.show {
                 background-color: #28a745;
             }
+
+            .widget-icon{
+                margin-bottom: 18px;
+            }
+
+            #contractFilterForm input[type="date"] {
+                width: 120px !important; /* Giảm kích thước input */
+                padding: 5px; /* Thu nhỏ phần padding */
+                font-size: 14px; /* Giảm kích thước chữ */
+            }
+
+            #contractFilterForm label {
+                font-size: 14px; /* Giảm kích thước chữ của label */
+                margin-right: 5px; /* Giảm khoảng cách với input */
+            }
+
+            #contractFilterForm button {
+                padding: 6px 10px; /* Thu gọn nút bấm */
+                font-size: 14px; /* Giảm kích thước chữ */
+            }
+
+            #savingContractFilterForm input[type="date"]{
+                width: 120px !important; /* Giảm kích thước input */
+                padding: 5px; /* Thu nhỏ phần padding */
+                font-size: 14px; /* Giảm kích thước chữ */
+            }
+
+            #savingContractFilterForm label {
+                font-size: 14px; /* Giảm kích thước chữ của label */
+                margin-right: 5px; /* Giảm khoảng cách với input */
+            }
+
+            #savingContractFilterForm button {
+                padding: 6px 10px; /* Thu gọn nút bấm */
+                font-size: 14px; /* Giảm kích thước chữ */
+            }
+
+            #loanContractFilterForm input[type="date"]{
+                width: 120px !important; /* Giảm kích thước input */
+                padding: 5px; /* Thu nhỏ phần padding */
+                font-size: 14px; /* Giảm kích thước chữ */
+            }
+
+            #loanContractFilterForm label {
+                font-size: 14px; /* Giảm kích thước chữ của label */
+                margin-right: 5px; /* Giảm khoảng cách với input */
+            }
+
+            #loanContractFilterForm button {
+                padding: 6px 10px; /* Thu gọn nút bấm */
+                font-size: 14px; /* Giảm kích thước chữ */
+            }
+
+            .btn-option {
+                padding: 5px 10px; /* Thu gọn nút tùy chọn */
+            }
+
+            .dropdown-menu {
+                background-color: #218838; /* Màu xanh lá */
+                padding: 10px;
+                border-radius: 8px;
+                min-width: 180px;
+            }
+            .dropdown-menu select {
+                width: 100%;
+                padding: 6px;
+                border-radius: 5px;
+                border: none;
+                background-color: #218838;
+                font-size: 14px;
+                color: white;
+                cursor: pointer;
+                margin-top: 5px;
+            }
+
+            .dropdown-menu select:focus {
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .fw-bold{
+                font-size: 15px;
+            }
+
+
+
+
+
         </style>
 
 
@@ -533,19 +628,19 @@
                                       </ul>
                                     </li>-->
                     <li class="menu-label">UI Elements</li>
-                    <li>
-                        <a href="javascript:;" class="has-arrow">
-                            <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
-                            </div>
-                            <div class="menu-title">Widgets</div>
-                        </a>
-                        <ul>
-                            <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
-                            </li>
-                            <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <!--                    <li>
+                                            <a href="javascript:;" class="has-arrow">
+                                                <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
+                                                </div>
+                                                <div class="menu-title">Widgets</div>
+                                            </a>
+                                            <ul>
+                                                <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
+                                                </li>
+                                                <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
+                                                </li>
+                                            </ul>
+                                        </li>-->
 
 
                     <li>
@@ -780,8 +875,8 @@
                             <div class="menu-title">Charts</div>
                         </a>
                         <ul>
-                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
-                            </li>
+                            <!--                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
+                                                        </li>-->
                             <li> <a href="getData_Cus"><span class="material-symbols-outlined">arrow_right</span>Statistic of customers</a>
                             </li>
                         </ul>
@@ -844,7 +939,8 @@
             <div class="sidebar-bottom dropdown dropup-center dropup">
                 <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
                     <div class="user-img">
-                        <img src="assets/images/avatars/01.png" alt="">
+                        <img src="${sessionScope.account.getImage()}" alt="User Image">
+
                     </div>
                     <div class="user-info">
                         <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>
@@ -897,8 +993,8 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="">
-                                    <p class="mb-1">Total Orders</p>
-                                    <h4 class="mb-0 text-primary">248</h4>
+                                    <p class="mb-1">Total Contracts</p>
+                                    <h4 class="mb-0 text-primary">${totalOfContract}</h4>
                                 </div>
                                 <div class="ms-auto widget-icon bg-primary text-white">
                                     <i class="bi bi-basket2-fill"></i>
@@ -916,7 +1012,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="">
                                     <p class="mb-1">Total Revenue</p>
-                                    <h4 class="mb-0 text-success">$1,245</h4>
+                                    <h4 class="mb-0 text-success">${totalRevenue}</h4>
                                 </div>
                                 <div class="ms-auto widget-icon bg-success text-white">
                                     <i class="bi bi-currency-dollar"></i>
@@ -934,7 +1030,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="">
                                     <p class="mb-1">Bounce Rate</p>
-                                    <h4 class="mb-0 text-danger">24.25%</h4>
+                                    <h4 class="mb-0 text-danger">${bounceRate}%</h4>
                                 </div>
                                 <div class="ms-auto widget-icon bg-danger text-white">
                                     <i class="bi bi-graph-down-arrow"></i>
@@ -973,27 +1069,67 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header bg-transparent">
+
+
                             <div class="d-flex align-items-center">
+
                                 <div class="">
-                                    <h6 class="mb-0 fw-bold">Sales Overview</h6>
+                                    <h6 class="mb-0 fw-bold">Statistic of contract</h6>
                                 </div>
-                                <div class="dropdown ms-auto">
-                                    <button type="button" class="btn-option dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="bi bi-three-dots fs-4"></i>
+
+
+                                <form id="contractFilterForm" class="ms-auto me-2 d-flex align-items-center">
+                                    <label for="fromDate" class="me-1">From:</label>
+                                    <input type="date" id="fromDate" name="fromDate" class="form-control me-2">
+                                    <label for="toDate" class="me-1">To:</label>
+                                    <input type="date" id="toDate" name="toDate" class="form-control me-2">
+                                    <input name="urlToServletContract" id="urlToSvlContract" type="hidden" value="${urlToServletContract}">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </form>
+
+                                <%                       
+                                                       String labelsContract = (String) session.getAttribute("labelsContract");
+                                                       String dataContract = (String) session.getAttribute("dataContract");
+                                                       String percentDataContract = (String) session.getAttribute("percentDataContract");
+                                                       String titleOfX = (String) session.getAttribute("titleOfX");
+                                                       String fileDate = new SimpleDateFormat("yyyyMMdd").format(new java.util.Date());                           
+                                %>
+
+                                <div class="dropdown">
+                                    <button type="button" class="btn-option dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots fs-4"></i>
                                     </button>
+
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="javascript:;">Another action</a>
+                                        <li>
+                                            <form action="export_excel" method="post" class="d-flex align-items-center gap-2">
+                                                <input type="hidden" name="dataRangeType" value="Contract Data Range">
+                                                <input type="hidden" name="labels" value="<%= (labelsContract == null || labelsContract.isEmpty()) ? "null" : labelsContract.replaceAll("'", "") %>">
+                                                <input type="hidden" name="data" value="<%= (dataContract == null || dataContract.isEmpty()) ? "null" : dataContract %>">
+                                                <input type="hidden" name="percentages" value="<%= (percentDataContract == null || percentDataContract.isEmpty()) ? "null" : percentDataContract %>">
+                                                <input type="hidden" name="fileDate" value="<%= fileDate %>">
+
+                                                <button type="submit" class="btn-excel">Export to Excel</button>
+                                            </form>
                                         </li>
                                         <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="javascript:;">Something else here</a>
+
+                                            <select name="typeOfContract" id="typeOfChartFilter1" class="form-select" onchange="redirectToTypeOfChart1()">
+                                                <option value="" disabled selected>Choose a type</option>
+                                                <option value="allTypeContract">All</option>
+                                                <option value="chartSaving">Saving</option>
+                                                <option value="chartSecuredLoan">Secured Loan</option>
+                                                <option value="chartUnsecuredLoan">Unsecured Loan</option>
+                                            </select>
+
                                         </li>
                                     </ul>
                                 </div>
+
                             </div>
+
                         </div>
+
                         <div class="card-body">
                             <div id="chart1"></div>
                         </div>
@@ -1023,7 +1159,7 @@
                                     double percent3 = (percent3Obj instanceof Double) ? (Double) percent3Obj : 0.0;
                                     double percent4 = (percent4Obj instanceof Double) ? (Double) percent4Obj : 0.0;
                                     double percent5 = (percent5Obj instanceof Double) ? (Double) percent5Obj : 0.0;
-                                    String fileDate = new SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
+                                
 
                                 %>
                                 <div class="dropdown ms-auto">
@@ -1355,54 +1491,110 @@
 
 
             <div class="row">
+
+
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="card">
                         <div class="card-header bg-transparent">
+
                             <div class="d-flex align-items-center">
+
                                 <div class="">
-                                    <h6 class="mb-0 fw-bold">Monthly Views</h6>
+                                    <h6 class="mb-0 fw-bold">Statistic of revenue (Saving)</h6>
                                 </div>
+
+                                <form id="savingContractFilterForm" class="ms-auto me-2 d-flex align-items-center">
+                                    <label for="fromDateSaving" class="me-1">From:</label>
+                                    <input type="date" id="fromDateSaving" name="fromDateSaving" class="form-control me-2">
+
+                                    <label for="toDateSaving" class="me-1">To:</label>
+                                    <input type="date" id="toDateSaving" name="toDateSaving" class="form-control me-2">
+
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </form>
+
+                                <%                       
+                                                       String labelsSaving = (String) session.getAttribute("labelsSavingContract");
+                                                       String dataSaving = (String) session.getAttribute("dataSavingContract");
+                                                       String percentDataSaving = (String) session.getAttribute("percentDataSavingContract");
+                                                     
+                                %>
+
+
                                 <div class="dropdown ms-auto">
                                     <button type="button" class="btn-option dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="bi bi-three-dots fs-4"></i>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                        </li>
+
                                         <li>
-                                            <hr class="dropdown-divider">
+                                            <form action="export_excel" method="post" class="d-flex align-items-center gap-2">
+                                                <input type="hidden" name="dataRangeType" value="Revenue Data Range">
+                                                <input type="hidden" name="labels" value="<%= (labelsSaving == null || labelsSaving.isEmpty()) ? "null" : labelsSaving.replaceAll("'", "") %>">
+                                                <input type="hidden" name="data" value="<%= (dataSaving == null || dataSaving.isEmpty()) ? "null" : dataSaving %>">
+                                                <input type="hidden" name="percentages" value="<%= (percentDataSaving == null || percentDataSaving.isEmpty()) ? "null" : percentDataSaving %>">
+                                                <input type="hidden" name="fileDate" value="<%= fileDate %>">
+
+                                                <button type="submit" class="btn-excel">Export to Excel</button>
+                                            </form>
                                         </li>
-                                        <li><a class="dropdown-item" href="javascript:;">Something else here</a>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </div>
                         </div>
+
+
+
                         <div class="card-body">
                             <div id="chart3"></div>
                         </div>
+
+
                     </div>
                 </div>
+
+
+
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="card">
                         <div class="card-header bg-transparent">
                             <div class="d-flex align-items-center">
                                 <div class="">
-                                    <h6 class="mb-0 fw-bold">Monthly Users</h6>
+                                    <h6 class="mb-0 fw-bold">Statistic of revenue (Loan)</h6>
                                 </div>
+
+                                <form action="home" id="loanContractFilterForm" class="ms-auto me-2 d-flex align-items-center">
+                                    <label for="fromDateLoan" class="me-1">From:</label>
+                                    <input type="date" id="fromDateLoan" name="fromDateLoan" class="form-control me-2">
+
+                                    <label for="toDateLoan" class="me-1">To:</label>
+                                    <input type="date" id="toDateLoan" name="toDateLoan" class="form-control me-2">
+
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </form>
+
+                                <%                       
+                                                    String labelsLoan = (String) session.getAttribute("labelsLoanContract");
+                                                    String dataLoan = (String) session.getAttribute("dataLoanContract");
+                                                    String percentDataLoan = (String) session.getAttribute("percentDataLoanContract");
+                                                     
+                                %>
+
+
                                 <div class="dropdown ms-auto">
                                     <button type="button" class="btn-option dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown"><i class="bi bi-three-dots fs-4"></i>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="javascript:;">Action</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="javascript:;">Another action</a>
-                                        </li>
                                         <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="javascript:;">Something else here</a>
+                                            <form action="export_excel" method="post" class="d-flex align-items-center gap-2">
+                                                <input type="hidden" name="dataRangeType" value="Revenue Data Range">
+                                                <input type="hidden" name="labels" value="<%= (labelsLoan == null || labelsLoan.isEmpty()) ? "null" : labelsLoan.replaceAll("'", "") %>">
+                                                <input type="hidden" name="data" value="<%= (dataLoan == null || dataLoan.isEmpty()) ? "null" : dataLoan %>">
+                                                <input type="hidden" name="percentages" value="<%= (percentDataLoan == null || percentDataLoan.isEmpty()) ? "null" : percentDataLoan %>">
+                                                <input type="hidden" name="fileDate" value="<%= fileDate %>">
+
+                                                <button type="submit" class="btn-excel">Export to Excel</button>
+                                            </form>
                                         </li>
                                     </ul>
                                 </div>
@@ -1416,179 +1608,179 @@
             </div><!--end row-->
 
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="customer-table">
-                        <div class="table-responsive white-space-nowrap">
-                            <table class="table align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>
-                                            <input class="form-check-input" type="checkbox">
-                                        </th>
-                                        <th>Order Id</th>
-                                        <th>Price</th>
-                                        <th>Customer</th>
-                                        <th>Payment Status</th>
-                                        <th>Completed Payment</th>
-                                        <th>Delivery Type</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input" type="checkbox">
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;">#2415</a>
-                                        </td>
-                                        <td>$98</td>
-                                        <td>
-                                            <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                <div class="customer-pic">
-                                                    <img src="assets/images/avatars/01.png" class="rounded-circle" width="40" height="40" alt="">
-                                                </div>
-                                                <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                            </a>
-                                        </td>
-                                        <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Completed<i class="bi bi-check2 ms-2"></i></span></td>
-                                        <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
-                                        <td>Cash on delivery</td>
-                                        <td>Nov 12, 10:45 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input" type="checkbox">
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;">#7845</a>
-                                        </td>
-                                        <td>$110</td>
-                                        <td>
-                                            <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                <div class="customer-pic">
-                                                    <img src="assets/images/avatars/02.png" class="rounded-circle" width="40" height="40" alt="">
-                                                </div>
-                                                <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                            </a>
-                                        </td>
-                                        <td><span class="lable-table bg-warning-subtle text-warning rounded border border-warning-subtle font-text2 fw-bold">Pending<i class="bi bi-info-circle ms-2"></i></span></td>
-                                        <td><span class="lable-table bg-primary-subtle text-primary rounded border border-primary-subtle font-text2 fw-bold">Completed<i class="bi bi-check2-all ms-2"></i></span></td>
-                                        <td>Cash on delivery</td>
-                                        <td>Nov 12, 10:45 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input" type="checkbox">
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;">#5674</a>
-                                        </td>
-                                        <td>$86</td>
-                                        <td>
-                                            <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                <div class="customer-pic">
-                                                    <img src="assets/images/avatars/03.png" class="rounded-circle" width="40" height="40" alt="">
-                                                </div>
-                                                <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                            </a>
-                                        </td>
-                                        <td><span class="lable-table bg-primary-subtle text-primary rounded border border-primary-subtle font-text2 fw-bold">Completed<i class="bi bi-check2-all ms-2"></i></span></td>
-                                        <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
-                                        <td>Cash on delivery</td>
-                                        <td>Nov 12, 10:45 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input" type="checkbox">
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;">#6678</a>
-                                        </td>
-                                        <td>$78</td>
-                                        <td>
-                                            <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                <div class="customer-pic">
-                                                    <img src="assets/images/avatars/04.png" class="rounded-circle" width="40" height="40" alt="">
-                                                </div>
-                                                <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                            </a>
-                                        </td>
-                                        <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Paid<i class="bi bi-check2 ms-2"></i></span></td>
-                                        <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
-                                        <td>Cash on delivery</td>
-                                        <td>Nov 12, 10:45 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input" type="checkbox">
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;">#2367</a>
-                                        </td>
-                                        <td>$69</td>
-                                        <td>
-                                            <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                <div class="customer-pic">
-                                                    <img src="assets/images/avatars/05.png" class="rounded-circle" width="40" height="40" alt="">
-                                                </div>
-                                                <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                            </a>
-                                        </td>
-                                        <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
-                                        <td><span class="lable-table bg-warning-subtle text-warning rounded border border-warning-subtle font-text2 fw-bold">Pending<i class="bi bi-info-circle ms-2"></i></span></td>
-                                        <td>Cash on delivery</td>
-                                        <td>Nov 12, 10:45 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input" type="checkbox">
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;">#9870</a>
-                                        </td>
-                                        <td>$49</td>
-                                        <td>
-                                            <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                <div class="customer-pic">
-                                                    <img src="assets/images/avatars/06.png" class="rounded-circle" width="40" height="40" alt="">
-                                                </div>
-                                                <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                            </a>
-                                        </td>
-                                        <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
-                                        <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Completed<i class="bi bi-check2 ms-2"></i></span></td>
-                                        <td>Cash on delivery</td>
-                                        <td>Nov 12, 10:45 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input" type="checkbox">
-                                        </td>
-                                        <td>
-                                            <a href="javascript:;">#3456</a>
-                                        </td>
-                                        <td>$65</td>
-                                        <td>
-                                            <a class="d-flex align-items-center gap-3" href="javascript:;">
-                                                <div class="customer-pic">
-                                                    <img src="assets/images/avatars/07.png" class="rounded-circle" width="40" height="40" alt="">
-                                                </div>
-                                                <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
-                                            </a>
-                                        </td>
-                                        <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Completed<i class="bi bi-check2 ms-2"></i></span></td>
-                                        <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
-                                        <td>Cash on delivery</td>
-                                        <td>Nov 12, 10:45 PM</td>
-                                    </tr> 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!--            <div class="card">
+                            <div class="card-body">
+                                <div class="customer-table">
+                                    <div class="table-responsive white-space-nowrap">
+                                        <table class="table align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </th>
+                                                    <th>Order Id</th>
+                                                    <th>Price</th>
+                                                    <th>Customer</th>
+                                                    <th>Payment Status</th>
+                                                    <th>Completed Payment</th>
+                                                    <th>Delivery Type</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;">#2415</a>
+                                                    </td>
+                                                    <td>$98</td>
+                                                    <td>
+                                                        <a class="d-flex align-items-center gap-3" href="javascript:;">
+                                                            <div class="customer-pic">
+                                                                <img src="assets/images/avatars/01.png" class="rounded-circle" width="40" height="40" alt="">
+                                                            </div>
+                                                            <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Completed<i class="bi bi-check2 ms-2"></i></span></td>
+                                                    <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
+                                                    <td>Cash on delivery</td>
+                                                    <td>Nov 12, 10:45 PM</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;">#7845</a>
+                                                    </td>
+                                                    <td>$110</td>
+                                                    <td>
+                                                        <a class="d-flex align-items-center gap-3" href="javascript:;">
+                                                            <div class="customer-pic">
+                                                                <img src="assets/images/avatars/02.png" class="rounded-circle" width="40" height="40" alt="">
+                                                            </div>
+                                                            <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="lable-table bg-warning-subtle text-warning rounded border border-warning-subtle font-text2 fw-bold">Pending<i class="bi bi-info-circle ms-2"></i></span></td>
+                                                    <td><span class="lable-table bg-primary-subtle text-primary rounded border border-primary-subtle font-text2 fw-bold">Completed<i class="bi bi-check2-all ms-2"></i></span></td>
+                                                    <td>Cash on delivery</td>
+                                                    <td>Nov 12, 10:45 PM</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;">#5674</a>
+                                                    </td>
+                                                    <td>$86</td>
+                                                    <td>
+                                                        <a class="d-flex align-items-center gap-3" href="javascript:;">
+                                                            <div class="customer-pic">
+                                                                <img src="assets/images/avatars/03.png" class="rounded-circle" width="40" height="40" alt="">
+                                                            </div>
+                                                            <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="lable-table bg-primary-subtle text-primary rounded border border-primary-subtle font-text2 fw-bold">Completed<i class="bi bi-check2-all ms-2"></i></span></td>
+                                                    <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
+                                                    <td>Cash on delivery</td>
+                                                    <td>Nov 12, 10:45 PM</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;">#6678</a>
+                                                    </td>
+                                                    <td>$78</td>
+                                                    <td>
+                                                        <a class="d-flex align-items-center gap-3" href="javascript:;">
+                                                            <div class="customer-pic">
+                                                                <img src="assets/images/avatars/04.png" class="rounded-circle" width="40" height="40" alt="">
+                                                            </div>
+                                                            <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Paid<i class="bi bi-check2 ms-2"></i></span></td>
+                                                    <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
+                                                    <td>Cash on delivery</td>
+                                                    <td>Nov 12, 10:45 PM</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;">#2367</a>
+                                                    </td>
+                                                    <td>$69</td>
+                                                    <td>
+                                                        <a class="d-flex align-items-center gap-3" href="javascript:;">
+                                                            <div class="customer-pic">
+                                                                <img src="assets/images/avatars/05.png" class="rounded-circle" width="40" height="40" alt="">
+                                                            </div>
+                                                            <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
+                                                    <td><span class="lable-table bg-warning-subtle text-warning rounded border border-warning-subtle font-text2 fw-bold">Pending<i class="bi bi-info-circle ms-2"></i></span></td>
+                                                    <td>Cash on delivery</td>
+                                                    <td>Nov 12, 10:45 PM</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;">#9870</a>
+                                                    </td>
+                                                    <td>$49</td>
+                                                    <td>
+                                                        <a class="d-flex align-items-center gap-3" href="javascript:;">
+                                                            <div class="customer-pic">
+                                                                <img src="assets/images/avatars/06.png" class="rounded-circle" width="40" height="40" alt="">
+                                                            </div>
+                                                            <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
+                                                    <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Completed<i class="bi bi-check2 ms-2"></i></span></td>
+                                                    <td>Cash on delivery</td>
+                                                    <td>Nov 12, 10:45 PM</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:;">#3456</a>
+                                                    </td>
+                                                    <td>$65</td>
+                                                    <td>
+                                                        <a class="d-flex align-items-center gap-3" href="javascript:;">
+                                                            <div class="customer-pic">
+                                                                <img src="assets/images/avatars/07.png" class="rounded-circle" width="40" height="40" alt="">
+                                                            </div>
+                                                            <p class="mb-0 customer-name fw-bold">Andrew Carry</p>
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="lable-table bg-success-subtle text-success rounded border border-success-subtle font-text2 fw-bold">Completed<i class="bi bi-check2 ms-2"></i></span></td>
+                                                    <td><span class="lable-table bg-danger-subtle text-danger rounded border border-danger-subtle font-text2 fw-bold">Failed<i class="bi bi-x-lg ms-2"></i></span></td>
+                                                    <td>Cash on delivery</td>
+                                                    <td>Nov 12, 10:45 PM</td>
+                                                </tr> 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
 
 
         </main>
@@ -1689,19 +1881,352 @@
         <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
         <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
         <script src="assets/plugins/apex/apexcharts.min.js"></script>
-        <script src="assets/js/index.js"></script>
+        <!--        <script src="assets/js/index.js"></script>-->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!--BS Scripts-->
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/main.js"></script>
 
+        <jsp:include page="assets/ChartContract/ChartStatisticOfContract.jsp"/>
         <%@ include file="Common/toarst.jsp" %>
 
 
-
         <script>
+                                                // pie chart (feedback) - chart 2
+                                                var dataOfFeedBack = [<%= dataOfChartFb %>];
 
-            var dataOfFeedBack = [<%= dataOfChartFb %>];
+                                                // bar chart (contract) - chart 1
+                                                var labels1 = [<%= labelsContract %>];
+                                                var data1 = [<%= dataContract %>];
+                                                var titleOfX = "<%= titleOfX %>";
+
+                                                //area chart (saving) - chart 3
+                                                var labels3 = [<%= labelsSaving %>];
+                                                var data3 = [<%= dataSaving %>];
+                                                console.log("labels3:", labels3);
+                                                console.log("data3:", data3);
+
+                                                // area chart (loan) - chart4
+                                                var labels4 = [<%= labelsLoan %>];
+                                                var data4 = [<%= dataLoan %>];
+                                                console.log("labels4:", labels4);
+                                                console.log("data4:", data4);
+
+                                                // filter date chart1
+                                                document.getElementById('contractFilterForm').addEventListener('submit', function (e) {
+                                                    e.preventDefault();
+                                                    var urlToServletContract = document.getElementById("urlToSvlContract").value;
+                                                    var fromDate = document.getElementById('fromDate').value;
+                                                    var toDate = document.getElementById('toDate').value;
+                                                    console.log("URL to Servlet: ", urlToServletContract);
+
+                                                    if (urlToServletContract) {
+                                                        if (fromDate && toDate) {
+                                                            updateChart1(urlToServletContract, fromDate, toDate);
+                                                        } else {
+                                                            toastr.error("Please select both From and To dates!", "Error");
+                                                        }
+                                                    }
+                                                });
+
+
+                                                // drown list chart1 ( choose type of contract )
+                                                function redirectToTypeOfChart1() {
+                                                    var selectBox = document.getElementById("typeOfChartFilter1");
+                                                    var selectedValue = selectBox.value;
+
+                                                    if (selectedValue) {
+                                                        updateChart1(selectedValue, null, null);
+                                                    }
+                                                }
+
+                                                function updateChart1(urlToServletContract, fromDate, toDate) {
+                                                    $.ajax({
+                                                        url: urlToServletContract,
+                                                        type: 'GET',
+                                                        data: {
+                                                            fromDate: fromDate,
+                                                            toDate: toDate
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function (response) {
+                                                            if (response.error) {
+                                                                toastr.error(response.error, "Error");
+                                                                chart1.updateOptions({
+                                                                    xaxis: {
+                                                                        title: {
+                                                                            text: response.titleOfX // Tiêu đề mới
+                                                                        },
+                                                                        categories: [] // Nếu muốn cập nhật cả danh mục (categories)
+                                                                    },
+                                                                    series: [{data: []}] // Nếu muốn cập nhật dữ liệu
+                                                                });
+
+                                                                // cập nhật urlToServletContract để filterDate
+                                                                var urlSvlContract = document.getElementById("urlToSvlContract");
+                                                                urlSvlContract.value = response.urlSvl;
+
+                                                                // cập nhật giá trị cho form xuất excel 
+                                                                var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
+                                                                chart1Input.value = "null";
+                                                                var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
+                                                                chart1Percent.value = "null";
+                                                                var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
+                                                                chart1Label.value = "null";
+
+                                                                // Reset giá trị của fromDate và toDate
+                                                                document.getElementById('fromDate').value = "";
+                                                                document.getElementById('toDate').value = "";
+                                                            } else {
+                                                                chart1.updateOptions({
+                                                                    xaxis: {title: {
+                                                                            text: response.titleOfX // Tiêu đề mới
+                                                                        },
+                                                                        categories: response.labels01.replaceAll("'", "").split(",")
+                                                                    },
+                                                                    series: [{data: response.data01.split(",").map(Number)}]
+                                                                });
+
+                                                                // cập nhật urlToServletContract để filterDate
+                                                                var urlSvlContract = document.getElementById("urlToSvlContract");
+                                                                urlSvlContract.value = response.urlSvl;
+
+                                                                // cập nhật giá trị cho form xuất excel 
+                                                                var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
+                                                                chart1Input.value = response.data01;
+                                                                var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
+                                                                chart1Percent.value = response.percentData01;
+                                                                var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
+                                                                chart1Label.value = response.labels01.replaceAll("'", "");
+
+                                                                // Reset giá trị của fromDate và toDate
+                                                                document.getElementById('fromDate').value = "";
+                                                                document.getElementById('toDate').value = "";
+                                                            }
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            toastr.error("An error occurred while retrieving data !!", "Error");
+                                                            chart1.updateOptions({
+                                                                xaxis: {
+                                                                    title: {
+                                                                        text: response.titleOfX // Tiêu đề mới
+                                                                    },
+                                                                    categories: [] // Nếu muốn cập nhật cả danh mục (categories)
+                                                                },
+                                                                series: [{data: []}] // Nếu muốn cập nhật dữ liệu
+                                                            });
+                                                            // cập nhật urlToServletContract để filterDate
+                                                            var urlSvlContract = document.getElementById("urlToSvlContract");
+                                                            urlSvlContract.value = response.urlSvl;
+
+                                                            // Cập nhật form xuất Excel về 0
+                                                            var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
+                                                            chart1Input.value = "null";
+                                                            var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
+                                                            chart1Percent.value = "null";
+                                                            var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
+                                                            chart1Label.value = "null";
+
+                                                            // Reset giá trị của fromDate và toDate
+                                                            document.getElementById('fromDate').value = "";
+                                                            document.getElementById('toDate').value = "";
+                                                        }
+                                                    });
+                                                }
+
+                                                //==========================================================================================
+                                                // filter date chart3 - saving
+                                                document.getElementById('savingContractFilterForm').addEventListener('submit', function (e) {
+                                                    e.preventDefault();
+                                                    var fromDate = document.getElementById('fromDateSaving').value;
+                                                    var toDate = document.getElementById('toDateSaving').value;
+                                                    if (fromDate && toDate) {
+                                                        updateChartSaving(fromDate, toDate);
+                                                    } else {
+                                                        toastr.error("Please select both From and To dates!", "Error");
+                                                    }
+
+                                                });
+
+
+                                                function updateChartSaving(fromDate, toDate) {
+                                                    $.ajax({
+                                                        url: 'ChartRevenueSaving',
+                                                        type: 'GET',
+                                                        data: {
+                                                            fromDateSaving: fromDate,
+                                                            toDateSaving: toDate
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function (response) {
+                                                            if (response.error) {
+                                                                toastr.error(response.error, "Error");
+                                                                chart3.updateOptions({
+                                                                    xaxis: {
+                                                                        categories: [] // Nếu muốn cập nhật cả danh mục (categories)
+                                                                    },
+                                                                    series: [{data: []}] // Nếu muốn cập nhật dữ liệu
+                                                                });
+
+                                                                // cập nhật giá trị cho form xuất excel 
+                                                                var chart3Input = document.querySelector('#chart3').closest('.card').querySelector('input[name="data"]');
+                                                                chart3Input.value = "null";
+                                                                var chart3Percent = document.querySelector('#chart3').closest('.card').querySelector('input[name="percentages"]');
+                                                                chart3Percent.value = "null";
+                                                                var chart3Label = document.querySelector('#chart3').closest('.card').querySelector('input[name="labels"]');
+                                                                chart3Label.value = "null";
+
+                                                                // Reset giá trị của fromDate và toDate
+                                                                document.getElementById('fromDateSaving').value = "";
+                                                                document.getElementById('toDateSaving').value = "";
+                                                            } else {
+                                                                chart3.updateOptions({
+                                                                    xaxis: {
+                                                                        categories: response.labels03.replaceAll("'", "").split(",")
+                                                                    },
+                                                                    series: [{data: response.data03.split(",").map(Number)}]
+                                                                });
+
+                                                                // cập nhật giá trị cho form xuất excel 
+                                                                var chart3Input = document.querySelector('#chart3').closest('.card').querySelector('input[name="data"]');
+                                                                chart3Input.value = response.data03;
+                                                                var chart3Percent = document.querySelector('#chart3').closest('.card').querySelector('input[name="percentages"]');
+                                                                chart3Percent.value = response.percentData03;
+                                                                var chart3Label = document.querySelector('#chart3').closest('.card').querySelector('input[name="labels"]');
+                                                                chart3Label.value = response.labels03.replaceAll("'", "");
+
+                                                                // Reset giá trị của fromDate và toDate
+                                                                document.getElementById('fromDateSaving').value = "";
+                                                                document.getElementById('toDateSaving').value = "";
+                                                            }
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            toastr.error("An error occurred while retrieving data !!", "Error");
+                                                            chart3.updateOptions({
+                                                                xaxis: {
+                                                                    categories: [] // Nếu muốn cập nhật cả danh mục (categories)
+                                                                },
+                                                                series: [{data: []}] // Nếu muốn cập nhật dữ liệu
+                                                            });
+
+
+                                                            // Cập nhật form xuất Excel về 0
+                                                            var chart3Input = document.querySelector('#chart3').closest('.card').querySelector('input[name="data"]');
+                                                            chart3Input.value = "null";
+                                                            var chart3Percent = document.querySelector('#chart3').closest('.card').querySelector('input[name="percentages"]');
+                                                            chart3Percent.value = "null";
+                                                            var chart3Label = document.querySelector('#chart3').closest('.card').querySelector('input[name="labels"]');
+                                                            chart3Label.value = "null";
+
+                                                            // Reset giá trị của fromDate và toDate
+                                                            document.getElementById('fromDateSaving').value = "";
+                                                            document.getElementById('toDateSaving').value = "";
+                                                        }
+                                                    });
+                                                }
+
+                                                //==========================================================================================
+                                                // filter date chart4 - loan
+                                                document.getElementById('loanContractFilterForm').addEventListener('submit', function (e) {
+                                                    e.preventDefault();
+                                                    var fromDate = document.getElementById('fromDateLoan').value;
+                                                    var toDate = document.getElementById('toDateLoan').value;
+                                                    if (fromDate && toDate) {
+                                                        updateChartLoan(fromDate, toDate);
+                                                    } else {
+                                                        toastr.error("Please select both From and To dates!", "Error");
+                                                    }
+
+                                                });
+
+
+                                                function updateChartLoan(fromDate, toDate) {
+                                                    $.ajax({
+                                                        url: 'ChartRevenueLoan',
+                                                        type: 'GET',
+                                                        data: {
+                                                            fromDateLoan: fromDate,
+                                                            toDateLoan: toDate
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function (response) {
+                                                            if (response.error) {
+                                                                toastr.error(response.error, "Error");
+                                                                chart4.updateOptions({
+                                                                    xaxis: {
+                                                                        categories: [] // Nếu muốn cập nhật cả danh mục (categories)
+                                                                    },
+                                                                    series: [{data: []}] // Nếu muốn cập nhật dữ liệu
+                                                                });
+
+                                                                // cập nhật giá trị cho form xuất excel 
+                                                                var chart4Input = document.querySelector('#chart4').closest('.card').querySelector('input[name="data"]');
+                                                                chart4Input.value = "null";
+                                                                var chart4Percent = document.querySelector('#chart4').closest('.card').querySelector('input[name="percentages"]');
+                                                                chart4Percent.value = "null";
+                                                                var chart4Label = document.querySelector('#chart4').closest('.card').querySelector('input[name="labels"]');
+                                                                chart4Label.value = "null";
+
+                                                                // Reset giá trị của fromDate và toDate
+                                                                document.getElementById('fromDateLoan').value = "";
+                                                                document.getElementById('toDateLoan').value = "";
+                                                            } else {
+                                                                chart4.updateOptions({
+                                                                    xaxis: {
+                                                                        categories: response.labels04.replaceAll("'", "").split(",")
+                                                                    },
+                                                                    series: [{data: response.data04.split(",").map(Number)}]
+                                                                });
+
+                                                                // cập nhật giá trị cho form xuất excel 
+                                                                var chart4Input = document.querySelector('#chart4').closest('.card').querySelector('input[name="data"]');
+                                                                chart4Input.value = response.data04;
+                                                                var chart4Percent = document.querySelector('#chart4').closest('.card').querySelector('input[name="percentages"]');
+                                                                chart4Percent.value = response.percentData04;
+                                                                var chart4Label = document.querySelector('#chart4').closest('.card').querySelector('input[name="labels"]');
+                                                                chart4Label.value = response.labels04.replaceAll("'", "");
+
+                                                                // Reset giá trị của fromDate và toDate
+                                                                document.getElementById('fromDateLoan').value = "";
+                                                                document.getElementById('toDateLoan').value = "";
+                                                            }
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            toastr.error("An error occurred while retrieving data !!", "Error");
+                                                            chart4.updateOptions({
+                                                                xaxis: {
+                                                                    categories: [] // Nếu muốn cập nhật cả danh mục (categories)
+                                                                },
+                                                                series: [{data: []}] // Nếu muốn cập nhật dữ liệu
+                                                            });
+
+
+                                                            // Cập nhật form xuất Excel về 0
+                                                            var chart4Input = document.querySelector('#chart4').closest('.card').querySelector('input[name="data"]');
+                                                            chart4Input.value = "null";
+                                                            var chart4Percent = document.querySelector('#chart4').closest('.card').querySelector('input[name="percentages"]');
+                                                            chart4Percent.value = "null";
+                                                            var chart4Label = document.querySelector('#chart4').closest('.card').querySelector('input[name="labels"]');
+                                                            chart4Label.value = "null";
+
+                                                            // Reset giá trị của fromDate và toDate
+                                                            document.getElementById('fromDateLoan').value = "";
+                                                            document.getElementById('toDateLoan').value = "";
+                                                        }
+                                                    });
+                                                }
+
+
+
+
+
+
+
+
+
 
         </script>
 

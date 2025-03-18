@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Contract {
-    
+
     private int ContractID;
     private Customer Customer;
     private BigDecimal Amount;
@@ -181,6 +181,5 @@ public class Contract {
     public void setInsuranceCoverage(float InsuranceCoverage) {
         this.InsuranceCoverage = InsuranceCoverage;
     }
-    
-    
+
 }

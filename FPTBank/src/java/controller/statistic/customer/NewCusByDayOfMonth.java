@@ -30,13 +30,12 @@ public class NewCusByDayOfMonth extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Nhận tháng từ request
+
         String monthSelected = request.getParameter("month"); // Ví dụ: "2024-Dec"
 
-        // Phân tích tháng để lấy năm và tháng
         String[] parts = monthSelected.split("-");
-        int year = Integer.parseInt(parts[0]); // Năm (ví dụ: 2024)
-        String monthShort = parts[1]; // Tháng ngắn (ví dụ: "Dec")
+        int year = Integer.parseInt(parts[0]); 
+        String monthShort = parts[1]; 
 
         // Chuyển tháng ngắn (Dec) thành số (12)
         Map<String, Integer> monthMap = new HashMap<>();
@@ -58,7 +57,6 @@ public class NewCusByDayOfMonth extends HttpServlet {
         YearMonth yearMonth = YearMonth.of(year, monthNum);
         int daysInMonth = yearMonth.lengthOfMonth();
 
-        // Giả sử bạn có danh sách khách hàng (listOfCus)
         List<Customer> listOfCus = cDao.selectAllCustomer();
 
         // Lọc khách hàng theo tháng được chọn
@@ -97,12 +95,10 @@ public class NewCusByDayOfMonth extends HttpServlet {
             request.getSession().setAttribute("error", "No data available for this month!!");
         }
 
-        // Lưu dữ liệu vào session để JSP sử dụng
         request.getSession().setAttribute("labels02", labels02);
         request.getSession().setAttribute("data02", data02);
         request.getSession().setAttribute("percentData02", percentData02);
 
-        // Chuyển hướng tới JSP
         request.getRequestDispatcher("ChartNewCusByDayOfMonth.jsp").forward(request, response);
     }
 

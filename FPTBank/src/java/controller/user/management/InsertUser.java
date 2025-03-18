@@ -1,5 +1,6 @@
 package controller.user.management;
 
+import Tools.HashString;
 import controller.*;
 import dal.UserDAO;
 import java.io.IOException;
@@ -83,6 +84,8 @@ public class InsertUser extends HttpServlet {
 
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
+        HashString hasStr = new HashString();
+        password = hasStr.hashString(password);
 
         String name_raw = request.getParameter("fullname");
         String name = SearchUsers.normalizeString(name_raw);
