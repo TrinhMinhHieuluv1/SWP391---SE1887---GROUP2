@@ -45,7 +45,6 @@
 
 
         <!-- wrapper -->
-        <div id="smooth-wrapper" class="mil-wrapper">
 
             <%@ include file="header.jsp"%>
 
@@ -383,7 +382,7 @@
                                     <div class="row">
                                         <div class="col-5">
                                             <div class="modal__img-wrap">
-                                                <img src="${empty member.getImage() ? 'img/inner-pages/team/1.png' : member.image}" alt="portrait" class="team-item__img">
+                                                <img src="${member.getImage()}"  class="team-item__img">
                                             </div>
                                         </div>
                                         <div class="col-7">

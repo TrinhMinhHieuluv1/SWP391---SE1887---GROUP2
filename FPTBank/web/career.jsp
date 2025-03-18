@@ -49,69 +49,13 @@
         <!-- preloader end -->
 
         <!-- scroll progress -->
-        <div class="mil-progress-track">
-            <div class="mil-progress"></div>
-        </div>
+       
         <!-- scroll progress end -->
 
         <!-- back to top -->
-        <div class="progress-wrap active-progress"></div>
 
         <!-- top panel end -->
-        <div class="mil-top-panel">
-            <div class="container">
-                <a href="index.html" class="mil-logo">
-                     <img src="img/logo1.png" alt="Plax" width="200">
-                </a>
-                <nav class="mil-top-menu">
-                    <ul>
-                        <li class="mil-has-children">
-                            <a href="#.">Home</a>
-                            <ul>
-                                <li><a href="index.html">Mở tài khoản</a></li>
-                                <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                <li><a href="home-3.html">Type 3</a></li>
-                                <li><a href="home-4.html">Type 4</a></li>
-                                <li><a href="home-5.html">Type 5</a></li>
-                                
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="about.html">About</a>
-                        </li>
-                        <li>
-                            <a href="services.html">Services</a>
-                        </li>
-                        <li class="mil-has-children">
-                            <a href="#.">Blog</a>
-                            <ul>
-                                <li><a href="blog.html">Blog list</a></li>
-                                <li><a href="publication.html">Blog details</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="contact.html">Contact</a>
-                        </li>
-                        <li class="mil-has-children mil-active">
-                            <a href="#.">Pages</a>
-                            <ul>
-                                <li><a href="career.html">Career</a></li>
-                                <li><a href="career-details.html">Career details</a></li>
-                                <li><a href="price.html">Pricing</a></li>
-                                <li><a href="register.html">Register</a></li>
-                                
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="mil-menu-buttons">
-                    <a href="register.html" class="mil-btn mil-sm">Log in</a>
-                    <div class="mil-menu-btn">
-                        <span></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+     <%@ include file="header.jsp"%>
         <!-- top panel end -->
 
         <!-- content -->
@@ -271,76 +215,8 @@
             <!-- vacancies end -->
 
             <!-- footer -->
-            <footer class="mil-footer-with-bg mil-p-160-0">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <a href="#." class="mil-footer-logo mil-mb-60">
-                                <img src="img/logo-2.png" alt="Plax" width="28" height="32">
-                            </a>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Usefull Links</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="index.html">Home</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="about.html">About Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="contact.html">Contact Us</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="services.html">Services</a>
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    <a href="price.html">Pricing</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3 mil-mb-60">
-                            <h6 class="mil-mb-60">Help</h6>
-                            <ul class="mil-footer-list">
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    999 Rue du Cherche-Midi, 7755500666 Paris, <br>France
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    +001 (808) 555-0111
-                                </li>
-                                <li class="mil-text-m mil-soft mil-mb-15">
-                                    support@plax.network
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3 mil-mb-80">
-                            <h6 class="mil-mb-60">Newsletter</h6>
-                            <p class="mil-text-xs mil-soft mil-mb-15">Subscribe to get the latest news form us</p>
-                            <form class="mil-subscripe-form-footer">
-                                <input class="mil-input" type="email" placeholder="Email">
-                                <button type="submit"><i class="far fa-envelope-open mil-dark"></i></button>
-                                <div class="mil-checkbox-frame mil-mt-15">
-                                    <div class="mil-checkbox">
-                                        <input type="checkbox" id="checkbox" checked>
-                                        <label for="checkbox"></label>
-                                    </div>
-                                    <p class="mil-text-xs mil-soft">Subscribe to get the latest news</p>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="mil-footer-bottom">
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <p class="mil-text-s mil-soft">© 2024 Plax Finance & Fintech Design</p>
-                            </div>
-                            <div class="col-xl-6">
-                                <p class="mil-text-s mil-text-right mil-sm-text-left mil-soft">Developed by <a href="https://bslthemes.com" target="blank">bslthemes</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+                            <%@ include file="footer.jsp"%>
+
             <!-- footer end -->
 
         </div>

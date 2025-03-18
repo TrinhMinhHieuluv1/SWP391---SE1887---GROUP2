@@ -523,6 +523,7 @@
         </style>
     </head>
     <body>
+
         <!--show message-->
         <c:if test="${not empty sessionScope.message}">
             <div id="toastMessage" class="toast-message">
@@ -542,6 +543,7 @@
 
 
         <div class="news-management">
+
             <h1 class="page-title">FAQ Management</h1>
 
             <!-- Filter Controls -->

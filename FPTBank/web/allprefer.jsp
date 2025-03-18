@@ -177,60 +177,7 @@
             <div class="progress-wrap active-progress"></div>
 
             <!-- top panel end -->
-            <div class="mil-top-panel">
-                <div class="container">
-                    <a href="index.jsp" class="mil-logo">
-                        <img src="img/logo1.png" alt="Plax" width="200">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children">
-                                <a href="#.">Home</a>
-                                <ul>
-                                    <li><a href="index.jsp">Type 1</a></li>
-                                    <li><a href="home-2.jsp">Type 2</a></li>
-                                    <li><a href="home-3.jsp">Type 3</a></li>
-                                    <li><a href="home-4.jsp">Type 4</a></li>
-                                    <li><a href="home-5.jsp">Type 5</a></li>
-
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="about">About</a>
-                            </li>
-                            <li >
-                                <a href="faq.jsp">FAQ</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="contact.jsp">Contact</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mil-menu-buttons">
-                        <a href="register.jsp" class="mil-btn mil-sm">Log in</a>
-                        <div class="mil-menu-btn">
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           <%@ include file="header.jsp"%>
             <!-- top panel end -->
 
             <!-- content -->

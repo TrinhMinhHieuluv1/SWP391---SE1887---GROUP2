@@ -79,11 +79,15 @@ public class ShowFB extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                HttpSession session = request.getSession();
       String email = request.getParameter("email");
       String tieude = request.getParameter("tieude");
       String noidung= request.getParameter("noidung");
-      sendMail.guiSupport( noidung, tieude, email);
-      
+     boolean mail= sendMail.guiSupport( noidung, tieude, email);
+      if(mail){
+            session.setAttribute("message", "Send Email Successfully!");
+
+      }
       response.sendRedirect("home");
       
     }
