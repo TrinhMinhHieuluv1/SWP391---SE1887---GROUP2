@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -508,7 +509,8 @@ public class InsuranceDAO extends DBContext {
         }
     }
 
-    // Test sortByFeeRate
+
+        // Test sortByFeeRate
 //    System.out.println("Testing sortByFeeRate:");
 //    ArrayList<Insurance> feeRateList = insuranceDAO.sortByFeeRate(1, 10, true); // Sắp xếp giảm dần
 //    for (Insurance insurance : feeRateList) {
@@ -546,6 +548,7 @@ public class InsuranceDAO extends DBContext {
 //    int totalByStatus = insuranceDAO.getTotalAfterSearchStatus("true"); // Tìm tổng số bản ghi có Status = true
 //    System.out.println("Total records with status 'true': " + totalByStatus);
     // Giả sử providerId = 1 tồn tại trong cơ sở dữ liệu
+
     public void deleteInsurance(int insuranceID) {
         String sql = "DELETE FROM Insurance WHERE InsuranceID = ?";
         try {
@@ -555,5 +558,32 @@ public class InsuranceDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Insurance> getInsuranceList(BigDecimal Amount, String Type) {
+        List<Insurance> insuranceList = new ArrayList<>();
+        String sql = "SELECT * FROM [Insurance] WHERE (Type=?) AND (MaxAmountOfLoan > ?) AND (Status=1)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, Type);
+            st.setBigDecimal(2, Amount);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Insurance insurance = new Insurance(
+                        rs.getInt("InsuranceID"),
+                        rs.getInt("ProviderID"),
+                        rs.getString("InsuranceName"),
+                        rs.getString("Type"),
+                        rs.getFloat("FeeRate"),
+                        rs.getFloat("CoverageRate"),
+                        rs.getDouble("MaxAmountOfLoan"),
+                        rs.getBoolean("Status")
+                );
+                insuranceList.add(insurance);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);;
+        }
+        return insuranceList;
     }
 }

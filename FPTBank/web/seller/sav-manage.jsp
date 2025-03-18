@@ -469,8 +469,6 @@
                 box-shadow: 0 4px 6px rgba(76,175,80,0.2);
             }
             
-           
-        }
             .checkbox-bar {
                 display: flex;
                 justify-content: space-around;
