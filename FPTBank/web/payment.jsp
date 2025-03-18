@@ -668,7 +668,7 @@
 
                             <td><a class="cut">-</a><span contenteditable>${bill.getBillID()}</span>
                                 <input type="hidden" name="billID" value="${bill.getBillID()}">
-                            <input type="hidden" name="providerID" value="${bill.getProvider().getUserID()}"></td>
+                                <input type="hidden" name="providerID" value="${bill.getProvider().getUserID()}"></td>
                             <td><span contenteditable>${bill.getTitle()}</span></td>
                             <td><span data-prefix></span><span contenteditable>${bill.getDescription()}</span></td>
                             <td><span contenteditable></span>${company.getCompanyName()}</td>
@@ -689,8 +689,12 @@
                 </table>
 
             </article>
-                        <div style="diplay: flex;">
-                            <button type="submit" name="action" value="Paid" style="display: inline-block; background-color: blue; color: white;
+                        <select name="paymentmethod" style="border: solid 1px; height: 20px; border-radius: 3px;">
+                <option value="balance" ${param.paymentmethod == 'balance' ? 'selected' :''}>Directly Balance</option>
+                <option  value="transfer" ${param.paymentmethod == 'transfer' ? 'selected' :''}>Transfer</option>
+            </select>
+            <div style="diplay: flex;">
+                <button type="submit" name="action" value="Paid" style="display: inline-block; background-color: blue; color: white;
                         border-radius: 5px; padding: 5px 10px; text-decoration: none; margin-left: 0%;"> 
                     Paid
                 </button>
