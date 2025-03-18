@@ -38,7 +38,8 @@ public class ContractDAO extends DBContext {
                         rs.getBoolean("MonthlyPayment"),
                         rs.getString("MonthlyPaymentType"),
                         rs.getInt("StatusID"),
-                        rs.getDate("CreatedAt"));
+                        rs.getDate("CreatedAt"),
+                        rs.getFloat("InsuranceCoverage"));
                 contractList.add(contractToAdd);
             }
         } catch (SQLException e) {
@@ -68,7 +69,9 @@ public class ContractDAO extends DBContext {
                         rs.getBoolean("MonthlyPayment"),
                         rs.getString("MonthlyPaymentType"),
                         rs.getInt("StatusID"),
-                        rs.getDate("CreatedAt"));
+                        rs.getDate("CreatedAt"),
+                        rs.getFloat("InsuranceCoverage"));
+
                 return contractToAdd;
             }
         } catch (SQLException e) {
@@ -114,7 +117,8 @@ public class ContractDAO extends DBContext {
                         rs.getBoolean("MonthlyPayment"),
                         rs.getString("MonthlyPaymentType"),
                         rs.getInt("StatusID"),
-                        rs.getDate("CreatedAt"));
+                        rs.getDate("CreatedAt"),
+                        rs.getFloat("InsuranceCoverage"));
                 contractList.add(contractToAdd);
             }
         } catch (SQLException e) {
@@ -123,8 +127,8 @@ public class ContractDAO extends DBContext {
     }
 
     public void addAContract(Contract contractToAdd) {
-        String sql = "INSERT INTO [Contract] (CustomerID, Amount, Period, LatePaymentRate, EarlyWithdrawRate, InterestRate, Type, Description, AssetID, SalaryID, InsuranceID, MonthlyPayment, MonthlyPaymentType, StatusID)"
-                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [Contract] (CustomerID, Amount, Period, LatePaymentRate, EarlyWithdrawRate, InterestRate, Type, Description, AssetID, SalaryID, InsuranceID, MonthlyPayment, MonthlyPaymentType, StatusID, InsuranceCoverage)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, contractToAdd.getCustomer().getCustomerId());
@@ -141,6 +145,7 @@ public class ContractDAO extends DBContext {
             st.setBoolean(12, contractToAdd.isMonthlyPayment());
             st.setString(13, contractToAdd.getMonthlyPaymentType());
             st.setInt(14, contractToAdd.getStatusID());
+            st.setFloat(15, contractToAdd.getInsuranceCoverage());
             st.executeUpdate();
         } catch (SQLException e) {
         }
@@ -150,7 +155,7 @@ public class ContractDAO extends DBContext {
         String sql = "UPDATE [Contract] SET Amount=?, Period=?, "
                 + "LatePaymentRate=?, EarlyWithdrawRate=?, InterestRate=?, "
                 + "Description=?, AssetID=?, SalaryID=?, InsuranceID=?, "
-                + "MonthlyPayment=?, MonthlyPaymentType=?, StatusID=? WHERE ContractID=?";
+                + "MonthlyPayment=?, MonthlyPaymentType=?, StatusID=?, InsuranceCoverage=? WHERE ContractID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setBigDecimal(1, ContractToUpdate.getAmount());
@@ -165,7 +170,8 @@ public class ContractDAO extends DBContext {
             st.setBoolean(10, ContractToUpdate.isMonthlyPayment());
             st.setString(11, ContractToUpdate.getMonthlyPaymentType());
             st.setInt(12, ContractToUpdate.getStatusID());
-            st.setInt(13, ContractToUpdate.getContractID());
+            st.setFloat(13, ContractToUpdate.getInsuranceCoverage());
+            st.setInt(14, ContractToUpdate.getContractID());
             st.executeUpdate();
         } catch (SQLException e) {
         }

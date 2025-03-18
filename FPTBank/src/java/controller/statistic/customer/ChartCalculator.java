@@ -17,7 +17,12 @@ public class ChartCalculator {
         String data01;
         String percentData01;
 
-        int totalUsers = newCusMapByDay != null ? newCusMapByDay.values().stream().mapToInt(Integer::intValue).sum() : 0;
+        int totalUsers = 0;
+        if (newCusMapByDay != null) {
+            for (int value : newCusMapByDay.values()) {
+                totalUsers += value;
+            }
+        }
 
         if (newCusMapByDay != null && !newCusMapByDay.isEmpty()) {
             StringBuilder label1 = new StringBuilder();
@@ -54,7 +59,12 @@ public class ChartCalculator {
         String data01;
         String percentData01;
 
-        int totalUsers = newCusMapByMonth != null ? newCusMapByMonth.values().stream().mapToInt(Integer::intValue).sum() : 0;
+        int totalUsers = 0;
+        if (newCusMapByMonth != null) {
+            for (int value : newCusMapByMonth.values()) {
+                totalUsers += value;
+            }
+        }
 
         if (newCusMapByMonth != null && !newCusMapByMonth.isEmpty()) {
             StringBuilder label1 = new StringBuilder();
