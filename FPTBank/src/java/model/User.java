@@ -153,7 +153,9 @@ public class User {
 
     @Override
     public String toString() {
-        return this.UserID +"";
+        return "User{" + "UserID=" + UserID + ", RoleID=" + RoleID + ", Username=" + Username + ", Password=" + Password + ", FullName=" + FullName + ", Phone=" + Phone + ", Email=" + Email + ", CCCD=" + CCCD + ", Image=" + Image + ", Address=" + Address + ", DateOfBirth=" + DateOfBirth + ", CreatedAt=" + CreatedAt + ", Gender=" + Gender + ", Status=" + Status + ", Manager=" + Manager + '}';
     }
+
+    
     
 }

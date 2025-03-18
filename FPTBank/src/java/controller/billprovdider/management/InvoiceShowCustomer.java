@@ -5,6 +5,7 @@
 
 package controller.billprovdider.management;
 
+import dal.CompanyBillProviderDAO;
 import dal.DetailBillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,14 +17,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import model.DetailBill;
+import model.CompanyBillProvider;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name="InvoiceShow", urlPatterns={"/bill_provider/invoice"})
-public class InvoiceShow extends HttpServlet {
+@WebServlet(name="InvoiceShowCustomer", urlPatterns={"/invoiceshowcustomer"})
+public class InvoiceShowCustomer extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,10 +41,10 @@ public class InvoiceShow extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InvoiceShow</title>");  
+            out.println("<title>Servlet InvoiceShowCustomer</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InvoiceShow at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet InvoiceShowCustomer at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,15 +62,12 @@ public class InvoiceShow extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String status = request.getParameter("filterStatus");
+        int uid = (int) session.getAttribute("uid");
         String status_bill = request.getParameter("statusbill");
         String number = request.getParameter("pagesize");
         String date_1 = request.getParameter("date1");
         String date_2 = request.getParameter("date2");
-        int uid = (int) session.getAttribute("uid");
-        if(status == null){
-            status = "";
-        }
+
         if(status_bill == null){
             status_bill = "";
         }
@@ -81,7 +79,7 @@ public class InvoiceShow extends HttpServlet {
         }
         
         DetailBillDAO dao = new DetailBillDAO();
-        List<DetailBill> list = dao.filterList(status, status_bill, date_1, date_2, uid);
+        List<model.DetailBill> list = dao.filterListCustomer(status_bill, date_1, date_2, uid);
         int page = 1;
         int pagesize = 10;
         if (request.getParameter("page") != null) {
@@ -105,7 +103,6 @@ public class InvoiceShow extends HttpServlet {
         int end = page*pagesize > totalbill ? totalbill : page*pagesize;
         list = dao.getListByPage(list, start, end);
         request.setAttribute("listint", listint);
-        request.setAttribute("filterStatus", status);
         request.setAttribute("statusbill", status_bill);
         request.setAttribute("currentPage", page);
         request.setAttribute("pagesize", number);
@@ -113,7 +110,8 @@ public class InvoiceShow extends HttpServlet {
         request.setAttribute("date1", date_1);
         request.setAttribute("date2", date_2);
         request.setAttribute("listB", list);
-        request.getRequestDispatcher("invoice.jsp").forward(request, response);
+        request.setAttribute("listB", list);
+        request.getRequestDispatcher("mybill.jsp").forward(request, response);
     } 
 
     /** 

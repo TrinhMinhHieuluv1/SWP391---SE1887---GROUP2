@@ -4,10 +4,7 @@
  */
 package controller.billprovdider.management;
 
-import dal.CompanyBillProviderDAO;
-import dal.CustomerDAO;
 import dal.DetailBillDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,24 +14,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.sql.Date;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
-import model.CompanyBillProvider;
-import model.Customer;
 import model.DetailBill;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name = "CreateInvoice", urlPatterns = {"/bill_provider/createinvoice"})
-public class CreateInvoice extends HttpServlet {
+@WebServlet(name = "UpdateInvoice", urlPatterns = {"/bill_provider/updateinvoice"})
+public class UpdateInvoice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,10 +42,10 @@ public class CreateInvoice extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateInvoice</title>");
+            out.println("<title>Servlet UpdateInvoice</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateInvoice at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateInvoice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -76,49 +65,43 @@ public class CreateInvoice extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         int uid = (int) session.getAttribute("uid");
-        String customerid = request.getParameter("customerid");
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
+        DetailBillDAO dao = new DetailBillDAO();
+
+        String billID_raw = request.getParameter("billID");
+        String title_raw = request.getParameter("title");
+        String description_raw = request.getParameter("description");
         String startdate_raw = request.getParameter("startdate");
         String enddate_raw = request.getParameter("enddate");
         String total_raw = request.getParameter("total");
+        String status_raw = request.getParameter("status");
         String action = request.getParameter("action");
-        DetailBillDAO dao = new DetailBillDAO();
-        CustomerDAO cdao = new CustomerDAO();
-        CompanyBillProviderDAO bdao = new CompanyBillProviderDAO();
-        UserDAO udao = new UserDAO();
+        int billID = Integer.parseInt(billID_raw);
+        DetailBill bill = dao.getDetailBillByID("BillID", billID);
+        request.setAttribute("bill", bill);
         String error = "";
-        if ("Add".equals(action)) {
-            if (customerid == null || customerid.isEmpty()) {
-                error = "Please choose a customer. ";
-            } else if (title == null || title.isEmpty()) {
-                error = "Please fill out title. ";
-            } else if (description == null || description.isEmpty()) {
-                error = "Please fill out description. ";
+        if ("Update".equals(action)) {
+            if (billID_raw == null || billID_raw.isEmpty()) {
+                error = "Please choose a bill";
+            } else if (title_raw == null || title_raw.isEmpty()) {
+                error = "Please fill out the title";
+            } else if (description_raw == null || description_raw.isEmpty()) {
+                error = "Please fill out the description";
             } else if (startdate_raw == null || startdate_raw.isEmpty()) {
-                error = "Please fill out startdate. ";
+                error = "Please fill out the start date";
             } else if (enddate_raw == null || enddate_raw.isEmpty()) {
-                error = "Please fill out enddate. ";
-            } else if (isNumeric(total_raw) == false) {
-                error = "Please fill out total or only number.";
-            } else if (error.length() == 0) { // Chỉ xử lý nếu không có lỗi
-                int cid = Integer.parseInt(customerid);
-                DetailBill lastbill = dao.getLastDetailBill(cid, uid);
+                error = "Please fill out the end date";
+            } else if (total_raw == null || total_raw.isEmpty()) {
+                error = "Please fill out the total or only number";
+            } else if (error.length() == 0) {
+                DetailBill lastbill = dao.getLastDetailBill(bill.getCustomer().getCustomerId(), uid);
                 total_raw = total_raw.replace(",", "");
-                System.out.println(total_raw); 
-               double total = Double.parseDouble(total_raw);
-                BigDecimal totalamount = BigDecimal.valueOf(total);
+                double total_raw2 = Double.parseDouble(total_raw);
+                BigDecimal total = BigDecimal.valueOf(total_raw2);
                 java.sql.Date startdate = java.sql.Date.valueOf(startdate_raw);
                 java.sql.Date enddate = java.sql.Date.valueOf(enddate_raw);
-
                 if (startdate.toLocalDate().isAfter(enddate.toLocalDate())) {
                     error = "Start Date must be before End Date. ";
                 }
-
-                if (lastbill != null && startdate.toLocalDate().isBefore(lastbill.getEndDate().toLocalDate())) {
-                    error = "Customer paid for this month. ";
-                }
-
                 LocalDate startlocaldate = startdate.toLocalDate();
                 LocalDate endlocaldate = enddate.toLocalDate();
 
@@ -128,36 +111,26 @@ public class CreateInvoice extends HttpServlet {
                 if ((yearsBetween * 12 + monthsBetween) < 1) {
                     error = "Bill for Electric must be at least 1 month. ";
                 }
-
                 if (error.length() == 0) {
-                    DetailBill bill = new DetailBill(title, description, startdate, enddate, totalamount,
-                            cdao.getCustomerByID(cid),
-                            udao.selectAnUserByConditions(uid, "", "", ""));
-                    
-                    CompanyBillProvider company = bdao.getCompanyById("ProviderID", uid);
-                    boolean mail = sendMailbillProvider.guiMailforCreatingBill(cdao.getCustomerByID(cid).getEmail(), bill.getBillID(), title, description, startdate, enddate, bill.getCreatedAt(), totalamount, company.getCompanyName(), cdao.getCustomerByID(cid));
-                    if(mail){
-                        error = "Add bill successfully and your customer is receive this email about bill";
-                        dao.add(bill);
-                    }else{
-                        error = "Add bill failed";
-                    }
-                        
+                    int status = Integer.parseInt(status_raw);
+                    bill.setTitle(title_raw);
+                    bill.setDescription(description_raw);
+                    bill.setStartDate(startdate);
+                    bill.setEndDate(enddate);
+                    bill.setTotal(total);
+                    bill.setStatus(status);
+                    dao.updateDetailBill(bill);
+                    error = "Update successfully";
+                    request.setAttribute("bill", bill);
                 }
             }
         }
-        List<Customer> listC = cdao.selectAllCustomer();
         request.setAttribute("error", error);
-        request.setAttribute("listC", listC);
-        request.getRequestDispatcher("createinvoice.jsp").forward(request, response);
+        request.getRequestDispatcher("updateinvoice.jsp").forward(request, response);
+
     }
 
-    public boolean isNumeric(String str) {
-    if (str == null || str.trim().isEmpty()) {
-        return false; // Chuỗi rỗng hoặc null
-    }
-    return str.matches("\\d+(,\\d+)?"); // Cho phép số nguyên hoặc số thập phân với dấu ,
-}
+   
 
     /**
      * Handles the HTTP <code>POST</code> method.
