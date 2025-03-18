@@ -1072,7 +1072,7 @@
                                                                             <td class="align-middle">
                                                                                 <div class="d-flex align-items-center">
                                                                                     <i class="fas fa-info-circle detail-icon detail-icon-ass me-2" 
-                                                                                       data-image="${salary.getImage()}"
+                                                                                       data-image="${pageContext.request.contextPath}/${salary.getImage()}"
                                                                                        data-description="${salary.getDescription()}"
                                                                                        data-value="${salary.getValue()}"
                                                                                        data-created-at="${salary.getCreatedAt()}"

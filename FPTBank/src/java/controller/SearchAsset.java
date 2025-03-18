@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.manager;
+package controller;
 
+import dal.AssetDAO;
+import dal.PdfDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,18 +13,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Asset;
+import model.Customer;
+import model.PdfLis;
 
 /**
  *
  * @author tiend
  */
-@WebServlet(name = "PdfFileViewServlet", urlPatterns = {"/viewPdf"})
-public class PdfFileViewServlet extends HttpServlet {
-
-    private static final String UPLOAD_DIR = "assetPDF";
+@WebServlet(name = "SearchAsset", urlPatterns = {"/searchAsset"})
+public class SearchAsset extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,13 +39,14 @@ public class PdfFileViewServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PdfFileViewServlet</title>");
+            out.println("<title>Servlet SearchAsset</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PdfFileViewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SearchAsset at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,31 +64,7 @@ public class PdfFileViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fileName = request.getParameter("fileName");      
-            String pathHost = getServletContext().getRealPath("");
-            String finalPath = pathHost.replace("build\\", "");
-            String uploadPath = finalPath + UPLOAD_DIR + File.separator + fileName.trim();
-            System.out.println("Upload Path: " + uploadPath);
-        File pdfFile = new File(uploadPath);
-
-        if (!pdfFile.exists()) {
-             response.getWriter().println("file khoong ton tai");
-            return;
-        }
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
-
-        try (FileInputStream inStream = new FileInputStream(pdfFile); OutputStream outStream = response.getOutputStream()) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inStream.read(buffer)) != -1) {
-                outStream.write(buffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Trả về lỗi 500
-            e.printStackTrace();
-        }
+        response.sendRedirect("myassetsalary");
     }
 
     /**
@@ -99,7 +78,46 @@ public class PdfFileViewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String name = request.getParameter("name");
+        String opStatus = request.getParameter("opStatus");
+        String opUse = request.getParameter("opUse");
+        String date = request.getParameter("opDate");
+        HttpSession session = request.getSession();
+        Customer account = (Customer) session.getAttribute("account");
+        AssetDAO dao = new AssetDAO();
+        try {
+            List<Asset> data = dao.getAssetsByCondition(account.getCustomerId(), name, opStatus, opUse, date);
+            if (data != null) {
+                descriptionSetup(data);
+                PdfDAO pdfDAO = new PdfDAO();
+                for (Asset asset : data) {
+                    List<PdfLis> listPDF = pdfDAO.getpdfByAssetId(asset.getId());
+                    asset.setListpdf(listPDF);
+                }
+            }
+            request.setAttribute("data", data);
+            request.getRequestDispatcher("myAsset-Salary.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void descriptionSetup(List<Asset> data) {
+        for (Asset asset : data) {
+            StringBuilder result = new StringBuilder();
+            String descript = asset.getDescription();
+            String regex = "\n";
+            if (!asset.getDescription().contains(regex)) {
+                continue;
+            }
+            String[] des = descript.split(regex);
+            for (String de : des) {
+                result.append(de.trim()).append("<br>-");
+            }
+            result.deleteCharAt(result.toString().length() - 1);
+            asset.setDescription(result.toString());
+        }
     }
 
     /**
