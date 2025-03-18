@@ -7,12 +7,15 @@ package model;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Objects;
+import java.time.LocalDate;
+import java.time.Period;
 
 /**
  *
  * @author ACER
  */
 public class Customer {
+
     private int CustomerId, CreditScore, RoleID;
     private String Username, Password, FullName, Image, Phone, Email, Address, CCCD;
     private Date DateOfBirth, CreatedAt;
@@ -40,7 +43,7 @@ public class Customer {
         this.Status = Status;
         this.Balance = Balance;
     }
-    
+
     public Customer(int customerId, int creditScore, BigDecimal Balance) {
         this.CustomerId = customerId;
         this.CreditScore = creditScore;
@@ -163,7 +166,6 @@ public class Customer {
         return Status;
     }
 
-
     public void setStatus(boolean Status) {
         this.Status = Status;
     }
@@ -192,5 +194,15 @@ public int hashCode() {
         return "Customer{" + "CustomerId=" + CustomerId + ", CreditScore=" + CreditScore + ", RoleID=" + RoleID + ", Username=" + Username + ", Password=" + Password + ", FullName=" + FullName + ", Image=" + Image + ", Phone=" + Phone + ", Email=" + Email + ", Address=" + Address + ", CCCD=" + CCCD + ", DateOfBirth=" + DateOfBirth + ", CreatedAt=" + CreatedAt + ", Gender=" + Gender + ", Status=" + Status + ", Balance=" + Balance + '}';
     }
 
-}
+    public int getAge() {
+        if (this.DateOfBirth == null) {
+            return -1; // Trả về -1 nếu ngày sinh chưa được đặt
+        }
 
+        LocalDate birthDate = this.DateOfBirth.toLocalDate(); // Chuyển đổi từ Date sang LocalDate
+        LocalDate currentDate = LocalDate.now(); // Lấy ngày hiện tại
+
+        return Period.between(birthDate, currentDate).getYears(); // Tính số năm (tuổi)
+    }
+
+}

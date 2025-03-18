@@ -176,6 +176,16 @@ public class SalaryDAO extends DBContext {
             pstmt.setString(1, status);
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
+    
+   public Salary getSalaryForCustomer(int CustomerID) {
+
+        String sql = "SELECT * FROM Salary WHERE (CustomerID=?) AND (Used=0) AND (Status='Approved')";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, CustomerID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
                 salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
