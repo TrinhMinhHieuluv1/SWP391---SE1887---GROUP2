@@ -509,7 +509,6 @@ public class InsuranceDAO extends DBContext {
         }
     }
 
-
         // Test sortByFeeRate
 //    System.out.println("Testing sortByFeeRate:");
 //    ArrayList<Insurance> feeRateList = insuranceDAO.sortByFeeRate(1, 10, true); // Sắp xếp giảm dần
