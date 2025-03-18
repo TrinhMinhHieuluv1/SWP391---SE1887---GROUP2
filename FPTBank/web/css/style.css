@@ -2686,8 +2686,8 @@ footer
   }
 }
 .footer .mil-footer-bottom {
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   border-top: solid 1px rgba(137, 141, 150, 0.2);
 }
 .footer.mil-footer-with-bg {
