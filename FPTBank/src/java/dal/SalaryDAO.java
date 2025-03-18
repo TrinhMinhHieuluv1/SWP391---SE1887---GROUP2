@@ -48,7 +48,7 @@ public class SalaryDAO extends DBContext{
         return null;
     }
       public boolean updateSalary(Salary salary) {
-        String sql = "UPDATE Salary SET CustomerId = ?, Image = ?, Tilte = ?, Description = ?, "
+        String sql = "UPDATE Salary SET CustomerId = ?, Image = ?, Title = ?, Description = ?, "
                 + "Value = ?,Comments = ?, ValuationAmount = ?, Used = ?, Status = ?,CreatedAt = ? WHERE SalaryId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, salary.getCustomer().getCustomerId());

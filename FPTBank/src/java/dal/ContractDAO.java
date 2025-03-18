@@ -7,6 +7,7 @@ import model.Contract;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import model.Insurance;
 
 public class ContractDAO extends DBContext {
@@ -38,7 +39,8 @@ public class ContractDAO extends DBContext {
                         rs.getBoolean("MonthlyPayment"),
                         rs.getString("MonthlyPaymentType"),
                         rs.getInt("StatusID"),
-                        rs.getDate("CreatedAt"));
+                        rs.getDate("CreatedAt"),
+                        rs.getFloat("InsuranceCoverage"));
                 contractList.add(contractToAdd);
             }
         } catch (SQLException e) {
@@ -68,7 +70,9 @@ public class ContractDAO extends DBContext {
                         rs.getBoolean("MonthlyPayment"),
                         rs.getString("MonthlyPaymentType"),
                         rs.getInt("StatusID"),
-                        rs.getDate("CreatedAt"));
+                        rs.getDate("CreatedAt"),
+                        rs.getFloat("InsuranceCoverage"));
+
                 return contractToAdd;
             }
         } catch (SQLException e) {
@@ -76,24 +80,52 @@ public class ContractDAO extends DBContext {
         return null;
     }
 
-    public List<Contract> selectContractListWithConditions(int CustomerID, String Type, Boolean MonthlyPayment, int StatusID) {
+    public List<Contract> selectContractListWithConditions(int CustomerID, String filterType, String filterMonthlyPayment, int filterStatus, String sortBy) {
         List<Contract> contractList = new ArrayList<>();
         String sql = "SELECT * FROM [Contract] WHERE (1=1)";
         if (CustomerID != 0) {
             sql = sql + " AND (CustomerID= " + CustomerID + ")";
         }
-        if (Type != null && !Type.isEmpty()) {
-            sql = sql + " AND (Type=" + Type + ")";
+        if (filterType != null && !filterType.isEmpty() && !filterType.equals("none")) {
+            sql = sql + " AND (Type=" + filterType + ")";
         }
-        if (MonthlyPayment != null) {
-            if (MonthlyPayment) {
-                sql = sql + " AND (MonthlyPayment=1)";
-            } else {
-                sql = sql + " AND (MonthlyPayment=0)";
+        if (filterMonthlyPayment != null && !filterMonthlyPayment.equals("none")) {
+            switch (filterMonthlyPayment) {
+                case "nomonthlypayment":
+                    sql = sql + " AND (MonthlyPayment=0)";
+                    break;
+                case "fixed":
+                    sql = sql + " AND (MonthlyPaymentType='Fixed')";
+                    break;
+                case "reducing":
+                    sql = sql + " AND (MonthlyPaymentType='Reducing Balance')";
+                    break;
             }
         }
-        if (StatusID != 0) {
-            sql = sql + " AND (StatusID=" + StatusID + ")";
+        if (filterStatus != 0) {
+            sql = sql + " AND (StatusID=" + filterStatus + ")";
+        }
+        if (sortBy != null && !sortBy.isEmpty()) {
+            switch (sortBy) {
+                case "AmountASC":
+                    sql = sql + " ORDER BY Amount ASC";
+                    break;
+                case "AmountDESC":
+                    sql = sql + " ORDER BY Amount DESC";
+                    break;
+                case "PeriodASC":
+                    sql = sql + " ORDER BY Period ASC";
+                    break;
+                case "PeriodDESC":
+                    sql = sql + " ORDER BY Period DESC";
+                    break;
+                case "CreatedAtAC":
+                    sql = sql + " ORDER BY CreatedAt ASC";
+                    break;
+                case "CreatedAtDESC":
+                    sql = sql + " ORDER BY CreatedAt DESC";
+                    break;
+            }
         }
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -114,7 +146,8 @@ public class ContractDAO extends DBContext {
                         rs.getBoolean("MonthlyPayment"),
                         rs.getString("MonthlyPaymentType"),
                         rs.getInt("StatusID"),
-                        rs.getDate("CreatedAt"));
+                        rs.getDate("CreatedAt"),
+                        rs.getFloat("InsuranceCoverage"));
                 contractList.add(contractToAdd);
             }
         } catch (SQLException e) {
@@ -122,35 +155,72 @@ public class ContractDAO extends DBContext {
         return contractList;
     }
 
-    public void addAContract(Contract contractToAdd) {
-        String sql = "INSERT INTO [Contract] (CustomerID, Amount, Period, LatePaymentRate, EarlyWithdrawRate, InterestRate, Type, Description, AssetID, SalaryID, InsuranceID, MonthlyPayment, MonthlyPaymentType, StatusID)"
-                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int addAContract(Contract contractToAdd) {
+        String sql = "INSERT INTO [Contract] (CustomerID, Amount, Period, LatePaymentRate, EarlyWithdrawRate, InterestRate, Type, Description, AssetID, SalaryID, InsuranceID, MonthlyPayment, MonthlyPaymentType, StatusID, InsuranceCoverage)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, contractToAdd.getCustomer().getCustomerId());
-            st.setBigDecimal(2, contractToAdd.getAmount());
-            st.setInt(3, contractToAdd.getPeriod());
-            st.setFloat(4, contractToAdd.getLatePaymentRate());
-            st.setFloat(5, contractToAdd.getEarlyWithdrawRate());
-            st.setFloat(6, contractToAdd.getInterestRate());
-            st.setString(7, contractToAdd.getType());
-            st.setString(8, contractToAdd.getDescription());
-            st.setInt(9, contractToAdd.getAsset().getId());
-            st.setInt(10, contractToAdd.getSalary().getId());
-            st.setInt(11, contractToAdd.getInsurance().getInsuranceID());
-            st.setBoolean(12, contractToAdd.isMonthlyPayment());
-            st.setString(13, contractToAdd.getMonthlyPaymentType());
-            st.setInt(14, contractToAdd.getStatusID());
-            st.executeUpdate();
+            if (contractToAdd.getType().equals("Secured Loan")) {
+                st.setInt(1, contractToAdd.getCustomer().getCustomerId());
+                st.setBigDecimal(2, contractToAdd.getAmount());
+                st.setInt(3, contractToAdd.getPeriod());
+                st.setFloat(4, contractToAdd.getLatePaymentRate());
+                st.setNull(5, Types.FLOAT);
+                st.setFloat(6, contractToAdd.getInterestRate());
+                st.setString(7, contractToAdd.getType());
+                st.setString(8, contractToAdd.getDescription());
+                st.setInt(9, contractToAdd.getAsset().getId());
+                st.setNull(10, Types.INTEGER);
+                st.setInt(11, contractToAdd.getInsurance().getInsuranceID());
+                st.setBoolean(12, contractToAdd.isMonthlyPayment());
+                if (contractToAdd.isMonthlyPayment()) {
+                    st.setString(13, contractToAdd.getMonthlyPaymentType());
+                } else {
+                    st.setNull(13, Types.NVARCHAR);
+                }
+                st.setInt(14, 1);
+                st.setFloat(15, contractToAdd.getInsuranceCoverage());
+                st.executeUpdate();
+            } else if (contractToAdd.getType().equals("Unsecured Loan")) {
+                st.setInt(1, contractToAdd.getCustomer().getCustomerId());
+                st.setBigDecimal(2, contractToAdd.getAmount());
+                st.setInt(3, contractToAdd.getPeriod());
+                st.setFloat(4, contractToAdd.getLatePaymentRate());
+                st.setNull(5, Types.FLOAT);
+                st.setFloat(6, contractToAdd.getInterestRate());
+                st.setString(7, contractToAdd.getType());
+                st.setString(8, contractToAdd.getDescription());
+                st.setNull(9, Types.INTEGER);
+                st.setInt(10, contractToAdd.getSalary().getId());
+                st.setInt(11, contractToAdd.getInsurance().getInsuranceID());
+                st.setBoolean(12, contractToAdd.isMonthlyPayment());
+                if (contractToAdd.isMonthlyPayment()) {
+                    st.setString(13, contractToAdd.getMonthlyPaymentType());
+                } else {
+                    st.setNull(13, Types.NVARCHAR);
+                }
+                st.setInt(14, 3);
+                st.setFloat(15, contractToAdd.getInsuranceCoverage());
+                st.executeUpdate();
+                try {
+                    ResultSet generatedKeys = st.getGeneratedKeys();
+                    if(generatedKeys.next()){
+                        return generatedKeys.getInt(1);
+                    }
+                } catch (SQLException e) {
+                }
+            }
         } catch (SQLException e) {
+
         }
+        return -1;
     }
 
     public void updateAContract(Contract ContractToUpdate) {
         String sql = "UPDATE [Contract] SET Amount=?, Period=?, "
                 + "LatePaymentRate=?, EarlyWithdrawRate=?, InterestRate=?, "
                 + "Description=?, AssetID=?, SalaryID=?, InsuranceID=?, "
-                + "MonthlyPayment=?, MonthlyPaymentType=?, StatusID=? WHERE ContractID=?";
+                + "MonthlyPayment=?, MonthlyPaymentType=?, StatusID=?, InsuranceCoverage=? WHERE ContractID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setBigDecimal(1, ContractToUpdate.getAmount());
@@ -165,7 +235,8 @@ public class ContractDAO extends DBContext {
             st.setBoolean(10, ContractToUpdate.isMonthlyPayment());
             st.setString(11, ContractToUpdate.getMonthlyPaymentType());
             st.setInt(12, ContractToUpdate.getStatusID());
-            st.setInt(13, ContractToUpdate.getContractID());
+            st.setFloat(13, ContractToUpdate.getInsuranceCoverage());
+            st.setInt(14, ContractToUpdate.getContractID());
             st.executeUpdate();
         } catch (SQLException e) {
         }
