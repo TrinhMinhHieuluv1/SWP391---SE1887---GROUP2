@@ -127,6 +127,7 @@ public class ContractDAO extends DBContext {
                     break;
             }
         }
+        System.out.println(sql);
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -241,5 +242,11 @@ public class ContractDAO extends DBContext {
         } catch (SQLException e) {
         }
     }
-
+    
+    public static void main(String[] args) {
+        ContractDAO ctdao = new ContractDAO();
+        for (Contract ct : ctdao.selectContractListWithConditions(2, null, null, 0, null)) {
+            System.out.println(ct.getContractID());
+        }
+    }
 }

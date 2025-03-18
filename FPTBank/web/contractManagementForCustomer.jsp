@@ -54,7 +54,7 @@
                 text-align: center;
             }
 
-            .news-table {
+            .contract-table {
                 width: 100%;
                 border-collapse: separate;
                 border-spacing: 0;
@@ -64,7 +64,7 @@
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             }
 
-            .news-table th {
+            .contract-table th {
                 background: #4caf50;
                 color: white;
                 font-weight: 600;
@@ -75,62 +75,62 @@
                 letter-spacing: 0.5px;
             }
 
-            .news-table th.center-align {
+            .contract-table th.center-align {
                 text-align: center;
             }
 
-            .news-table td {
+            .contract-table td {
                 padding: 15px;
                 border-bottom: 1px solid #e8f5e9;
                 color: #333;
                 font-size: 0.95em;
             }
 
-            .news-table td.center-align {
+            .contract-table td.center-align {
                 text-align: center;
             }
 
-            .news-table tr:last-child td {
+            .contract-table tr:last-child td {
                 border-bottom: none;
             }
 
-            .news-table tr:nth-child(even) {
+            .contract-table tr:nth-child(even) {
                 background-color: #f8fdf8;
             }
 
-            .news-table tr:hover td {
+            .contract-table tr:hover td {
                 background-color: #e8f5e9;
             }
 
-            .news-table th.contractid-column {
+            .contract-table th.contractid-column {
                 width: 60px;
             }
 
-            .news-table th.contracttype-column {
+            .contract-table th.contracttype-column {
                 width: 20%;
             }
 
-            .news-table th.contractamount-column {
+            .contract-table th.contractamount-column {
                 width: 35%;
             }
 
-            .news-table th.contractperiod-column {
+            .contract-table th.contractperiod-column {
                 width: 100px;
             }
 
-            .news-table th.contractinterestrate-column {
+            .contract-table th.contractinterestrate-column {
                 width: 120px;
             }
 
-            .news-table th.contractmonthlypayment-column {
+            .contract-table th.contractmonthlypayment-column {
                 width: 120px;
             }
 
-            .news-table th.contractcreatedat-column {
+            .contract-table th.contractcreatedat-column {
                 width: 80px;
             }
 
-            .news-table th.contractstatus-column {
+            .contract-table th.contractstatus-column {
                 width: 180px;
             }
 
@@ -489,7 +489,7 @@
                     padding: 15px;
                 }
 
-                .news-table {
+                .contract-table {
                     display: block;
                     overflow-x: auto;
                 }
@@ -580,7 +580,7 @@
             <button class="show-all-news-btn" onclick="window.location.href = '/timibank/contract-management-for-customer'">Show All News</button>
 
             <!-- Contract Table -->
-            <table class="news-table">
+            <table class="contract-table">
                 <thead>
                     <tr>
                         <th class="contractid-column center-align">ID</th>
@@ -677,7 +677,7 @@
         </div>
 
         <!-- News Modal -->
-        <div id="newsModal" class="modal">
+<!--        <div id="newsModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title" id="modalTitle"></h2>
@@ -690,7 +690,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <script src="./js/scripts.js"></script>
 
@@ -712,96 +712,6 @@
         <!-- plax js -->
         <script src="/js/main.js"></script>
 
-        <script>
-                        function changePage(page) {
-                            const form = document.querySelector('.filter-controls');
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = 'page';
-                            input.value = page;
-                            form.appendChild(input);
-                            form.submit();
-                        }
-
-                        function showNewsModal(title, description, image) {
-                            const modal = document.getElementById('newsModal');
-                            const modalTitle = document.getElementById('modalTitle');
-                            const modalDescription = document.getElementById('modalDescription');
-                            const modalImage = document.getElementById('modalImage');
-
-                            modalTitle.innerHTML = title;
-                            modalDescription.innerHTML = description;
-                            modalImage.src = image;
-
-                            modal.style.display = 'block';
-                        }
-
-                        function closeNewsModal() {
-                            const modal = document.getElementById('newsModal');
-                            modal.style.display = 'none';
-                        }
-
-                        // Close modal when clicking outside of it
-                        window.onclick = function (event) {
-                            const modal = document.getElementById('newsModal');
-                            if (event.target == modal) {
-                                modal.style.display = 'none';
-                            }
-                        };
-
-                        // Toast message animation
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const toast = document.getElementById('toastMessage');
-                            if (toast) {
-                                // Show toast
-                                setTimeout(() => {
-                                    toast.classList.add('show');
-                                }, 100);
-
-                                // Hide toast after 3 seconds
-                                setTimeout(() => {
-                                    toast.classList.remove('show');
-                                    // Remove toast from DOM after animation
-                                    setTimeout(() => {
-                                        toast.remove();
-                                    }, 500);
-                                }, 3000);
-                            }
-                        });
-
-                        function updateURLParameter(param, value) {
-                            let url = new URL(window.location.href);
-                            let params = new URLSearchParams(url.search);
-
-                            params.set(param, value);
-                            params.delete('page');
-
-                            window.location.href = 'contract-management-for-customer?' + params.toString();
-                        }
-
-                        function changeStatus(ContractID, element) {
-                            $.ajax({
-                                url: 'update-news',
-                                type: 'GET',
-                                data: {
-                                    NewsID: NewsID,
-                                    changeStatus: "true"
-                                }
-
-                            });
-                            const status = document.getElementById("status-" + NewsID);
-                            if (status.textContent.trim() === 'Active') {
-                                status.textContent = 'Inactive';
-                                element.textContent = 'Activate';
-                                element.classList.remove('inactivate-btn');
-                                element.classList.add('activate-btn');
-                            } else {
-                                status.textContent = 'Active';
-                                element.textContent = 'Inactivate';
-                                element.classList.remove('activate-btn');
-                                element.classList.add('inactivate-btn');
-                            }
-                        }
-        </script>
+        
     </body>
 </html>
