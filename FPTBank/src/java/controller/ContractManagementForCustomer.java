@@ -83,7 +83,22 @@ public class ContractManagementForCustomer extends HttpServlet {
             System.out.println(e);
         }
         String filterType = request.getParameter("filterType");
-        
+        if (filterType != null && !filterType.isEmpty()) {
+            switch (filterType) {
+                case "secured": {
+                    filterType = "Secured Loan";
+                    break;
+                }
+                case "unsecured": {
+                    filterType = "Unsecured Loan";
+                    break;
+                }
+                case "saving": {
+                    filterType = "Saving";
+                    break;
+                }
+            }
+        }
         String filterMonthlyPayment = request.getParameter("filterMonthlyPayment");
 
         // Get news list by conditions
