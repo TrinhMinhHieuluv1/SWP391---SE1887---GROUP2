@@ -67,7 +67,6 @@ public class vnpayRefund extends HttpServlet {
                 CompanyBillProviderDAO cdaoo = new CompanyBillProviderDAO();
                 CompanyBillProvider company = cdaoo.getCompanyById("ProviderID", bill.getProvider().getUserID());
                 if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
-                    System.out.println("Dit con cac");
                     bill.setStatusOfBill(0);
                     bill.setPaymentDate(paymentTimestamp);
                     boolean mail = sendMailbillProvider.guiMailforPaying(customer.getEmail(), billID, bill.getTitle(), bill.getDescription(), bill.getStartDate(), bill.getEndDate(), bill.getCreatedAt(), bill.getTotal(), company.getCompanyName(), customer, paymentTimestamp);
