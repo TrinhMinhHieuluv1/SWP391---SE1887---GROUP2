@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import model.FAQ;
@@ -60,16 +61,34 @@ public class FAQmanagement extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    private List<Integer> calculatePageSize() {
+                 
+     FAQDAO faqDAO = new FAQDAO();
+
+        List<Integer> listOfPageSize = new ArrayList<>();
+        int totalFaq = faqDAO.getAllFAQs().size();
+
+        double[] percentages = {0.1, 0.3, 0.5, 0.7, 1.0}; // 10%,30%,50%,70%,100% of total users
+        for (double percentage : percentages) {
+            listOfPageSize.add((int) Math.ceil(totalFaq * percentage));
+        }
+
+        return listOfPageSize;
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       request.setCharacterEncoding("UTF-8");
-       response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        List<Integer> listOfPageSize = calculatePageSize();
+
+        
         HttpSession session = request.getSession();    
         FAQDAO dao = new FAQDAO();
         List<FAQ> list = dao.getAllFAQs();
         int page = 1; // trang đầu tiên
-        int pageSize = 10; // 1 trang có 10 users
+        int pageSize = listOfPageSize.get(0); // gán mặc định trang 1 là 10%
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
@@ -80,9 +99,12 @@ public class FAQmanagement extends HttpServlet {
             pageSize = Integer.parseInt(entries_raw);
         }
         String keyword = request.getParameter("searchKey");
-        if (keyword != null && !keyword.isEmpty()) {
+        
+        
+        if (request.getParameter("searchKey") != null && !request.getParameter("searchKey").isEmpty()) {
             request.getSession().setAttribute("entries", pageSize);
-            response.sendRedirect("faq-search-question?key=" + keyword);
+            String encodedKeyword = URLEncoder.encode(request.getParameter("searchKey"), "UTF-8");
+            response.sendRedirect("faq-search-question?key=" + encodedKeyword);
             return;
         }
         
@@ -100,6 +122,8 @@ public class FAQmanagement extends HttpServlet {
 
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
         // set phân trang
+                request.getSession().setAttribute("listOfPageSize", listOfPageSize);
+
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
           request.setAttribute("listFAQ", listFAQ);
@@ -121,10 +145,5 @@ public class FAQmanagement extends HttpServlet {
             throws ServletException, IOException {
 
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

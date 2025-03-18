@@ -182,7 +182,6 @@
                     <option value="2" ${user.getRoleID() == 2 ? 'selected' : ''}>Seller</option>
                     <option value="3" ${user.getRoleID() == 3 ? 'selected' : ''}>Manager</option>
                     <option value="4" ${user.getRoleID() == 4 ? 'selected' : ''}>Provider Insurance</option>
-                    <option value="5" ${user.getRoleID() == 5 ? 'selected' : ''}>Customer</option>
                 </select>
             </div>
 

@@ -361,6 +361,15 @@ public class AssetDAO extends DBContext {
             PreparedStatement pstmt = connection.prepareStatement(query);
 
             ResultSet resultSet = pstmt.executeQuery();
+    public List<Asset> getAssetListForCustomer(int CustomerID) {
+        List<Asset> assets = new ArrayList<>();
+
+        try {
+            String sql = "SELECT  * FROM Asset WHERE (CustomerID=?) AND (Used=0) AND (Status='Approved')";
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, CustomerID);
+            ResultSet resultSet = st.executeQuery();
+
             while (resultSet.next()) {
                 Asset asset = new Asset();
                 asset.setId(resultSet.getInt("AssetId"));
@@ -379,22 +388,8 @@ public class AssetDAO extends DBContext {
             return assets;
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
-        return null;
 
+        return null;
     }
-//    public static void main(String[] args) {
-//        AssetDAO dao  = new AssetDAO();
-//        List<Asset> list;
-//        try {
-//            list = dao.getAssetsByCondition(3, "", "", "", "asc");
-//            for (Asset asset : list) {
-//                System.out.println(asset.toString());
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AssetDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//    }
 }

@@ -5,7 +5,7 @@
             <img src="assets/images/logo-icon.png" class="logo-img" alt="">
         </div>
         <div class="logo-name flex-grow-1">
-            <h5 class="mb-0">TIMI BANK</h5>
+            <h5 class="mb-0">BANK</h5>
         </div>
         <div class="sidebar-close ">
             <span class="material-symbols-outlined">close</span>
@@ -46,19 +46,19 @@
                               </ul>
                             </li>-->
             <li class="menu-label">UI Elements</li>
-            <!--                <li>
-                              <a href="javascript:;" class="has-arrow">
-                                <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
-                                </div>
-                                <div class="menu-title">Widgets</div>
-                              </a>
-                              <ul>
-                                <li> <a href="widget-data.html"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
-                                </li>
-                                <li> <a href="widget-static.html"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
-                                </li>
-                              </ul>
-                            </li>-->
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
+                    </div>
+                    <div class="menu-title">Widgets</div>
+                </a>
+                <ul>
+                    <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
+                    </li>
+                    <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
+                    </li>
+                </ul>
+            </li>
 
 
             <li>
@@ -74,7 +74,8 @@
                                         </li>-->
 
 
-                    <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Users</a>
+                    <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Staffs</a>
+                    <li> <a href="manage_customers"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
 
 
                         <!--                    </li>
@@ -237,112 +238,116 @@
                             </li>-->
 
 
-            <!--                <li>
-                              <a href="user-profile.html">
-                                <div class="parent-icon"><span class="material-symbols-outlined">account_circle</span>
-                                </div>
-                                <div class="menu-title">User Profile</div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="timeline.html">
-                                <div class="parent-icon"><span class="material-symbols-outlined">hotel_class</span>
-                                </div>
-                                <div class="menu-title">Timeline</div>
-                              </a>
-                            </li>
-                            <li>
-                              <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon"><span class="material-symbols-outlined">warning</span>
-                                </div>
-                                <div class="menu-title">Errors</div>
-                              </a>
-                              <ul>
-                                <li> <a href="pages-error-403.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>403 Error</a>
-                                </li>
-                                <li> <a href="pages-error-404.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>404 Error</a>
-                                </li>
-                                <li> <a href="pages-error-500.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>500 Error</a>
-                                </li>
-                                <li> <a href="pages-coming-soon.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Coming Soon</a>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              <a href="faq.html">
-                                <div class="parent-icon"><span class="material-symbols-outlined">call</span>
-                                </div>
-                                <div class="menu-title">FAQ</div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="pricing-table.html">
-                                <div class="parent-icon"><span class="material-symbols-outlined">currency_bitcoin</span>
-                                </div>
-                                <div class="menu-title">Pricing</div>
-                              </a>
-                            </li>
-                            <li class="menu-label">Charts & Maps</li>
-                            <li>
-                              <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
-                                </div>
-                                <div class="menu-title">Charts</div>
-                              </a>
-                              <ul>
-                                <li> <a href="charts-apex.html"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
-                                </li>
-                                <li> <a href="charts-chartjs.html"><span class="material-symbols-outlined">arrow_right</span>Chartjs</a>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon"><span class="material-symbols-outlined">distance</span>
-                                </div>
-                                <div class="menu-title">Maps</div>
-                              </a>
-                              <ul>
-                                <li> <a href="map-google-maps.html"><span class="material-symbols-outlined">arrow_right</span>Google Maps</a>
-                                </li>
-                                <li> <a href="map-vector-maps.html"><span class="material-symbols-outlined">arrow_right</span>Vector Maps</a>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="menu-label">Others</li>
-                            <li>
-                              <a class="has-arrow" href="javascript:;">
-                                <div class="parent-icon"><span class="material-symbols-outlined">toc</span>
-                                </div>
-                                <div class="menu-title">Menu Levels</div>
-                              </a>
-                              <ul>
-                                <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level One</a>
-                                  <ul>
-                                    <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Two</a>
-                                      <ul>
-                                        <li> <a href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Three</a>
-                                        </li>
-                                      </ul>
-                                    </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              <a href="javascript:;">
-                                <div class="parent-icon"><span class="material-symbols-outlined">receipt_long</span>
-                                </div>
-                                <div class="menu-title">Documentation</div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">
-                                <div class="parent-icon"><span class="material-symbols-outlined">shop</span>
-                                </div>
-                                <div class="menu-title">Support</div>
-                              </a>
-                            </li>-->
+            <!--                                    <li>
+                                                  <a href="user-profile.html">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">account_circle</span>
+                                                    </div>
+                                                    <div class="menu-title">User Profile</div>
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href="timeline.html">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">hotel_class</span>
+                                                    </div>
+                                                    <div class="menu-title">Timeline</div>
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a class="has-arrow" href="javascript:;">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">warning</span>
+                                                    </div>
+                                                    <div class="menu-title">Errors</div>
+                                                  </a>
+                                                  <ul>
+                                                    <li> <a href="pages-error-403.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>403 Error</a>
+                                                    </li>
+                                                    <li> <a href="pages-error-404.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>404 Error</a>
+                                                    </li>
+                                                    <li> <a href="pages-error-500.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>500 Error</a>
+                                                    </li>
+                                                    <li> <a href="pages-coming-soon.html" target="_blank"><span class="material-symbols-outlined">arrow_right</span>Coming Soon</a>
+                                                    </li>
+                                                  </ul>
+                                                </li>
+                                                <li>
+                                                  <a href="faq.html">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">call</span>
+                                                    </div>
+                                                    <div class="menu-title">FAQ</div>
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href="pricing-table.html">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">currency_bitcoin</span>
+                                                    </div>
+                                                    <div class="menu-title">Pricing</div>
+                                                  </a>
+                                                </li>-->
+
+
+            <li class="menu-label">Charts & Maps</li>
+            <li>
+                <a class="has-arrow" href="javascript:;">
+                    <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
+                    </div>
+                    <div class="menu-title">Charts</div>
+                </a>
+                <ul>
+                    <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
+                    </li>
+                    <li> <a href="charts-chartjs.jsp"><span class="material-symbols-outlined">arrow_right</span>Chartjs</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <!--                                    <li>
+                                                  <a class="has-arrow" href="javascript:;">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">distance</span>
+                                                    </div>
+                                                    <div class="menu-title">Maps</div>
+                                                  </a>
+                                                  <ul>
+                                                    <li> <a href="map-google-maps.html"><span class="material-symbols-outlined">arrow_right</span>Google Maps</a>
+                                                    </li>
+                                                    <li> <a href="map-vector-maps.html"><span class="material-symbols-outlined">arrow_right</span>Vector Maps</a>
+                                                    </li>
+                                                  </ul>
+                                                </li>
+                                                <li class="menu-label">Others</li>
+                                                <li>
+                                                  <a class="has-arrow" href="javascript:;">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">toc</span>
+                                                    </div>
+                                                    <div class="menu-title">Menu Levels</div>
+                                                  </a>
+                                                  <ul>
+                                                    <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level One</a>
+                                                      <ul>
+                                                        <li> <a class="has-arrow" href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Two</a>
+                                                          <ul>
+                                                            <li> <a href="javascript:;"><span class="material-symbols-outlined">arrow_right</span>Level Three</a>
+                                                            </li>
+                                                          </ul>
+                                                        </li>
+                                                      </ul>
+                                                    </li>
+                                                  </ul>
+                                                </li>
+                                                <li>
+                                                  <a href="javascript:;">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">receipt_long</span>
+                                                    </div>
+                                                    <div class="menu-title">Documentation</div>
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href="javascript:;">
+                                                    <div class="parent-icon"><span class="material-symbols-outlined">shop</span>
+                                                    </div>
+                                                    <div class="menu-title">Support</div>
+                                                  </a>
+                                                </li>-->
         </ul>
         <!--end navigation-->
 
@@ -393,3 +398,4 @@
         </ul>
     </div>
 </aside>
+<!--end sidebar-->
