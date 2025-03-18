@@ -1,269 +1,250 @@
-$(function() {
+$(function () {
 
 
-    // chart1
-    var ctx = document.getElementById('chart1').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-            datasets: [{
-                label: 'Google',
-                data: [6, 20, 14, 12, 17, 8, 10],
-                backgroundColor: [
-                    '#0d6efd'
-                ],
-                lineTension: 0.4,
-                borderColor: [
-                    '#0d6efd'
-                ],
-                borderWidth: 3
+  var ctx = document.getElementById('chart21').getContext('2d');
+      var  myChart6 = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Chart of CoverRateRate'],
+                datasets: [
+                    {
+                        label: 'Very Low (<30%)',
+                        data: [data21[0]],
+                        backgroundColor: '#007BFF',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'Low (30%-50%)',
+                        data: [data21[1]],
+                        backgroundColor: '#DC3545',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'Medium-Low (50%-60%)',
+                        data: [data21[2]],
+                        backgroundColor: '#FD7E14',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'Medium (60%-70%)',
+                        data: [data21[3]],
+                        backgroundColor: '#FFC107',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'High (70%-80%)',
+                        data: [data21[4]],
+                        backgroundColor: '#28A745',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'Very High (>80%)',
+                        data: [data21[5]],
+                        backgroundColor: '#6F42C1',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    }
+                ]
             },
-            {
-                label: 'Facebook',
-                data: [5, 30, 16, 23, 8, 14, 11],
-                backgroundColor: [
-                    '#6f42c1'
-                ],
-                tension: 0.4,
-                borderColor: [
-                    '#6f42c1'
-                ],
-                borderWidth: 3
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            plugins: {
-				legend: {
-					position:'bottom',
-					display: true,
-				}
-			},
-            scales: {
-                y: {
-                    beginAtZero: true
+            options: {
+                maintainAspectRatio: false,
+                barPercentage: 0.4,
+                categoryPercentage: 0.9,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Insurances',
+                            font: {
+                                family: 'Helvetica, Arial, sans-serif',
+                                size: 15,
+                                weight: 'bold'
+                            },
+                            color: '#C0C0C0'
+                        },
+                        beginAtZero: true,
+                        max: totalCoverate,
+                        ticks: {
+                            stepSize: 3,
+                        }
+                    }
                 }
             }
-        }
-    });
-
-
-    
-    // chart2
-    var ctx = document.getElementById('chart2').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-            datasets: [{
-                label: 'Google',
-                data: [18, 25, 14, 12, 17, 8, 10],
-                backgroundColor: [
-                    '#0d6efd'
-                ],
-                lineTension: 0,
-                borderColor: [
-                    '#0d6efd'
-                ],
-                borderWidth: 3
+        });
+  
+ var ctx = document.getElementById('chart2').getContext('2d');
+      var  myChart2 = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Chart of FeeRate'],
+                datasets: [
+                    {
+                        label: 'Low Fee (<5%)',
+                        data: [data2[0]],
+                        backgroundColor: '#dc3545',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'Medium Fee (5%-10%)',
+                        data: [data2[1]],
+                        backgroundColor: '#fd7e14',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'High Fee (10%-15%)',
+                        data: [data2[2]],
+                        backgroundColor: '#ffc107',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    },
+                    {
+                        label: 'Very High Fee (>15%)',
+                        data: [data2[3]],
+                        backgroundColor: '#198754',
+                        borderColor: '#000000',
+                        borderWidth: 1.3
+                    }
+                ]
             },
-            {
-                label: 'Facebook',
-                data: [12, 30, 16, 23, 8, 14, 11],
-                backgroundColor: [
-                    '#dc3545'
-                ],
-                tension: 0,
-                borderColor: [
-                    '#dc3545'
-                ],
-                borderWidth: 3
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            barPercentage: 0.6,
-            categoryPercentage: 0.5,
-            plugins: {
-				legend: {
-					position:'bottom',
-					display: true,
-				}
-			},
-            scales: {
-                y: {
-                    beginAtZero: true
+            options: {
+                maintainAspectRatio: false,
+                barPercentage: 0.4,
+                categoryPercentage: 0.9,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Insurances',
+                            font: {
+                                family: 'Helvetica, Arial, sans-serif',
+                                size: 15,
+                                weight: 'bold'
+                            },
+                            color: '#C0C0C0'
+                        },
+                        beginAtZero: true,
+                        max: totalFeerate,
+                        ticks: {
+                            stepSize: 3,
+                        }
+                    }
                 }
             }
-        }
-    });
+        });
 
-
-     // chart3
-     var ctx = document.getElementById('chart3').getContext('2d');
-     var myChart = new Chart(ctx, {
-         type: 'pie',
-         data: {
-             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-             datasets: [{
-                 data: [12, 19, 3, 5, 2, 3],
-                 backgroundColor: [
-                     '#0d6efd',
-                     '#6f42c1',
-                     '#d63384',
-                     '#fd7e14',
-                     '#20c997',
-                     '#0dcaf0'
-                 ],
-                 borderWidth: 1.5
-             }]
-         },
-         options: {
-            maintainAspectRatio: false,
-            plugins: {
-				legend: {
-					position:'bottom',
-					display: true,
-				}
-			},
-            
-         }
-     });
-    
-
-
-      // chart4
-      var ctx = document.getElementById('chart4').getContext('2d');
-      var myChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-              datasets: [{
-                  data: [12, 19, 3, 5, 2, 3],
-                  backgroundColor: [
-                     '#0d6efd',
-                     '#6f42c1',
-                     '#d63384',
-                     '#fd7e14',
-                     '#20c997',
-                     '#0dcaf0'
-                ],
-                  borderWidth: 1
-              }]
-          },
-          options: {
-             maintainAspectRatio: false,
-             plugins: {
-				legend: {
-					position:'bottom',
-					display: true,
-				}
-			},
-             
-          }
-      });
-
-
-
-      
-      // chart5
-      var ctx = document.getElementById('chart5').getContext('2d');
-      var myChart = new Chart(ctx, {
-          type: 'radar',
-          data: {
-            labels: [
-                'Eating',
-                'Drinking',
-                'Sleeping',
-                'Designing',
-                'Coding',
-                'Cycling',
-                'Running'
-              ],
-              datasets: [{
-                label: 'My First Dataset',
-                data: [65, 59, 90, 81, 56, 55, 40],
-                fill: true,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                pointBackgroundColor: 'rgb(255, 99, 132)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(255, 99, 132)'
-              }, {
-                label: 'My Second Dataset',
-                data: [28, 48, 40, 19, 96, 27, 100],
-                fill: true,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                pointBackgroundColor: 'rgb(54, 162, 235)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgb(54, 162, 235)'
-              }]
-          },
-          options: {
-            maintainAspectRatio: false,
-            plugins: {
-				legend: {
-					position:'bottom',
-					display: true,
-				}
-			},
-            elements: {
-              line: {
-                borderWidth: 3
-              }
+   // chart3 (age)
+        var ctx = document.getElementById('chart3').getContext('2d');
+       var  myChart3 = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels3,
+                datasets: [{
+                        data: data3,
+                        backgroundColor: [
+                            '#008000',
+                            '#FF0000'
+                           
+                        ],
+                        borderWidth: 1.5
+                    }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                let value = tooltipItem.raw.toFixed(2); // Làm tròn 2 số thập phân
+                                return tooltipItem.label + ": " + value + "%";
+                            }
+                        }
+                    }
+                }
             }
-          },
-      });
+        });
 
 
-
-      
-      // chart6
-      var ctx = document.getElementById('chart6').getContext('2d');
-      var myChart = new Chart(ctx, {
-          type: 'polarArea',
-          data: {
-            labels: [
-                'Red',
-                'Purple',
-                'Yellow',
-                'Grey',
-                'Green'
-              ],
-              datasets: [{
-                label: 'My First Dataset',
-                data: [11, 16, 7, 3, 14],
-                backgroundColor: [
-                     '#0d6efd',
-                     '#6f42c1',
-                     '#d63384',
-                     '#fd7e14',
-                     '#20c997',
-                     '#0dcaf0'
-                ],
-              }]
-          },
-          options: {
-            maintainAspectRatio: false,
-            plugins: {
-				legend: {
-					position:'bottom',
-					display: true,
-				}
-			},
-            elements: {
-              line: {
-                borderWidth: 3
-              }
+    // chart5
+    var ctx = document.getElementById('chart5').getContext('2d');
+       var  myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels5,
+                datasets: [{
+                        data: data5,
+                        backgroundColor: [
+                            '#FFFF00',
+                            '#0000FF'
+                           
+                        ],
+                        borderWidth: 1.5
+                    }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                let value = tooltipItem.raw.toFixed(2); // Làm tròn 2 số thập phân
+                                return tooltipItem.label + ": " + value + "%";
+                            }
+                        }
+                    }
+                }
             }
-          },
-      });
+        });
+
+
+
 
 
     
-    
+
+
+
+
 });
