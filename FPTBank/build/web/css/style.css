@@ -104,7 +104,7 @@ h6,
 .h5,
 .h6 {
   font-weight: 600;
-  font-family: "Montserrat-ExtraLight";
+  /*    font-family: $font-1;*/
   line-height: 1.3;
   letter-spacing: -0.04em;
 }
@@ -438,7 +438,7 @@ buttons
   white-space: nowrap;
   background-color: green;
   border-radius: 10px;
-  font-family: "Montserrat-ExtraLight";
+  /*    font-family: $font-1;*/
   font-weight: 600;
   color: rgb(255, 255, 255);
   transition: 0.2s cubic-bezier(0, 0, 0.3642, 1);
@@ -980,7 +980,7 @@ top menu
   height: 48px;
   padding: 0 15px;
   color: rgb(137, 141, 150);
-  font-family: "Montserrat-ExtraLight";
+  /*                font-family: $font-1;*/
   font-weight: 600;
   letter-spacing: -2%;
   z-index: 1;
@@ -2686,8 +2686,8 @@ footer
   }
 }
 .footer .mil-footer-bottom {
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   border-top: solid 1px rgba(137, 141, 150, 0.2);
 }
 .footer.mil-footer-with-bg {

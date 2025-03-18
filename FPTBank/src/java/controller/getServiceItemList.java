@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 import model.ServiceItem;
 
@@ -62,6 +63,7 @@ public class getServiceItemList extends HttpServlet {
         Amount_raw = Amount_raw.replace(".", "");
         String Type = request.getParameter("Type");
         BigDecimal Amount = BigDecimal.ZERO;
+        DecimalFormat df = new DecimalFormat("#,###");
         try {
             Amount = BigDecimal.valueOf(Long.parseLong(Amount_raw));
         } catch (NumberFormatException e) {
@@ -78,16 +80,23 @@ public class getServiceItemList extends HttpServlet {
 "                            <th></th>\n" +
 "                            <th>Service Item Name</th>\n" +
 "                            <th>Max Amount</th>\n" +
-"                            <th>Max Period</th>\n" +
+"                            <th>Max Period (months)</th>\n" +
 "                            <th>Min Credit Score</th>\n" +
-"                            <th>Late Payment Rate</th>\n" +
-"                            <th>Interest Rate</th>\n" +
+"                            <th>Late Payment Rate (%)</th>\n" +
+"                            <th>Interest Rate (%)</th>\n" +
 "                        </tr>");
             for (ServiceItem serviceItem : serviceItemList) {
                 response.getWriter().println("<tr>\n"
-                        + "<th><input name=\"choosenServiceItem\" type=\"radio\" value=\"" + serviceItem.getServiceItemID() + "\"></th>\n"
+                        + "<th><input name=\"choosenServiceItem\" type=\"radio\" "
+                                + "value=\"" + serviceItem.getServiceItemID() 
+                                + "-" + serviceItem.getServiceItemName() 
+                                + "-" + df.format(serviceItem.getMaxAmount())
+                                + "-" + serviceItem.getMaxPeriod() 
+                                + "-" + serviceItem.getMinCreditScore() 
+                                + "-" + serviceItem.getLatePaymentRate() 
+                                + "-" + serviceItem.getInterestRate() + "\"></th>\n"
                         + "<th>" + serviceItem.getServiceItemName() + "</th>\n"
-                        + "<th>" + serviceItem.getMaxAmount() + "</th>\n"
+                        + "<th>" + df.format(serviceItem.getMaxAmount()) + "</th>\n"
                         + "<th>" + serviceItem.getMaxPeriod() + "</th>\n"
                         + "<th>" + serviceItem.getMinCreditScore() + "</th>\n"
                         + "<th>" + serviceItem.getLatePaymentRate() + "</th>\n"

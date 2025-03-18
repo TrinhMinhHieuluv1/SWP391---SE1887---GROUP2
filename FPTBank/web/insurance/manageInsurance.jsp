@@ -3,6 +3,7 @@
     Created on : Jan 13, 2025, 3:18:30 AM
     Author     : HP
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -24,6 +25,9 @@
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="assets/css/icons.css">
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/images/logo-icon.png" type="image/x-icon">
+        <link rel="icon" href="assets/images/logo-icon.png" type="image/x-icon">
 
 
         <link rel="stylesheet" href="../css/style.css" type="text/css" media="all">
@@ -37,10 +41,18 @@
         <link href="assets/css/shadow-theme.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
+            .form__error{
+                padding: 10px 0 ;
+                font-size: 13px;
+                color: red;
+            }
             .error {
                 color: red;
             }
-
+            .form__text-input{
+                display: flex;
+                width: 100%;
+            }
             .form-group__input-wrap {
                 display: flex;
 
@@ -358,7 +370,6 @@
 
 
 
-
         <script>
 
             function changePage(page) {
@@ -387,7 +398,7 @@
                         setTimeout(() => {
                             toast.remove();
                         }, 500);
-                    }, 3000);
+                    }, 6000);
                 }
             });
 
@@ -813,8 +824,6 @@
             </nav>
         </header>
         <!--end header-->
-
-
         <!--start sidebar-->
         <aside class="sidebar-wrapper">
             <div class="sidebar-header">
@@ -822,7 +831,7 @@
                     <img src="assets/images/logo-icon.png" class="logo-img" alt="">
                 </div>
                 <div class="logo-name flex-grow-1">
-                    <h5 class="mb-0">Roksyn</h5>
+                    <h5 class="mb-0">Bank</h5>
                 </div>
                 <div class="sidebar-close">
                     <span class="material-symbols-outlined">close</span>
@@ -832,39 +841,47 @@
 
                 <ul class="metismenu" id="menu">
                     <li>
-                        <a href="home.jsp">
+                        <a href="/timibank/home.jsp">
                             <div class="parent-icon"><span class="material-symbols-outlined">home</span>
                             </div>
-                            <div class="menu-title">Dashboard</div>
+                            <div class="menu-title">Back to home</div>
                         </a>
                     </li>
 
 
 
                     <li>
-                        <a href="listAsset" class="has-arrow">
+                        <a href="#" class="has-arrow">
                             <div class="parent-icon"><span class="material-symbols-outlined">shopping_cart</span>
                             </div>
                             <div class="menu-title">Management</div>
                         </a>
                         <ul>
-                            <!--                    <li> <a href="ecommerce-add-product.html"><span class="material-symbols-outlined">arrow_right</span>Add Product</a>
-                                                </li>
-                                                <li> <a href="ecommerce-products.html"><span class="material-symbols-outlined">arrow_right</span>Products</a>
-                                                </li>-->
+
+
+                            <li> <a href="insurancedetail"><span class="material-symbols-outlined">arrow_right</span>Provider Information</a>
+                            </li>
+                            <li> <a href="showinsurance"><span class="material-symbols-outlined">arrow_right</span>Manage Insurance</a>
+                            </li>
+
+                        </ul>
+                    </li> 
+
+
+                    <li class="menu-label">Charts & Maps</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:;">
+                            <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
+                            </div>
+                            <div class="menu-title">Charts</div>
+                        </a>
+                        <ul>
+
+                            <li> <a href="getdatainsurance"><span class="material-symbols-outlined">arrow_right</span>Statistic of Insurance</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li> <a href="listAsset"><span class="material-symbols-outlined">arrow_right</span>Asset</a>
-                    </li>
-                    <li> <a href="listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
-                    </li>
-                    <!--                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
-                                        </li>
-                                        <li> <a href="ecommerce-orders.html"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
-                                        </li>
-                                        <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Order Details</a>
-                                        </li>-->
-                </ul>
-                </li> 
+
                 </ul>
                 <!--end navigation-->
 
@@ -904,7 +921,7 @@
                     <li>
                         <div class="dropdown-divider mb-0"></div>
                     </li>
-                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
+                    <li><a class="dropdown-item" href="/timibank/logout"><span class="material-symbols-outlined me-2">
                                 logout
                             </span><span>Logout</span></a>
                     </li>
@@ -912,7 +929,6 @@
             </div>
         </aside>
         <!--end sidebar-->
-
 
         <!--start main content-->
         <main class="page-content">
@@ -1025,7 +1041,6 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Insurance ID</th>
-                                            <th>customer</th>
                                             <th>Insurance Name</th>
                                             <th>Type</th>
                                             <th>Fee rate</th>
@@ -1043,11 +1058,7 @@
                                                     ${sal.getInsuranceID()}
 
                                                 </td>
-                                                <td>
 
-                                                    ${sal.getProviderID()}  
-
-                                                </td>
                                                 <td>
                                                     ${sal.getInsuranceName()}                   
                                                 </td>
@@ -1055,10 +1066,10 @@
                                                 <td>  
                                                     ${sal.getType()}
                                                 </td>
-                                                <td>${sal.getFeeRate()}</td>
-                                                <td>${sal.getCoverageRate()}</td>
+                                                <td>${sal.getFeeRate()} %</td>
+                                                <td>${sal.getCoverageRate()} %</td>
 
-                                                <td>${sal.getMaxAmountOfLoan()}</td>
+                                                <td><fmt:formatNumber value="${sal.getMaxAmountOfLoan()}" pattern="#,###" /> VND</td>
 
                                                 <td>
                                                     <c:choose>
@@ -1122,63 +1133,50 @@
                         <label for="insuranceName">Insurance Name:</label>
                         <input  id="insuranceName" value="${sal.getInsuranceName()}" readonly="">
                     </div>
-                    <form action="updateinsurance" method="get">
+                    <form action="updateinsurance" method="get" id="updateinsurance-${sal.getInsuranceID()}">
 
                         <div class="row">  
                             <div class="col-6">
-                                <div class="modal__text">
+                                <div class="form__group modal__text">
                                     <label for="type">TYPE:</label>
                                     <select name="type" id="type">
                                         <option value="">-- Select Type --</option>
                                         <option value="Secured Loan" ${sal.getType() == 'Secured Loan' ? 'selected' : ''}>Secured Loan</option>
                                         <option value="Unsecured Loan" ${sal.getType() == 'Unsecured Loan' ? 'selected' : ''}>Unsecured Loan</option>
-                                    </select>
+                                    </select
+                               <p class="form__error"></p>         
                                 </div>
-                                <div class="modal__text">
-                                    <label for="feerate">Fee rate:</label>
-                                    <div class="form-group__input-wrap" >
 
-                                        <input class="form-group__input" step="0.01" name="feerate" type="number" id="feerate" value="${sal.getFeeRate()}" 
-                                               required
-                                               pattern="^(0|[1-9]\d*)([.,]\d+)?$" 
-                                               title="feerate phải là số dương, không >100, không kí tự đặc biệt ngoài[.,]"
-                                               oninput="validatefeerate()">
-
-                                        <span id="feeError" ></span>
-
+                                <div class="form__group modal__text">
+                                    <label for="feerate">Fee rate: </label>
+                                    <div class="form__text-input">
+                                        <input type="number" step="0.01"  name="feerate" id="feerate" value="${sal.getFeeRate()}"
+                                               class="form__input" placeholder="Fee Rate" >
+                                        <span   class="sub-text-input1">%/năm</span>
                                     </div>
-
-
-
-                                </div>
+                                    <p class="form__error"></p>
+                                </div>       
                             </div>
                             <div class="col-6">
-                                <div class="modal__text">
+                                <div class="form__group modal__text">
                                     <label for="coverage">Coverage Rate:</label>
-                                    <div class="form-group__input-wrap" >
+                                    <div class="form__text-input" >                                        
+                                        <input  step="0.01" name="coverage" type="number" id="coverage" value="${sal.getCoverageRate()}" 
+                                                class="form__input" placeholder="Cover Rate"
+                                                >
 
-                                        <input class="form-group__input" step="0.01" name="coverage" type="number" id="coverage" value="${sal.getCoverageRate()}" 
-                                               required
-                                               pattern="^[a-zA-Z0-9_.]{6,20}$" 
-                                               title="feerate phải là số dương, không >100, không kí tự đặc biệt ngoài[.,]"
-                                               oninput="validatecoverage()"
-                                               onkeypress="return validateInput(event)">
-
-                                        <span id="coverageError"  class="sub-text-input1">%/năm</span>
+                                        <span class="sub-text-input1">%/năm</span>
                                     </div>
-
-
-
+                                    <p class="form__error"></p>
                                 </div>
                                 <div class="modal__text">
                                     <label for="maxamount">Max Amount Of Loan:</label>
 
                                     <div class="form-group__input-wrap">
-                                        <input type="text" class="form-group__input" id="maxamount" name="maxamount" value="${sal.getMaxAmountOfLoan()}" 
+                                        <input type="text" class="form-group__input" id="maxamount" name="maxamount" value="<fmt:formatNumber value="${sal.getMaxAmountOfLoan()}" pattern="#,###" />" 
                                                oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
                                         <span class="sub-text-input">VNĐ</span>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -1198,6 +1196,8 @@
         </c:forEach>
 
 
+        
+<!--        add insurance-->
         <div id="modal-addInsurance" class="modal modal--large hide">
             <div class="modal__content">
                 <button class="modal__close js-toggle" toggle-target="#modal-addInsurance">&times;</button>
@@ -1205,64 +1205,52 @@
                      text-align: center;">
                     <h2>Add Insurance</h2>
                 </div>
+                <form action="updateinsurance" method="post" id="updateinsurance1">
+                    <div class="modal__text">
+                        <label for="insuranceName">Insurance Name:</label>
+                        <input type="text" id="insuranceName" name="insuranceName1" >
+                    </div>
 
-                <div class="modal__text">
-                    <label for="insuranceName">Insurance Name:</label>
-                    <input type="text" id="insuranceName" name="insuranceName" >
-                </div>
-                <form action="updateinsurance" method="get">
 
                     <div class="row">  
                         <div class="col-6">
                             <div class="modal__text">
                                 <label for="type">TYPE:</label>
-                                <select name="type" id="type">
+                                <select name="type1" id="type">
                                     <option value="">-- Select Type --</option>
                                     <option value="Secured Loan" ${sal.getType() == 'Secured Loan' ? 'selected' : ''}>Secured Loan</option>
                                     <option value="Unsecured Loan" ${sal.getType() == 'Unsecured Loan' ? 'selected' : ''}>Unsecured Loan</option>
                                 </select>
-                            </div>
-                            <div class="modal__text">
-                                <label for="feerate">Fee rate:</label>
-                                <div class="form-group__input-wrap" >
-
-                                    <input class="form-group__input" step="0.01" name="feerate" type="number" id="feerate"  
-                                           required
-                                           pattern="^(0|[1-9]\d*)([.,]\d+)?$" 
-                                           title="feerate phải là số dương, không >100, không kí tự đặc biệt ngoài[.,]"
-                                           oninput="validatefeerate()">
-
-                                    <span id="feeError" ></span>
-
-                                </div>
-
-
+                                <p class="form__error"></p>
 
                             </div>
+                               <div class="form__group modal__text">
+                                    <label for="feerate">Fee rate: </label>
+                                    <div class="form__text-input">
+                                        <input type="number" step="0.01"  name="feerate1" id="feerate1" value="${sal.getFeeRate()}"
+                                               class="form__input" placeholder="Fee Rate" >
+                                        <span   class="sub-text-input1">%/năm</span>
+                                    </div>
+                                    <p class="form__error"></p>
+                                </div>       
                         </div>
                         <div class="col-6">
-                            <div class="modal__text">
-                                <label for="coverage">Coverage Rate:</label>
-                                <div class="form-group__input-wrap" >
+                            <div class="form__group modal__text">
+                                    <label for="coverage">Coverage Rate:</label>
+                                    <div class="form__text-input" >                                        
+                                        <input  step="0.01" name="coverage1" type="number" id="coverage1" value="${sal.getCoverageRate()}" 
+                                                class="form__input" placeholder="Cover Rate"
+                                                >
 
-                                    <input class="form-group__input" step="0.01" name="coverage" type="number" id="coverage" 
-                                           required
-                                           pattern="^[a-zA-Z0-9_.]{6,20}$" 
-                                           title="feerate phải là số dương, không >100, không kí tự đặc biệt ngoài[.,]"
-                                           oninput="validatecoverage()"
-                                           >
-
-                                    <span id="coverageError"  class="sub-text-input1">%/năm</span>
+                                        <span class="sub-text-input1">%/năm</span>
+                                    </div>
+                                    <p class="form__error"></p>
                                 </div>
-
-
-
-                            </div>
                             <div class="modal__text">
                                 <label for="maxamount">Max Amount Of Loan:</label>
 
                                 <div class="form-group__input-wrap">
-                                    <input type="text" class="form-group__input" id="maxamount" name="maxamount"  
+                                    <input type="text" class="form-group__input" id="maxamount" name="maxamount1"  
                                            oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
                                     <span class="sub-text-input">VNĐ</span>
                                 </div>
@@ -1280,147 +1268,147 @@
                     </div>
                 </form>
             </div>
-        
-        <div class="modal__overlay js-toggle" toggle-target="#modal-addInsurance"></div>
-    </div>
+
+            <div class="modal__overlay js-toggle" toggle-target="#modal-addInsurance"></div>
+        </div>
 
 
 
-    <!--start overlay-->
-    <!--        <div class="overlay btn-toggle-menu"></div>-->
-    <!--end overlay-->
+        <!--        start overlay-->
+        <div class="overlay btn-toggle-menu"></div>
+        <!--        end overlay-->
 
-    <!-- Search Modal -->
+        <!--         Search Modal -->
 
-    <!--<div class="modal" id="exampleModal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header gap-2">
-                            <div class="position-relative popup-search w-100">
-                                <input class="form-control form-control-lg ps-5 border border-3 border-primary" type="search" placeholder="Search">
-                                <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50">search</span>
-                            </div>
-                            <button type="button" class="btn-close d-xl-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal" id="exampleModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header gap-2">
+                        <div class="position-relative popup-search w-100">
+                            <input class="form-control form-control-lg ps-5 border border-3 border-primary" type="search" placeholder="Search">
+                            <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50">search</span>
                         </div>
-                        <div class="modal-body">
-                            <div class="search-list">
-                                <p class="mb-1">Html Templates</p>
-                                <div class="list-group">
-                                    <a href="javascript:;" class="list-group-item list-group-item-action active align-items-center d-flex gap-2"><i class="bi bi-filetype-html fs-5"></i>Best Html Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-award fs-5"></i>Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-box2-heart fs-5"></i>Responsive Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-camera-video fs-5"></i>eCommerce Html Templates</a>
-                                </div>
-                                <p class="mb-1 mt-3">Web Designe Company</p>
-                                <div class="list-group">
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-chat-right-text fs-5"></i>Best Html Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-cloud-arrow-down fs-5"></i>Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-columns-gap fs-5"></i>Responsive Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-collection-play fs-5"></i>eCommerce Html Templates</a>
-                                </div>
-                                <p class="mb-1 mt-3">Software Development</p>
-                                <div class="list-group">
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-cup-hot fs-5"></i>Best Html Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-droplet fs-5"></i>Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-exclamation-triangle fs-5"></i>Responsive Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-eye fs-5"></i>eCommerce Html Templates</a>
-                                </div>
-                                <p class="mb-1 mt-3">Online Shoping Portals</p>
-                                <div class="list-group">
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-facebook fs-5"></i>Best Html Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-flower2 fs-5"></i>Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-geo-alt fs-5"></i>Responsive Html5 Templates</a>
-                                    <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-github fs-5"></i>eCommerce Html Templates</a>
-                                </div>
+                        <button type="button" class="btn-close d-xl-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="search-list">
+                            <p class="mb-1">Html Templates</p>
+                            <div class="list-group">
+                                <a href="javascript:;" class="list-group-item list-group-item-action active align-items-center d-flex gap-2"><i class="bi bi-filetype-html fs-5"></i>Best Html Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-award fs-5"></i>Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-box2-heart fs-5"></i>Responsive Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-camera-video fs-5"></i>eCommerce Html Templates</a>
+                            </div>
+                            <p class="mb-1 mt-3">Web Designe Company</p>
+                            <div class="list-group">
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-chat-right-text fs-5"></i>Best Html Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-cloud-arrow-down fs-5"></i>Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-columns-gap fs-5"></i>Responsive Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-collection-play fs-5"></i>eCommerce Html Templates</a>
+                            </div>
+                            <p class="mb-1 mt-3">Software Development</p>
+                            <div class="list-group">
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-cup-hot fs-5"></i>Best Html Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-droplet fs-5"></i>Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-exclamation-triangle fs-5"></i>Responsive Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-eye fs-5"></i>eCommerce Html Templates</a>
+                            </div>
+                            <p class="mb-1 mt-3">Online Shoping Portals</p>
+                            <div class="list-group">
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-facebook fs-5"></i>Best Html Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-flower2 fs-5"></i>Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-geo-alt fs-5"></i>Responsive Html5 Templates</a>
+                                <a href="javascript:;" class="list-group-item list-group-item-action align-items-center d-flex gap-2"><i class="bi bi-github fs-5"></i>eCommerce Html Templates</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>-->
-
-
-    <!--start theme customization-->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="ThemeCustomizer" aria-labelledby="ThemeCustomizerLable">
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="ThemeCustomizerLable">Theme Customizer</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
         </div>
-        <div class="offcanvas-body">
-            <h6 class="mb-0">Theme Variation</h6>
-            <hr>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="LightTheme" value="option1">
-                <label class="form-check-label" for="LightTheme">Light</label>
-            </div>
-            <!--                <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2" checked="">
-                                <label class="form-check-label" for="DarkTheme">Dark</label>
-                            </div>-->
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SemiDarkTheme" value="option3">
-                <label class="form-check-label" for="SemiDarkTheme">Semi Dark</label>
-            </div>
-            <hr>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="MinimalTheme" value="option3">
-                <label class="form-check-label" for="MinimalTheme">Minimal Theme</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ShadowTheme" value="option4">
-                <label class="form-check-label" for="ShadowTheme">Shadow Theme</label>
-            </div>
 
+
+        <!--start theme customization-->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="ThemeCustomizer" aria-labelledby="ThemeCustomizerLable">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title" id="ThemeCustomizerLable">Theme Customizer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <h6 class="mb-0">Theme Variation</h6>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="LightTheme" value="option1">
+                    <label class="form-check-label" for="LightTheme">Light</label>
+                </div>
+                <!--                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2" checked="">
+                                    <label class="form-check-label" for="DarkTheme">Dark</label>
+                                </div>-->
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SemiDarkTheme" value="option3">
+                    <label class="form-check-label" for="SemiDarkTheme">Semi Dark</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="MinimalTheme" value="option3">
+                    <label class="form-check-label" for="MinimalTheme">Minimal Theme</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ShadowTheme" value="option4">
+                    <label class="form-check-label" for="ShadowTheme">Shadow Theme</label>
+                </div>
+
+            </div>
         </div>
-    </div>
+        <script src="assets/js/validationForm.js"></script>
+        <script>
+             <c:forEach items="${ListInsu}" var="sal" >
+                                               Validator({
+                                                   
+                                                   form: '#updateinsurance-${sal.getInsuranceID()}',
+                                                   formGroupSelector: '.form__group',
+                                                   errorSelector: '.form__error',
+                                                   rules: [
+                                                       Validator.isLessThan('#feerate', 30, 'Vui lòng nhập giá trị nhỏ hơn 30%'),
+                                                       Validator.isLessThan('#coverage', 100, 'Vui lòng nhập giá trị nhỏ hơn 100%')
 
+                                                   ],
+                                                   onsubmit: function (formValue) {
+                                                       document.querySelector('#updateinsurance-${sal.getInsuranceID()}').submit();
+                                                   }
+                                               })
+                                               
+             </c:forEach>
+                                               
+                            Validator({
+                                                   form: '#updateinsurance1',
+                                                   formGroupSelector: '.form__group',
+                                                   errorSelector: '.form__error',
+                                                   rules: [
+                                                       Validator.isLessThan('#feerate1', 30, 'Vui lòng nhập giá trị nhỏ hơn 30%'),
+                                                       Validator.isLessThan('#coverage1', 100, 'Vui lòng nhập giá trị nhỏ hơn 100%')
 
-    <script>
-        function validatefeerate() {
-            // Lấy giá trị từ input
-            let feerateInput = document.getElementById("feerate").value;
-            let errorSpan = document.getElementById("feeError");
+                                                   ],
+                                                   onsubmit: function (formValue) {
+                                                       document.querySelector('#updateinsurance1').submit();
+                                                   }
+                                               })                    
+                                               
+        </script>
+        <!--end theme customization-->
+        <!--plugins-->
 
-            // Biểu thức chính quy để kiểm tra định dạng
-            let pattern = /^[a-zA-Z0-9_.]{6,20}$/;
+        <script src="../js/scripts.js"></script>
 
-            // Kiểm tra định dạng
-            if (!pattern.test(feerateInput)) {
-                errorSpan.innerText = "Feerate phải là số dương, không chứa ký tự đặc biệt ngoài [.,] và không chứa chữ cái.";
-                errorSpan.style.color = "red";
-                errorSpan.style.fontSize = "13px";
-                return false; // Dừng hàm nếu định dạng không hợp lệ
-            }
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+        <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
+        <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
 
-            // Chuyển đổi chuỗi thành số (thay thế dấu phẩy bằng dấu chấm nếu cần)
-            let feerateValue = parseFloat(feerateInput.replace(',', '.'));
+        <!--BS Scripts-->
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/main.js"></script>
 
-            // Kiểm tra giá trị có lớn hơn 100 không
-            if (feerateValue > 100) {
-                errorSpan.innerText = "Feerate không được lớn hơn 100.";
-                errorSpan.style.color = "red";
-                errorSpan.style.fontSize = "13px";
-                return false; // Dừng hàm nếu giá trị lớn hơn 100
-            }
-
-            // Nếu hợp lệ, xóa thông báo lỗi
-            errorSpan.innerText = "";
-            return true;
-        }
-
-    </script>
-    <!--end theme customization-->
-    <!--plugins-->
-    <script src="../js/scripts.js"></script>
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-    <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-    <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-
-    <!--BS Scripts-->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
-
-</body>
+    </body>
 
 </html>
