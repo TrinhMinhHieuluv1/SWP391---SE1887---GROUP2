@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Asset;
 
 /**
@@ -51,6 +53,30 @@ public class AssetDAO extends DBContext {
         return null;
     }
 
+    public boolean insertAsset(Asset asset) {
+        String sql = "INSERT INTO Asset (CustomerID, Image, Title, Description, "
+                + "Value, Comments, ValuationAmount, Used, Status, CreatedAt) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, asset.getCustomer().getCustomerId());
+            pstmt.setString(2, asset.getImage());
+            pstmt.setString(3, asset.getTitle());
+            pstmt.setString(4, asset.getDescription());
+            pstmt.setBigDecimal(5, asset.getValue());
+            pstmt.setString(6, asset.getComments());
+            pstmt.setBigDecimal(7, asset.getValuationAmount());
+            pstmt.setBoolean(8, asset.isUsed());
+            pstmt.setString(9, asset.getStatus());
+            pstmt.setTimestamp(10, new java.sql.Timestamp(asset.getCreatedAt().getTime()));
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0; // Trả về true nếu có ít nhất một hàng được chèn
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
+
     public boolean updateAsset(Asset asset) {
         String sql = "UPDATE Asset SET CustomerID = ?, Image = ?,Title= ?, Description = ?, "
                 + "Value = ?, Comments = ?, ValuationAmount = ?, Used = ?, "
@@ -70,6 +96,19 @@ public class AssetDAO extends DBContext {
 
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0; // Trả về true nếu có ít nhất một hàng được cập nhật
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Trả về false nếu có lỗi xảy ra
+        }
+    }
+
+    public boolean deleteAsset(int assetId) {
+        String sql = "DELETE FROM Asset WHERE AssetID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, assetId);
+
+            int rowsDeleted = pstmt.executeUpdate();
+            return rowsDeleted > 0; // Trả về true nếu có ít nhất một hàng được xóa
         } catch (SQLException e) {
             e.printStackTrace();
             return false; // Trả về false nếu có lỗi xảy ra
@@ -300,6 +339,29 @@ public class AssetDAO extends DBContext {
 
     }
 
+    public List<Asset> getAssetsByCondition(int cid, String name, String status, String used, String ascending) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT * FROM Asset WHERE  1=1 ";
+        if (cid != 0) {
+            query = query + " AND CustomerID= " + cid;      
+        }
+        if (!name.isEmpty()&& name!=null ) {
+            query = query + " AND Title like '%" + name + "%'";        
+        }
+        if (!status.isEmpty() &&!status.equalsIgnoreCase("all")) {
+            query = query + " AND Status='" + status + "'";
+        }
+        if (!used.isEmpty() && !used.equalsIgnoreCase("all") ) {
+            boolean b = Boolean.parseBoolean(used);
+            query = query + " AND Used='" + b + "'";
+        }
+        if(!ascending.isEmpty()){
+             query = query + " ORDER BY CreatedAt " + ascending;
+        }
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query);
+
+            ResultSet resultSet = pstmt.executeQuery();
     public List<Asset> getAssetListForCustomer(int CustomerID) {
         List<Asset> assets = new ArrayList<>();
 

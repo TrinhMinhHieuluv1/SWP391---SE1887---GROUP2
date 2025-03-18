@@ -151,7 +151,7 @@ public class Asset {
 
     @Override
     public String toString() {
-        return "Asset{" + "Id=" + Id + ", Customer=" + Customer + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + '}';
+        return "Asset{" + "Id=" + Id + " title"+Title+", Customer=" + Customer + ", Image=" + Image + ", Description=" + Description + ", Value=" + Value + ", Comments=" + Comments + ", ValuationAmount=" + ValuationAmount + ", Used=" + Used + ", Status=" + Status + ", CreatedAt=" + CreatedAt + '}';
     }
 
 }
