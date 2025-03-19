@@ -9,6 +9,9 @@
 <!DOCTYPE html>
 <!-- footer -->
 <style>
+    .input{
+        background-color: #fff;
+    }
      .modal__content {
                 padding: 20px;
                 background-color: #f9f9f9;
@@ -168,11 +171,11 @@
                     <form action="showfb" method="post" class="mil-subscripe-form-footer" id="form">
                     <!-- Email Input -->
                     <div class="mb-3">
-                        <input class="form-control form-control__input mil-input" type="email" placeholder="Email" name="email" required>
+                        <input style="background-color: #fff" class=" form-control form-control__input mil-input " type="email" placeholder="Email" name="email" required>
                     </div>
                     <!-- Tiêu đề Input -->
                     <div class="mb-3">
-                        <input  class="form-control form-control__input mil-input" type="text" placeholder="Tiêu đề" name="tieude" required>
+                        <input style="background-color: #fff" class="form-control form-control__input mil-input input" type="text" placeholder="Tiêu đề" name="tieude" required>
                     </div>
                     <!-- Nội dung Input -->
                     <div class="mb-3">
