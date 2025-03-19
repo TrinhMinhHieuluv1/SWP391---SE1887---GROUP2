@@ -843,11 +843,11 @@
 
                 <!--navigation-->
                 <ul class="metismenu" id="menu">
-                    <li>
-                        <a href="home.jsp">
+                     <li>
+                        <a href="/timibank/home.jsp">
                             <div class="parent-icon"><span class="material-symbols-outlined">home</span>
                             </div>
-                            <div class="menu-title">Dashboard</div>
+                            <div class="menu-title">Back to home</div>
                         </a>
                     </li>
 
@@ -866,6 +866,8 @@
                     <li> <a href="listAsset"><span class="material-symbols-outlined">arrow_right</span>Asset</a>
                     </li>
                     <li> <a href="listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
+                    </li>
+                     <li> <a href="contract-management-for-manager"><span class="material-symbols-outlined">arrow_right</span>Contract</a>
                     </li>
                     <!--                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
                                         </li>
@@ -923,7 +925,7 @@
                     <!--                <li>
                                       <div class="dropdown-divider mb-0"></div>
                                     </li>-->
-                    <li><a class="dropdown-item" href="logout"><span class="material-symbols-outlined me-2">
+                     <li><a class="dropdown-item" href="/timibank/logout"><span class="material-symbols-outlined me-2">
                                 logout
                             </span><span>Logout</span></a>
                     </li>
