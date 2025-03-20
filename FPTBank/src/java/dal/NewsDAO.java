@@ -86,7 +86,7 @@ public class NewsDAO extends DBContext {
                 sql = sql + " AND (n.[UserID]=" + UserID + ")";
             }
         }
-        
+
         if (filterNewsCategoryID != 0) {
             sql = sql + " AND (n.[NewsCategoryID]=" + filterNewsCategoryID + ")";
         }
@@ -168,4 +168,93 @@ public class NewsDAO extends DBContext {
         }
     }
 
+    public List<News> selectNewsListByConditionsAndPageSize(String searchKeyword, String sortBy, String filterStatus, String filterMine, int filterNewsCategoryID, int UserID, int page, int size) {
+        List<News> newsList = new ArrayList<>();
+        String sql = "SELECT n.*, u.FullName FROM [News] n JOIN [User] u ON (n.UserID = u.UserID) WHERE (1=1)";
+
+        //Search by keyword match to author's fullname or news's title
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            sql = sql + " AND ((u.FullName LIKE N'%" + searchKeyword + "%') OR (n.Title LIKE N'%" + searchKeyword + "%'))";
+        }
+
+        //Filter by news's status
+        if (filterStatus != null && !filterStatus.isEmpty()) {
+            if (filterStatus.equals("active")) {
+                sql = sql + " AND (n.[Status]=1)";
+            } else if (filterStatus.equals("inactive")) {
+                sql = sql + " AND (n.[Status]=0)";
+            }
+        }
+
+        //Filter mine status
+        if (filterMine != null && !filterMine.isEmpty()) {
+            if (filterMine.equals("true")) {
+                sql = sql + " AND (n.[UserID]=" + UserID + ")";
+            }
+        }
+
+        if (filterNewsCategoryID != 0) {
+            sql = sql + " AND (n.[NewsCategoryID]=" + filterNewsCategoryID + ")";
+        }
+
+        //Sort by CreatedAt or NumberOfAccess
+        if (sortBy != null && !sortBy.isEmpty()) {
+            switch (sortBy) {
+                case "CreatedAtASC": {
+                    sql = sql + " ORDER BY n.CreatedAt";
+                    break;
+                }
+                case "CreatedAtDESC": {
+                    sql = sql + " ORDER BY n.CreatedAt DESC";
+                    break;
+                }
+                case "NumberOfAccessASC": {
+                    sql = sql + " ORDER BY n.NumberOfAccess";
+                    break;
+                }
+                case "NumberOfAccessDESC": {
+                    sql = sql + " ORDER BY n.NumberOfAccess DESC";
+                    break;
+                }
+            }
+        }
+        int offset = (page - 1) * size;
+        if (page > 0) {
+            sql = sql + " OFFSET " + offset + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+        }
+        System.out.println(sql);
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                News newsToAdd = new News(rs.getInt("NewsID"),
+                        udao.selectAnUserByConditions(rs.getInt("UserID"), "", "", ""),
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getBoolean("Status"),
+                        rs.getDate("CreatedAt"),
+                        rs.getInt("NumberOfAccess"),
+                        ncDAO.selectANewsCategoryByID(rs.getInt("NewsCategoryID")));
+                newsList.add(newsToAdd);
+            }
+        } catch (SQLException e) {
+        }
+        System.out.println(newsList.size());
+        return newsList;
+    }
+
+    public int getTotalNewsCount() {
+        String query = "SELECT COUNT(*) FROM [News]";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
