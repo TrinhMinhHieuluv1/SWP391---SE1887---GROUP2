@@ -49,12 +49,10 @@ public class SalaryDAO extends DBContext {
         return null;
     }
 
-
     public boolean updateSalary(Salary salary) {
         String sql = "UPDATE Salary SET CustomerID = ?, Image = ?,Title= ?, Description = ?, "
                 + "Value = ?, Comments = ?, ValuationAmount = ?, Used = ?, "
                 + "Status = ?, CreatedAt = ? WHERE SalaryId = ?";
-
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, salary.getCustomer().getCustomerId());
             pstmt.setString(2, salary.getImage());
@@ -178,16 +176,6 @@ public class SalaryDAO extends DBContext {
             pstmt.setString(1, status);
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
-    
-   public Salary getSalaryForCustomer(int CustomerID) {
-
-        String sql = "SELECT * FROM Salary WHERE (CustomerID=?) AND (Used=0) AND (Status='Approved')";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, CustomerID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("SalaryId"));
                 salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
@@ -361,4 +349,36 @@ public class SalaryDAO extends DBContext {
 
     }
 
+    public List<Salary> getSalaryListForCustomer(int CustomerID) {
+
+        List<Salary> salaryList = new ArrayList<>();
+        String sql = "SELECT * FROM Salary WHERE (CustomerID=?) AND (Used=0) AND (Status='Approved')";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, CustomerID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setTitle(resultSet.getString("Title"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salaryList.add(salary);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return salaryList;
+
+    }
 }

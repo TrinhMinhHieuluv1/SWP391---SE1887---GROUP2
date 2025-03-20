@@ -9,6 +9,14 @@
 <!DOCTYPE html>
 <!-- footer -->
 <style>
+    iframe {
+    border: 5px solid #3498db; /* Viền màu xanh */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+}
+    .input{
+        background-color: #fff;
+    }
      .modal__content {
                 padding: 20px;
                 background-color: #f9f9f9;
@@ -93,7 +101,7 @@
                     <img src="img/logo1.png" alt="Plax" width="150">
                 </a>
             </div>
-            <div class="col-xl-4 " style="margin-top: 30px">
+            <div class="col-xl-2 " style="margin-top: 30px">
                 <h6 class="mil-mb-20">Liên kết hữu ích</h6>
                 <ul class="mil-footer-list">
                     <li class="mil-text-m mil-soft mil-mb-15">
@@ -113,7 +121,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-xl-4 mil-mb-80" style="margin-top: 30px">
+            <div class="col-xl-4" style="margin-top: 30px">
+                <p >
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14896.732010103182!2d105.5378757!3d21.0253624!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31345bc332488903%3A0x5a3525fd6c568826!2zVHLhu40gSHV54buBbiBUaG_huqFp!5e0!3m2!1sen!2s!4v1727714621870!5m2!1sen!2s" width="500" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="col-xl-3 mil-mb-80" style="margin-top: 30px">
                 <h6 class="mil-mb-20">Hỗ trợ</h6>
                 <ul class="mil-footer-list">
                     <li class="mil-text-m mil-soft mil-mb-15" >
@@ -127,7 +139,7 @@
 
             <!--email-->
 
-            <div class="col-xl-2 mil-mb-30" style="margin-top: 30px">
+            <div class="col-xl-1 mil-mb-30" style="margin-top: 30px">
                
   <button class="mil-mb-20 btn btn-pending js-toggle"  toggle-target="#modal-guihotro">Gửi hỗ trợ </button>
 
@@ -162,17 +174,17 @@
                     <div style="color: #008000;
                          text-align: center;">
                         <h2  style="color: #008000;
-                     text-align: center;">Hãy miêu tả những thứ bạn cần hỗ trợ </h2>
+                     text-align: center;">Hãy miêu tả thứ bạn cần hỗ trợ </h2>
                     </div>
 
                     <form action="showfb" method="post" class="mil-subscripe-form-footer" id="form">
                     <!-- Email Input -->
                     <div class="mb-3">
-                        <input class="form-control form-control__input mil-input" type="email" placeholder="Email" name="email" required>
+                        <input style="background-color: #fff" class=" form-control form-control__input mil-input " type="email" placeholder="Email" name="email" required>
                     </div>
                     <!-- Tiêu đề Input -->
                     <div class="mb-3">
-                        <input  class="form-control form-control__input mil-input" type="text" placeholder="Tiêu đề" name="tieude" required>
+                        <input style="background-color: #fff" class="form-control form-control__input mil-input input" type="text" placeholder="Tiêu đề" name="tieude" required>
                     </div>
                     <!-- Nội dung Input -->
                     <div class="mb-3">

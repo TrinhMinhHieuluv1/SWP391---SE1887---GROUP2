@@ -4,7 +4,6 @@
  */
 package dal;
 
-import Tools.HashString;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -362,6 +361,29 @@ public class AssetDAO extends DBContext {
             PreparedStatement pstmt = connection.prepareStatement(query);
 
             ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
     public List<Asset> getAssetListForCustomer(int CustomerID) {
         List<Asset> assets = new ArrayList<>();
 
