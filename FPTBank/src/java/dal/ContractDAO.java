@@ -87,7 +87,7 @@ public class ContractDAO extends DBContext {
             sql = sql + " AND (CustomerID= " + CustomerID + ")";
         }
         if (filterType != null && !filterType.isEmpty() && !filterType.equals("none")) {
-            sql = sql + " AND (Type=" + filterType + ")";
+            sql = sql + " AND (Type='" + filterType + "')";
         }
         if (filterMonthlyPayment != null && !filterMonthlyPayment.equals("none")) {
             switch (filterMonthlyPayment) {
@@ -127,7 +127,6 @@ public class ContractDAO extends DBContext {
                     break;
             }
         }
-        System.out.println(sql);
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -182,6 +181,13 @@ public class ContractDAO extends DBContext {
                 st.setInt(14, 1);
                 st.setFloat(15, contractToAdd.getInsuranceCoverage());
                 st.executeUpdate();
+                try {
+                    ResultSet generatedKeys = st.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1);
+                    }
+                } catch (SQLException e) {
+                }
             } else if (contractToAdd.getType().equals("Unsecured Loan")) {
                 st.setInt(1, contractToAdd.getCustomer().getCustomerId());
                 st.setBigDecimal(2, contractToAdd.getAmount());
@@ -200,12 +206,12 @@ public class ContractDAO extends DBContext {
                 } else {
                     st.setNull(13, Types.NVARCHAR);
                 }
-                st.setInt(14, 3);
+                st.setInt(14, 1);
                 st.setFloat(15, contractToAdd.getInsuranceCoverage());
                 st.executeUpdate();
                 try {
                     ResultSet generatedKeys = st.getGeneratedKeys();
-                    if(generatedKeys.next()){
+                    if (generatedKeys.next()) {
                         return generatedKeys.getInt(1);
                     }
                 } catch (SQLException e) {
@@ -224,25 +230,62 @@ public class ContractDAO extends DBContext {
                 + "MonthlyPayment=?, MonthlyPaymentType=?, StatusID=?, InsuranceCoverage=? WHERE ContractID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setBigDecimal(1, ContractToUpdate.getAmount());
-            st.setInt(2, ContractToUpdate.getPeriod());
-            st.setFloat(3, ContractToUpdate.getLatePaymentRate());
-            st.setFloat(4, ContractToUpdate.getEarlyWithdrawRate());
-            st.setFloat(5, ContractToUpdate.getInterestRate());
-            st.setString(6, ContractToUpdate.getDescription());
-            st.setInt(7, ContractToUpdate.getAsset().getId());
-            st.setInt(8, ContractToUpdate.getSalary().getId());
-            st.setInt(9, ContractToUpdate.getInsurance().getInsuranceID());
-            st.setBoolean(10, ContractToUpdate.isMonthlyPayment());
-            st.setString(11, ContractToUpdate.getMonthlyPaymentType());
-            st.setInt(12, ContractToUpdate.getStatusID());
-            st.setFloat(13, ContractToUpdate.getInsuranceCoverage());
-            st.setInt(14, ContractToUpdate.getContractID());
+            if (ContractToUpdate.getType().equals("Secured Loan")) {
+                st.setBigDecimal(1, ContractToUpdate.getAmount());
+                st.setInt(2, ContractToUpdate.getPeriod());
+                st.setFloat(3, ContractToUpdate.getLatePaymentRate());
+                st.setNull(4, Types.FLOAT);
+                st.setFloat(5, ContractToUpdate.getInterestRate());
+                st.setString(6, ContractToUpdate.getDescription());
+                st.setInt(7, ContractToUpdate.getAsset().getId());
+                st.setNull(8, Types.INTEGER);
+                st.setInt(9, ContractToUpdate.getInsurance().getInsuranceID());
+                st.setBoolean(10, ContractToUpdate.isMonthlyPayment());
+                if (ContractToUpdate.isMonthlyPayment()) {
+                    st.setString(11, ContractToUpdate.getMonthlyPaymentType());
+                } else {
+                    st.setNull(11, Types.NVARCHAR);
+                }
+                st.setInt(12, ContractToUpdate.getStatusID());
+                st.setFloat(13, ContractToUpdate.getInsuranceCoverage());
+                st.setInt(14, ContractToUpdate.getContractID());
+            } else {
+                st.setBigDecimal(1, ContractToUpdate.getAmount());
+                st.setInt(2, ContractToUpdate.getPeriod());
+                st.setFloat(3, ContractToUpdate.getLatePaymentRate());
+                st.setNull(4, Types.FLOAT);
+                st.setFloat(5, ContractToUpdate.getInterestRate());
+                st.setString(6, ContractToUpdate.getDescription());
+                st.setNull(7, Types.INTEGER);
+                st.setInt(8, ContractToUpdate.getSalary().getId());
+                st.setInt(9, ContractToUpdate.getInsurance().getInsuranceID());
+                st.setBoolean(10, ContractToUpdate.isMonthlyPayment());
+                if (ContractToUpdate.isMonthlyPayment()) {
+                    st.setString(11, ContractToUpdate.getMonthlyPaymentType());
+                } else {
+                    st.setNull(11, Types.NVARCHAR);
+                }
+                st.setInt(12, ContractToUpdate.getStatusID());
+                st.setFloat(13, ContractToUpdate.getInsuranceCoverage());
+                st.setInt(14, ContractToUpdate.getContractID());
+            }
             st.executeUpdate();
         } catch (SQLException e) {
         }
     }
-    
+
+    public boolean updateStatus(int contractID, int statusID) {
+        String sql = "UPDATE [Contract] SET StatusID=? WHERE ContractID=?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, statusID);
+            st.setInt(2, contractID);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         ContractDAO ctdao = new ContractDAO();
         for (Contract ct : ctdao.selectContractListWithConditions(2, null, null, 0, null)) {

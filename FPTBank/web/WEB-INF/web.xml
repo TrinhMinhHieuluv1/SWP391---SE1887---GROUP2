@@ -88,4 +88,9 @@
         <servlet-name>FindFeedback</servlet-name>
         <url-pattern>/feedback</url-pattern>
     </servlet-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>redirect.jsp</welcome-file>
+    </welcome-file-list>
+    
 </web-app>

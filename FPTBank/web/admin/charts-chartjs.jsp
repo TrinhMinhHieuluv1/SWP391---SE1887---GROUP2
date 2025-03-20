@@ -519,19 +519,19 @@
                                       </ul>
                                     </li>-->
                     <li class="menu-label">UI Elements</li>
-<!--                    <li>
-                        <a href="javascript:;" class="has-arrow">
-                            <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
-                            </div>
-                            <div class="menu-title">Widgets</div>
-                        </a>
-                        <ul>
-                            <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
-                            </li>
-                            <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
-                            </li>
-                        </ul>
-                    </li>-->
+                    <!--                    <li>
+                                            <a href="javascript:;" class="has-arrow">
+                                                <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
+                                                </div>
+                                                <div class="menu-title">Widgets</div>
+                                            </a>
+                                            <ul>
+                                                <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
+                                                </li>
+                                                <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
+                                                </li>
+                                            </ul>
+                                        </li>-->
 
 
                     <li>
@@ -549,7 +549,7 @@
 
                             <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Staffs</a>
                             <li> <a href="manage_customers"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
-
+                            <li> <a href="manage_serviceItems"><span class="material-symbols-outlined">arrow_right</span>Service Items</a>
 
                                 <!--                    </li>
                                                     <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
@@ -766,8 +766,8 @@
                             <div class="menu-title">Charts</div>
                         </a>
                         <ul>
-<!--                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
-                            </li>-->
+                            <!--                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
+                                                        </li>-->
                             <li> <a href="getData_Cus"><span class="material-symbols-outlined">arrow_right</span>Statistic of customers</a>
                             </li>
                         </ul>
@@ -830,7 +830,7 @@
             <div class="sidebar-bottom dropdown dropup-center dropup">
                 <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
                     <div class="user-img">
-                         <img src="${sessionScope.account.getImage()}" alt="User Image">
+                        <img src="${sessionScope.account.getImage()}" alt="User Image">
                     </div>
                     <div class="user-info">
                         <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>

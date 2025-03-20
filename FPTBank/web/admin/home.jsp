@@ -9,6 +9,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!doctype html>
 <html lang="en" data-bs-theme="light">
@@ -658,6 +659,7 @@
 
                             <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Staffs</a>
                             <li> <a href="manage_customers"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
+                            <li> <a href="manage_serviceItems"><span class="material-symbols-outlined">arrow_right</span>Service Items</a>
 
 
                                 <!--                    </li>
@@ -1030,7 +1032,9 @@
                             <div class="d-flex align-items-center">
                                 <div class="">
                                     <p class="mb-1">Bounce Rate</p>
-                                    <h4 class="mb-0 text-danger">${bounceRate}%</h4>
+                                    <h4 class="mb-0 text-danger">
+                                        <fmt:formatNumber value="${bounceRate}" maxFractionDigits="1" minFractionDigits="1"/>%
+                                    </h4>
                                 </div>
                                 <div class="ms-auto widget-icon bg-danger text-white">
                                     <i class="bi bi-graph-down-arrow"></i>

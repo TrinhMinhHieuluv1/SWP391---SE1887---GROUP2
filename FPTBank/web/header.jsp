@@ -164,5 +164,7 @@
         <script src="js/plugins/magnific-popup.js"></script>
         <!-- plax js -->
         <script src="js/main.js"></script>
+        
+                <%@include file="messenger.jsp" %>
     </body>
 </html>

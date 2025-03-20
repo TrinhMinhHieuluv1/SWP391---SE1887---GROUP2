@@ -4,6 +4,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+
 <!doctype html>
 <html lang="en" data-bs-theme="light">
     <head>
@@ -569,19 +570,19 @@
                                       </ul>
                                     </li>-->
                     <li class="menu-label">UI Elements</li>
-<!--                    <li>
-                        <a href="javascript:;" class="has-arrow">
-                            <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
-                            </div>
-                            <div class="menu-title">Widgets</div>
-                        </a>
-                        <ul>
-                            <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
-                            </li>
-                            <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
-                            </li>
-                        </ul>
-                    </li>-->
+                    <!--                    <li>
+                                            <a href="javascript:;" class="has-arrow">
+                                                <div class="parent-icon"><span class="material-symbols-outlined">widgets</span>
+                                                </div>
+                                                <div class="menu-title">Widgets</div>
+                                            </a>
+                                            <ul>
+                                                <li> <a href="widget-data.jsp"><span class="material-symbols-outlined">arrow_right</span>Data Widget</a>
+                                                </li>
+                                                <li> <a href="widget-static.jsp"><span class="material-symbols-outlined">arrow_right</span>Widget Static</a>
+                                                </li>
+                                            </ul>
+                                        </li>-->
 
 
                     <li>
@@ -599,8 +600,7 @@
 
                             <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Staffs</a>
                             <li> <a href="manage_customers"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
-                            <li> <a href="manage_serviceItems"><span class="material-symbols-outlined">arrow_right</span>Service Items</a>    
-
+                            <li> <a href="manage_serviceItems"><span class="material-symbols-outlined">arrow_right</span>Service Items</a>
 
                                 <!--                    </li>
                                                     <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
@@ -817,8 +817,8 @@
                             <div class="menu-title">Charts</div>
                         </a>
                         <ul>
-<!--                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
-                            </li>-->
+                            <!--                            <li> <a href="charts-apex.jsp"><span class="material-symbols-outlined">arrow_right</span>Apex</a>
+                                                        </li>-->
                             <li> <a href="getData_Cus"><span class="material-symbols-outlined">arrow_right</span>Statistic of customers</a>
                             </li>
                         </ul>
@@ -881,7 +881,7 @@
             <div class="sidebar-bottom dropdown dropup-center dropup">
                 <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
                     <div class="user-img">
-                         <img src="${sessionScope.account.getImage()}" alt="User Image">
+                        <img src="${sessionScope.account.getImage()}" alt="User Image">
                     </div>
                     <div class="user-info">
                         <h5 class="mb-0 user-name">${sessionScope.account.username}</h5>
@@ -935,7 +935,7 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Customers</li>
+                            <li class="breadcrumb-item active" aria-current="page">Staffs</li>
                         </ol>
                     </nav>
                 </div>
@@ -963,15 +963,19 @@
 
             <!-- Số lượng của từng users theo role -->
             <div class="product-count d-flex align-items-center gap-3 gap-lg-4 mb-4 fw-bold flex-wrap font-text1">
-                <a href="manage_customers"><span class="me-1">All Customers</span><span class="text-secondary">(${totalCustomers})</span></a>
+                <a href="manage_serviceItems"> <span class="me-1">All</span><span class="text-secondary">(${totalSItems})</span></a>
+                <a href="filter_typeSItem?type1=Saving"><span class="me-1">Saving</span><span class="text-secondary">(${cntSaving})</span></a>
+                <a href="filter_typeSItem?type1=Secured Loan"><span class="me-1">Secured Loan</span><span class="text-secondary">(${cntSeLoan})</span></a>
+                <a href="filter_typeSItem?type1=Unsecured Loan"><span class="me-1">Unsecured Loan</span><span class="text-secondary">(${cntUnLoan})</span></a>
+
             </div>
 
             <div class="row g-3">
                 <div class="col-auto">
-                    <!-- Search User -->    
+                    <!-- Search Sitem -->    
                     <div class="col-auto">
-                        <form action="search_customers" method="GET" class="position-relative">
-                            <input class="form-control px-5" type="search" name="keyWord" placeholder="Search customers" value="${keyWord}"> 
+                        <form action="search_serviceItem" method="GET" class="position-relative">
+                            <input class="form-control px-5" type="search" name="keyword" placeholder="Search service items" value="${keyword}"> 
                             <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
                         </form>
                     </div>
@@ -983,76 +987,80 @@
                         <!-- Sort list user by Full Name -->    
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Full Name
+                                Type Of Service Items
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="sortListCus_fullname?type1=asc">Sort A → Z</a></li>
-                                <li><a class="dropdown-item" href="sortListCus_fullname?type1=des">Sort Z → A</a></li>
+                                <li><a class="dropdown-item" href="filter_typeSItem?type1=Saving">Saving</a></li>
+                                <li><a class="dropdown-item" href="filter_typeSItem?type1=Secured Loan">Secured Loan</a></li>
+                                <li><a class="dropdown-item" href="filter_typeSItem?type1=Unsecured Loan">Unsecured Loan</a></li>
 
                                 <!--                                <li><hr class="dropdown-divider"></li>
                                                                 <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
                             </ul>
                         </div>
 
-                        <!--Sort list customer by credit score  -->
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Credit Score
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="sortListCus_CreditScore?type3=asc">Sort low → high </a></li>
-                                <li><a class="dropdown-item" href="sortListCus_CreditScore?type3=des">Sort high → low</a></li>
-                            </ul>
-                        </div>
+
+                        <!-- Sort list user by Date Created -->
+                        <!--                        <div class="btn-group position-static">
+                                                    <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Date Created
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="sort_dateCreated?type2=asc">Show Oldest</a></li>
+                                                        <li><a class="dropdown-item" href="sort_dateCreated?type2=des">Show Latest</a></li>
+                                                                                        <li><hr class="dropdown-divider"></li>
+                                                                                        <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>
+                                                    </ul>
+                                                </div>-->
 
                         <!--Filer list user by Status  -->
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Status Of Customers
+                                Status
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="filterListCus_byStatus?status=1">Active</a></li>
-                                <li><a class="dropdown-item" href="filterListCus_byStatus?status=0">Inactive</a></li>
+                                <li><a class="dropdown-item" href="filter_sItemByStatus?status=1">Active</a></li>
+                                <li><a class="dropdown-item" href="filter_sItemByStatus?status=0">Inactive</a></li>
                                 <!--                                <li><hr class="dropdown-divider"></li>
                                                                 <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
                             </ul>
                         </div>
 
-                        <!-- Sort list user by Date Created -->
+
+                        <!--Filer list user by role name  -->
                         <div class="btn-group position-static">
                             <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Date Created
+                                Interest Rate
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="sortListCus_dateCreated?type2=asc">Show Oldest</a></li>
-                                <li><a class="dropdown-item" href="sortListCus_dateCreated?type2=des">Show Latest</a></li>
+                                <li><a class="dropdown-item" href="sortInterestRate?type2=asc">Sort low → high</a></li>
+                                <li><a class="dropdown-item" href="sortInterestRate?type2=desc">Sort high → low</a></li>
+                                <!--                                <li><a class="dropdown-item" href="filter_roleName?id=5">Customer</a></li>-->
                                 <!--                                <li><hr class="dropdown-divider"></li>
                                                                 <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>-->
                             </ul>
                         </div>
-
                     </div>  
                 </div>
 
 
-                <!--                <div class="col-auto">
-                                    <div class="d-flex align-items-center gap-2 justify-content-lg-end">                      
-                                        
-                                        <button class="btn btn-light px-4"><i class="bi bi-box-arrow-right me-2"></i>Export</button>
-                                        
-                
-                                        <a href="insert_users" class="btn btn-primary px-4">
-                                            <i class="bi bi-plus-lg me-2"></i>
-                                            Add Users
-                                        </a>
-                                    </div>
-                                </div>-->
+                <div class="col-auto">
+                    <div class="d-flex align-items-center gap-2 justify-content-lg-end">                      
+                        <!--
+                        <button class="btn btn-light px-4"><i class="bi bi-box-arrow-right me-2"></i>Export</button>
+                        -->
+
+                        <a href="insert_serviceItem" class="btn btn-primary px-4">
+                            <i class="bi bi-plus-lg me-2"></i>
+                            Add Services Items
+                        </a>
+                    </div>
+                </div>
 
             </div><!--end row-->
 
 
-
-            <form id="entriesForm2" action="manage_customers" method="GET" accept-charset="UTF-8">
+            <form id="entriesForm" action="manage_serviceItems" method="GET" accept-charset="UTF-8">
                 <label for="entries">Show Entries</label>
                 <select id="entries" name="entries" onchange="this.form.submit()">
                     <c:forEach items="${listOfPageSize}" var="ps">
@@ -1060,11 +1068,10 @@
                     </c:forEach>                   
                 </select>
 
-                <input type="hidden" name="typeOfSortByName" value="${typeOfSortByName}">
-                <input type="hidden" name="typeOfSortByDate" value="${typeOfSortByDate}">
-                <input type="hidden" name="status" value="${statusOfUser}">
-                <input type="hidden" name="typeOfSortByCreditScore" value="${typeOfSortByCreditScore}">
-                <input type="hidden" name="keyWord" value="${keyWord}">
+                <input type="hidden" name="typeOfServiceItem" value="${typeOfServiceItem}">
+                <input type="hidden" name="typeOfSortByInterestRate" value="${typeOfSortByInterestRate}">
+                <input type="hidden" name="status" value="${statusOfSItem}">   
+                <input type="hidden" name="keyword" value="${keyword}">
             </form>
 
 
@@ -1080,14 +1087,17 @@
                                 <thead class="table-light">
 
                                     <tr>
-                                        <th class="text-center" >CUSTOMER ID</th>
-                                        <th class="text-center" >FULL NAME</th>
-                                        <th class="text-center" >PHONE</th>
-                                        <th class="text-center" >EMAIL</th>
-                                        <th class="text-center" >Gender</th>
-                                        <th class="text-center" >ROLE</th>          
-                                        <th class="text-center" >STATUS</th>
-                                        <th class="text-center" >CREATED AT</th>
+                                        <th class="text-center" >ID</th>
+                                        <th class="text-center" >NAME</th>
+                                        <th class="text-center" >Max Amount</th>
+                                        <th class="text-center" >Max Period</th>
+                                        <th class="text-center" >Min Credit Score</th>
+                                        <th class="text-center" >Late Payment Rate</th>          
+                                        <th class="text-center" >Min Amount</th>
+                                        <th class="text-center" >Min Period</th>
+                                        <th class="text-center" >Early Withdraw Rate</th>
+                                        <th class="text-center" >Interest Rate</th>
+                                        <th class="text-center" >Status</th>
                                         <th class="text-center" style="width: 10%">Action</th>
                                     </tr>    
                                 </thead>
@@ -1096,59 +1106,68 @@
                                 <!--BODY TABLE --> 
                                 <tbody>
 
-                                    <c:forEach var="c" items="${listCustomers}">
+                                    <c:forEach var="u" items="${listSItems}">
                                         <tr>
-                                            <td class="text-center">${c.getCustomerId()} </td>
-                                            <td class="text-center">${c.getFullName()}</td>
-                                            <td class="text-center">${c.getPhone()}</td>
-                                            <td class="text-center">${c.getEmail()}</td>
+                                            <td class="text-center">${u.getServiceItemID()} </td>
+                                            <td class="text-center">${u.getServiceItemName()}</td>
 
                                             <td class="text-center">
-                                                <c:if test="${c.isGender() == true}">
-                                                    Male
-                                                </c:if>
-                                                <c:if test="${c.isGender() == false}">
-                                                    Female
-                                                </c:if>
+                                                <fmt:setLocale value="vi_VN"/>
+                                                <c:choose>
+                                                    <c:when test="${empty u.getMaxAmount()}">
+                                                        None
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <fmt:formatNumber value="${u.getMaxAmount()}" type="number" minFractionDigits="0" maxFractionDigits="0"/>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </td>
 
-
-                                            <td class="text-center">       
-                                                Customer
-                                            </td>
+                                            <td class="text-center">${u.getMaxPeriod() == 0 ? "None" : u.getMaxPeriod()}</td>
+                                            <td class="text-center">${u.getMinCreditScore() == 0 ? "None" : u.getMinCreditScore()}</td>
+                                            <td class="text-center">${u.getLatePaymentRate() == 0.0 ? "None" : u.getLatePaymentRate()}</td>
 
 
                                             <td class="text-center">
+                                                <fmt:setLocale value="vi_VN"/>
+                                                <c:choose>
+                                                    <c:when test="${empty u.getMinAmount()}">
+                                                        None
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <fmt:formatNumber value="${u.getMinAmount()}" type="number" minFractionDigits="0" maxFractionDigits="0"/>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+
+                                            <td class="text-center">${u.getMinPeriod() == 0 ? "None" : u.getMinPeriod()}</td>
+
+                                            <td class="text-center">${u.getEarlyWithdrawRate() == 0 ? "None" : u.getEarlyWithdrawRate()}</td>
+
+
+                                            <td class="text-center">${u.getInterestRate()}</td>
+
+
+                                            <td class="text-center">
+
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="adminSwitch-${c.getCustomerId()}" ${c.isStatus() ? 'checked' : ''} onchange="updateStatusOfCustomer(${c.getCustomerId()}, this.checked)">
-                                                    <label class="form-check-label" for="adminSwitch-${c.getCustomerId()}">Active</label>
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="adminSwitch-${u.getServiceItemID()}" ${u.isStatus() ? 'checked' : ''} onchange="updateStatusOfServiceItem(${u.getServiceItemID()}, this.checked)">
+                                                    <label class="form-check-label" for="adminSwitch-${u.getServiceItemID()}">Active</label>
                                                 </div>
 
                                             </td>
 
-                                            <td class="text-center">
-                                                <fmt:formatDate value="${c.createdAt}" pattern="dd-MM-yyyy"/>
-                                            </td>
 
 
                                             <td class="text-center">
+
                                                 <div class="form-button-action">
-<!--                                                    <a href="update_user?id=${u.getUserID()}"
+                                                    <a href="update_serviceItem?id=${u.getServiceItemID()}"
                                                        class="btn btn-link btn-primary btn-lg"
                                                        data-bs-toggle="tooltip"
                                                        title="Update Information"
                                                        data-original-title="Update Information">
                                                         <i class="fa fa-edit"></i>
-                                                    </a>-->
-
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-link btn-info btn-lg"
-                                                       data-bs-toggle="tooltip"
-                                                       title="View Profile"
-                                                       onclick="showUserDetails('${c.getImage()}', '${c.getUsername()}', '${c.getFullName()}', '${c.getPhone()}',
-                                                                       '${c.getEmail()}', '${c.getAddress()}', '${c.getDateOfBirth()}', '${c.isGender()}', '${c.getRoleID()}',
-                                                                       '${c.getCreditScore()}', '${c.isStatus()}', '${c.getCreatedAt()}')">
-                                                        <i class="fa fa-eye"></i>
                                                     </a>
 
                                                 </div>
@@ -1162,55 +1181,55 @@
 
 
 
-                        <!-- Modal for show detail user -->
-                        <div class="modal fade" id="userDetailModal" tabindex="-1" aria-labelledby="userDetailModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="userDetailModalLabel">User Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <!-- Column left: IMAGE -->
-                                            <div class="col-md-6 text-center">
-                                                <img id="userImage" src="" alt="User Image"  style="width: 300px; height: 380px;">
-                                            </div>
-                                            <!-- Column right: User Detail -->
-                                            <div class="col-md-6">
-                                                <p><strong>Username:</strong> <span id="userUsername"></span></p>
-                                                <p><strong>Full Name:</strong> <span id="userFullName"></span></p>
-                                                <p><strong>Phone:</strong> <span id="userPhone"></span></p>
-                                                <p><strong>Email:</strong> <span id="userEmail"></span></p>
-                                                <p><strong>Address:</strong> <span id="userAddress"></span></p>
-                                                <p><strong>Date of Birth:</strong> <span id="userDateOfBirth"></span></p>
-                                                <p><strong>Gender:</strong> <span id="userGender"></span></p>
-                                                <p><strong>Role:</strong> <span id="userRole"></span></p>
-                                                <p><strong>Credit score:</strong> <span id="creditScore"></span></p>
-                                                <p><strong>Status:</strong> <span id="userStatus"></span></p>
-                                                <p><strong>Created At:</strong> <span id="userCreatedAt"></span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!--                         Modal for show detail user 
+                                                <div class="modal fade" id="userDetailModal" tabindex="-1" aria-labelledby="userDetailModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="userDetailModalLabel">User Details</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                     Column left: IMAGE 
+                                                                    <div class="col-md-6 text-center">
+                                                                        <img id="userImage" src="" alt="User Image"  style="width: 300px; height: 380px;">
+                                                                    </div>
+                                                                     Column right: User Detail 
+                                                                    <div class="col-md-6">
+                                                                        <p><strong>Username:</strong> <span id="userUsername"></span></p>
+                                                                        <p><strong>Full Name:</strong> <span id="userFullName"></span></p>
+                                                                        <p><strong>Phone:</strong> <span id="userPhone"></span></p>
+                                                                        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+                                                                        <p><strong>Address:</strong> <span id="userAddress"></span></p>
+                                                                        <p><strong>Date of Birth:</strong> <span id="userDateOfBirth"></span></p>
+                                                                        <p><strong>Gender:</strong> <span id="userGender"></span></p>
+                                                                        <p><strong>Role:</strong> <span id="userRole"></span></p>
+                                                                        <p><strong>Manager:</strong> <span id="userManager"></span></p>
+                                                                        <p><strong>Status:</strong> <span id="userStatus"></span></p>
+                                                                        <p><strong>Created At:</strong> <span id="userCreatedAt"></span></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
 
 
                         <div class="pagination">
                             <c:if test="${currentPage > 1}">
-                                <a href="?page=${currentPage - 1}&keyWord=${keyWord}&type1=${typeOfSortByName}&type2=${typeOfSortByDate}&type3=${typeOfSortByCreditScore}&status=${statusOfUser}&entries=${entries}" class="prev">Previous</a>
+                                <a href="?page=${currentPage - 1}&keyword=${keyword}&type1=${typeOfServiceItem}&type2=${typeOfSortByInterestRate}&status=${statusOfSItem}&entries=${entries}" class="prev">Previous</a>
                             </c:if>
 
                             <c:forEach var="i" begin="1" end="${totalPages}">
-                                <a href="?page=${i}&keyWord=${keyWord}&type1=${typeOfSortByName}&type2=${typeOfSortByDate}&type3=${typeOfSortByCreditScore}&status=${statusOfUser}&entries=${entries}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                <a href="?page=${i}&keyword=${keyword}&type1=${typeOfServiceItem}&type2=${typeOfSortByInterestRate}&status=${statusOfSItem}&entries=${entries}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                             </c:forEach>
 
                             <c:if test="${currentPage < totalPages}">
-                                <a href="?page=${currentPage + 1}&keyWord=${keyWord}&type1=${typeOfSortByName}&type2=${typeOfSortByDate}&type3=${typeOfSortByCreditScore}&status=${statusOfUser}&entries=${entries}" class="next">Next</a>
+                                <a href="?page=${currentPage + 1}&keyword=${keyword}&type1=${typeOfServiceItem}&type2=${typeOfSortByInterestRate}&status=${statusOfSItem}&entries=${entries}" class="next">Next</a>
                             </c:if>
                         </div>
 
@@ -1322,53 +1341,28 @@
 
 
         <script>
-                                                           function updateStatusOfCustomer(customerID, statusIsChecked) {
-                                                               $.ajax({
-                                                                   url: 'updateStatusOfCus',
-                                                                   type: 'POST',
-                                                                   data: {
-                                                                       cusID: customerID,
-                                                                       status: statusIsChecked
-                                                                   },
-                                                                   success: function (response) {
-                                                                       if (response.success) {
-                                                                           alert(response.message);
-                                                                       } else {
-                                                                           alert(response.message);
-                                                                       }
-                                                                   },
-                                                                   error: function (xhr, status, error) {
-                                                                       alert('error: ' + error);
-                                                                   }
-                                                               });
-                                                           }
+                                                        function updateStatusOfServiceItem(serviceItemID, statusIsChecked) {
+                                                            $.ajax({
+                                                                url: 'updateStatus_ServiceItem',
+                                                                type: 'POST',
+                                                                data: {
+                                                                    serviceItemID: serviceItemID,
+                                                                    status: statusIsChecked
+                                                                },
+                                                                success: function (response) {
+                                                                    if (response.success) {
+                                                                        alert(response.message);
+                                                                    } else {
+                                                                        alert(response.message);
+                                                                    }
+                                                                },
+                                                                error: function (xhr, status, error) {
+                                                                    alert('error: ' + error);
+                                                                }
+                                                            });
+                                                        }
 
-                                                           function showUserDetails(image, username, fullName, phone, email, address, dateOfBirth, gender, roleID, creditScore, status, createdAt) {
-                                                               // Điền dữ liệu vào modal
-                                                               document.getElementById('userImage').src = image;
-                                                               document.getElementById('userUsername').textContent = username;
-                                                               document.getElementById('userFullName').textContent = fullName;
-                                                               document.getElementById('userPhone').textContent = phone;
-                                                               document.getElementById('userEmail').textContent = email;
-                                                               document.getElementById('userAddress').textContent = address;
-                                                               document.getElementById('userDateOfBirth').textContent = dateOfBirth;
-                                                               document.getElementById('userGender').textContent = gender === 'true' ? 'Male' : 'Female';
-                                                               document.getElementById('creditScore').textContent = creditScore;
-
-                                                               document.getElementById('userRole').textContent = 'Customer';
-
-                                                               // Status Mapping
-                                                               document.getElementById('userStatus').textContent = status === 'true' ? 'Active' : 'Inactive';
-                                                               document.getElementById('userCreatedAt').textContent = createdAt;
-
-                                                               // Hiển thị modal
-                                                               const modal = new bootstrap.Modal(document.getElementById('userDetailModal'));
-                                                               modal.show();
-                                                           }
-
-
-
-
+//                                                     
         </script>
 
 
