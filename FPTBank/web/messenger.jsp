@@ -6,10 +6,7 @@
     <head>
         <style>
             /* Ensure the top panel has a defined z-index */
-            .mil-top-panel {
-                position: relative; /* Ensure it has a positioning context */
-                z-index: 1000; /* Set a reasonable z-index for the top panel */
-            }
+   
 
             /* Style for the messenger icon */
             .messenger-icon {
@@ -64,7 +61,7 @@
             df-messenger chat-box[opened] {
                 max-width: 280px;
                 max-height: 100px; /* Giảm chiều cao tối đa từ 350px xuống 250px */
-                z-index: 10000;
+               
             }
 
 
