@@ -58,10 +58,16 @@
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
                 animation: modalFadeIn 0.3s ease;
             }
-            
+
             @keyframes modalFadeIn {
-                from {opacity: 0; transform: translateY(-20px);}
-                to {opacity: 1; transform: translateY(0);}
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
             .modal-header {
@@ -98,7 +104,7 @@
                 display: flex;
                 gap: 20px;
             }
-            
+
             .modal-footer {
                 display: flex;
                 justify-content: flex-end;
@@ -154,7 +160,7 @@
                 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             }
             /*Button Styles end*/
-            
+
             /* Form Styles */
             .loan-form-container {
                 background-color: #f0f9f0;
@@ -162,7 +168,7 @@
                 padding: 40px;
                 box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             }
-            
+
             .mil-input {
                 border: 1px solid #ddd;
                 border-radius: 8px;
@@ -171,36 +177,36 @@
                 font-size: 16px;
                 background-color: #ffffff;
             }
-            
+
             .mil-input:focus {
                 border-color: #4caf50;
                 box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
                 outline: none;
             }
-            
+
             .field-icon {
                 font-size: 18px;
                 transition: color 0.3s ease;
             }
-            
+
             .field-icon:hover {
                 color: #4caf50;
             }
-            
+
             .form-section {
                 position: relative;
                 display: inline-block;
                 width: 100%;
                 margin-top: 24px;
             }
-            
+
             .error-message {
                 color: #e53935;
                 font-size: 14px;
                 margin-top: 5px;
                 display: none;
             }
-            
+
             /* Asset/Salary Display */
             .asset-preview, .salary-display {
                 display: grid;
@@ -212,13 +218,13 @@
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
                 align-items: center;
             }
-            
+
             .asset-image, .salary-image {
                 grid-column: span 3;
                 display: flex;
                 justify-content: center;
             }
-            
+
             .asset-image img, .salary-image img {
                 width: 120px;
                 height: 120px;
@@ -226,7 +232,7 @@
                 border-radius: 8px;
                 border: 1px solid #eaeaea;
             }
-            
+
             .asset-title, .salary-name {
                 grid-column: span 6;
                 display: flex;
@@ -235,7 +241,7 @@
                 font-size: 18px;
                 font-weight: 500;
             }
-            
+
             .asset-value, .salary-value {
                 grid-column: span 3;
                 display: flex;
@@ -245,7 +251,7 @@
                 font-weight: 600;
                 color: #2e7d32;
             }
-            
+
             /* Detail Sections */
             .detail-section {
                 padding: 20px;
@@ -257,7 +263,7 @@
                 border-radius: 10px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             }
-            
+
             .detail-item {
                 font-size: 15px;
                 padding: 12px 15px;
@@ -266,44 +272,44 @@
                 background-color: #f8f9fa;
                 transition: all 0.3s ease;
             }
-            
+
             .detail-item:hover {
                 border-color: #4caf50;
                 background-color: #f1f8e9;
             }
-            
+
             .detail-item b {
                 color: #2e7d32;
             }
-            
+
             /* Tables */
             table {
                 width: 100%;
                 border-collapse: collapse;
             }
-            
+
             table th, table td {
                 padding: 12px 15px;
                 text-align: left;
                 border-bottom: 1px solid #eaeaea;
             }
-            
+
             table th {
                 background-color: #f1f8e9;
                 color: #2e7d32;
                 font-weight: 600;
             }
-            
+
             table tr:hover {
                 background-color: #f9f9f9;
             }
-            
+
             /* Banner */
             .mil-banner-inner {
                 background-color: #f1f8e9;
                 padding: 60px 0;
             }
-            
+
             .loan-type-selector {
                 display: flex;
                 justify-content: space-around;
@@ -312,11 +318,11 @@
                 border-radius: 50px;
                 padding: 5px;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-                max-width: 500px;
+                max-width: 1000px;
                 margin-left: auto;
                 margin-right: auto;
             }
-            
+
             .loan-type-option {
                 cursor: pointer;
                 padding: 10px 25px;
@@ -324,282 +330,314 @@
                 transition: all 0.3s ease;
                 font-weight: 500;
             }
-            
+
             .loan-type-option:hover {
                 color: #4caf50;
             }
-            
+
             .loan-type-option.active {
                 background-color: #4caf50;
                 color: white;
             }
-            
-            /* Radio and Checkbox */
-            input[type="radio"], input[type="checkbox"] {
-                accent-color: #4caf50;
-            }
-            
+
             .radio-group {
                 margin: 10px 50px;
                 display: none;
             }
-            
+
             .radio-option {
                 display: flex;
                 align-items: center;
                 margin-bottom: 10px;
             }
-            
+
             .radio-option input {
                 margin-right: 10px;
             }
         </style>
     </head>
     <body>
-        <%@include file="header.jsp" %>
+        <div id="smooth-wrapper" class="mil-wrapper">
+            <%@include file="header.jsp" %>
+            <div id="smooth-content" style="margin-top: 50px">
 
-        <!-- banner -->
-        <div class="mil-banner mil-banner-inner mil-dissolve">
-            <div class="container">
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-xl-8">
-                        <div class="mil-banner-text mil-text-center">
-                            <h2 class="mil-mb-40">Create Loan Request</h2>
-                            <div class="loan-type-selector">
-                                <h4 class="loan-type-option ${param.Type.equals('Secured') ? 'active' : ''}" onclick="updateURLParameter('Type', 'Secured')">Secured Loan</h4>
-                                <h4>|</h4>
-                                <h4 class="loan-type-option ${param.Type.equals('Unsecured') ? 'active' : ''}" onclick="updateURLParameter('Type', 'Unsecured')">Unsecured Loan</h4>
+                <!-- banner -->
+                <div class="mil-banner mil-banner-inner mil-dissolve">
+                    <div class="container">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-xl-8">
+                                <div class="mil-banner-text mil-text-center">
+                                    <h2 class="mil-mb-40">Create Loan Request</h2>
+                                    <div class="loan-type-selector">
+                                        <h4 class="loan-type-option ${param.Type.equals('Secured') ? 'active' : ''}" onclick="updateURLParameter('Type', 'Secured')">Secured Loan</h4>
+                                        <h4>|</h4>
+                                        <h4 class="loan-type-option ${param.Type.equals('Unsecured') ? 'active' : ''}" onclick="updateURLParameter('Type', 'Unsecured')">Unsecured Loan</h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- banner end -->
+                <!-- banner end -->
 
-        <div class="mil-blog-list mip-p-0-160">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-10">
-                        <div class="loan-form-container">
-                            <form action="create-loan-request" method="post" onsubmit="prepareSubmit(event)">
-                                <input type="text" name="Type" value="${param.Type}" style="display: none">
-                                <c:if test="${param.Type.equals('Secured')}">
+                <div class="mil-blog-list mip-p-0-160">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-xl-10">
+                                <div class="loan-form-container">
+                                    <form action="create-loan-request" method="post" onsubmit="prepareSubmit(event)">
+                                        <input type="text" name="Type" value="${param.Type}" style="display: none">
+                                        <c:if test="${param.Type.equals('Secured')}">
 
-                                    <c:if test="${requestScope.assetList == null || requestScope.assetList.size() == 0}">
-                                        <div class="text-center">
-                                            <h4>You don't have any available asset.</h4>
-                                            <h4>Please update <a href="#" style="color: #e53935">Your Asset</a> or use <a style="color: #e53935" href="/timibank/create-loan-request?Type=Unsecured">Unsecured Loan</a></h4>
-                                        </div>
-                                    </c:if>
-                                    <c:if test="${requestScope.assetList != null && requestScope.assetList.size() != 0}">
-                                        <div id="Asset" class="form-section">
-                                            <input id="AssetInput" name="Asset" class="mil-input mil-up mil-mb-15" placeholder="Select Asset" required readonly onclick="showAssetModal()">
+                                            <c:if test="${requestScope.assetList == null || requestScope.assetList.size() == 0}">
+                                                <div class="text-center">
+                                                    <h4>You don't have any available asset.</h4>
+                                                    <h4>Please update <a href="#" style="color: #e53935">Your Asset</a> or use <a style="color: #e53935" href="/timibank/create-loan-request?Type=Unsecured">Unsecured Loan</a></h4>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${requestScope.assetList != null && requestScope.assetList.size() != 0}">
+                                                <div id="Asset" class="form-section">
+                                                    <input id="AssetInput" name="Asset" class="mil-input mil-up mil-mb-15" placeholder="Select Asset" required readonly onclick="showAssetModal()">
+                                                </div>
+                                                <div id="AssetPreview" class="asset-preview" style="display: none;">
+                                                    <div class="asset-image"><img id="AssetImage" src=""></div>
+                                                    <div id="AssetTitle" class="asset-title"></div>
+                                                    <div id="AssetValuationAmount" class="asset-value"></div>
+                                                </div>
+                                            </c:if>
+                                        </c:if>
+                                        <c:if test="${param.Type.equals('Unsecured')}">
+                                            <c:if test="${requestScope.salaryList == null || requestScope.salaryList.size() == 0}">
+                                                <div class="text-center">
+                                                    <h4>You don't have any available Salary.</h4>
+                                                    <h4>Please update <a href="#" style="color: #e53935">Your Salary</a> or use <a style="color: #e53935" href="/timibank/create-loan-request?Type=Secured">Secured Loan</a></h4>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${requestScope.salaryList != null && requestScope.salaryList.size() != 0}">
+                                                <div id="Salary" class="form-section">
+                                                    <input id="SalaryInput" name="Salary" class="mil-input mil-up mil-mb-15" placeholder="Select Salary" required readonly onclick="showSalaryModal()">
+                                                </div>
+                                                <div id="SalaryPreview" class="salary-preview" style="display: none;">
+                                                    <div class="asset-image"><img id="SalaryImage" src=""></div>
+                                                    <div id="SalaryTitle" class="asset-title"></div>
+                                                    <div id="SalaryValuationAmount" class="asset-value"></div>
+                                                </div>
+                                            </c:if>
+                                        </c:if>
+
+                                        <div id="Amount" class="form-section">
+                                            <input class="mil-input mil-up mil-mb-15" id="AmountInput" type="text" placeholder="Amount to loan" name="Amount" required oninput="validateAmount()" onchange="resetServiceItem(); resetInsurance();">
                                             <span class="fa fa-fw fa-info-circle field-icon" style="position: absolute; top: 40%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="showLoanTermModal()"></span>
+                                            <div id="Amount-err" class="error-message">Your loan amount must be a number and smaller than <span id="MaxAmount"><fmt:formatNumber value="" pattern="#.###"/></span></div>
+                                            <div id="Amount-err-under" class="error-message">We don't provide a loan with amount smaller than 100.000!</div>
                                         </div>
-                                        <div id="AssetPreview" class="asset-preview" style="display: none;">
-                                            <div class="asset-image"><img id="AssetImage" src=""></div>
-                                            <div id="AssetTitle" class="asset-title"></div>
-                                            <div id="AssetValuationAmount" class="asset-value"></div>
+
+                                        <div id="ServiceItem" class="form-section">
+                                            <input id="ServiceItemInput" name="ServiceItem" class="mil-input mil-up mil-mb-15" placeholder="Select Service Item" required readonly onclick="showServiceItemModal()">
+                                            <span class="fa fa-fw fa-info-circle field-icon" style="position: absolute; top: 40%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="showServiceItemDetail()"></span>
                                         </div>
-                                    </c:if>
-                                </c:if>
+
+                                        <div id="ServiceItemDetail" class="detail-section">
+                                            <div id="SIDetail-MaxAmount" class="detail-item" style="grid-column: 2/5;"><b>Max Amount: </b></div>
+                                            <div id="SIDetail-MaxPeriod" class="detail-item" style="grid-column: 6/9;"><b>Max Period: </b></div>
+                                            <div onclick="closeServiceItemDetail()" style="grid-column: 12/13;" class="fa fa-window-close field-icon"></div>
+                                            <div id="SIDetail-MinCreditScore" class="detail-item" style="grid-column: 2/5;"><b>Min Credit Score: </b></div>
+                                            <div id="SIDetail-LatePaymentRate" class="detail-item" style="grid-column: 6/9;"><b>Late Payment Rate: </b></div>
+                                            <div id="SIDetail-InterestRate" class="detail-item" style="grid-column: 10/13;"><b>Interest Rate: </b></div>
+                                        </div>
+
+                                        <div id="Period" class="form-section" style="display: none;">
+                                            <input id="PeriodInput" name="Period" type="number" class="mil-input mil-up mil-mb-15" placeholder="Period" required oninput="validatePeriod()">
+                                            <div id="Period-err" class="error-message">Your period must be a number and smaller than <span id="MaxPeriod"><fmt:formatNumber value="" pattern="#.###"/></span></div>
+                                            <div id="Period-err-under" class="error-message">We don't provide a loan with period smaller than 1 month!</div>
+                                        </div>
+
+                                        <div id="Description" class="form-section" style="display: none;">
+                                            <input id="DescriptionInput" name="Description" type="text" class="mil-input mil-up mil-mb-15" placeholder="Description">
+                                        </div>
+
+                                        <div id="MonthlyPayment" class="form-section" style="display: none;">
+                                            <label class="checkbox-container">
+                                                <input id="MonthlyPaymentInput" name="MonthlyPayment" type="checkbox" onchange="changeMonthlyPayment()"> 
+                                                <span class="checkbox-text">Monthly Payment</span>
+                                            </label>
+                                            <div id="MonthlyPayment_err" class="error-message">You must choose a type of payment!</div>
+                                        </div>
+
+                                        <div id="MonthlyPaymentType" class="radio-group">
+                                            <div class="radio-option">
+                                                <input name="MonthlyPaymentType" type="radio" value="Fixed" id="fixed-payment"> 
+                                                <label for="fixed-payment">Fixed Payment</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input name="MonthlyPaymentType" type="radio" value="Reducing" id="reducing-payment"> 
+                                                <label for="reducing-payment">Reducing Balance Payment</label>
+                                            </div>
+                                        </div>
+
+                                        <div id="Insurance" class="form-section" style="display: none;">
+                                            <input id="InsuranceInput" name="Insurance" class="mil-input mil-up mil-mb-15" placeholder="Select Insurance" required readonly onclick="showInsuranceModal()">
+                                            <span class="fa fa-fw fa-info-circle field-icon" style="position: absolute; top: 40%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="showInsuranceDetail()"></span>
+                                        </div>
+
+                                        <div id="InsuranceDetail" class="detail-section">
+                                            <div id="IDetail-FeeRate" class="detail-item" style="grid-column: 1/3;"><b>Fee Rate: </b></div>
+                                            <div id="IDetail-CoverageRate" class="detail-item" style="grid-column: 4/7;"><b>Coverage Rate: </b></div>
+                                            <div id="IDetail-MaxAmountForLoan" class="detail-item" style="grid-column: 8/12;"><b>Max Amount For Loan: </b></div>
+                                            <div onclick="closeInsuranceDetail()" style="grid-column: 12/13;" class="fa fa-window-close field-icon"></div>
+                                        </div>
+
+                                        <div class="button-group">
+                                            <a href="/timibank/home" class="btn btn-secondary">Back to Home</a>
+                                            <button type="submit" class="btn btn-primary" onclick="prepareSubmit()">Create Request</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asset Modal-->
+                <div id="assetModal" class="modal" style="display: none">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title" id="assetModalTitle">Asset</h1>
+                            <span class="close-modal" onclick="closeModal('assetModal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <table id="assettabledata">
+                                <tr>
+                                    <th></th>
+                                    <th style="width: 150px; text-align: center">Asset Image</th>
+                                    <th>Asset Title</th>
+                                    <th>Asset Value</th>
+                                </tr>
+                                <c:forEach items="${requestScope.assetList}" var="asset">
+                                    <tr>
+                                        <th><input type="radio" name="assetItem" value="${asset.getId()}*${asset.getTitle()}*${asset.getImage()}*${asset.getValuationAmount().intValue()}*"></th>
+                                        <th style="width: 150px; text-align: center"><img style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" src="${asset.getImage()}"></th>
+                                        <th>${asset.getTitle()}</th>
+                                        <th><fmt:formatNumber value="${asset.getValuationAmount()}" pattern="#,###"/></th>
+                                    </tr>
+                                </c:forEach>
+                            </table>                  
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" style="max-width: 100px" onclick="closeModal('assetModal')">Cancel</button>
+                            <button class="btn btn-primary" style="max-width: 100px" onclick="getChoosenAsset()">OK</button>
+                        </div>
+                    </div>
+                </div>
+                <%@include file="footer.jsp" %>
+
+                <!-- Salary Modal-->
+                <div id="salaryModal" class="modal" style="display: none">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title" id="salaryModalTitle">Salary</h1>
+                            <span class="close-modal" onclick="closeModal('salaryModal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <table id="salarytabledata">
+                                <tr>
+                                    <th></th>
+                                    <th style="width: 150px; text-align: center">Salary Image</th>
+                                    <th>Salary Title</th>
+                                    <th>Salary Value</th>
+                                </tr>
+                                <c:forEach items="${requestScope.salaryList}" var="salary">
+                                    <tr>
+                                        <th><input type="radio" name="salaryItem" value="${salary.getId()}*${salary.getTitle()}*${salary.getImage()}*${salary.getValuationAmount().intValue()}"></th>
+                                        <th style="width: 150px; text-align: center"><img style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" src="${salary.getImage()}"></th>
+                                        <th>${salary.getTitle()}</th>
+                                        <th><fmt:formatNumber value="${salary.getValuationAmount()}" pattern="#,###"/></th>
+                                    </tr>
+                                </c:forEach>
+                            </table>                  
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" style="max-width: 100px" onclick="closeModal('salary')">Cancel</button>
+                            <button class="btn btn-primary" style="max-width: 100px" onclick="getChoosenSalary()">OK</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loan Term Modal -->
+                <div id="loanTermModal" class="modal" style="display: none">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title" id="loanTermModalTitle">Loan Term</h1>
+                            <span class="close-modal" onclick="closeModal('loanTermModal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <table>
                                 <c:if test="${param.Type.equals('Unsecured')}">
-                                    <c:if test="${requestScope.salary == null}">
-                                        <div class="text-center">
-                                            <h4>Your salary is not available.</h4>
-                                            <h4>Please update <a href="#" style="color: #e53935">Your Salary</a> or use <a style="color: #e53935" href="/timibank/create-loan-request?Type=Secured">Secured Loan</a></h4>
-                                        </div>
-                                    </c:if>
-                                    <c:if test="${requestScope.salary != null}">
-                                        <div id="Salary" class="salary-display">
-                                            <input type="text" id="SalaryInput" name="Salary" style="display: none" value="${requestScope.salary.getId()}">
-                                            <div class="salary-image"><img id="Salary-Image" src="${requestScope.salary.getImage()}"></div>
-                                            <div id="Salary-Name" class="salary-name">${requestScope.salary.getTitle()}</div>
-                                            <div id="Salary-Value" class="salary-value"><fmt:formatNumber value="${requestScope.salary.getValuationAmount()}" pattern="###,###" type="number"/></div>
-                                        </div>
-                                    </c:if>
+                                    <tr>
+                                        <th>Min Salary Value</th>
+                                        <th>Number of salary available to loan</th>
+                                    </tr>
+                                    <c:forEach items="${requestScope.loanTermList}" var="loanTerm">
+                                        <tr>
+                                            <td><fmt:formatNumber value="${loanTerm.getMinSalary()}" pattern="###,###"/></td>
+                                            <td>${loanTerm.getNumberOfSalary()}</td>
+                                        </tr>
+                                    </c:forEach>
                                 </c:if>
+                                <c:if test="${param.Type.equals('Secured')}">
+                                    <tr>
+                                        <th>Min Asset Value</th>
+                                        <th>Percent of asset available to loan</th>
+                                    </tr>
+                                    <c:forEach items="${requestScope.loanTermList}" var="loanTerm">
+                                        <tr>
+                                            <td><fmt:formatNumber value="${loanTerm.getMinAssetValue()}" pattern="###,###"/></td>
+                                            <td>${loanTerm.getPercentOfAsset()}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:if>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-                                <div id="Amount" class="form-section">
-                                    <input class="mil-input mil-up mil-mb-15" id="AmountInput" type="text" placeholder="Amount to loan" name="Amount" required oninput="validateAmount()" onchange="resetServiceItem(); resetInsurance();">
-                                    <span class="fa fa-fw fa-info-circle field-icon" style="position: absolute; top: 40%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="showLoanTermModal()"></span>
-                                    <div id="Amount-err" class="error-message">Your loan amount must be a number and smaller than <span id="MaxAmount"><fmt:formatNumber value="" pattern="#.###"/></span></div>
-                                    <div id="Amount-err-under" class="error-message">We don't provide a loan with amount smaller than 100.000!</div>
-                                </div>
+                <!-- Service Item Modal-->
+                <div id="serviceItemModal" class="modal" style="display: none">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title" id="serviceItemModalTitle">Service Item</h1>
+                            <span class="close-modal" onclick="closeModal('serviceItemModal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <table id="serviceitemtabledata">
+                            </table>                  
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" style="max-width: 100px" onclick="closeModal('serviceItemModal')">Cancel</button>
+                            <button class="btn btn-primary" style="max-width: 100px" onclick="getChoosenServiceItem()">OK</button>
+                        </div>
+                    </div>
+                </div>
 
-                                <div id="ServiceItem" class="form-section">
-                                    <input id="ServiceItemInput" name="ServiceItem" class="mil-input mil-up mil-mb-15" placeholder="Select Service Item" required readonly onclick="showServiceItemModal()">
-                                    <span class="fa fa-fw fa-info-circle field-icon" style="position: absolute; top: 40%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="showServiceItemDetail()"></span>
-                                </div>
-
-                                <div id="ServiceItemDetail" class="detail-section">
-                                    <div id="SIDetail-MaxAmount" class="detail-item" style="grid-column: 2/5;"><b>Max Amount: </b></div>
-                                    <div id="SIDetail-MaxPeriod" class="detail-item" style="grid-column: 6/9;"><b>Max Period: </b></div>
-                                    <div onclick="closeServiceItemDetail()" style="grid-column: 12/13;" class="fa fa-window-close field-icon"></div>
-                                    <div id="SIDetail-MinCreditScore" class="detail-item" style="grid-column: 2/5;"><b>Min Credit Score: </b></div>
-                                    <div id="SIDetail-LatePaymentRate" class="detail-item" style="grid-column: 6/9;"><b>Late Payment Rate: </b></div>
-                                    <div id="SIDetail-InterestRate" class="detail-item" style="grid-column: 10/13;"><b>Interest Rate: </b></div>
-                                </div>
-
-                                <div id="Period" class="form-section" style="display: none;">
-                                    <input id="PeriodInput" name="Period" type="number" class="mil-input mil-up mil-mb-15" placeholder="Period" required oninput="validatePeriod()">
-                                    <div id="Period-err" class="error-message">Your period must be a number and smaller than <span id="MaxPeriod"><fmt:formatNumber value="" pattern="#.###"/></span></div>
-                                    <div id="Period-err-under" class="error-message">We don't provide a loan with period smaller than 3 month!</div>
-                                </div>
-
-                                <div id="Description" class="form-section" style="display: none;">
-                                    <input id="DescriptionInput" name="Description" type="text" class="mil-input mil-up mil-mb-15" placeholder="Description">
-                                </div>
-
-                                <div id="MonthlyPayment" class="form-section" style="display: none;">
-                                    <label class="checkbox-container">
-                                        <input id="MonthlyPaymentInput" name="MonthlyPayment" type="checkbox" onchange="changeMonthlyPayment()"> 
-                                        <span class="checkbox-text">Monthly Payment</span>
-                                    </label>
-                                    <div id="MonthlyPayment_err" class="error-message">You must choose a type of payment!</div>
-                                </div>
-
-                                <div id="MonthlyPaymentType" class="radio-group">
-                                    <div class="radio-option">
-                                        <input name="MonthlyPaymentType" type="radio" value="Fixed" id="fixed-payment"> 
-                                        <label for="fixed-payment">Fixed Payment</label>
-                                    </div>
-                                    <div class="radio-option">
-                                        <input name="MonthlyPaymentType" type="radio" value="Reducing" id="reducing-payment"> 
-                                        <label for="reducing-payment">Reducing Balance Payment</label>
-                                    </div>
-                                </div>
-
-                                <div id="Insurance" class="form-section" style="display: none;">
-                                    <input id="InsuranceInput" name="Insurance" class="mil-input mil-up mil-mb-15" placeholder="Select Insurance" required readonly onclick="showInsuranceModal()">
-                                    <span class="fa fa-fw fa-info-circle field-icon" style="position: absolute; top: 40%; right: 10px; transform: translateY(-50%); cursor: pointer;" onclick="showInsuranceDetail()"></span>
-                                </div>
-
-                                <div id="InsuranceDetail" class="detail-section">
-                                    <div id="IDetail-FeeRate" class="detail-item" style="grid-column: 1/3;"><b>Fee Rate: </b></div>
-                                    <div id="IDetail-CoverageRate" class="detail-item" style="grid-column: 4/7;"><b>Coverage Rate: </b></div>
-                                    <div id="IDetail-MaxAmountForLoan" class="detail-item" style="grid-column: 8/12;"><b>Max Amount For Loan: </b></div>
-                                    <div onclick="closeInsuranceDetail()" style="grid-column: 12/13;" class="fa fa-window-close field-icon"></div>
-                                </div>
-
-                                <div class="button-group">
-                                    <a href="/timibank/home" class="btn btn-secondary">Back to Home</a>
-                                    <button type="submit" class="btn btn-primary" onclick="prepareSubmit()">Create Request</button>
-                                </div>
-                            </form>
+                <!-- Insurance Modal-->
+                <div id="insuranceModal" class="modal" style="display: none">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title" id="insuanceModalTitle">Insurance</h1>
+                            <span class="close-modal" onclick="closeModal('insuranceModal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <table id="insurancetabledata">
+                            </table>                  
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" style="max-width: 100px" onclick="closeModal('insuranceModal')">Cancel</button>
+                            <button class="btn btn-primary" style="max-width: 100px" onclick="getChoosenInsurance()">OK</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Asset Modal-->
-        <div id="assetModal" class="modal" style="display: none">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title" id="assetModalTitle">Asset</h1>
-                    <span class="close-modal" onclick="closeModal('assetModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <table id="assettabledata">
-                        <tr>
-                            <th></th>
-                            <th style="width: 150px; text-align: center">Asset Image</th>
-                            <th>Asset Title</th>
-                            <th>Asset Value</th>
-                        </tr>
-                        <c:forEach items="${requestScope.assetList}" var="asset">
-                            <tr>
-                                <th><input type="radio" name="assetItem" value="${asset.getId()}*${asset.getTitle()}*${asset.getImage()}*${asset.getValuationAmount().intValue()}*"></th>
-                                <th style="width: 150px; text-align: center"><img style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" src="${asset.getImage()}"></th>
-                                <th>${asset.getTitle()}</th>
-                                <th><fmt:formatNumber value="${asset.getValuationAmount()}" pattern="#,###"/></th>
-                            </tr>
-                        </c:forEach>
-                    </table>                  
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" style="max-width: 100px" onclick="closeModal('assetModal')">Cancel</button>
-                    <button class="btn btn-primary" style="max-width: 100px" onclick="getChoosenAsset()">OK</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Loan Term Modal -->
-        <div id="loanTermModal" class="modal" style="display: none">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title" id="loanTermModalTitle">Loan Term</h1>
-                    <span class="close-modal" onclick="closeModal('loanTermModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <table>
-                        <c:if test="${param.Type.equals('Unsecured')}">
-                            <tr>
-                                <th>Salary Value</th>
-                                <th>Number of salary available to loan</th>
-                            </tr>
-                            <c:forEach items="${requestScope.loanTermList}" var="loanTerm">
-                                <tr>
-                                    <td><fmt:formatNumber value="${loanTerm.getMinSalary()}" pattern="###,###"/></td>
-                                    <td>${loanTerm.getNumberOfSalary()}</td>
-                                </tr>
-                            </c:forEach>
-                        </c:if>
-                        <c:if test="${param.Type.equals('Secured')}">
-                            <tr>
-                                <th>Asset Value</th>
-                                <th>Percent of asset available to loan</th>
-                            </tr>
-                            <c:forEach items="${requestScope.loanTermList}" var="loanTerm">
-                                <tr>
-                                    <td><fmt:formatNumber value="${loanTerm.getMinAssetValue()}" pattern="###.###"/></td>
-                                    <td>${loanTerm.getPercentOfAsset()}</td>
-                                </tr>
-                            </c:forEach>
-                        </c:if>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Service Item Modal-->
-        <div id="serviceItemModal" class="modal" style="display: none">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title" id="serviceItemModalTitle">Service Item</h1>
-                    <span class="close-modal" onclick="closeModal('serviceItemModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <table id="serviceitemtabledata">
-                    </table>                  
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" style="max-width: 100px" onclick="closeModal('serviceItemModal')">Cancel</button>
-                    <button class="btn btn-primary" style="max-width: 100px" onclick="getChoosenServiceItem()">OK</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Insurance Modal-->
-        <div id="insuranceModal" class="modal" style="display: none">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title" id="insuanceModalTitle">Insurance</h1>
-                    <span class="close-modal" onclick="closeModal('insuranceModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <table id="insurancetabledata">
-                    </table>                  
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" style="max-width: 100px" onclick="closeModal('insuranceModal')">Cancel</button>
-                    <button class="btn btn-primary" style="max-width: 100px" onclick="getChoosenInsurance()">OK</button>
-                </div>
-            </div>
-        </div>
-
         <script>
             var maxAmountForLoan = 0;
             var ServiceItemID = '';
@@ -720,8 +758,40 @@
                 document.getElementById('AssetPreview').style.display = 'grid';
                 document.getElementById('Amount').style.display = 'block';
                 document.getElementById('ServiceItem').style.display = 'block';
+                document.getElementsByClassName('button-group')[0].style.display = 'block';
             }
             //Asset end
+
+            //Salary start
+            function showSalaryModal() {
+                const modal = document.getElementById('salaryModal');
+                modal.style.display = 'block';
+                modal.style.opacity = '1';
+                modal.style.visibility = 'visible';
+            }
+
+            function getChoosenSalary() {
+                const ChoosenSalary = document.getElementById('SalaryInput');
+                const SalaryList = document.getElementsByName('salaryItem');
+                var selectedSalary = '';
+                for (var salary of SalaryList) {
+                    if (salary.checked) {
+                        selectedSalary = salary;
+                        break;
+                    }
+                }
+                closeModal('salaryModal');
+                ChoosenSalary.value = selectedSalary.value.split('*')[0] + '-' + selectedSalary.value.split('*')[1];
+                getMaxAmount('Unsecured', 0, selectedSalary.value.split('*')[3]);
+                document.getElementById("SalaryImage").src = selectedSalary.value.split('*')[2];
+                document.getElementById("SalaryTitle").innerHTML = selectedSalary.value.split('*')[1];
+                document.getElementById("SalaryValuationAmount").innerHTML = parseInt(selectedSalary.value.split('*')[3]).toLocaleString('de-DE');
+                document.getElementById('SalaryPreview').style.display = 'grid';
+                document.getElementById('Amount').style.display = 'block';
+                document.getElementById('ServiceItem').style.display = 'block';
+                document.getElementsByClassName('button-group')[0].style.display = 'block';
+            }
+            //Salary end
 
             //Amount start
             function getMaxAmount(Type, Asset, Salary) {
@@ -981,5 +1051,22 @@
             }
             //Insurance End
         </script>
+        <!-- jquery js -->
+        <script src="js/plugins/jquery.min.js"></script>
+
+        <!-- swiper css -->
+        <script src="js/plugins/swiper.min.js"></script>
+        <!-- gsap js -->
+        <script src="js/plugins/gsap.min.js"></script>
+        <!-- scroll smoother -->
+        <script src="js/plugins/ScrollSmoother.min.js"></script>
+        <!-- scroll trigger js -->
+        <script src="js/plugins/ScrollTrigger.min.js"></script>
+        <!-- scroll to js -->
+        <script src="js/plugins/ScrollTo.min.js"></script>
+        <!-- magnific -->
+        <script src="js/plugins/magnific-popup.js"></script>
+        <!-- plax js -->
+        <script src="js/main.js"></script>
     </body>
 </html>

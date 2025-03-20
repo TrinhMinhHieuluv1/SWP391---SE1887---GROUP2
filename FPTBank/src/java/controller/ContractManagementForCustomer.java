@@ -66,10 +66,17 @@ public class ContractManagementForCustomer extends HttpServlet {
         Customer account = (Customer) session.getAttribute("account");
         ContractDAO ctdao = new ContractDAO();
 
-        //Show message after a news updated
+        //Show message after add a contract
         String fromAdd = request.getParameter("fromAdd");
         if (fromAdd != null && fromAdd.equals("true")) {
             String message = "Add successfully!";
+            request.setAttribute("message", message);
+        }
+        
+        //Show message after add a contract
+        String fromUpdate = request.getParameter("fromUpdate");
+        if (fromUpdate != null && fromUpdate.equals("true")) {
+            String message = "Update successfully!";
             request.setAttribute("message", message);
         }
 

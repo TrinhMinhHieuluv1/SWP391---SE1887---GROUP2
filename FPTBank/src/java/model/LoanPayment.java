@@ -2,23 +2,28 @@ package model;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class LoanPayment {
-    
+
     private int LoanPaymentID;
     private Contract Contract;
     private Date PaymentDate;
+    private Date PaidDate;
     private BigDecimal PaymentAmount;
+    private BigDecimal LateAmount;
     private String PaymentStatus;
 
     public LoanPayment() {
     }
 
-    public LoanPayment(int LoanPaymentID, Contract Contract, Date PaymentDate, BigDecimal PaymentAmount, String PaymentStatus) {
+    public LoanPayment(int LoanPaymentID, Contract Contract, Date PaymentDate, Date PaidDate, BigDecimal PaymentAmount, BigDecimal LateAmount, String PaymentStatus) {
         this.LoanPaymentID = LoanPaymentID;
         this.Contract = Contract;
         this.PaymentDate = PaymentDate;
+        this.PaidDate = PaidDate;
         this.PaymentAmount = PaymentAmount;
+        this.LateAmount = LateAmount;
         this.PaymentStatus = PaymentStatus;
     }
 
@@ -61,5 +66,22 @@ public class LoanPayment {
     public void setPaymentStatus(String PaymentStatus) {
         this.PaymentStatus = PaymentStatus;
     }
+
+    public Date getPaidDate() {
+        return PaidDate;
+    }
+
+    public void setPaidDate(Date PaidDate) {
+        this.PaidDate = PaidDate;
+    }
+
+    public BigDecimal getLateAmount() {
+        return LateAmount;
+    }
+
+    public void setLateAmount(BigDecimal LateAmount) {
+        this.LateAmount = LateAmount;
+    }
+
     
 }
