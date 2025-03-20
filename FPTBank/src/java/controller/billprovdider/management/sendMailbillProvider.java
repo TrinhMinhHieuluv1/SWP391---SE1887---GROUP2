@@ -37,7 +37,7 @@ public class sendMailbillProvider {
 
         Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Mail.APP_EMAIL, Mail.APP_PASSWORD);
+                return new PasswordAuthentication("timibank.se1887@gmail.com", "dczj xqjz xmsa csdt");
             }
         });
 
@@ -167,7 +167,7 @@ public class sendMailbillProvider {
 
         Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Mail.APP_EMAIL, Mail.APP_PASSWORD);
+                return new PasswordAuthentication("timibank.se1887@gmail.com", "dczj xqjz xmsa csdt");
             }
         });
 
@@ -275,6 +275,41 @@ public class sendMailbillProvider {
             MimeBodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setContent(emailContent, "text/html; charset=UTF-8");
             multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
+            Transport.send(message);
+            System.out.println("mail is send" + System.currentTimeMillis());
+
+            return true;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+     public static boolean guiMailforPaying(String email, String a) throws UnsupportedEncodingException {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.host", Mail.HOST_NAME);
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.port", Mail.TSL_PORT);
+
+        Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("timibank.se1887@gmail.com", "dczj xqjz xmsa csdt");
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            
+           
+            String subject = "Your OTP :" + a;
+            
+            message.setSubject(MimeUtility.encodeText(subject, "UTF-8", "B"));
+
+            // Đặt nội dung email với UTF-8
+            MimeMultipart multipart = new MimeMultipart();
             message.setContent(multipart);
             Transport.send(message);
             System.out.println("mail is send" + System.currentTimeMillis());

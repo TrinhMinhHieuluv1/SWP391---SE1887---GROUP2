@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import java.io.IOException; 
-import 
-        java.net.URLEncoder;
+import dal.TransactionHistoryDAO;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +41,7 @@ import java.util.TimeZone;
 
 import model.CompanyBillProvider;
 import model.Customer;
+import model.TransactionHistory;
 
 /**
  *
@@ -93,18 +94,19 @@ public class Payment extends HttpServlet {
         DetailBillDAO dao = new DetailBillDAO();
         CompanyBillProviderDAO cdao = new CompanyBillProviderDAO();
         CustomerDAO udao = new CustomerDAO();
+        TransactionHistoryDAO tdao = new TransactionHistoryDAO();
         String billID_raw = request.getParameter("billID");
         String providerID_raw = request.getParameter("providerID");
         String total_raw = request.getParameter("total");
         String action = request.getParameter("action");
         String paymentmethod = request.getParameter("paymentmethod");
-        if(total_raw == null || total_raw.isEmpty()){
+        if (total_raw == null || total_raw.isEmpty()) {
             total_raw = "0";
         }
-        if(billID_raw == null || billID_raw.isEmpty()){
+        if (billID_raw == null || billID_raw.isEmpty()) {
             billID_raw = "0";
         }
-        if(providerID_raw == null || providerID_raw.isEmpty()){
+        if (providerID_raw == null || providerID_raw.isEmpty()) {
             providerID_raw = "0";
         }
         double totall = Double.parseDouble(total_raw);
@@ -123,16 +125,18 @@ public class Payment extends HttpServlet {
             } else {
                 LocalDateTime now = LocalDateTime.now();
                 Timestamp paymentTimestamp = Timestamp.valueOf(now);
-                balance = balance.subtract(total);
+                BigDecimal balanceBefore = customer.getBalance(); 
+                BigDecimal balanceAfter = balanceBefore.subtract(total);
                 bill.setStatusOfBill(0);
                 bill.setPaymentDate(paymentTimestamp);
-                customer.setBalance(balance);
-
+                customer.setBalance(balanceAfter);
                 boolean mail = sendMailbillProvider.guiMailforPaying(customer.getEmail(), bill.getBillID(), bill.getTitle(), bill.getDescription(), bill.getStartDate(), bill.getEndDate(), bill.getEndDate(), bill.getTotal(), company.getCompanyName(), customer, paymentTimestamp);
                 if (mail) {
                     error = "Paid successfully and send invoice to email";
                     dao.updateDetailBill(bill);
                     udao.updateACustomer(customer);
+                    TransactionHistory transaction = new TransactionHistory(1, customer, total, balanceBefore, balanceAfter, "Bill Payment", "Bill Payment");
+                    tdao.addTransaction(transaction);
                 } else {
                     error = "Don't send email";
                 }
@@ -161,7 +165,7 @@ public class Payment extends HttpServlet {
             } else {
                 vnp_Params.put("vnp_Locale", "vn");
             }
-            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl+"?total="+ bill.getTotal()+"&billID="+bill.getBillID()+"&providerID="+bill.getProvider().getUserID());
+            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl + "?total=" + bill.getTotal() + "&billID=" + bill.getBillID() + "&providerID=" + bill.getProvider().getUserID());
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
