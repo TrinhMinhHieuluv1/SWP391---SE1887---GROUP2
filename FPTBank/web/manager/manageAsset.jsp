@@ -833,7 +833,7 @@
                     <img src="assets/images/logo-icon.png" class="logo-img" alt="">
                 </div>
                 <div class="logo-name flex-grow-1">
-                    <h5 class="mb-0">Roksyn</h5>
+                    <h5 class="mb-0">BANK</h5>
                 </div>
                 <div class="sidebar-close">
                     <span class="material-symbols-outlined">close</span>

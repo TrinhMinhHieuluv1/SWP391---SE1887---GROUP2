@@ -91,7 +91,7 @@ public class CreateLoanRequest extends HttpServlet {
             request.setAttribute("loanTermList", loanTermList);
         } //Resource for Unsecured Loan
         else {
-            Salary salary = sdao.getSalaryForCustomer(account.getCustomerId());
+           List<Salary> salary = sdao.getSalaryListForCustomer(account.getCustomerId());
             request.setAttribute("salary", salary);
             List<LoanTerm> loanTermList = ltdao.selectLoanTermListByCondition("Unsecured Loan");
             request.setAttribute("loanTermList", loanTermList);
