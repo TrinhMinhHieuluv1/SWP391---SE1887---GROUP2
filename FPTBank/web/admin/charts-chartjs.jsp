@@ -918,10 +918,10 @@
                             <h6 class="mb-0 text-uppercase">Statistic of new Customers</h6>
 
                             <form action="getData_Cus" id="dateFilterForm" class="ms-auto d-flex align-items-center">
-                                <label for="fromDate" class="me-2">From:</label>
-                                <input type="date" id="fromDate" name="fromDate" class="form-control me-3" style="width: 170px;">
+                                <label for="fromDate"  class="me-2">From:</label>
+                                <input type="date" value="${fromDate2}" id="fromDate" name="fromDate" class="form-control me-3" style="width: 170px;">
                                 <label for="toDate" class="me-2">To:</label>
-                                <input type="date" id="toDate" name="toDate" class="form-control me-3" style="width: 170px;">
+                                <input type="date" value="${toDate2}" id="toDate" name="toDate" class="form-control me-3" style="width: 170px;">
                                 <button type="submit" class="btn btn-primary">Filter</button>
                             </form>
 
@@ -977,8 +977,8 @@
                                 <select class="form-select me-1" id="statusFilter2" name="statusFilter2" 
                                         style="width: auto; min-width: 170px; padding: 4px 8px; font-size: 14px;" 
                                         onchange="redirectToServletChart2()">
-                                    <option value="" selected disabled>Status of customer</option>
-                                    <option value="ActiveChart2">Active</option>
+                                    <option value="" disabled>Status of customer</option>
+                                    <option selected value="ActiveChart2">Active</option>
                                     <option value="InactiveChart2">Inactive</option>
                                     <option value="BothChart2">Both</option>
                                 </select>
@@ -1033,8 +1033,8 @@
                                 <select class="form-select me-1" id="statusFilter3" name="statusFilter3" 
                                         style="width: auto; min-width: 170px; padding: 4px 8px; font-size: 14px;" 
                                         onchange="redirectToServletChart3()">
-                                    <option value="" selected disabled>Status of customer</option>
-                                    <option value="ActiveChart3">Active</option>
+                                    <option value="" disabled>Status of customer</option>
+                                    <option selected  value="ActiveChart3">Active</option>
                                     <option value="InactiveChart3">Inactive</option>
                                     <option value="BothChart3">Both</option>
                                 </select>
@@ -1084,8 +1084,8 @@
                                 <select class="form-select me-1" id="statusFilter4" name="statusFilter4" 
                                         style="width: auto; min-width: 170px; padding: 4px 8px; font-size: 14px;" 
                                         onchange="redirectToServletChart4()">
-                                    <option value="" selected disabled>Status of customer</option>
-                                    <option value="ActiveChart4">Active</option>
+                                    <option value="" disabled>Status of customer</option>
+                                    <option selected value="ActiveChart4">Active</option>
                                     <option value="InactiveChart4">Inactive</option>
                                     <option value="BothChart4">Both</option>
                                 </select>
@@ -1280,73 +1280,61 @@
                                             var labels5 = ['Active', 'Inactive'];
                                             var data5 = [<%= percentOfActive %>, <%= percentOfInactive %>];
 
-                                            // prevent filter date
-                                            document.getElementById('dateFilterForm').addEventListener('submit', function (e) {
-                                                e.preventDefault();
+                                           
 
-                                                var fromDate = document.getElementById('fromDate').value;
-                                                var toDate = document.getElementById('toDate').value;
-
-                                                if (fromDate && toDate) {
-                                                    updateChartWithDateFilter(fromDate, toDate);
-                                                } else {
-                                                    toastr.error("Please select both From and To dates!", "Error");
-                                                }
-                                            });
-
-                                            // update data chart 1
-                                            function updateChartWithDateFilter(fromDate, toDate) {
-                                                $.ajax({
-                                                    url: 'filterDateNewCus',
-                                                    type: 'POST',
-                                                    data: {
-                                                        fromDate: fromDate,
-                                                        toDate: toDate
-                                                    },
-                                                    dataType: 'json',
-                                                    success: function (response) {
-                                                        if (response.error) {
-                                                            toastr.error(response.error, "Error");
-                                                            myChart1.data.labels = [];
-                                                            myChart1.data.datasets[0].data = [];
-
-                                                            // Cập nhật form export về giá trị mặc định
-                                                            var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
-                                                            chart1Input.value = "null";
-                                                            var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
-                                                            chart1Percent.value = "null";
-                                                            var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
-                                                            chart1Label.value = "null";
-                                                        } else {
-                                                            myChart1.data.labels = response.labels01.replaceAll("'", "").split(",");
-                                                            myChart1.data.datasets[0].data = response.data01.split(",").map(Number);
-
-                                                            // Cập nhật form export
-                                                            var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
-                                                            chart1Input.value = response.data01;
-                                                            var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
-                                                            chart1Percent.value = response.percentData01;
-                                                            var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
-                                                            chart1Label.value = response.labels01.replaceAll("'", "");
-                                                        }
-                                                        myChart1.update();
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        toastr.error("An error occurred while retrieving data!", "Error");
-                                                        myChart1.data.labels = [];
-                                                        myChart1.data.datasets[0].data = [];
-
-                                                        var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
-                                                        chart1Input.value = "null";
-                                                        var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
-                                                        chart1Percent.value = "null";
-                                                        var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
-                                                        chart1Label.value = "null";
-
-                                                        myChart1.update();
-                                                    }
-                                                });
-                                            }
+//                                            // update data chart 1
+//                                            function updateChartWithDateFilter(fromDate, toDate) {
+//                                                $.ajax({
+//                                                    url: 'filterDateNewCus',
+//                                                    type: 'POST',
+//                                                    data: {
+//                                                        fromDate: fromDate,
+//                                                        toDate: toDate
+//                                                    },
+//                                                    dataType: 'json',
+//                                                    success: function (response) {
+//                                                        if (response.error) {
+//                                                            toastr.error(response.error, "Error");
+//                                                            myChart1.data.labels = [];
+//                                                            myChart1.data.datasets[0].data = [];
+//
+//                                                            // Cập nhật form export về giá trị mặc định
+//                                                            var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
+//                                                            chart1Input.value = "null";
+//                                                            var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
+//                                                            chart1Percent.value = "null";
+//                                                            var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
+//                                                            chart1Label.value = "null";
+//                                                        } else {
+//                                                            myChart1.data.labels = response.labels01.replaceAll("'", "").split(",");
+//                                                            myChart1.data.datasets[0].data = response.data01.split(",").map(Number);
+//
+//                                                            // Cập nhật form export
+//                                                            var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
+//                                                            chart1Input.value = response.data01;
+//                                                            var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
+//                                                            chart1Percent.value = response.percentData01;
+//                                                            var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
+//                                                            chart1Label.value = response.labels01.replaceAll("'", "");
+//                                                        }
+//                                                        myChart1.update();
+//                                                    },
+//                                                    error: function (xhr, status, error) {
+//                                                        toastr.error("An error occurred while retrieving data!", "Error");
+//                                                        myChart1.data.labels = [];
+//                                                        myChart1.data.datasets[0].data = [];
+//
+//                                                        var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
+//                                                        chart1Input.value = "null";
+//                                                        var chart1Percent = document.querySelector('#chart1').closest('.card').querySelector('input[name="percentages"]');
+//                                                        chart1Percent.value = "null";
+//                                                        var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
+//                                                        chart1Label.value = "null";
+//
+//                                                        myChart1.update();
+//                                                    }
+//                                                });
+//                                            }
 
                                             // drownlist chart2
                                             function redirectToServletChart2() {

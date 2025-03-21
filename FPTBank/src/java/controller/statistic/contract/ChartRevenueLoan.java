@@ -80,6 +80,9 @@ public class ChartRevenueLoan extends HttpServlet {
         List<String> listDataLoanContract = chart.calculateDataLoan(revenueLoanByMonth);
 
         JSONObject jsonResponse = new JSONObject();
+        
+        jsonResponse.put("fromDate",fromDateLoan.toString());
+        jsonResponse.put("toDate",toDateLoan.toString());
         if (revenueLoanByMonth.isEmpty() || revenueLoanByMonth == null) {
             jsonResponse.put("error", "No data available !!");
         } else {
