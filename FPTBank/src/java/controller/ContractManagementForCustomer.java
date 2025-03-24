@@ -72,7 +72,7 @@ public class ContractManagementForCustomer extends HttpServlet {
             String message = "Add successfully!";
             request.setAttribute("message", message);
         }
-        
+
         //Show message after add a contract
         String fromUpdate = request.getParameter("fromUpdate");
         if (fromUpdate != null && fromUpdate.equals("true")) {

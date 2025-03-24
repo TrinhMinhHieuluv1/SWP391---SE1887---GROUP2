@@ -692,6 +692,7 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${requestScope.contractList}" var="contract">
+
                         <!-- Hàng hiển thị thông tin chính -->
                         <tr>
                             <td class="center-align">${contract.getContractID()}</td>
@@ -757,7 +758,6 @@
                             </td>
                         </tr>
                     </c:forEach>
-
                 </tbody>
             </table>
 
