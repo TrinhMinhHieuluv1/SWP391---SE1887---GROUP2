@@ -34,11 +34,9 @@ import model.Contract;
  */
 @WebServlet(name = "AdminLogin", urlPatterns = {"/admin/home"})
 public class AdminHome extends HttpServlet {
-
     private FeedbackDAO fDao;
     private CustomerDAO cDao;
     private ContractDAO contractDao;
-
     public void init() throws ServletException {
         fDao = new FeedbackDAO();
         cDao = new CustomerDAO();
@@ -48,7 +46,6 @@ public class AdminHome extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         ChartContractCalculator chart = new ChartContractCalculator();
 
         // feed back
@@ -56,27 +53,22 @@ public class AdminHome extends HttpServlet {
         GetListOfStar getStar = new GetListOfStar();
         List<Integer> listOfStar = getStar.getListOfStar(listOfFeedBack);
         request.getSession().setAttribute("listOfStar", listOfStar);
-
         int totalFeedback = listOfStar.get(0) + listOfStar.get(1) + listOfStar.get(2) + listOfStar.get(3) + listOfStar.get(4);
-
         DecimalFormat df = new DecimalFormat("#.##");
         double percent1star = totalFeedback > 0 ? Double.parseDouble(df.format(((double) listOfStar.get(0) / totalFeedback) * 100)) : 0;
         double percent2star = totalFeedback > 0 ? Double.parseDouble(df.format(((double) listOfStar.get(1) / totalFeedback) * 100)) : 0;
         double percent3star = totalFeedback > 0 ? Double.parseDouble(df.format(((double) listOfStar.get(2) / totalFeedback) * 100)) : 0;
         double percent4star = totalFeedback > 0 ? Double.parseDouble(df.format(((double) listOfStar.get(3) / totalFeedback) * 100)) : 0;
         double percent5star = totalFeedback > 0 ? Double.parseDouble(df.format(((double) listOfStar.get(4) / totalFeedback) * 100)) : 0;
-
         request.getSession().setAttribute("percent1", percent1star);
         request.getSession().setAttribute("percent2", percent2star);
         request.getSession().setAttribute("percent3", percent3star);
         request.getSession().setAttribute("percent4", percent4star);
         request.getSession().setAttribute("percent5", percent5star);
-
         ChartCalculatorHomePage c = new ChartCalculatorHomePage();
         String dataOfChartFb = c.calDataChartFeedBack(listOfStar);
         request.getSession().setAttribute("dataOfChartFb", dataOfChartFb);
         //========================================================================
-
         // total of new customer
         List<Customer> listOfCus = cDao.selectAllCustomer();
         GetTotalOfNewCus getNewCus = new GetTotalOfNewCus();
@@ -84,37 +76,35 @@ public class AdminHome extends HttpServlet {
         request.getSession().setAttribute("totalOfNewCus", totalOfNewCus);
 
         //========================================================================
+
         // total of contract
         List<Contract> listContract = contractDao.selectAllContract();
         int totalOfContract = listContract.size();
         request.getSession().setAttribute("totalOfContract", totalOfContract);
 
         //========================================================================
+        
         // total of Revenue
         CalculateTotalOfRevenue cal = new CalculateTotalOfRevenue();
         BigDecimal totalOfSaving = cal.getTotalRevenueOfSaving(listContract);
         BigDecimal totalOfLoan = cal.getTotalRevenueOfLoan(listContract);
         BigDecimal totalRevenue = totalOfLoan.add(totalOfSaving);
-
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         String formattedTotalRevenue = formatter.format(totalRevenue);
         request.getSession().setAttribute("totalRevenue", formattedTotalRevenue);
 
         //========================================================================
-        // bounce rate (rate of contract was rejected)
+
+      // bounce rate (rate of contract was rejected)
         CalculateBounceRate calBounce = new CalculateBounceRate();
         double bounceRate = calBounce.getBounceRate(listContract);
         request.getSession().setAttribute("bounceRate", bounceRate);
-
-        //========================================================================
         // contract for each month
         List<Contract> filteredContract = new ArrayList<>();
         String fromDateStr = request.getParameter("fromDate");
         String toDateStr = request.getParameter("toDate");
-
         LocalDate fromDate = null;
         LocalDate toDate = null;
-
         try {
             if (fromDateStr != null && toDateStr != null) {
                 fromDate = LocalDate.parse(fromDateStr);
@@ -129,7 +119,6 @@ public class AdminHome extends HttpServlet {
         if (toDate == null) {
             toDate = LocalDate.now(); // Lấy ngày hiện tại
         }
-
         for (Contract contract : listContract) {
             if (contract.getStatusID() != 3 && contract.getCreateAt() != null) {
                 LocalDate createdAt = contract.getCreateAt().toLocalDate();
@@ -139,18 +128,15 @@ public class AdminHome extends HttpServlet {
                 }
             }
         }
-
         Map<String, Integer> contractMapByMonth = chart.countContractByMonth(filteredContract);
         List<String> listDataContract = chart.calculateCharContract(contractMapByMonth);
         String labelsContract = "";
         String dataContract = "";
         String percentDataContract = "";
-
         if (listDataContract != null && !listDataContract.isEmpty()) {
             labelsContract = listDataContract.get(0);
             dataContract = listDataContract.get(1);
             percentDataContract = listDataContract.get(2);
-
         }
 
         if (contractMapByMonth.isEmpty() || contractMapByMonth == null) {
@@ -159,7 +145,6 @@ public class AdminHome extends HttpServlet {
 
         request.getSession().setAttribute("fromDate", fromDate);
         request.getSession().setAttribute("toDate", toDate);
-
         request.getSession().setAttribute("urlToServletContract", "allTypeContract");
         request.getSession().setAttribute("titleOfX", "All Of Contract");
         request.getSession().setAttribute("labelsContract", labelsContract);
@@ -167,14 +152,13 @@ public class AdminHome extends HttpServlet {
         request.getSession().setAttribute("percentDataContract", percentDataContract);
 
         //========================================================================
+
         // Revenue from saving contract
         List<Contract> filteredSavingContract = new ArrayList<>();
         String fromDateSavingStr = request.getParameter("fromDateSaving");
         String toDateSavingStr = request.getParameter("toDateSaving");
-
         LocalDate fromDateSaving = null;
         LocalDate toDateSaving = null;
-
         try {
             if (fromDateSavingStr != null && toDateSavingStr != null) {
                 fromDateSaving = LocalDate.parse(fromDateSavingStr);
@@ -189,7 +173,6 @@ public class AdminHome extends HttpServlet {
         if (toDateSaving == null) {
             toDateSaving = LocalDate.now(); // Lấy ngày hiện tại
         }
-
         for (Contract contract : listContract) {
             if (contract.getStatusID() != 3 && contract.getCreateAt() != null && contract.getType().equalsIgnoreCase("Saving")) {
                 LocalDate createdAt = contract.getCreateAt().toLocalDate();
@@ -199,18 +182,15 @@ public class AdminHome extends HttpServlet {
                 }
             }
         }
-
         Map<String, BigDecimal> revenueByMonth = cal.calRevenueSavingByMonth(filteredSavingContract);
         List<String> listDataSavingContract = chart.calculateDataSaving(revenueByMonth);
         String labelsSavingContract = "";
         String dataSavingContract = "";
         String percentDataSavingContract = "";
-
         if (listDataSavingContract != null && !listDataSavingContract.isEmpty()) {
             labelsSavingContract = listDataSavingContract.get(0);
             dataSavingContract = listDataSavingContract.get(1);
             percentDataSavingContract = listDataSavingContract.get(2);
-
         }
 
         if (revenueByMonth.isEmpty() || revenueByMonth == null) {
@@ -218,7 +198,6 @@ public class AdminHome extends HttpServlet {
         }
         request.getSession().setAttribute("fromDate", fromDateSaving);
         request.getSession().setAttribute("toDate", toDateSaving);
-
         request.getSession().setAttribute("labelsSavingContract", labelsSavingContract);
         request.getSession().setAttribute("dataSavingContract", dataSavingContract);
         request.getSession().setAttribute("percentDataSavingContract", percentDataSavingContract);
@@ -228,10 +207,8 @@ public class AdminHome extends HttpServlet {
         List<Contract> filteredLoanContract = new ArrayList<>();
         String fromDateLoanStr = request.getParameter("fromDateLoan");
         String toDateLoanStr = request.getParameter("toDateLoan");
-
         LocalDate fromDateLoan = null;
         LocalDate toDateLoan = null;
-
         try {
             if (fromDateLoanStr != null && toDateLoanStr != null) {
                 fromDateLoan = LocalDate.parse(fromDateLoanStr);
@@ -259,7 +236,6 @@ public class AdminHome extends HttpServlet {
 
             }
         }
-
         Map<String, BigDecimal> revenueLoanByMonth = cal.calRevenueLoanByMonth(filteredLoanContract);
         List<String> listDataLoanContract = chart.calculateDataLoan(revenueLoanByMonth);
         String labelsLoanContract = "";
@@ -270,7 +246,6 @@ public class AdminHome extends HttpServlet {
             labelsLoanContract = listDataLoanContract.get(0);
             dataLoanContract = listDataLoanContract.get(1);
             percentDataLoanContract = listDataLoanContract.get(2);
-
         }
 
         if (revenueLoanByMonth.isEmpty() || revenueLoanByMonth == null) {
@@ -291,5 +266,4 @@ public class AdminHome extends HttpServlet {
             throws ServletException, IOException {
 
     }
-
 }

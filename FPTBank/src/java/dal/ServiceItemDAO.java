@@ -135,9 +135,9 @@ public class ServiceItemDAO extends DBContext {
         List<ServiceItem> serviceItemList = new ArrayList<>();
         String sql = "";
         if (Type.equals("Saving")) {
-            sql = "SELECT * FROM [ServiceItem] WHERE (Type=?) AND (MinAmount<?) AND (Status=1)";
+            sql = "SELECT * FROM [ServiceItem] WHERE (Type=?) AND (MinAmount<=?) AND (Status=1)";
         } else {
-            sql = "SELECT * FROM [ServiceItem] WHERE (Type=?) AND (MaxAmount>?) AND (Status=1)";
+            sql = "SELECT * FROM [ServiceItem] WHERE (Type=?) AND (MaxAmount>=?) AND (Status=1)";
         }
         try {
             PreparedStatement st = connection.prepareStatement(sql);
