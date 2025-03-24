@@ -433,6 +433,35 @@
             .delete-button:hover {
                 background-color: #cc0000; /* Đậm hơn khi hover */
             }
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: auto;
+            }
+
+            .pagination a {
+                padding: 9px 10px;
+                margin: 0 5px;
+                background-color: #f4f4f4;
+
+                color: #333;
+                text-decoration: none;
+                border-radius: 25px;
+                font-weight: bold;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .pagination a:hover {
+                background-color: yellowgreen;
+            }
+
+            .pagination a.active {
+                background-color: green;
+                color: #fff;
+                border-radius: 30px;
+            }
+
         </style>
     </head>
     <body>
@@ -462,7 +491,7 @@
                 <h2>Assets Submitted</h2>
                 <!-- Filter Section -->
                 <div >
-                    <form class="filter-section" action="searchAsset" method="post">
+                    <form class="filter-section" action="searchAsset">
                         <div>
                             <label for="nameFilter">Asset Name</label>
                             <input type="text" id="nameFilter" name="name"oninput="filterAssets()" placeholder="Enter name">
@@ -478,6 +507,7 @@
                                 <option value="Approved">Approved</option>
                             </select>
                         </div>
+                        <input hidden id="pageId" type="text"/> 
                         <div>
                             <label for="serviceFilter">Used for a Service:</label>
                             <select id="serviceFilter" onchange="filterAssets()" name="opUse">
@@ -494,10 +524,19 @@
                             </select>
 
                         </div>
+                        <input name="pageSize" value="${pageSize}" hidden/>
                         <button type="submit" class="add-btn">Search</button>
                     </form>
-
-                    <a href="addAsset.jsp" class="add-btn">Add New Asset</a>
+                    <div>
+                        <label for="pageSizeSelect">Page Size:</label>    
+                        <select id="pageSizeSelect" onchange="changePageSize()">
+                            <c:forEach items="${requestScope.listSize}" var="size">
+                                <option value="${size}" ${pageSize == size ? 'selected' : ''}>${size}</option>
+                            </c:forEach>
+                        </select>
+                         <span><a href="addAsset.jsp" class="add-btn">Add New Asset</a></span>
+                    </div>
+                   
                 </div>
 
                 <!-- Assets Table -->
@@ -596,13 +635,27 @@
                                 </tr>        
                             </c:forEach>
                         </c:if>
+
                     </tbody>
                 </table>
             </div>
+            <div class="pagination" style="margin-top: 30px;">
+                <c:if test="${currentPage > 1}">
+                    <a href="?page=${currentPage - 1}&pageSize=${pageSize}&name=${name}&opStatus=${opStatus}&opUse=${opUse}&opDate=${opDate}" class="prev">Previous</a>
+                </c:if>
+
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <a href="?page=${i}&pageSize=${pageSize}&name=${name}&opStatus=${opStatus}&opUse=${opUse}&opDate=${opDate}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                </c:forEach>
+
+                <c:if test="${currentPage < totalPages}">
+                    <a href="?page=${currentPage + 1}&pageSize=${pageSize}&name=${name}&opStatus=${opStatus}&opUse=${opUse}&opDate=${opDate}"class="next">Next</a>
+                </c:if>
+            </div>       
         </div>
         <div id="commentDetailModal" class="modal">
             <div class="modal-content" style="width: 500px; max-height: 500px; overflow-y: auto;">
-                
+
                 <span class="close" onclick="closeCommentModal()" style="right: 10px;top: 10px;position: absolute;cursor: pointer;font-size: 24px;">&times;</span>
                 <div class="modal-info">
                     <p><strong>Comment:</strong></p>
@@ -689,6 +742,12 @@
                 </form>
             </div>
         </div>
+        <script>
+            function changePageSize() {
+                var pageSize = document.getElementById("pageSizeSelect").value;
+                window.location.href = "?pageSize=" + pageSize;
+            }
+        </script>
         <script type="text/javascript">
 
             function formatNumber(input) {
@@ -945,7 +1004,7 @@
             });
             document.getElementById("uploadForm").addEventListener("submit", function (event) {
                 event.preventDefault(); // Ngăn hành động submit mặc định
-
+                var fileInput = document.getElementById('editPdf');
                 const form = event.target;
                 const formData = new FormData(form);
 
@@ -957,6 +1016,7 @@
                         .then(data => {
                             if (data.success) {
                                 // Đóng modal
+                                fileInput.value = '';
                                 closeEditAssetModal();
 
                                 // Cập nhật giao diện chính

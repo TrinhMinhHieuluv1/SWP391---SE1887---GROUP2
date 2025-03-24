@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -338,24 +339,109 @@ public class AssetDAO extends DBContext {
 
     }
 
+    public List<Asset> getAssetByPage(int cid, int page, int size) {
+        List<Asset> assets = new ArrayList<>();
+        // Tính offset (vị trí bắt đầu của trang)
+        int offset = (page - 1) * size;
+
+        String query = "SELECT * FROM Asset where CustomerID = ? ORDER BY AssetId OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, cid); // Số lượng tin tức mỗi trang
+            stmt.setInt(2, offset); // Số lượng tin tức mỗi trang
+            stmt.setInt(3, size); // Vị trí bắt đầu
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Asset> getAssetsByConditionAndPaging(int cid, String name, String status, String used, String ascending, int page, int size) throws SQLException {
+        List<Asset> assets = new ArrayList<>();
+        String query = "SELECT * FROM Asset WHERE  1=1 ";
+        if (cid != 0) {
+            query = query + " AND CustomerID= " + cid;
+        }
+        if (!name.isEmpty() && name != null) {
+            query = query + " AND Title like '%" + name + "%'";
+        }
+        if (!status.isEmpty() && !status.equalsIgnoreCase("all")) {
+            query = query + " AND Status='" + status + "'";
+        }
+        if (!used.isEmpty() && !used.equalsIgnoreCase("all")) {
+            boolean b = Boolean.parseBoolean(used);
+            query = query + " AND Used='" + b + "'";
+        }
+        if (!ascending.isEmpty()) {
+            query = query + " ORDER BY CreatedAt " + ascending;
+        }
+
+        try {
+            int offset = (page - 1) * size;
+            if (page > 0) {
+                query = query + " OFFSET " + offset + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+            }
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                Asset asset = new Asset();
+                asset.setId(resultSet.getInt("AssetId"));
+                asset.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                asset.setImage(resultSet.getString("Image"));
+                asset.setTitle(resultSet.getString("Title"));
+                asset.setDescription(resultSet.getString("Description"));
+                asset.setValue(resultSet.getBigDecimal("Value"));
+                asset.setComments(resultSet.getString("Comments"));
+                asset.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                asset.setUsed(resultSet.getBoolean("Used"));
+                asset.setStatus(resultSet.getString("Status"));
+                asset.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
     public List<Asset> getAssetsByCondition(int cid, String name, String status, String used, String ascending) throws SQLException {
         List<Asset> assets = new ArrayList<>();
         String query = "SELECT * FROM Asset WHERE  1=1 ";
         if (cid != 0) {
-            query = query + " AND CustomerID= " + cid;      
+            query = query + " AND CustomerID= " + cid;
         }
-        if (!name.isEmpty()&& name!=null ) {
-            query = query + " AND Title like '%" + name + "%'";        
+        if (!name.isEmpty() && name != null) {
+            query = query + " AND Title like '%" + name + "%'";
         }
-        if (!status.isEmpty() &&!status.equalsIgnoreCase("all")) {
+        if (!status.isEmpty() && !status.equalsIgnoreCase("all")) {
             query = query + " AND Status='" + status + "'";
         }
-        if (!used.isEmpty() && !used.equalsIgnoreCase("all") ) {
+        if (!used.isEmpty() && !used.equalsIgnoreCase("all")) {
             boolean b = Boolean.parseBoolean(used);
             query = query + " AND Used='" + b + "'";
         }
-        if(!ascending.isEmpty()){
-             query = query + " ORDER BY CreatedAt " + ascending;
+        if (!ascending.isEmpty()) {
+            query = query + " ORDER BY CreatedAt " + ascending;
         }
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
@@ -384,6 +470,7 @@ public class AssetDAO extends DBContext {
         return null;
 
     }
+
     public List<Asset> getAssetListForCustomer(int CustomerID) {
         List<Asset> assets = new ArrayList<>();
 
@@ -414,5 +501,9 @@ public class AssetDAO extends DBContext {
         }
 
         return null;
-    }   
+    }
+
+  
+
+
 }

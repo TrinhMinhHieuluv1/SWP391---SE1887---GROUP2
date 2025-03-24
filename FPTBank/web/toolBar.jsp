@@ -41,6 +41,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="menu-label">
+                            <a href="/timibank/news">Tin nổi bật </a>
+                        </li>
                     </ul>
                 </div>
             </div>

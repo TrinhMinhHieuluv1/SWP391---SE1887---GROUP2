@@ -98,5 +98,10 @@ public class News {
     public void setNewsCategory(NewsCategory NewsCategory) {
         this.NewsCategory = NewsCategory;
     }
+
+    @Override
+    public String toString() {
+        return "News{" + "NewsID=" + NewsID + ", User=" + User + ", Title=" + Title + ", Description=" + Description + ", Image=" + Image + ", Status=" + Status + ", CreatedAt=" + CreatedAt + ", NumberOfAccess=" + NumberOfAccess + ", NewsCategory=" + NewsCategory.getNewsCategoryID() + '}';
+    }
   
 }
