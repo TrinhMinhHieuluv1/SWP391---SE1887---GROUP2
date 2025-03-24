@@ -699,9 +699,9 @@
                             <td class="Amount"><fmt:formatNumber value="${contract.getAmount()}" pattern="#,###"/></td>
                             <td class="Type" style="text-align: center">${contract.getPeriod()}</td>
                             <td class="Type">${contract.isMonthlyPayment()?(contract.getMonthlyPaymentType().equals("Fixed")?"Fixed Payment":"Reducing Balance"):"No monthly payment"}</td>
-                            <td class="created-time" style="text-align: center">${contract.getCreateAt()}</td>
+                            <td class="created-time" style="text-align: center"><fmt:formatDate value="${contract.getCreateAt()}" pattern="dd/MM/yyyy"/></td>
                             <td class="created-time" style="text-align: center">
-                                <span class="status-label status-${contract.getStatusID()}">
+                                <span id="status-${contract.getContractID()}" class="status-label status-${contract.getStatusID()}">
                                     <c:choose>
                                         <c:when test="${contract.getStatusID() == 1}">Pending</c:when>
                                         <c:when test="${contract.getStatusID() == 2}">Canceled</c:when>
@@ -715,14 +715,9 @@
                             <td class="action-column">
                                 <div class="action-buttons-container">
                                     <c:if test="${contract.getStatusID() == 1 || contract.getStatusID() == 2 || contract.getStatusID() == 4}">
-
                                         <a href="/timibank/update-contract-for-customer?ContractID=${contract.getContractID()}" class="action-button update-btn">Update</a>
-                                        <c:if test="${contract.getStatusID() == 1}">
-                                            <button type="submit" class="action-button inactivate-btn" onclick="changeStatus(${contract.getContractID()}, this)">Cancel</button>
-                                        </c:if>
-                                        <c:if test="${contract.getStatusID() == 2 || contract.getStatusID() == 4}">
-                                            <button type="submit" class="action-button activate-btn" onclick="changeStatus(${contract.getContractID()}, this)">Re-send Request</button>
-                                        </c:if>
+                                        <button id="cancelbtn-${contract.getContractID()}" type="submit" class="action-button inactivate-btn" onclick="changeStatus(${contract.getContractID()}, 2)" style="display: ${contract.getStatusID()==1?"block":"none"}">Cancel</button>
+                                        <button id="resendbtn-${contract.getContractID()}" type="submit" class="action-button activate-btn" onclick="changeStatus(${contract.getContractID()}, 1)" style="display: ${contract.getStatusID()==1?"none":"block"}">Re-send</button>
                                     </c:if>
                                     <button type="submit" class="action-button" style="background: #cccccc" onclick="toggleDetails(${contract.getContractID()}, this)">Show Detail</button>
                                 </div>
@@ -878,28 +873,36 @@
                         window.location.href = 'contract-management-for-customer?' + params.toString();
                     }
 
-                    function changeStatus(NewsID, element) {
+                    function changeStatus(ContractID, StatusID) {
                         $.ajax({
-                            url: 'update-news',
-                            type: 'GET',
+                            url: 'update-status-of-contract',
+                            type: 'POST',
                             data: {
-                                NewsID: NewsID,
-                                changeStatus: "true"
+                                ContractID: ContractID,
+                                StatusID: StatusID
+                            },
+                            success: function () {
+                                const status = document.getElementById("status-" + ContractID);
+                                const cancelbtn = document.getElementById("cancelbtn-" + ContractID);
+                                const resendbtn = document.getElementById("resendbtn-" + ContractID);
+                                if (StatusID === 1) {
+                                    status.textContent = 'Pending';
+                                    status.classList.remove('status-4');
+                                    status.classList.remove('status-2');
+                                    status.classList.add('status-1');
+                                    cancelbtn.style.display = 'block';
+                                    resendbtn.style.display = 'none';
+                                } else {
+                                    status.textContent = 'Canceled';
+                                    status.classList.remove('status-1');
+                                    status.classList.add('status-2');
+                                    cancelbtn.style.display = 'none';
+                                    resendbtn.style.display = 'block';
+                                }
                             }
 
+
                         });
-                        const status = document.getElementById("status-" + NewsID);
-                        if (status.textContent.trim() === 'Active') {
-                            status.textContent = 'Inactive';
-                            element.textContent = 'Activate';
-                            element.classList.remove('inactivate-btn');
-                            element.classList.add('activate-btn');
-                        } else {
-                            status.textContent = 'Active';
-                            element.textContent = 'Inactivate';
-                            element.classList.remove('activate-btn');
-                            element.classList.add('inactivate-btn');
-                        }
                     }
 
                     function toggleDetails(contractID, button) {

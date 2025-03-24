@@ -826,6 +826,8 @@
                         let url = new URL(window.location.href);
                         let params = new URLSearchParams(url.search);
 
+                        params.delete('page');
+                        params.delete('pageSize');
                         params.set(param, value);
                         if (param === 'Status' || param === 'SortBy')
                         {
@@ -838,34 +840,35 @@
                             params.delete('SortBy');
                         }
                         ;
-                        params.delete('page');
-                        params.delete('pageSize');
 
                         window.location.href = 'loan-payment-management-for-customer?' + params.toString();
                     }
 
-                    function changeStatus(NewsID, element) {
+                    function changeStatus(ContractID, StatusID) {
                         $.ajax({
-                            url: 'update-news',
-                            type: 'GET',
+                            url: 'update-status-of-contract',
+                            type: 'POST',
                             data: {
-                                NewsID: NewsID,
-                                changeStatus: "true"
+                                ContractID: ContractID,
+                                StatusID: StatusID
+                            },
+                            success: function () {
+                                const status = document.getElementById("status-" + NewsID);
+                                if (status.textContent.trim() === 'Active') {
+                                    status.textContent = 'Inactive';
+                                    element.textContent = 'Activate';
+                                    element.classList.remove('inactivate-btn');
+                                    element.classList.add('activate-btn');
+                                } else {
+                                    status.textContent = 'Active';
+                                    element.textContent = 'Inactivate';
+                                    element.classList.remove('activate-btn');
+                                    element.classList.add('inactivate-btn');
+                                }
                             }
+                        }
 
                         });
-                        const status = document.getElementById("status-" + NewsID);
-                        if (status.textContent.trim() === 'Active') {
-                            status.textContent = 'Inactive';
-                            element.textContent = 'Activate';
-                            element.classList.remove('inactivate-btn');
-                            element.classList.add('activate-btn');
-                        } else {
-                            status.textContent = 'Active';
-                            element.textContent = 'Inactivate';
-                            element.classList.remove('activate-btn');
-                            element.classList.add('inactivate-btn');
-                        }
                     }
 
                     function toggleDetails(contractID, button) {
