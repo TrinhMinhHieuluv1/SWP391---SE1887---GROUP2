@@ -230,6 +230,9 @@ public class GetDataOfCustomers extends HttpServlet {
             request.getSession().setAttribute("error", "No data available !!");
         }
 
+        request.setAttribute("fromDate2", fromDate);
+        request.setAttribute("toDate2", toDate);
+
         request.getSession().setAttribute("labels01", labels01);
         request.getSession().setAttribute("data01", data01);
         request.getSession().setAttribute("percentData01", percentData01);
