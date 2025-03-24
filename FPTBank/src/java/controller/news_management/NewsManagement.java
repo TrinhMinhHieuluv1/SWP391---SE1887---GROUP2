@@ -64,6 +64,7 @@ public class NewsManagement extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        
         NewsDAO ndao = new NewsDAO();
         NewsCategoryDAO ncDAO = new NewsCategoryDAO();
         User account = (User) session.getAttribute("account");
