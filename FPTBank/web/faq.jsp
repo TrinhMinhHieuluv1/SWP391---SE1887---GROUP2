@@ -58,7 +58,6 @@
         .checkbox-bar {
             display: flex;
             justify-content: space-around;
-            background-color: #f4f4f4;
             padding: 10px;
         }
 
@@ -91,11 +90,9 @@
 
         .search-container {
             position: relative;
-
-            max-width:80%;
             display: flex;
             gap: 10px;
-            margin-left: 10%;
+            margin: 10px 0 20px;
         }
 
         .search-container i {
@@ -124,7 +121,6 @@
             transition: all 0.3s ease;
             border: none;
             font-size: 0.9em;
-            margin: 10px 0;
             display: inline-block;
             text-align: center;
             text-decoration: none;
@@ -158,6 +154,74 @@
             border-radius: 30px;
         }
 
+        .fad__img-wrap {
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 10px 0 20px;
+        }
+
+        /* Ẩn checkbox mặc định */
+        .faq-checkbox {
+            display: none;
+        }
+
+        /* Tạo kiểu cho label thay thế checkbox */
+        .checkbox-item label {
+            padding: 3px 20px;
+            background-color: white;
+            border: 2px solid #008000;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #008000;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        /* Hiệu ứng hover */
+        .checkbox-item label:hover {
+            background-color: #008000;
+            color: white;
+        }
+
+        /* Kiểu khi checkbox được chọn */
+        .faq-checkbox:checked + label {
+            background-color: #008000;
+            color: white;
+        }
+
+        .checkbox-btn {
+            color: #fff;
+            background: #008000;
+            display: block;
+            margin: 20px 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #entriesForm {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #entriesForm label {
+            font-weight: bold;
+            color: #008000;
+        }
+
+        #entriesForm select {
+            padding: 5px 10px;
+            border: 2px solid #008000;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+            font-weight: bold;
+            color: #008000;
+            transition: all 0.3s ease;
+        }
 
     </style>
     <body>
@@ -173,72 +237,80 @@
             <!-- content -->
             <div class="mil-features faq-wrap">
 
-                <form action="faq-servlet-search"  class="filter-controls">  
-                    <div class="search-container"  > 
-                        <i class="fa fa-search"></i>
-                        <input   type="text" name="searchKeyword"  value="${keyword}" placeholder="Tìm câu hỏi nhanh ..." class="search-input">
-                        <button style="color: white; background-color: #008000" class="add-news-btn" type="submit" >Search </button>
+                <div class="container" >
+                    <div class="fad__img-wrap">
+                        <img src="./img/about/HB_Cau hoi thuong gap_DT.jpg" alt="alt"/>
                     </div>
-                </form>
-
-                <form action="faq-servlet-type" method="get" class="filter-controls">
-                    <div class="filter-group">
-                        <h3>Câu hỏi về</h3>
-                        <div class="checkbox-bar">
-                            <%
-                                String selectedType = request.getAttribute("selectedType") != null ? request.getAttribute("selectedType").toString() : "";
-                            %>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="faq1" name="faqType" value="account" class="faq-checkbox"
-                                       <%= "account".equals(selectedType) ? "checked" : "" %>>
-                                <label for="faq1">Tài khoản ngân hàng</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="faq2" name="faqType" value="borrow" class="faq-checkbox"
-                                       <%= "borrow".equals(selectedType) ? "checked" : "" %>>
-                                <label for="faq2">Vay tiền</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="faq3" name="faqType" value="savings" class="faq-checkbox"
-                                       <%= "savings".equals(selectedType) ? "checked" : "" %>>
-                                <label for="faq3">Gửi tiền</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="faq4" name="faqType" value="card" class="faq-checkbox"
-                                       <%= "card".equals(selectedType) ? "checked" : "" %>>
-                                <label for="faq4">Thẻ</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <button style="color: white; background-color: #008000" class="add-news-btn" type="submit">SearchType</button>
-                            </div>
+                </div>
+                <div class="container" >
+                    <form action="faq-servlet-search"  class="filter-controls">  
+                        <div class="search-container"  > 
+                            <i class="fa fa-search"></i>
+                            <input   type="text" name="searchKeyword"  value="${keyword}" placeholder="Tìm câu hỏi nhanh ..." class="search-input">
+                            <button style="color: white; background-color: #008000" class="add-news-btn" type="submit" >Search </button>
                         </div>
-                    </div>
-                </form>     
-
-                <div class="search-container"  > 
-                    <!--show entry-->
-                    <form id="entriesForm" action="faq" method="GET" accept-charset="UTF-8">
-                        <label for="entries">Show Entries</label>
-                        <select  id="entries" name="entries" onchange="this.form.submit()">
-                            <c:forEach items="${listOfPageSize}" var="ps">
-                                <option value="${ps}" ${(ps == entries)?'selected':''}>${ps}</option>
-                            </c:forEach>                   
-                        </select>
-                        <input type="hidden" name="searchKey" value="${keyword}">
-                        <input type="hidden" name="searchType" value="${selectedType}">
                     </form>
                 </div>
+                <div class="container" >
+                    <form action="faq-servlet-type" method="get" class="filter-controls">
+                        <div class="filter-group">
+                            <h3>Câu hỏi về</h3>
+                            <div class="checkbox-bar">
+                                <%
+                                    String selectedType = request.getAttribute("selectedType") != null ? request.getAttribute("selectedType").toString() : "";
+                                %>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="faq1" name="faqType" value="account" class="faq-checkbox"
+                                           <%= "account".equals(selectedType) ? "checked" : "" %>>
+                                    <label for="faq1">Tài khoản ngân hàng</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="faq2" name="faqType" value="borrow" class="faq-checkbox"
+                                           <%= "borrow".equals(selectedType) ? "checked" : "" %>>
+                                    <label for="faq2">Vay tiền</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="faq3" name="faqType" value="savings" class="faq-checkbox"
+                                           <%= "savings".equals(selectedType) ? "checked" : "" %>>
+                                    <label for="faq3">Gửi tiền</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="faq4" name="faqType" value="card" class="faq-checkbox"
+                                           <%= "card".equals(selectedType) ? "checked" : "" %>>
+                                    <label for="faq4">Thẻ</label>
+                                </div>
 
+                            </div>
+                            <button  class="add-news-btn checkbox-btn" type="submit">Search</button>
+                        </div>
+                    </form>     
+
+                </div>
+                <div class="container" >
+                    <div class="search-container"  > 
+                        <!--show entry-->
+                        <form id="entriesForm" action="faq" method="GET" accept-charset="UTF-8">
+                            <label for="entries">Show Entries</label>
+                            <select  id="entries" name="entries" onchange="this.form.submit()">
+                                <c:forEach items="${listOfPageSize}" var="ps">
+                                    <option value="${ps}" ${(ps == entries)?'selected':''}>${ps}</option>
+                                </c:forEach>                   
+                            </select>
+                            <input type="hidden" name="searchKey" value="${keyword}">
+                            <input type="hidden" name="searchType" value="${selectedType}">
+                        </form>
+                    </div>
+                </div>
                 <div class="container faq-question__contents" >
                     <ol class="faq-question__ques-list">
                         <c:forEach items="${listFAQ}" var="faq">
                             <li class="faq-question__ques-item">
                                 <div class="faq-question__ques-wrap">
                                     <p class="faq-question__ques-title">${faq.getQuestion()}</p>
- 
-                                    
-                                    
-                                  <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
+
+
+
+                                    <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
                                 </div>
                                 <div class="faq-question__ques-ans">
                                     ${faq.getAnswer()}

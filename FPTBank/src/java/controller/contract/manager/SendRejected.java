@@ -3,9 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.insurance.manager;
+package controller.contract.manager;
 
-import dal.InsuranceDAO;
+import controller.sendMail;
+import static controller.sendMail.guiMail;
+import dal.ContractDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,14 +17,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Insurance;
+import model.Contract;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="BothChartCover", urlPatterns={"/insurance/BothChartCover"})
-public class BothChartCover extends HttpServlet {
+@WebServlet(name="ShowContract", urlPatterns={"/manager/rejected"})
+public class SendRejected extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +41,10 @@ public class BothChartCover extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BothChartCover</title>");  
+            out.println("<title>Servlet ShowContract</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BothChartCover at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ShowContract at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,51 +61,27 @@ public class BothChartCover extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-            
-            response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        InsuranceDAO insudao = new InsuranceDAO();
-        HttpSession session = request.getSession();
-        int insuranceID = (int) session.getAttribute("uid");
-        List<Insurance> insuranceList = insudao.getAllInsuranceByProviderID(insuranceID);
-        
-        if (insuranceList.isEmpty()) {
-            response.getWriter().write("{\"error\": \"No data valiable !!\"}");
-            return;
-        }
-
-       //chart coverate
-        int coverate30 = 0;
-        int coverate50 = 0;
-        int coverate60 = 0;
-        int coverate70 = 0;
-        int coverate80 = 0;
-        int coverate100 = 0;
-        for (Insurance insurance : insuranceList) {
-           
-                 if (insurance.getCoverageRate()<= 30) {
-                coverate30++;
-            } else if (insurance.getCoverageRate()> 30 && insurance.getCoverageRate() <= 50) {
-                coverate50++;
-            } else if (insurance.getCoverageRate()> 50 && insurance.getCoverageRate() <= 60) {
-                coverate60++;
-            }  else if (insurance.getCoverageRate()> 60 && insurance.getCoverageRate() <= 70) {
-                coverate70++;
-            }  else if (insurance.getCoverageRate()> 70 && insurance.getCoverageRate() <= 80) {
-                coverate80++;
-            }  else {
-                coverate100++;
-            } 
-            
-           
-        }
-        int totalCoverate = insuranceList.size();
-        String jsonResponse = String.format(
-                "{\"data21\": [%d, %d, %d, %d, %d, %d], \"total_Cover\": %d}",
-                coverate30, coverate50, coverate60, coverate70,coverate80,coverate100, totalCoverate
-        );
-        response.getWriter().write(jsonResponse); // Gửi dữ liệu JSON về client
-    } 
+//      ContractDAO ctdao = new ContractDAO();
+//        List<Contract> contractAll = ctdao.selectAllContract();
+//        
+//        int page = 1; // trang đầu tiên
+//        int pageSize = 10; // 1 trang có 10 users
+//        if (request.getParameter("page") != null) {
+//            page = Integer.parseInt(request.getParameter("page"));
+//        }
+// List<Insurance> sortedList = a.getAllInsuranceByProviderIDByPage(insuranceID, page, pageSize);
+//        int loanSize = a.getInsuranceByProviderID(insuranceID).size();
+//
+//        int totalPages = (int) Math.ceil((double) loanSize / pageSize);
+//
+//        // set phân trang
+//        request.setAttribute("currentPage", page);
+//        request.setAttribute("totalPages", totalPages);
+//
+//     request.setAttribute("contractList", contractAll);
+//        request.getRequestDispatcher("manageContract.jsp").forward(request, response);
+//        
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -115,8 +93,30 @@ public class BothChartCover extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+                HttpSession session = request.getSession();
+
+        int contractID = Integer.parseInt(request.getParameter("contractID"));
+        String noidung = request.getParameter("noidung");
+        String email = request.getParameter("emailcus");
+
+        ContractDAO contractDAO = new ContractDAO();
+
+        // Gửi email cho khách hàng
+        boolean isMailSent = sendMail.guiMailRejected(email, noidung,contractID);
+
+        // Cập nhật trạng thái hợp đồng thành "Rejected"
+        boolean isUpdated = contractDAO.updateStatus(contractID, 4);
+
+        if (isMailSent && isUpdated) {
+            session.setAttribute("message", "Rejected successfully! Email sent.");
+        } else {
+            session.setAttribute("error", "Failed to reject contract.");
+        }
+
+        response.sendRedirect("contract-management-for-manager");
     }
+       
+    
 
     /** 
      * Returns a short description of the servlet.

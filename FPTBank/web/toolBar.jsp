@@ -48,14 +48,14 @@
                 </div>
             </div>
 
-            <div class="col">
+<!--            <div class="col">
                 <form action="#!" class="menu-form__search">
                     <input type="text" name="search_value" class="menu-form__search-input"/>
                     <div class="mil-menu-buttons">
                         <input type="submit" class="mil-btn mil-ssm" value="Search" />
                     </div>
                 </form>
-            </div>
+            </div>-->
         </nav>
     </div>
 </div>

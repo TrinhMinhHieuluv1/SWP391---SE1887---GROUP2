@@ -128,6 +128,9 @@
                                                  <c:if test="${sessionScope.account.getRoleID()==2}">
                                                  <li><a href="/timibank/seller/home.jsp">Management</a></li>
                                                  </c:if>
+                                                   <c:if test="${sessionScope.account.getRoleID()==3}">
+                                                 <li><a href="/timibank/manager/manageAsset.jsp">Management</a></li>
+                                                 </c:if>
 
 
                                              <li><a href="/timibank/logout">Sign out</a></li>
@@ -165,5 +168,6 @@
         <script src="js/plugins/magnific-popup.js"></script>
         <!-- plax js -->
         <script src="js/main.js"></script>
+                <%@include file="messenger.jsp" %>
     </body>
 </html>

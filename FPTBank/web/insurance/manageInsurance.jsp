@@ -935,186 +935,168 @@
 
             <div class="row g-3">
                 <div class="col-auto">
-
-                    <form id="searchForm" action="manageinsurance" method="get">   
+                    <!-- Search Form -->
+                    <form action="manageinsurance" method="get">
                         <div class="position-relative">
-                            <input id="searchInput" class="form-control px-5" type="search" value="${searchIsu}" name="searchIsu" placeholder="Search Products">
-                            <span class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5" 
-                                  onclick="submitSearch();">
-                                search
-                            </span>
+                            <input class="form-control px-5" type="search" name="searchIsu" value="${searchIsu}" placeholder="Search Products">
+                            <button type="submit" class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</button>
                         </div>
                     </form>
-
                 </div>
                 <div class="col-auto flex-grow-1 overflow-auto">
                     <div class="btn-group position-static">
+                        <!-- All Button -->
+                        <a href="manageinsurance"><button type="button" class="btn border btn-light px-4">All</button></a>
+
+                        <!-- Fee Rate Sort -->
                         <div class="btn-group position-static">
-                            <a href="showinsurance">
-                                <button type="button" class="btn border btn-light px-4" >
-                                    All
-                                </button>
-                            </a>
-
-                        </div>
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                FeeRate
-                            </button>
-
-                            <form action="manageinsurance" method="get" id="sortForm1">
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"  onclick="submitSortForm1('asc')">ASC</a></li>
-                                    <li><a class="dropdown-item"  onclick="submitSortForm1('desc')">DESC</a></li>
-                                </ul>
-                                <input type="hidden" value="${sortFee}" name="sortFee" id="sortFee">
-                            </form>
-
-                        </div>
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                CoverageRate
-                            </button>
-
-                            <form action="manageinsurance" method="get" id="sortForm4">
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"  onclick="submitSortForm4('asc')">ASC</a></li>
-                                    <li><a class="dropdown-item"  onclick="submitSortForm4('desc')">DESC</a></li>
-                                </ul>
-                                <input type="hidden" name="CoverageRate" value="${CoverageRate}" id="CoverageRate">
-                            </form>
-
-                        </div>
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                MaxAmountOfLoan
-                            </button>
-
-                            <form action="manageinsurance" method="get" id="sortForm5">
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"  onclick="submitSortForm5('true')">ASC</a></li>
-                                    <li><a class="dropdown-item"  onclick="submitSortForm5('false')">DESC</a></li>
-                                </ul>
-                                <input type="hidden" name="MaxAmountOfLoan" value="${MaxAmountOfLoan}" id="MaxAmountOfLoan">
-                            </form>
-
-                        </div>
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Type
-                            </button>
-                            <form action="manageinsurance" method="get" id="sortForm3">
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" onclick="submitSortForm3('Secured Loan')">Secured Loan</a></li>
-                                    <li><a class="dropdown-item" onclick="submitSortForm3('Unsecured Loan')">Unsecured Loan</a></li>
-                                </ul>
-                                <input type="hidden" value="${typeIns}" name="typeIns" id="verify">
-                            </form>
-                        </div>
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
-                                Status
-                            </button>
-                            <form action="manageinsurance" method="get" id="sortForm2">
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"  onclick="submitSortForm2('true')">Active</a></li>
-                                    <li><a class="dropdown-item"  onclick="submitSortForm2('false')">InActive</a></li>
-
-                                </ul>
-                                <input type="hidden" name="status" id="status">
-                            </form>
+                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">FeeRate</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="manageinsurance?sortFee=asc">ASC</a></li>
+                                <li><a class="dropdown-item" href="manageinsurance?sortFee=desc">DESC</a></li>
+                            </ul>
                         </div>
 
+                        <!-- Coverage Rate Sort -->
                         <div class="btn-group position-static">
-                            <button class="btn btn-pending js-toggle"  toggle-target="#modal-addInsurance"> Add Insurance </button>
+                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">CoverageRate</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="manageinsurance?CoverageRate=asc">ASC</a></li>
+                                <li><a class="dropdown-item" href="manageinsurance?CoverageRate=desc">DESC</a></li>
+                            </ul>
+                        </div>
 
-                        </div>  
-                    </div>  
-                </div>
+                        <!-- Max Amount of Loan Sort -->
+                        <div class="btn-group position-static">
+                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">MaxAmountOfLoan</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="manageinsurance?MaxAmountOfLoan=true">ASC</a></li>
+                                <li><a class="dropdown-item" href="manageinsurance?MaxAmountOfLoan=false">DESC</a></li>
+                            </ul>
+                        </div>
 
+                        <!-- Type Filter -->
+                        <div class="btn-group position-static">
+                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">Type</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="manageinsurance?typeIns=Secured Loan">Secured Loan</a></li>
+                                <li><a class="dropdown-item" href="manageinsurance?typeIns=Unsecured Loan">Unsecured Loan</a></li>
+                            </ul>
+                        </div>
 
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <div class="product-table">
-                            <div class="table-responsive white-space-nowrap">
-                                <table class="table align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Insurance ID</th>
-                                            <th>Insurance Name</th>
-                                            <th>Type</th>
-                                            <th>Fee rate</th>
-                                            <th>Coverage Rate</th>
-                                            <th>Max Amount Of Loan</th>
-                                            <th>Status</th>
-                                            <th>Update</th>
+                        <!-- Status Filter -->
+                        <div class="btn-group position-static">
+                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">Status</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="manageinsurance?status=true">Active</a></li>
+                                <li><a class="dropdown-item" href="manageinsurance?status=false">Inactive</a></li>
+                            </ul>
+                        </div>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${ListInsu}" var="sal">
-                                            <tr>
-                                                <td>
-                                                    ${sal.getInsuranceID()}
-
-                                                </td>
-
-                                                <td>
-                                                    ${sal.getInsuranceName()}                   
-                                                </td>
-
-                                                <td>  
-                                                    ${sal.getType()}
-                                                </td>
-                                                <td>${sal.getFeeRate()} %</td>
-                                                <td>${sal.getCoverageRate()} %</td>
-
-                                                <td><fmt:formatNumber value="${sal.getMaxAmountOfLoan()}" pattern="#,###" /> VND</td>
-
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${sal.isStatus() == true}">
-                                                            <!-- Nếu Status là true, hiển thị button "Active" màu xanh -->
-                                                            <form method="post" action="manageinsurance">
-                                                                <button type="submit" name="active" value="${sal.getInsuranceID()}" class="btn btn-pending">Active</button>
-                                                            </form>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <!-- Nếu Status là false, hiển thị button "Inactive" màu xám -->
-                                                            <form method="post" action="manageinsurance">
-                                                                <button type="submit" name="inactive" value="${sal.getInsuranceID()}" class="btn btn-sent">Inactive</button>
-                                                            </form>
-                                                        </c:otherwise>
-                                                    </c:choose>
-
-                                                </td>
-                                                <td>      <button class="btn btn-pending js-toggle"  toggle-target="#modal-${sal.getInsuranceID()}"> <i class="fa fa-edit"></i></button>
-                                                </td>
-                                            </tr> 
-                                        </c:forEach>
-
-                                    </tbody>
-                                </table>
-                                <div class="pagination">
-                                    <c:if test="${currentPage > 1}">
-                                        <a href="?page=${currentPage - 1}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&entries=${entries}"  class="prev" > Previous</a>
-                                    </c:if>
-
-                                    <c:forEach var="i" begin="1" end="${totalPages}">
-                                        <a href="?page=${i}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&entries=${entries}" class="${i == currentPage ? 'active' : ''}">${i}</a>
-                                    </c:forEach>
-
-                                    <c:if test="${currentPage < totalPages}">
-                                        <a href="?page=${currentPage + 1}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&entries=${entries}" class="next">Next</a>
-                                    </c:if>
-                                </div>
-
-                            </div>
-
-
+                        <!-- Add Insurance Button -->
+                        <div class="btn-group position-static">
+                            <button class="btn btn-pending js-toggle" toggle-target="#modal-addInsurance">Add Insurance</button>
                         </div>
                     </div>
                 </div>
+
+                <form action="manageinsurance" method="get">
+                    <select name="pageSize" onchange="this.form.submit()">
+                        <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                        <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                        <option value="30" ${pageSize == 30 ? 'selected' : ''}>30</option>
+                        <option value="40" ${pageSize == 40 ? 'selected' : ''}>40</option>
+                    </select>
+                    <input type="hidden" name="page" value="1">
+                    <input type="hidden" name="searchIsu" value="${searchIsu}">
+                    <input type="hidden" name="typeIns" value="${typeIns}">
+                    <input type="hidden" name="status" value="${status}">
+                    <input type="hidden" name="sortFee" value="${sortFee}">
+                    <input type="hidden" name="CoverageRate" value="${CoverageRate}">
+                    <input type="hidden" name="MaxAmountOfLoan" value="${MaxAmountOfLoan}">
+                </form>      
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="product-table">
+                        <div class="table-responsive white-space-nowrap">
+                            <table class="table align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Insurance ID</th>
+                                        <th>Insurance Name</th>
+                                        <th>Type</th>
+                                        <th>Fee rate</th>
+                                        <th>Coverage Rate</th>
+                                        <th>Max Amount Of Loan</th>
+                                        <th>Status</th>
+                                        <th>Update</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${ListInsu}" var="sal">
+                                        <tr>
+                                            <td>
+                                                ${sal.getInsuranceID()}
+
+                                            </td>
+
+                                            <td>
+                                                ${sal.getInsuranceName()}                   
+                                            </td>
+
+                                            <td>  
+                                                ${sal.getType()}
+                                            </td>
+                                            <td>${sal.getFeeRate()} %</td>
+                                            <td>${sal.getCoverageRate()} %</td>
+
+                                            <td><fmt:formatNumber value="${sal.getMaxAmountOfLoan()}" pattern="#,###" /> VND</td>
+
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${sal.isStatus() == true}">
+                                                        <!-- Nếu Status là true, hiển thị button "Active" màu xanh -->
+                                                        <form method="post" action="manageinsurance">
+                                                            <button type="submit" name="active" value="${sal.getInsuranceID()}" class="btn btn-pending">Active</button>
+                                                        </form>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <!-- Nếu Status là false, hiển thị button "Inactive" màu xám -->
+                                                        <form method="post" action="manageinsurance">
+                                                            <button type="submit" name="inactive" value="${sal.getInsuranceID()}" class="btn btn-sent">Inactive</button>
+                                                        </form>
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                            </td>
+                                            <td>      <button class="btn btn-pending js-toggle"  toggle-target="#modal-${sal.getInsuranceID()}"> <i class="fa fa-edit"></i></button>
+                                            </td>
+                                        </tr> 
+                                    </c:forEach>
+
+                                </tbody>
+                            </table>
+                           <div class="pagination">
+                                <c:if test="${currentPage > 1}">
+                                    <a href="manageinsurance?page=${currentPage - 1}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&pageSize=${pageSize}" class="prev">Previous</a>
+                                </c:if>
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <a href="manageinsurance?page=${i}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&pageSize=${pageSize}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                                </c:forEach>
+                                <c:if test="${currentPage < totalPages}">
+                                    <a href="manageinsurance?page=${currentPage + 1}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&pageSize=${pageSize}" class="next">Next</a>
+                                </c:if>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
 
 
         </main>
@@ -1144,7 +1126,7 @@
                                         <option value="Secured Loan" ${sal.getType() == 'Secured Loan' ? 'selected' : ''}>Secured Loan</option>
                                         <option value="Unsecured Loan" ${sal.getType() == 'Unsecured Loan' ? 'selected' : ''}>Unsecured Loan</option>
                                     </select
-                               <p class="form__error"></p>         
+                                    <p class="form__error"></p>         
                                 </div>
 
                                 <div class="form__group modal__text">
@@ -1196,8 +1178,8 @@
         </c:forEach>
 
 
-        
-<!--        add insurance-->
+
+        <!--        add insurance-->
         <div id="modal-addInsurance" class="modal modal--large hide">
             <div class="modal__content">
                 <button class="modal__close js-toggle" toggle-target="#modal-addInsurance">&times;</button>
@@ -1224,28 +1206,28 @@
                                 <p class="form__error"></p>
 
                             </div>
-                               <div class="form__group modal__text">
-                                    <label for="feerate">Fee rate: </label>
-                                    <div class="form__text-input">
-                                        <input type="number" step="0.01"  name="feerate1" id="feerate1" value="${sal.getFeeRate()}"
-                                               class="form__input" placeholder="Fee Rate" >
-                                        <span   class="sub-text-input1">%/năm</span>
-                                    </div>
-                                    <p class="form__error"></p>
-                                </div>       
+                            <div class="form__group modal__text">
+                                <label for="feerate">Fee rate: </label>
+                                <div class="form__text-input">
+                                    <input type="number" step="0.01"  name="feerate1" id="feerate1" value="${sal.getFeeRate()}"
+                                           class="form__input" placeholder="Fee Rate" >
+                                    <span   class="sub-text-input1">%/năm</span>
+                                </div>
+                                <p class="form__error"></p>
+                            </div>       
                         </div>
                         <div class="col-6">
                             <div class="form__group modal__text">
-                                    <label for="coverage">Coverage Rate:</label>
-                                    <div class="form__text-input" >                                        
-                                        <input  step="0.01" name="coverage1" type="number" id="coverage1" value="${sal.getCoverageRate()}" 
-                                                class="form__input" placeholder="Cover Rate"
-                                                >
+                                <label for="coverage">Coverage Rate:</label>
+                                <div class="form__text-input" >                                        
+                                    <input  step="0.01" name="coverage1" type="number" id="coverage1" value="${sal.getCoverageRate()}" 
+                                            class="form__input" placeholder="Cover Rate"
+                                            >
 
-                                        <span class="sub-text-input1">%/năm</span>
-                                    </div>
-                                    <p class="form__error"></p>
+                                    <span class="sub-text-input1">%/năm</span>
                                 </div>
+                                <p class="form__error"></p>
+                            </div>
                             <div class="modal__text">
                                 <label for="maxamount">Max Amount Of Loan:</label>
 
@@ -1362,9 +1344,9 @@
         </div>
         <script src="assets/js/validationForm.js"></script>
         <script>
-             <c:forEach items="${ListInsu}" var="sal" >
+            <c:forEach items="${ListInsu}" var="sal" >
                                                Validator({
-                                                   
+
                                                    form: '#updateinsurance-${sal.getInsuranceID()}',
                                                    formGroupSelector: '.form__group',
                                                    errorSelector: '.form__error',
@@ -1377,10 +1359,10 @@
                                                        document.querySelector('#updateinsurance-${sal.getInsuranceID()}').submit();
                                                    }
                                                })
-                                               
-             </c:forEach>
-                                               
-                            Validator({
+
+            </c:forEach>
+
+                                               Validator({
                                                    form: '#updateinsurance1',
                                                    formGroupSelector: '.form__group',
                                                    errorSelector: '.form__error',
@@ -1392,8 +1374,8 @@
                                                    onsubmit: function (formValue) {
                                                        document.querySelector('#updateinsurance1').submit();
                                                    }
-                                               })                    
-                                               
+                                               })
+
         </script>
         <!--end theme customization-->
         <!--plugins-->

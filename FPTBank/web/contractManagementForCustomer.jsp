@@ -70,7 +70,6 @@
                 color: white;
                 font-weight: 600;
                 padding: 15px;
-                text-align: left;
                 font-size: 0.95em;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
@@ -142,7 +141,7 @@
             }
 
             .action-button {
-                padding: 8px 12px;
+                padding: 8px 5px;
                 border-radius: 8px;
                 border: none;
                 font-weight: 500;
@@ -152,7 +151,7 @@
                 text-decoration: none;
                 display: inline-block;
                 text-align: center;
-                min-width: 80px;
+                min-width: 50px;
             }
 
             .update-btn {
@@ -517,6 +516,73 @@
                     color: white;
 
                 }
+
+                .contract-detail-container {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 10px;
+                    background-color: #f9f9f9;
+                    border-top: 1px solid #ddd;
+                    transition: all 0.3s ease-in-out;
+                }
+
+                .info-row {
+                    margin-bottom: 5px;
+                    font-size: 14px;
+                }
+
+            }
+
+            /* Màu sắc cho trạng thái */
+            .status-label {
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-weight: bold;
+                color: white;
+            }
+
+            /* Màu cho từng trạng thái */
+            .status-1 {
+                background-color: #f39c12;
+            } /* Pending - Màu cam */
+            .status-2 {
+                background-color: #e74c3c;
+            } /* Canceled - Màu đỏ */
+            .status-3 {
+                background-color: #3498db;
+            } /* Doing - Màu xanh dương */
+            .status-4 {
+                background-color: #9b59b6;
+            } /* Rejected - Màu tím */
+            .status-5 {
+                background-color: #2ecc71;
+            } /* Completed - Màu xanh lá */
+
+            /* Áp dụng màu cho button */
+            .action-button {
+                padding: 5px 15px;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+                color: white;
+            }
+
+            .status-1:hover {
+                background-color: #e67e22;
+            }
+            .status-2:hover {
+                background-color: #c0392b;
+            }
+            .status-3:hover {
+                background-color: #2980b9;
+            }
+            .status-4:hover {
+                background-color: #8e44ad;
+            }
+            .status-5:hover {
+                background-color: #27ae60;
             }
         </style>
     </head>
@@ -537,7 +603,7 @@
                 <div class="filter-group">
                     <label for="Status">Status:</label>
                     <select name="filterStatus" id="Status" onchange="updateURLParameter('filterStatus', this.value)">
-                        <option value="0" ${param.filterStatus == 'none' ? '0' : ''}>All Status</option>
+                        <option selected value="0" ${param.filterStatus == 'none' ? 'selected' : ''}>All Status</option>
                         <option value="1" ${param.filterStatus == '1' ? 'selected' : ''}>Pending</option>
                         <option value="2" ${param.filterStatus == '2' ? 'selected' : ''}>Canceled</option>
                         <option value="3" ${param.filterStatus == '3' ? 'selected' : ''}>Doing</option>
@@ -563,14 +629,14 @@
 
                     <label for="pageSize">Items per page:</label>
                     <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
-                        <c:if test="${requestScope.numberOfContracts <= 100}">
+                        <c:if test="${requestScope.numberOfContract <= 100}">
                             <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
                             <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
                             <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
                             <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
                             <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
                         </c:if>
-                        <c:if test="${requestScope.numberOfContracts > 100}">
+                        <c:if test="${requestScope.numberOfContract > 100}">
                             <c:forEach items="${requestScope.pageSizeArray}" var="pageSizeElement">
                                 <option value="${pageSizeElement}" ${param.pageSize == pageSizeElement ? 'selected' : ''}>${pageSizeElement}</option>
                             </c:forEach>
@@ -585,8 +651,8 @@
                 <thead>
                     <tr>
                         <th class="contractid-column center-align">ID</th>
-                        <th class="contracttype-column">Type</th>
-                        <th class="contractamount-column sortable">
+                        <td class="contracttype-column" style="width: 150px; background: #4caf50;color: white;font-weight: 600;padding: 15px;font-size: 0.95em;text-transform: uppercase;letter-spacing: 0.5px;">Type</td>
+                        <th class="contractamount-column sortable" style="width: 150px">
                             <div style="width: 100%; display: flex">
                                 <div>Amount</div>
                                 <span class="sort-icons">
@@ -608,8 +674,7 @@
                                 </span>
                             </div>
                         </th>
-                        <th class="contractinterestrate-column">Interest Rate (%)</th>
-                        <th class="contractmonthlypayment-column">Monthly Payment</th>
+                        <th class="contractmonthlypayment-column" style="width: 250px">Monthly Payment</th>
                         <th class="contractcreatedat-column sortable">
                             <div style="width: 100%; display: flex">
                                 <div>Created At</div>
@@ -627,27 +692,69 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${requestScope.contractList}" var="contract">
+
+                        <!-- Hàng hiển thị thông tin chính -->
                         <tr>
                             <td class="center-align">${contract.getContractID()}</td>
                             <td class="Type">${contract.getType()}</td>
                             <td class="Amount"><fmt:formatNumber value="${contract.getAmount()}" pattern="#,###"/></td>
-                            <td class="Type">${contract.getPeriod()}</td>
-                            <td class="Type">${contract.getInterestRate()}</td>
-                            <td class="Type">${contract.isMonthlyPayment()?"No monthly payment":(contract.getMonthlyPaymentType().equals("Fixed")?"Fixed Payment":"Reducing Balance Payment")}</td>
-                            <td class="created-time">${contract.getCreateAt()}</td>
-                            <td class="created-time">${contract.getStatusID()}</td>
+                            <td class="Type" style="text-align: center">${contract.getPeriod()}</td>
+                            <td class="Type">${contract.isMonthlyPayment()?(contract.getMonthlyPaymentType().equals("Fixed")?"Fixed Payment":"Reducing Balance"):"No monthly payment"}</td>
+                            <td class="created-time" style="text-align: center"><fmt:formatDate value="${contract.getCreateAt()}" pattern="dd/MM/yyyy"/></td>
+                            <td class="created-time" style="text-align: center">
+                                <span id="status-${contract.getContractID()}" class="status-label status-${contract.getStatusID()}">
+                                    <c:choose>
+                                        <c:when test="${contract.getStatusID() == 1}">Pending</c:when>
+                                        <c:when test="${contract.getStatusID() == 2}">Canceled</c:when>
+                                        <c:when test="${contract.getStatusID() == 3}">Doing</c:when>
+                                        <c:when test="${contract.getStatusID() == 4}">Rejected</c:when>
+                                        <c:when test="${contract.getStatusID() == 5}">Completed</c:when>
+                                        <c:otherwise>Unknown</c:otherwise>
+                                    </c:choose>
+                                </span>
+                            </td>
                             <td class="action-column">
-                                <c:if test="${contract.getStatusID() == 1 || contract.getStatusID() == 2 || contract.getStatusID() == 4}">
-                                    <div class="action-buttons-container">
-                                        <a href="/timibank/update-contract?ContractID=${contract.getContractID()}" class="action-button update-btn">Update</a>
-                                        <c:if test="${contract.getStatusID() == 1}">
-                                            <button type="submit" class="action-button inactivate-btn" onclick="changeStatus(${contract.getContractID()}, this)">Cancel</button>
+                                <div class="action-buttons-container">
+                                    <c:if test="${contract.getStatusID() == 1 || contract.getStatusID() == 2 || contract.getStatusID() == 4}">
+                                        <a href="/timibank/update-contract-for-customer?ContractID=${contract.getContractID()}" class="action-button update-btn">Update</a>
+                                        <button id="cancelbtn-${contract.getContractID()}" type="submit" class="action-button inactivate-btn" onclick="changeStatus(${contract.getContractID()}, 2)" style="display: ${contract.getStatusID()==1?"block":"none"}">Cancel</button>
+                                        <button id="resendbtn-${contract.getContractID()}" type="submit" class="action-button activate-btn" onclick="changeStatus(${contract.getContractID()}, 1)" style="display: ${contract.getStatusID()==1?"none":"block"}">Re-send</button>
+                                    </c:if>
+                                    <button type="submit" class="action-button" style="background: #cccccc" onclick="toggleDetails(${contract.getContractID()}, this)">Show Detail</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr id="details-${contract.getContractID()}" class="contract-detail" style="display: none;">
+                            <td colspan="9">
+                                <div class="contract-detail-container" style="display: grid">
+                                    <div class="info-row" style="grid-column: 2/7; margin-bottom: 10px"><strong>Interest Rate:</strong> ${contract.getInterestRate()}%</div>
+
+                                    <c:if test="${contract.getType().equals('Saving')}">
+                                        <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Early Withdraw Rate:</strong> ${contract.getEarlyWithdrawRate()}%</div>
+                                    </c:if>
+
+                                    <c:if test="${!contract.getType().equals('Saving')}">
+                                        <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Late Payment Rate:</strong> ${contract.getLatePaymentRate()}%</div>
+                                    </c:if>
+
+                                    <div class="info-row" style="grid-column: 2/12; margin-bottom: 10px"><strong>Description:</strong> ${contract.getDescription()}</div>
+
+                                    <c:if test="${!contract.getType().equals('Saving')}">
+                                        <c:if test="${contract.getType().equals('Secured Loan')}">
+                                            <div class="info-row" style="grid-column: 2/7; margin-bottom: 10px"><strong>Asset Title:</strong> ${contract.getAsset().getTitle()}</div>
+                                            <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Asset Valuation Amount:</strong> <fmt:formatNumber value="${contract.getAsset().getValuationAmount()}" pattern="#,###"/></div>
                                         </c:if>
-                                        <c:if test="${contract.getStatusID() == 2 || contract.getStatusID() == 4}">
-                                            <button type="submit" class="action-button activate-btn" onclick="changeStatus(${contract.getContractID()}, this)">Re-send Request</button>
+
+                                        <c:if test="${contract.getType().equals('Unsecured Loan')}">
+                                            <div class="info-row" style="grid-column: 2/7; margin-bottom: 10px"><strong>Salary Title:</strong> ${contract.getSalary().getTitle()}</div>
+                                            <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Salary Valuation Amount:</strong> <fmt:formatNumber value="${contract.getSalary().getValuationAmount()}" pattern="#,###"/></div>
                                         </c:if>
-                                    </div>
-                                </c:if>
+
+                                        <div class="info-row" style="grid-column: 2/7"><strong>Insurance Name:</strong> ${contract.getInsurance().getInsuranceName()}</div>
+                                        <div class="info-row" style="grid-column: 8/13"><strong>Insurance Coverage Rate:</strong> ${contract.getInsuranceCoverage()}</div>
+                                    </c:if>
+                                </div>
                             </td>
                         </tr>
                     </c:forEach>
@@ -676,22 +783,6 @@
                 </span>
             </div>
         </div>
-
-        <!-- News Modal -->
-        <!--        <div id="newsModal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title" id="modalTitle"></h2>
-                            <span class="close-modal" onclick="closeNewsModal()">&times;</span>
-                        </div>
-                        <div class="modal-body">
-                            <div class="news-description" id="modalDescription"></div>
-                            <div class="news-image-container">
-                                <img id="modalImage" class="news-image" src="" alt="News Image">
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
 
         <script src="./js/scripts.js"></script>
 
@@ -724,7 +815,7 @@
                         form.submit();
                     }
 
-                    function showNewsModal(title, description, image) {
+                    function showContractModal(title, description, image) {
                         const modal = document.getElementById('newsModal');
                         const modalTitle = document.getElementById('modalTitle');
                         const modalDescription = document.getElementById('modalDescription');
@@ -775,33 +866,53 @@
                         let params = new URLSearchParams(url.search);
 
                         params.set(param, value);
+                        params.delete('fromAdd');
                         params.delete('fromUpdate');
                         params.delete('page');
 
-                        window.location.href = 'news-management?' + params.toString();
+                        window.location.href = 'contract-management-for-customer?' + params.toString();
                     }
 
-                    function changeStatus(NewsID, element) {
+                    function changeStatus(ContractID, StatusID) {
                         $.ajax({
-                            url: 'update-news',
-                            type: 'GET',
+                            url: 'update-status-of-contract',
+                            type: 'POST',
                             data: {
-                                NewsID: NewsID,
-                                changeStatus: "true"
+                                ContractID: ContractID,
+                                StatusID: StatusID
+                            },
+                            success: function () {
+                                const status = document.getElementById("status-" + ContractID);
+                                const cancelbtn = document.getElementById("cancelbtn-" + ContractID);
+                                const resendbtn = document.getElementById("resendbtn-" + ContractID);
+                                if (StatusID === 1) {
+                                    status.textContent = 'Pending';
+                                    status.classList.remove('status-4');
+                                    status.classList.remove('status-2');
+                                    status.classList.add('status-1');
+                                    cancelbtn.style.display = 'block';
+                                    resendbtn.style.display = 'none';
+                                } else {
+                                    status.textContent = 'Canceled';
+                                    status.classList.remove('status-1');
+                                    status.classList.add('status-2');
+                                    cancelbtn.style.display = 'none';
+                                    resendbtn.style.display = 'block';
+                                }
                             }
 
+
                         });
-                        const status = document.getElementById("status-" + NewsID);
-                        if (status.textContent.trim() === 'Active') {
-                            status.textContent = 'Inactive';
-                            element.textContent = 'Activate';
-                            element.classList.remove('inactivate-btn');
-                            element.classList.add('activate-btn');
+                    }
+
+                    function toggleDetails(contractID, button) {
+                        var detailsRow = document.getElementById("details-" + contractID);
+                        if (detailsRow.style.display === "none" || detailsRow.style.display === "") {
+                            detailsRow.style.display = "table-row";
+                            button.textContent = 'Close Detail';
                         } else {
-                            status.textContent = 'Active';
-                            element.textContent = 'Inactivate';
-                            element.classList.remove('activate-btn');
-                            element.classList.add('inactivate-btn');
+                            detailsRow.style.display = "none";
+                            button.textContent = 'Show Detail';
                         }
                     }
         </script>
