@@ -16,7 +16,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import model.Asset;
 import model.Customer;
@@ -71,15 +73,50 @@ public class MySalary extends HttpServlet {
         HttpSession session = request.getSession();
         Customer account = (Customer) session.getAttribute("account");
         SalaryDAO dao = new SalaryDAO();
-        List<Salary> data = dao.getSalaryByCId(account.getCustomerId());
-        descriptionSetup(data);
+        List<Integer> listOfPageSize = removeDuplicates(calculatePageSize(dao.getSalaryByCId(account.getCustomerId()).size()));
+        request.setAttribute("listSize", listOfPageSize);
+         int page = 1; // trang đầu tiên
+        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : listOfPageSize.get(0);
+
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        List<Salary> data = dao.getSalaryByPage(account.getCustomerId(), page, pageSize);
+        descriptionSetup(data);     
         PdfDAO pdfDAO = new PdfDAO();
         for (Salary sala : data) {
             List<PdfLis> listPDF = pdfDAO.getpdfBySalaryId(sala.getId());
             sala.setListpdf(listPDF);
         }
+        int totalUsers = dao.getSalaryByCId(account.getCustomerId()).size();
+        int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("pageSize", pageSize);
+        request.setAttribute("data", data);
         request.setAttribute("data", data);
         request.getRequestDispatcher("mySalary.jsp").forward(request, response);
+
+    }
+
+    private List<Integer> calculatePageSize(int total) {
+        List<Integer> listOfPageSize = new ArrayList<>();
+        int totalUsers = total;
+
+        double[] percentages = {0.15, 0.5, 1.0};
+        for (double percentage : percentages) {
+            listOfPageSize.add((int) Math.ceil(totalUsers * percentage));
+        }
+
+        return listOfPageSize;
+    }
+
+    public static List<Integer> removeDuplicates(List<Integer> list) {
+        // Sử dụng HashSet để xóa giá trị trùng lặp
+        HashSet<Integer> set = new HashSet<>(list);
+
+        // Chuyển đổi lại HashSet thành List
+        return new ArrayList<>(set);
 
     }
 

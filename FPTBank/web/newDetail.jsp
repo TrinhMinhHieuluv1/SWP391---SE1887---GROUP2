@@ -149,19 +149,96 @@
             .view-all a:hover {
                 text-decoration: underline;
             }
+ .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style cho nội dung dropdown */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Hiện dropdown */
+        .show {
+            display: block;
+        }
         </style>
+        <script>
+            // Hàm để hiển thị hoặc ẩn dropdown
+            function toggleDropdown() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+
+            // Đóng dropdown nếu người dùng nhấp ra ngoài
+            window.onclick = function (event) {
+                if (!event.target.matches('.dropdown button')) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    for (var i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+        </script>
     </head>
     <body>
         <%@ include file="header.jsp"%>
         <div class="container" style="margin-top: 150px">
-           <c:set value="${requestScope.newdetail}" var="detail"/>
+            <c:set value="${requestScope.newdetail}" var="detail"/>
             <h3>${detail.getTitle()}</h3>
             <div class="date">${detail.getCreatedAt()}</div>
             <div class="content">
                 <p>${detail.getDescription()}</p>
             </div>
             <div class="actions">
-                
+                <div class="dropdown">
+                    <button onclick="toggleDropdown()">Chia sẻ</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://your-article-link.com" target="_blank">Chia sẻ trên Facebook</a>
+                        <a href="mailto:?subject=${detail.getTitle()}&body=${detail.getDescription()}: https://your-article-link.com" target="_blank">Chia sẻ qua Email</a>
+                        <a href="https://twitter.com/intent/tweet?url=https://your-article-link.com&text=Tiêu đề bài viết" target="_blank">Chia sẻ trên Twitter</a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://your-article-link.com" target="_blank">Chia sẻ trên LinkedIn</a>
+                    </div>
+                </div> 
             </div>
         </div>
         <div class="related-news">

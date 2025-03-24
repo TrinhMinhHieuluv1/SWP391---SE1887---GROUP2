@@ -107,7 +107,7 @@ public class UpdateAsset extends HttpServlet {
                 }
                 String pathHost = getServletContext().getRealPath("") + File.separator + IMAGE_DIR;
                 imagePath = "uploads/" + FileUploadHelper.saveProfilePicture(filePartImage, pathHost, 1);
-//                FileUploadHelper.saveProfilePicture(filePartImage,pathHost, 2);
+                FileUploadHelper.saveProfilePicture(filePartImage,pathHost, 2);
                 asset.setImage(imagePath);
             }
 

@@ -349,6 +349,90 @@ public class SalaryDAO extends DBContext {
 
     }
 
+    public List<Salary> getSalaryByPage(int cid, int page, int size) {
+        List<Salary> salarys = new ArrayList<>();
+        // Tính offset (vị trí bắt đầu của trang)
+        int offset = (page - 1) * size;
+
+        String query = "SELECT * FROM Asset where CustomerID = ? ORDER BY AssetId OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, cid); // Số lượng tin tức mỗi trang
+            stmt.setInt(2, offset); // Số lượng tin tức mỗi trang
+            stmt.setInt(3, size); // Vị trí bắt đầu
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("AssetId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setTitle(resultSet.getString("Title"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salarys.add(salary);
+            }
+            return salarys;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public List<Salary> getSalaryByConditionAndPaging(int cid, String name, String status, String used, String ascending, int page, int size) throws SQLException {
+        List<Salary> salaries = new ArrayList<>();
+        String query = "SELECT * FROM Salary WHERE  1=1 ";
+        if (cid != 0) {
+            query = query + " AND CustomerID= " + cid;
+        }
+        if (!name.isEmpty() && name != null) {
+            query = query + " AND Title like '%" + name + "%'";
+        }
+        if (!status.isEmpty() && !status.equalsIgnoreCase("all")) {
+            query = query + " AND Status='" + status + "'";
+        }
+        if (!used.isEmpty() && !used.equalsIgnoreCase("all")) {
+            boolean b = Boolean.parseBoolean(used);
+            query = query + " AND Used='" + b + "'";
+        }
+        if (!ascending.isEmpty()) {
+            query = query + " ORDER BY CreatedAt " + ascending;
+        }
+        try {
+            int offset = (page - 1) * size;
+            if (page > 0) {
+                query = query + " OFFSET " + offset + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+            }
+            PreparedStatement pstmt = connection.prepareStatement(query);
+
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                Salary salary = new Salary();
+                salary.setId(resultSet.getInt("SalaryId"));
+                salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
+                salary.setImage(resultSet.getString("Image"));
+                salary.setTitle(resultSet.getString("Title"));
+                salary.setDescription(resultSet.getString("Description"));
+                salary.setValue(resultSet.getBigDecimal("Value"));
+                salary.setComments(resultSet.getString("Comments"));
+                salary.setValuationAmount(resultSet.getBigDecimal("ValuationAmount"));
+                salary.setUsed(resultSet.getBoolean("Used"));
+                salary.setStatus(resultSet.getString("Status"));
+                salary.setCreatedAt(resultSet.getTimestamp("CreatedAt"));
+                salaries.add(salary);
+            }
+            return salaries;
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
+
     public List<Salary> getSalaryListForCustomer(int CustomerID) {
 
         List<Salary> salaryList = new ArrayList<>();
