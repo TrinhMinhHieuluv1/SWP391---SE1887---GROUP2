@@ -31,9 +31,9 @@ public class ExportExcelServlet extends HttpServlet {
 
         List<String> labels = Arrays.asList(labelsStr.split(",")); // "A,B,C" → ["A", "B", "C"]
         List<Double> data = Arrays.stream(dataStr.split(","))
-                .filter(s -> !s.trim().isEmpty()) // Loại bỏ chuỗi rỗng
-                .map(Double::parseDouble) // parse từng phần tử thành Double
-                .collect(Collectors.toList()); // thu thập kq từ stream thành List<Double>
+                .filter(s -> !s.trim().isEmpty())
+                .map(Double::parseDouble) 
+                .collect(Collectors.toList()); 
 
         List<Double> percentages = Arrays.stream(percentagesStr.split(","))
                 .filter(s -> !s.trim().isEmpty()) 
@@ -42,7 +42,7 @@ public class ExportExcelServlet extends HttpServlet {
 
         
         try {
-            // Thiết lập response để tải file
+     
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=Chart_Report_" + fileDate + ".xlsx");
 

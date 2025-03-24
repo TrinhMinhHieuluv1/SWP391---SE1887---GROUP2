@@ -78,6 +78,9 @@ public class ChartRevenueSaving extends HttpServlet {
         List<String> listDataSavingContract = chart.calculateDataSaving(revenueByMonth);
 
         JSONObject jsonResponse = new JSONObject();
+        
+        jsonResponse.put("fromDate",fromDateSaving.toString());
+        jsonResponse.put("toDate",toDateSaving.toString());
         if (revenueByMonth.isEmpty() || revenueByMonth == null) {
             jsonResponse.put("error", "No data available !!");
         } else {

@@ -89,7 +89,7 @@ public class LoanPaymentDAO extends DBContext {
                 }
             }
         }
-        System.out.println(sql);
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
