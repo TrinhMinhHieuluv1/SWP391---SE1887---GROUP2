@@ -636,6 +636,7 @@
                         <div class="card">
                             <div class="card-header bg-transparent py-3 d-flex align-items-center">
                                 <h6 class="mb-0 text-uppercase">Statistic of Insurance Max Amount Of Loan level</h6>
+                                <span class="ms-3">Status: <%= request.getParameter("statusFilterAmount") != null ? request.getParameter("statusFilterAmount").replace("ChartAmount", "") : "Both" %></span>
                                 <%
                                                        
                                                             
@@ -674,19 +675,20 @@
                                         <input type="hidden" name="ToltalAmount" id="ToltalAmountInput" value="<%= ToltalAmount %>">
 
                                         <input type="hidden" name="image" id="imageInput">
+                                        <input type="hidden" name="statusFilterAmount" id="statusFilterAmountInput" value="<%= request.getParameter("statusFilterAmount") != null ? request.getParameter("statusFilterAmount") : "BothChartAmount" %>">
                                         <button class="btn btn-pending" type="submit" onclick="convertCanvasToImage()">Tải PDF</button>
 
                                     </div>
+                                    <div class="btn-group position-static">
 
-                                    <select class="form-select me-1" id="statusFilterAmount" name="statusFilterAmount" 
-                                            style="width: auto; min-width: 170px; padding: 4px 8px; font-size: 14px;" 
-                                            onchange="redirectToServletChartAmount()">
-                                        <option value="" selected disabled>Status of Insurance</option>
-                                        <option value="ActiveChartAmount">Active</option>
-                                        <option value="InactiveChartAmount">Inactive</option>
-                                        <option value="BothChartAmount">Both</option>
-                                    </select>
-
+                                        <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <%= session.getAttribute("statusFilterAmount") != null ? session.getAttribute("statusFilterAmount").toString().replace("ChartAmount", "") : "Status" %>
+                                        </button>                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterAmount=ActiveChartAmount">Active</a></li>
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterAmount=InactiveChartAmount">Inactive</a></li>
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterAmount=BothChartAmount">Both</a></li>
+                                        </ul>
+                                    </div>
 
                                 </div>
                             </div>
@@ -707,6 +709,8 @@
 
                             <div class="card-header bg-transparent py-3 d-flex align-items-center">
                                 <h6 class="mb-0 text-uppercase">Statistic of Insurance coverRate lever</h6>
+                                <span class="ms-3">Status: <%= request.getParameter("statusFilterCover") != null ? request.getParameter("statusFilterCover").replace("ChartCover", "") : "Both" %></span>
+
                                 <%
                                                        
                                                             
@@ -742,17 +746,20 @@
                                         <input type="hidden" name="coverate100" id="coverate100Input" value="<%= coverate100 %>">
                                         <input type="hidden" name="totalCoverate" id="totalCoverateInput" value="<%= totalCoverate %>">
                                         <input type="hidden" name="imageCover" id="imageInputCover">
+                                        <input type="hidden" name="statusFilterCover" id="statusFilterCoverInput" value="<%= request.getParameter("statusFilterCover") != null ? request.getParameter("statusFilterCover") : "BothChartCover" %>">
+
                                         <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageCover()">Tải PDF</button>
 
                                     </div>
-                                    <select class="form-select me-1" id="statusFilterCover" name="statusFilterCover" 
-                                            style="width: auto; min-width: 170px; padding: 4px 8px; font-size: 14px;" 
-                                            onchange="redirectToServletChartCover()">
-                                        <option value="" selected disabled>Status of Insurance</option>
-                                        <option value="ActiveChartCover">Active</option>
-                                        <option value="InactiveChartCover">Inactive</option>
-                                        <option value="BothChartCover">Both</option>
-                                    </select>
+                                    <div class="btn-group position-static">
+                                        <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <%= session.getAttribute("statusFilterCover") != null ? session.getAttribute("statusFilterCover").toString().replace("ChartCover", "") : "Status" %>
+                                        </button>                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterCover=ActiveChartCover">Active</a></li>
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterCover=InactiveChartCover">Inactive</a></li>
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterCover=BothChartCover">Both</a></li>
+                                        </ul>
+                                    </div>
 
 
                                 </div>
@@ -774,6 +781,8 @@
 
                             <div class="card-header bg-transparent py-3 d-flex align-items-center">
                                 <h6 class="mb-0 text-uppercase">Statistic of Insurance feeRate level</h6>
+                                <span class="ms-3">Status: <%= request.getParameter("statusFilterFee") != null ? request.getParameter("statusFilterFee").replace("ChartFee", "") : "Both" %></span>
+
                                 <%
                                                        
                                                             
@@ -802,18 +811,20 @@
                                         <input type="hidden" name="percentfeerate100" id="percentfeerate100Input" value="<%= percentfeerate100 %>">
                                         <input type="hidden" name="totalFeerate" id="totalFeerateInput" value="<%= totalFeerate %>">
                                         <input type="hidden" name="imageFee" id="imageInputFee">
+                                        <input type="hidden" name="statusFilterFee" id="statusFilterFeeInput" value="<%= request.getParameter("statusFilterFee") != null ? request.getParameter("statusFilterFee") : "BothChartFee" %>">
+
                                         <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageFee()">Tải PDF</button>
 
                                     </div>
-                                    <select class="form-select me-1" id="statusFilterFee"  name="statusFilterFee" 
-                                            style="width: auto; min-width: 170px; padding: 4px 8px; font-size: 14px;" 
-                                            onchange="redirectToServletChartFee()">
-                                        <option value="" selected disabled>Status of Insurance</option>
-                                        <option value="ActiveChartFee">Active</option>
-                                        <option value="InactiveChartFee">Inactive</option>
-                                        <option value="BothChartFee">Both</option>
-                                    </select>
-
+                                    <div class="btn-group position-static">
+                                        <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <%= session.getAttribute("statusFilterFee") != null ? session.getAttribute("statusFilterFee").toString().replace("ChartFee", "") : "Status" %>
+                                        </button>                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterFee=ActiveChartFee">Active</a></li>
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterFee=InactiveChartFee">Inactive</a></li>
+                                            <li><a class="dropdown-item" href="getdatainsurance?statusFilterFee=BothChartFee">Both</a></li>
+                                        </ul>
+                                    </div>
 
                                 </div>
                             </div>
@@ -1028,195 +1039,195 @@
                                         console.log(data5);
                                         console.log(labels5);
 
-                                        // drownlist chart2
-                                        function redirectToServletChartFee() {
-                                            var selectBox = document.getElementById("statusFilterFee");
-                                            var selectedValue = selectBox.value;
-                                            console.log(selectedValue);
-                                            if (selectedValue) {
-                                                updateChartFee(selectedValue); // Gọi AJAX để cập nhật
-
-                                            }
-                                        }
-
-                                        function updateChartFee(status) {
-                                            $.ajax({
-                                                url: status,
-                                                type: 'GET',
-                                                dataType: 'json',
-                                                success: function (response) {
-                                                    if (response.error) {
-                                                        toastr.error("No data valiable !!", "Error");
-                                                        myChart2.data.datasets[0].data = [0];
-                                                        myChart2.data.datasets[1].data = [0];
-                                                        myChart2.data.datasets[2].data = [0];
-                                                        myChart2.data.datasets[3].data = [0];
-                                                        myChart2.options.scales.y.max = 0;
-                                                    } else {
-                                                        // Cập nhật dữ liệu biểu đồ
-                                                        myChart2.data.datasets[0].data = [response.data2[0]];
-                                                        myChart2.data.datasets[1].data = [response.data2[1]];
-                                                        myChart2.data.datasets[2].data = [response.data2[2]];
-                                                        myChart2.data.datasets[3].data = [response.data2[3]];
-                                                        myChart2.options.scales.y.max = response.total_fee;
-                                                        // Cập nhật các trường input ẩn
-                                                        document.getElementById("percentfeerate10Input").value = response.data2[0];
-                                                        document.getElementById("percentfeerate20Input").value = response.data2[1];
-                                                        document.getElementById("percentfeerate30Input").value = response.data2[2];
-                                                        document.getElementById("percentfeerate100Input").value = response.data2[3];
-                                                        document.getElementById("totalFeerateInput").value = response.total_fee;
-
-                                                        console.log(response.data2);
-                                                        console.log(response.total_fee);
-                                                    }
-                                                    myChart2.update();
-
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    toastr.error("An error occurred while retrieving data !!", "Error");
-                                                    myChart2.data.datasets[0].data = [0];
-                                                    myChart2.data.datasets[1].data = [0];
-                                                    myChart2.data.datasets[2].data = [0];
-                                                    myChart2.data.datasets[3].data = [0];
-                                                    myChart2.options.scales.y.max = 0;
-                                                    myChart2.update();
-                                                }
-                                            });
-                                        }
-
-
-                                        // drownlist chart21
-                                        function redirectToServletChartCover() {
-                                            var selectBox = document.getElementById("statusFilterCover");
-                                            var selectedValue = selectBox.value;
-                                            console.log(selectedValue);
-                                            if (selectedValue) {
-                                                updateChartCover(selectedValue); // Gọi AJAX để cập nhật
-
-                                            }
-                                        }
-
-                                        function updateChartCover(status) {
-                                            $.ajax({
-                                                url: status,
-                                                type: 'GET',
-                                                dataType: 'json',
-                                                success: function (response) {
-                                                    if (response.error) {
-                                                        toastr.error("No data valiable !!", "Error");
-                                                        myChart6.data.datasets[0].data = [0];
-                                                        myChart6.data.datasets[1].data = [0];
-                                                        myChart6.data.datasets[2].data = [0];
-                                                        myChart6.data.datasets[3].data = [0];
-                                                        myChart6.data.datasets[4].data = [0];
-                                                        myChart6.data.datasets[5].data = [0];
-                                                        myChart6.options.scales.y.max = 0;
-                                                    } else {
-                                                        // Cập nhật dữ liệu biểu đồ
-                                                        myChart6.data.datasets[0].data = [response.data21[0]];
-                                                        myChart6.data.datasets[1].data = [response.data21[1]];
-                                                        myChart6.data.datasets[2].data = [response.data21[2]];
-                                                        myChart6.data.datasets[3].data = [response.data21[3]];
-                                                        myChart6.data.datasets[4].data = [response.data21[4]];
-                                                        myChart6.data.datasets[5].data = [response.data21[5]];
-                                                        myChart6.options.scales.y.max = response.total_Cover;
-
-                                                        // Cập nhật các trường input ẩn
-                                                        document.getElementById("coverate30Input").value = response.data21[0];
-                                                        document.getElementById("coverate50Input").value = response.data21[1];
-                                                        document.getElementById("coverate60Input").value = response.data21[2];
-                                                        document.getElementById("coverate70Input").value = response.data21[3];
-                                                        document.getElementById("coverate80Input").value = response.data21[4];
-                                                        document.getElementById("coverate100Input").value = response.data21[5];
-                                                        document.getElementById("totalCoverateInput").value = response.total_Cover;
-
-                                                        console.log(response.data21);
-                                                        console.log(response.total_Cover);
-                                                    }
-                                                    myChart6.update();
-
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    toastr.error("An error occurred while retrieving data !!", "Error");
-                                                    myChart6.data.datasets[0].data = [0];
-                                                    myChart6.data.datasets[1].data = [0];
-                                                    myChart6.data.datasets[2].data = [0];
-                                                    myChart6.data.datasets[3].data = [0];
-                                                    myChart6.data.datasets[4].data = [0];
-                                                    myChart6.data.datasets[5].data = [0];
-                                                    myChart6.options.scales.y.max = 0;
-                                                    myChart6.update();
-                                                }
-                                            });
-                                        }
-
-
-
-                                        // drownlist chart7
-                                        function redirectToServletChartAmount() {
-                                            var selectBox = document.getElementById("statusFilterAmount");
-                                            var selectedValue = selectBox.value;
-                                            console.log(selectedValue);
-                                            if (selectedValue) {
-                                                updateChartAmount(selectedValue); // Gọi AJAX để cập nhật
-
-                                            }
-                                        }
-
-                                        function updateChartAmount(status) {
-                                            $.ajax({
-                                                url: status,
-                                                type: 'GET',
-                                                dataType: 'json',
-                                                success: function (response) {
-                                                    if (response.error) {
-                                                        toastr.error("No data valiable !!", "Error");
-                                                        myChart7.data.datasets[0].data = [0];
-                                                        myChart7.data.datasets[1].data = [0];
-                                                        myChart7.data.datasets[2].data = [0];
-                                                        myChart7.data.datasets[3].data = [0];
-                                                        myChart7.data.datasets[4].data = [0];
-                                                        myChart7.data.datasets[5].data = [0];
-                                                        myChart7.options.scales.y.max = 0;
-                                                    } else {
-                                                        // Cập nhật dữ liệu biểu đồ
-                                                        myChart7.data.datasets[0].data = [response.data7[0]];
-                                                        myChart7.data.datasets[1].data = [response.data7[1]];
-                                                        myChart7.data.datasets[2].data = [response.data7[2]];
-                                                        myChart7.data.datasets[3].data = [response.data7[3]];
-                                                        myChart7.data.datasets[4].data = [response.data7[4]];
-                                                        myChart7.data.datasets[5].data = [response.data7[5]];
-                                                        myChart7.options.scales.y.max = response.total_Amount;
-
-
-                                                        // Cập nhật các trường input ẩn
-                                                        document.getElementById("amount1Input").value = response.data7[0];
-                                                        document.getElementById("amount2Input").value = response.data7[1];
-                                                        document.getElementById("amount4Input").value = response.data7[2];
-                                                        document.getElementById("amount6Input").value = response.data7[3];
-                                                        document.getElementById("amount8Input").value = response.data7[4];
-                                                        document.getElementById("amount10Input").value = response.data7[5];
-                                                        document.getElementById("ToltalAmountInput").value = response.total_Amount;
-                                                        console.log(response.data7);
-                                                        console.log(response.total_Amount);
-
-                                                    }
-                                                    myChart7.update();
-
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    toastr.error("An error occurred while retrieving data !!", "Error");
-                                                    myChart7.data.datasets[0].data = [0];
-                                                    myChart7.data.datasets[1].data = [0];
-                                                    myChart7.data.datasets[2].data = [0];
-                                                    myChart7.data.datasets[3].data = [0];
-                                                    myChart7.data.datasets[4].data = [0];
-                                                    myChart7.data.datasets[5].data = [0];
-                                                    myChart7.options.scales.y.max = 0;
-                                                    myChart7.update();
-                                                }
-                                            });
-                                        }
+//                                        // drownlist chart2
+//                                        function redirectToServletChartFee() {
+//                                            var selectBox = document.getElementById("statusFilterFee");
+//                                            var selectedValue = selectBox.value;
+//                                            console.log(selectedValue);
+//                                            if (selectedValue) {
+//                                                updateChartFee(selectedValue); // Gọi AJAX để cập nhật
+//
+//                                            }
+//                                        }
+//
+//                                        function updateChartFee(status) {
+//                                            $.ajax({
+//                                                url: status,
+//                                                type: 'GET',
+//                                                dataType: 'json',
+//                                                success: function (response) {
+//                                                    if (response.error) {
+//                                                        toastr.error("No data valiable !!", "Error");
+//                                                        myChart2.data.datasets[0].data = [0];
+//                                                        myChart2.data.datasets[1].data = [0];
+//                                                        myChart2.data.datasets[2].data = [0];
+//                                                        myChart2.data.datasets[3].data = [0];
+//                                                        myChart2.options.scales.y.max = 0;
+//                                                    } else {
+//                                                        // Cập nhật dữ liệu biểu đồ
+//                                                        myChart2.data.datasets[0].data = [response.data2[0]];
+//                                                        myChart2.data.datasets[1].data = [response.data2[1]];
+//                                                        myChart2.data.datasets[2].data = [response.data2[2]];
+//                                                        myChart2.data.datasets[3].data = [response.data2[3]];
+//                                                        myChart2.options.scales.y.max = response.total_fee;
+//                                                        // Cập nhật các trường input ẩn
+//                                                        document.getElementById("percentfeerate10Input").value = response.data2[0];
+//                                                        document.getElementById("percentfeerate20Input").value = response.data2[1];
+//                                                        document.getElementById("percentfeerate30Input").value = response.data2[2];
+//                                                        document.getElementById("percentfeerate100Input").value = response.data2[3];
+//                                                        document.getElementById("totalFeerateInput").value = response.total_fee;
+//
+//                                                        console.log(response.data2);
+//                                                        console.log(response.total_fee);
+//                                                    }
+//                                                    myChart2.update();
+//
+//                                                },
+//                                                error: function (xhr, status, error) {
+//                                                    toastr.error("An error occurred while retrieving data !!", "Error");
+//                                                    myChart2.data.datasets[0].data = [0];
+//                                                    myChart2.data.datasets[1].data = [0];
+//                                                    myChart2.data.datasets[2].data = [0];
+//                                                    myChart2.data.datasets[3].data = [0];
+//                                                    myChart2.options.scales.y.max = 0;
+//                                                    myChart2.update();
+//                                                }
+//                                            });
+//                                        }
+//
+//
+//                                        // drownlist chart21
+//                                        function redirectToServletChartCover() {
+//                                            var selectBox = document.getElementById("statusFilterCover");
+//                                            var selectedValue = selectBox.value;
+//                                            console.log(selectedValue);
+//                                            if (selectedValue) {
+//                                                updateChartCover(selectedValue); // Gọi AJAX để cập nhật
+//
+//                                            }
+//                                        }
+//
+//                                        function updateChartCover(status) {
+//                                            $.ajax({
+//                                                url: status,
+//                                                type: 'GET',
+//                                                dataType: 'json',
+//                                                success: function (response) {
+//                                                    if (response.error) {
+//                                                        toastr.error("No data valiable !!", "Error");
+//                                                        myChart6.data.datasets[0].data = [0];
+//                                                        myChart6.data.datasets[1].data = [0];
+//                                                        myChart6.data.datasets[2].data = [0];
+//                                                        myChart6.data.datasets[3].data = [0];
+//                                                        myChart6.data.datasets[4].data = [0];
+//                                                        myChart6.data.datasets[5].data = [0];
+//                                                        myChart6.options.scales.y.max = 0;
+//                                                    } else {
+//                                                        // Cập nhật dữ liệu biểu đồ
+//                                                        myChart6.data.datasets[0].data = [response.data21[0]];
+//                                                        myChart6.data.datasets[1].data = [response.data21[1]];
+//                                                        myChart6.data.datasets[2].data = [response.data21[2]];
+//                                                        myChart6.data.datasets[3].data = [response.data21[3]];
+//                                                        myChart6.data.datasets[4].data = [response.data21[4]];
+//                                                        myChart6.data.datasets[5].data = [response.data21[5]];
+//                                                        myChart6.options.scales.y.max = response.total_Cover;
+//
+//                                                        // Cập nhật các trường input ẩn
+//                                                        document.getElementById("coverate30Input").value = response.data21[0];
+//                                                        document.getElementById("coverate50Input").value = response.data21[1];
+//                                                        document.getElementById("coverate60Input").value = response.data21[2];
+//                                                        document.getElementById("coverate70Input").value = response.data21[3];
+//                                                        document.getElementById("coverate80Input").value = response.data21[4];
+//                                                        document.getElementById("coverate100Input").value = response.data21[5];
+//                                                        document.getElementById("totalCoverateInput").value = response.total_Cover;
+//
+//                                                        console.log(response.data21);
+//                                                        console.log(response.total_Cover);
+//                                                    }
+//                                                    myChart6.update();
+//
+//                                                },
+//                                                error: function (xhr, status, error) {
+//                                                    toastr.error("An error occurred while retrieving data !!", "Error");
+//                                                    myChart6.data.datasets[0].data = [0];
+//                                                    myChart6.data.datasets[1].data = [0];
+//                                                    myChart6.data.datasets[2].data = [0];
+//                                                    myChart6.data.datasets[3].data = [0];
+//                                                    myChart6.data.datasets[4].data = [0];
+//                                                    myChart6.data.datasets[5].data = [0];
+//                                                    myChart6.options.scales.y.max = 0;
+//                                                    myChart6.update();
+//                                                }
+//                                            });
+//                                        }
+//
+//
+//
+//                                        // drownlist chart7
+//                                        function redirectToServletChartAmount() {
+//                                            var selectBox = document.getElementById("statusFilterAmount");
+//                                            var selectedValue = selectBox.value;
+//                                            console.log(selectedValue);
+//                                            if (selectedValue) {
+//                                                updateChartAmount(selectedValue); // Gọi AJAX để cập nhật
+//
+//                                            }
+//                                        }
+//
+//                                        function updateChartAmount(status) {
+//                                            $.ajax({
+//                                                url: status,
+//                                                type: 'GET',
+//                                                dataType: 'json',
+//                                                success: function (response) {
+//                                                    if (response.error) {
+//                                                        toastr.error("No data valiable !!", "Error");
+//                                                        myChart7.data.datasets[0].data = [0];
+//                                                        myChart7.data.datasets[1].data = [0];
+//                                                        myChart7.data.datasets[2].data = [0];
+//                                                        myChart7.data.datasets[3].data = [0];
+//                                                        myChart7.data.datasets[4].data = [0];
+//                                                        myChart7.data.datasets[5].data = [0];
+//                                                        myChart7.options.scales.y.max = 0;
+//                                                    } else {
+//                                                        // Cập nhật dữ liệu biểu đồ
+//                                                        myChart7.data.datasets[0].data = [response.data7[0]];
+//                                                        myChart7.data.datasets[1].data = [response.data7[1]];
+//                                                        myChart7.data.datasets[2].data = [response.data7[2]];
+//                                                        myChart7.data.datasets[3].data = [response.data7[3]];
+//                                                        myChart7.data.datasets[4].data = [response.data7[4]];
+//                                                        myChart7.data.datasets[5].data = [response.data7[5]];
+//                                                        myChart7.options.scales.y.max = response.total_Amount;
+//
+//
+//                                                        // Cập nhật các trường input ẩn
+//                                                        document.getElementById("amount1Input").value = response.data7[0];
+//                                                        document.getElementById("amount2Input").value = response.data7[1];
+//                                                        document.getElementById("amount4Input").value = response.data7[2];
+//                                                        document.getElementById("amount6Input").value = response.data7[3];
+//                                                        document.getElementById("amount8Input").value = response.data7[4];
+//                                                        document.getElementById("amount10Input").value = response.data7[5];
+//                                                        document.getElementById("ToltalAmountInput").value = response.total_Amount;
+//                                                        console.log(response.data7);
+//                                                        console.log(response.total_Amount);
+//
+//                                                    }
+//                                                    myChart7.update();
+//
+//                                                },
+//                                                error: function (xhr, status, error) {
+//                                                    toastr.error("An error occurred while retrieving data !!", "Error");
+//                                                    myChart7.data.datasets[0].data = [0];
+//                                                    myChart7.data.datasets[1].data = [0];
+//                                                    myChart7.data.datasets[2].data = [0];
+//                                                    myChart7.data.datasets[3].data = [0];
+//                                                    myChart7.data.datasets[4].data = [0];
+//                                                    myChart7.data.datasets[5].data = [0];
+//                                                    myChart7.options.scales.y.max = 0;
+//                                                    myChart7.update();
+//                                                }
+//                                            });
+//                                        }
 
                                         function convertCanvasToImage() {
                                             let canvas = document.getElementById("chart7");

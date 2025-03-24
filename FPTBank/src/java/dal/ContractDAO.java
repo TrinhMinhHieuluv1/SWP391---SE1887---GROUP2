@@ -314,6 +314,18 @@ public class ContractDAO extends DBContext {
         }
     }
 
+    public boolean updateStatus(int contractID, int statusID) {
+    String sql = "UPDATE [Contract] SET StatusID=? WHERE ContractID=?";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setInt(1, statusID);
+        st.setInt(2, contractID);
+        return st.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
     public static void main(String[] args) {
         ContractDAO ctdao = new ContractDAO();
         Contract contract = ctdao.selectAContractByID(48);

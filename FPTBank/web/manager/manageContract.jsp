@@ -41,29 +41,70 @@
         <link href="assets/css/shadow-theme.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
-            .form__error{
-                padding: 10px 0 ;
-                font-size: 13px;
-                color: red;
-            }
-            .error {
-                color: red;
-            }
-            .form__text-input{
-                display: flex;
-                width: 100%;
-            }
-            .form-group__input-wrap {
-                display: flex;
+            .complete-btn {
+                background-color: #28a745; /* Xanh lá cây */
+                color: white;
 
-                width: 100%;
             }
 
-            .form-group__input {
-                border: none;
-                outline: none;
-                font-size: 18px;
+            .complete-btn:hover {
+                background-color: #218838;
             }
+
+            .reject-btn {
+                background-color: red; /* Màu cam */
+                color: white;
+
+            }
+
+            .reject-btn:hover {
+                background-color: #e96900;
+            }
+
+            .doing-btn {
+                background-color: #6f42c1; /* Màu tím */
+                color: white;
+
+            }
+
+            .doing-btn:hover {
+                background-color: #5a3794;
+            }
+
+            .customer__container {
+                padding: 20px;
+                max-width: 600px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .customer__grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .customer__image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .customer__image img {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+
+            .customer__info {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+
             .modal__content {
                 padding: 20px;
                 background-color: #f9f9f9;
@@ -97,128 +138,6 @@
                 margin-bottom: 5px;
 
             }
-
-            .modal__text input,
-            .modal__text select {
-                width: 100%;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 14px;
-                color: #555;
-            }
-
-            .modal__text input:focus,
-            .modal__text select:focus {
-                border-color: #007bff;
-                outline: none;
-                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-            }
-
-            .row {
-                display: flex;
-                flex-wrap: wrap;
-                margin: -10px;
-            }
-
-            .col-6 {
-                flex: 0 0 50%;
-                max-width: 50%;
-                padding: 10px;
-            }
-
-
-
-            detail-icon {
-                cursor: pointer;
-                color: #007bff;
-                font-size: 1.2em;
-                transition: color 0.3s ease;
-            }
-
-            .detail-icon:hover {
-                color: #0056b3;
-            }
-
-
-            .pagination {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: auto;
-            }
-
-            .pagination a {
-                padding: 9px 10px;
-                margin: 0 5px;
-                background-color: #f4f4f4;
-
-                color: #333;
-                text-decoration: none;
-                border-radius: 25px;
-                font-weight: bold;
-                transition: all 0.3s ease-in-out;
-            }
-
-            .pagination a:hover {
-                background-color: yellowgreen;
-            }
-
-            .pagination a.active {
-                background-color: green;
-                color: #fff;
-                border-radius: 30px;
-            }
-
-            .modal-image {
-                width: 600px;
-                height: 450px;
-                object-fit: cover;
-                border-radius: 8px;
-            }
-
-            .modal-info {
-                flex: 1;
-            }
-
-            .modal-info p {
-                margin: 10px 0;
-            }
-            /*            #modalImage {
-                            width: 100%;
-                            height: auto;
-                            align-items: center;
-                            justify-content: center;
-                            border-radius: 8px;
-                            margin-bottom: 15px;
-                        }*/
-
-            #modalDescription,
-            #modalValue,
-            #modalDate {
-                font-size: 1em;
-                margin: 10px 0;
-            }
-            .form-control {
-                width: 80%;
-                padding: 5px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 14px;
-            }
-            .comment-input {
-                width: 100%;
-                height: 50px;
-                padding: 10px;
-                border: 1px solid #ced4da;
-                border-radius: 5px;
-                resize: none; /* Không cho phép thay đổi kích thước */
-                font-size: 16px;
-            }
-            .comment-input:focus {
-                border-color: #80bdff;
-                outline: none;
-            }
             .btn {
                 padding: 8px 12px;
                 font-size: 14px;
@@ -239,6 +158,305 @@
             .btn:hover {
                 opacity: 0.8;
             }
+            .contract-management {
+                padding: 30px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .page-title {
+                color: #2e7d32;
+                font-size: 2em;
+                margin-bottom: 30px;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            .contract-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                background: white;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            }
+
+            .contract-table th {
+                background: #4caf50;
+                color: white;
+                font-weight: 600;
+                padding: 15px;
+                font-size: 0.95em;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .contract-table th.center-align {
+                text-align: center;
+            }
+
+            .contract-table td {
+                padding: 15px;
+                border-bottom: 1px solid #e8f5e9;
+                color: #333;
+                font-size: 0.95em;
+            }
+
+            .contract-table td.center-align {
+                text-align: center;
+            }
+
+            .contract-table tr:last-child td {
+                border-bottom: none;
+            }
+
+            .contract-table tr:nth-child(even) {
+                background-color: #f8fdf8;
+            }
+
+            .contract-table tr:hover td {
+                background-color: #e8f5e9;
+            }
+
+            .contract-table th.contractid-column {
+                width: 60px;
+            }
+
+            .contract-table th.contracttype-column {
+                width: 20%;
+            }
+
+            .contract-table th.contractamount-column {
+                width: 20%;
+            }
+
+            .contract-table th.contractperiod-column {
+                width: 100px;
+            }
+
+            .contract-table th.contractinterestrate-column {
+                width: 120px;
+            }
+
+            .contract-table th.contractmonthlypayment-column {
+                width: 120px;
+            }
+
+            .contract-table th.contractcreatedat-column {
+                width: 80px;
+            }
+
+            .contract-table th.contractstatus-column {
+                width: 180px;
+            }
+
+            .action-buttons-container {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+            }
+
+            .action-button {
+                padding: 8px 5px;
+                border-radius: 8px;
+                border: none;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 0.9em;
+                text-decoration: none;
+                display: inline-block;
+                text-align: center;
+                min-width: 50px;
+            }
+
+            .update-btn {
+                background: #4caf50;
+                color: white;
+            }
+
+            .update-btn:hover {
+                background: #43a047;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2);
+            }
+
+            .activate-btn {
+                background: #2196f3;
+                color: white;
+            }
+
+            .activate-btn:hover {
+                background: #1e88e5;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+            }
+
+            .inactivate-btn {
+                background: #f44336;
+                color: white;
+            }
+
+            .inactivate-btn:hover {
+                background: #e53935;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2);
+            }
+
+            .action-column {
+                white-space: nowrap;
+                text-align: center;
+            }
+
+            .created-time {
+                color: #666;
+                font-size: 0.9em;
+            }
+
+            .access-count {
+                font-weight: 500;
+                color: #1976d2;
+            }
+
+            .Type {
+                color: #333;
+                font-weight: 500;
+            }
+
+            .Amount {
+                font-weight: 500;
+                color: #2e7d32;
+                text-decoration: none;
+            }
+
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+                gap: 10px;
+            }
+
+            .pagination-button {
+                padding: 8px 16px;
+                border: 1px solid #4caf50;
+                background-color: white;
+                color: #4caf50;
+                cursor: pointer;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+            }
+
+            .pagination-button:hover {
+                background-color: #4caf50;
+                color: white;
+            }
+
+            .pagination-button.active {
+                background-color: #4caf50;
+                color: white;
+            }
+
+            .pagination-button:disabled {
+                border-color: #ccc;
+                color: #ccc;
+                cursor: not-allowed;
+            }
+
+            .pagination-info {
+                color: #666;
+                font-size: 0.9em;
+            }
+
+            /* Search Box */
+            .search-container {
+                position: relative;
+                margin-bottom: 20px;
+                max-width: 300px;
+            }
+
+            .search-container i {
+                position: absolute;
+                left: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #666;
+                font-size: 0.9em;
+            }
+
+            .search-input {
+                padding: 6px 6px 6px 28px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                width: 100%;
+                font-size: 0.9em;
+            }
+
+            /* Sort arrows styling */
+            .sortable {
+                position: relative;
+                cursor: pointer;
+            }
+
+            .sort-icons {
+                display: inline-block;
+                margin-left: 5px;
+                vertical-align: middle;
+            }
+
+            .icon-sort,
+            .fa-caret-up,
+            .fa-caret-down {
+                color: white;
+                font-size: 1.5em;
+                margin-left: 5px;
+                vertical-align: middle;
+            }
+
+            .sort-icons i {
+                display: block;
+                font-size: 0.8em;
+                line-height: 0.8em;
+                color: #999;
+            }
+
+            .sort-icons i.active {
+                color: #4caf50;
+            }
+
+            /* Filter styling */
+            .filter-group {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+            }
+
+            .filter-group label {
+                font-weight: 500;
+                color: #333;
+                margin-right: 15px;
+            }
+
+            .filter-group select {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                background-color: white;
+                color: #333;
+                font-size: 0.95em;
+            }
+
+            .mine-checkbox {
+                margin-left: 20px;
+            }
+
+            .mine-checkbox input[type="checkbox"] {
+                margin-right: 8px;
+            }
+
             /* Toast Message Styles */
             .toast-message {
                 position: fixed;
@@ -267,142 +485,172 @@
                 font-size: 24px;
             }
 
-            .toast-message1 {
-                position: fixed;
-                top: -100px; /* Start above viewport */
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: red;
-                color: white;
-                padding: 16px 32px;
-                border-radius: 8px;
-                font-size: 16px;
-                font-weight: 500;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            /* Modal Styles */
+
+
+            .news-description {
+                color: #333;
+                line-height: 1.6;
+                flex: 6;
+                padding-right: 20px;
+            }
+
+            .news-image-container {
+                flex: 4;
                 display: flex;
-                align-items: center;
-                gap: 12px;
-                z-index: 1000;
-                transition: top 0.5s ease-in-out;
+                align-items: flex-start;
             }
 
-            .toast-message1.show {
-                top: 20px; /* Slide down to this position */
+            .news-image {
+                width: 100%;
+                height: auto;
+                border-radius: 4px;
+                object-fit: cover;
             }
 
-            .toast-message1 i {
-                font-size: 24px;
+            .show-all-news-btn,
+            .add-news-btn {
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: none;
+                font-size: 0.9em;
+                margin: 10px 0;
+                display: inline-block;
+                text-align: center;
+                text-decoration: none;
             }
 
+            .show-all-news-btn {
+                background-color: #e0e0e0;
+                color: #333;
+                border: 1px solid #ccc;
+            }
 
+            .show-all-news-btn:hover {
+                background-color: #d0d0d0;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+
+            .add-news-btn {
+                background-color: #4caf50;
+                color: white;
+            }
+
+            .add-news-btn:hover {
+                background-color: #43a047;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 6px rgba(76,175,80,0.2);
+            }
+
+            @media (max-width: 768px) {
+                .contract-management {
+                    padding: 15px;
+                }
+
+                .contract-table {
+                    display: block;
+                    overflow-x: auto;
+                }
+
+                .action-button {
+                    padding: 6px 12px;
+                    font-size: 0.85em;
+                }
+
+                .modal-body {
+                    flex-direction: column;
+                }
+
+                .news-description {
+                    padding-right: 0;
+                }
+
+                .news-image-container {
+                    width: 100%;
+                }
+
+                .icon-sort {
+                    font-size: 2px;
+                    color: white;
+
+                }
+
+                .contract-detail-container {
+                    display: flex;
+                    flex-direction: column;
+                    padding: 10px;
+                    background-color: #f9f9f9;
+                    border-top: 1px solid #ddd;
+                    transition: all 0.3s ease-in-out;
+                }
+
+                .info-row {
+                    margin-bottom: 5px;
+                    font-size: 14px;
+                }
+
+            }
+
+            /* Màu sắc cho trạng thái */
+            .status-label {
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-weight: bold;
+                color: white;
+            }
+
+            /* Màu cho từng trạng thái */
+            .status-1 {
+                background-color: #f39c12;
+            } /* Pending - Màu cam */
+            .status-2 {
+                background-color: #e74c3c;
+            } /* Canceled - Màu đỏ */
+            .status-3 {
+                background-color: #3498db;
+            } /* Doing - Màu xanh dương */
+            .status-4 {
+                background-color: #9b59b6;
+            } /* Rejected - Màu tím */
+            .status-5 {
+                background-color: #2ecc71;
+            } /* Completed - Màu xanh lá */
+
+            /* Áp dụng màu cho button */
+            .action-button {
+                padding: 5px 15px;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+                color: white;
+            }
+
+            .status-1:hover {
+                background-color: #e67e22;
+            }
+            .status-2:hover {
+                background-color: #c0392b;
+            }
+            .status-3:hover {
+                background-color: #2980b9;
+            }
+            .status-4:hover {
+                background-color: #8e44ad;
+            }
+            .status-5:hover {
+                background-color: #27ae60;
+            }
         </style>
 
 
-        <script>
-            function submitSortForm1(order) {
-                document.getElementById('sortFee').value = order; // Gán giá trị cho trường ẩn
-                document.getElementById('sortForm1').submit(); // Gửi form
-            }
-
-        </script> 
-        <script>
-            function submitSortForm2(order) {
-                document.getElementById('status').value = order; // Gán giá trị cho trường ẩn
-                document.getElementById('sortForm2').submit(); // Gửi form
-            }
-
-        </script> 
-        <script>
-            function submitSortForm3(order) {
-                document.getElementById('verify').value = order; // Gán giá trị cho trường ẩn
-                document.getElementById('sortForm3').submit(); // Gửi form
-            }
-
-        </script> 
-        <script>
-            function submitSortForm4(order) {
-                document.getElementById('CoverageRate').value = order; // Gán giá trị cho trường ẩn
-                document.getElementById('sortForm4').submit(); // Gửi form
-            }
-
-        </script> 
-        <script>
-            function submitSortForm5(order) {
-                document.getElementById('MaxAmountOfLoan').value = order; // Gán giá trị cho trường ẩn
-                document.getElementById('sortForm5').submit(); // Gửi form
-            }
-
-        </script> 
-
-        <script>
-            function submitSearch() {
-                var searchInput = document.getElementById('searchInput').value;
-                if (searchInput.trim() !== "") {
-                    document.getElementById('searchForm').submit();
-                } else {
-                    alert("Please enter a search term."); // Thông báo nếu ô tìm kiếm rỗng
-                }
-            }
-        </script>
-        <script type="text/javascript">
-            function formatNumber(input) {
-                // Loại bỏ tất cả các ký tự không phải số
-                let value = input.value.replace(/[^0-9]/g, '');
-
-                // Thêm dấu phẩy sau mỗi 3 chữ số
-                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-                // Gán giá trị đã định dạng lại vào input
-                input.value = value;
-            }
-
-            function validateInput(event) {
-                // Chỉ cho phép nhập các ký tự số
-                const charCode = (event.which) ? event.which : event.keyCode;
-                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                    event.preventDefault();
-                    return false;
-                }
-                return true;
-            }
-        </script>
-
-
-
-
-        <script>
-
-            function changePage(page) {
-                const form = document.querySelector(".filter-controls"); // Chỉ lấy form đầu tiên
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "page";
-                input.value = page;
-                form.appendChild(input);
-                form.submit();
-            }
-
-            // Toast message animation
-            document.addEventListener('DOMContentLoaded', function () {
-                const toast = document.getElementById('toastMessage');
-                if (toast) {
-                    // Show toast
-                    setTimeout(() => {
-                        toast.classList.add('show');
-                    }, 100);
-
-                    // Hide toast after 3 seconds
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                        // Remove toast from DOM after animation
-                        setTimeout(() => {
-                            toast.remove();
-                        }, 500);
-                    }, 6000);
-                }
-            });
-
-        </script>
 
     </head>
     <body>
@@ -859,28 +1107,31 @@
                         <ul>
 
 
-                            <li> <a href="insurancedetail"><span class="material-symbols-outlined">arrow_right</span>Provider Information</a>
+
+                            <li> <a href="listAsset"><span class="material-symbols-outlined">arrow_right</span>Asset</a>
                             </li>
-                            <li> <a href="showinsurance"><span class="material-symbols-outlined">arrow_right</span>Manage Insurance</a>
+                            <li> <a href="listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
+                            </li>
+                            <li> <a href="contract-management-for-manager"><span class="material-symbols-outlined">arrow_right</span>Contract</a>
                             </li>
 
                         </ul>
                     </li> 
 
 
-                    <li class="menu-label">Charts & Maps</li>
-                    <li>
-                        <a class="has-arrow" href="javascript:;">
-                            <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
-                            </div>
-                            <div class="menu-title">Charts</div>
-                        </a>
-                        <ul>
-
-                            <li> <a href="getdatainsurance"><span class="material-symbols-outlined">arrow_right</span>Statistic of Insurance</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <!--                    <li class="menu-label">Charts & Maps</li>
+                                        <li>
+                                            <a class="has-arrow" href="javascript:;">
+                                                <div class="parent-icon"><span class="material-symbols-outlined">monitoring</span>
+                                                </div>
+                                                <div class="menu-title">Charts</div>
+                                            </a>
+                                            <ul>
+                    
+                                                <li> <a href="getdatainsurance"><span class="material-symbols-outlined">arrow_right</span>Statistic of Insurance</a>
+                                                </li>
+                                            </ul>
+                                        </li>-->
 
                 </ul>
                 <!--end navigation-->
@@ -931,328 +1182,294 @@
         <!--end sidebar-->
 
         <!--start main content-->
+
         <main class="page-content">
+            <div class="contract-management">
 
-            <div class="row g-3">
-                <div class="col-auto">
-                    <!-- Search Form -->
-                    <form action="manageinsurance" method="get">
-                        <div class="position-relative">
-                            <input class="form-control px-5" type="search" name="searchIsu" value="${searchIsu}" placeholder="Search Products">
-                            <button type="submit" class="material-symbols-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-auto flex-grow-1 overflow-auto">
-                    <div class="btn-group position-static">
-                        <!-- All Button -->
-                        <a href="manageinsurance"><button type="button" class="btn border btn-light px-4">All</button></a>
+                <!-- Filter Controls -->
+                <form action="contract-management-for-manager" method="get" class="filter-controls">
 
-                        <!-- Fee Rate Sort -->
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">FeeRate</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="manageinsurance?sortFee=asc">ASC</a></li>
-                                <li><a class="dropdown-item" href="manageinsurance?sortFee=desc">DESC</a></li>
-                            </ul>
-                        </div>
+                    <div class="filter-group">
+                        <label for="Status">Status:</label>
+                        <select name="filterStatus" id="Status" onchange="updateURLParameter('filterStatus', this.value)">
+                            <option value="0" ${param.filterStatus == 'none' ? '0' : ''}>All Status</option>
+                            <option value="1" ${param.filterStatus == '1' ? 'selected' : ''}>Pending</option>
+                            <option value="2" ${param.filterStatus == '2' ? 'selected' : ''}>Canceled</option>
+                            <option value="3" ${param.filterStatus == '3' ? 'selected' : ''}>Doing</option>
+                            <option value="4" ${param.filterStatus == '4' ? 'selected' : ''}>Rejected</option>
+                            <option value="5" ${param.filterStatus == '5' ? 'selected' : ''}>Completed</option>
+                        </select>
 
-                        <!-- Coverage Rate Sort -->
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">CoverageRate</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="manageinsurance?CoverageRate=asc">ASC</a></li>
-                                <li><a class="dropdown-item" href="manageinsurance?CoverageRate=desc">DESC</a></li>
-                            </ul>
-                        </div>
+                        <label for="Type" style="margin-left: 20px">Type: </label>
+                        <select name="filterType" id="Type" onchange="updateURLParameter('filterType', this.value)">
+                            <option value="none" ${param.filterType == 'none' ? 'selected' : ''}>All Type</option>
+                            <option value="secured" ${param.filterType == 'secured' ? 'selected' : ''}>Secured Loan</option>
+                            <option value="unsecured" ${param.filterType == 'unsecured' ? 'selected' : ''}>Unsecured Loan</option>
+                            <option value="saving" ${param.filterType == 'saving' ? 'selected' : ''}>Saving</option>
+                        </select>
 
-                        <!-- Max Amount of Loan Sort -->
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">MaxAmountOfLoan</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="manageinsurance?MaxAmountOfLoan=true">ASC</a></li>
-                                <li><a class="dropdown-item" href="manageinsurance?MaxAmountOfLoan=false">DESC</a></li>
-                            </ul>
-                        </div>
+                        <label for="MonthlyPayment" style="margin-left: 20px">Monthly Payment: </label>
+                        <select name="filterMonthlyPayment" id="MonthlyPayment" onchange="updateURLParameter('filterMonthlyPayment', this.value)">
+                            <option value="none" ${param.filterMonthlyPayment == 'none' ? 'selected' : ''}>All Payment</option>
+                            <option value="nomonthlypayment" ${param.filterMonthlyPayment == 'nomonthlypayment' ? 'selected' : ''}>Don't use monthly payment</option>
+                            <option value="fixed" ${param.filterMonthlyPayment == 'fixed' ? 'selected' : ''}>Fixed Payment</option>
+                            <option value="reducing" ${param.filterMonthlyPayment == 'reducing' ? 'selected' : ''}>Reducing Balance Payment</option>
+                        </select>
 
-                        <!-- Type Filter -->
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">Type</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="manageinsurance?typeIns=Secured Loan">Secured Loan</a></li>
-                                <li><a class="dropdown-item" href="manageinsurance?typeIns=Unsecured Loan">Unsecured Loan</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Status Filter -->
-                        <div class="btn-group position-static">
-                            <button type="button" class="btn border btn-light dropdown-toggle px-4" data-bs-toggle="dropdown" aria-expanded="false">Status</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="manageinsurance?status=true">Active</a></li>
-                                <li><a class="dropdown-item" href="manageinsurance?status=false">Inactive</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Add Insurance Button -->
-                        <div class="btn-group position-static">
-                            <button class="btn btn-pending js-toggle" toggle-target="#modal-addInsurance">Add Insurance</button>
-                        </div>
-                    </div>
-                </div>
-
-                <form action="manageinsurance" method="get">
-                    <select name="pageSize" onchange="this.form.submit()">
-                        <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
-                        <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
-                        <option value="30" ${pageSize == 30 ? 'selected' : ''}>30</option>
-                        <option value="40" ${pageSize == 40 ? 'selected' : ''}>40</option>
-                    </select>
-                    <input type="hidden" name="page" value="1">
-                    <input type="hidden" name="searchIsu" value="${searchIsu}">
-                    <input type="hidden" name="typeIns" value="${typeIns}">
-                    <input type="hidden" name="status" value="${status}">
-                    <input type="hidden" name="sortFee" value="${sortFee}">
-                    <input type="hidden" name="CoverageRate" value="${CoverageRate}">
-                    <input type="hidden" name="MaxAmountOfLoan" value="${MaxAmountOfLoan}">
-                </form>      
-            </div>
-
-            <div class="card mt-4">
-                <div class="card-body">
-                    <div class="product-table">
-                        <div class="table-responsive white-space-nowrap">
-                            <table class="table align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Insurance ID</th>
-                                        <th>Insurance Name</th>
-                                        <th>Type</th>
-                                        <th>Fee rate</th>
-                                        <th>Coverage Rate</th>
-                                        <th>Max Amount Of Loan</th>
-                                        <th>Status</th>
-                                        <th>Update</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${ListInsu}" var="sal">
-                                        <tr>
-                                            <td>
-                                                ${sal.getInsuranceID()}
-
-                                            </td>
-
-                                            <td>
-                                                ${sal.getInsuranceName()}                   
-                                            </td>
-
-                                            <td>  
-                                                ${sal.getType()}
-                                            </td>
-                                            <td>${sal.getFeeRate()} %</td>
-                                            <td>${sal.getCoverageRate()} %</td>
-
-                                            <td><fmt:formatNumber value="${sal.getMaxAmountOfLoan()}" pattern="#,###" /> VND</td>
-
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${sal.isStatus() == true}">
-                                                        <!-- Nếu Status là true, hiển thị button "Active" màu xanh -->
-                                                        <form method="post" action="manageinsurance">
-                                                            <button type="submit" name="active" value="${sal.getInsuranceID()}" class="btn btn-pending">Active</button>
-                                                        </form>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <!-- Nếu Status là false, hiển thị button "Inactive" màu xám -->
-                                                        <form method="post" action="manageinsurance">
-                                                            <button type="submit" name="inactive" value="${sal.getInsuranceID()}" class="btn btn-sent">Inactive</button>
-                                                        </form>
-                                                    </c:otherwise>
-                                                </c:choose>
-
-                                            </td>
-                                            <td>      <button class="btn btn-pending js-toggle"  toggle-target="#modal-${sal.getInsuranceID()}"> <i class="fa fa-edit"></i></button>
-                                            </td>
-                                        </tr> 
-                                    </c:forEach>
-
-                                </tbody>
-                            </table>
-                           <div class="pagination">
-                                <c:if test="${currentPage > 1}">
-                                    <a href="manageinsurance?page=${currentPage - 1}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&pageSize=${pageSize}" class="prev">Previous</a>
-                                </c:if>
-                                <c:forEach var="i" begin="1" end="${totalPages}">
-                                    <a href="manageinsurance?page=${i}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&pageSize=${pageSize}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                        <label for="pageSize">Items per page:</label>
+                        <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
+                            <c:if test="${requestScope.numberOfContract <= 100}">
+                                <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
+                                <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
+                                <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
+                                <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
+                                <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
+                            </c:if>
+                            <c:if test="${requestScope.numberOfContract > 100}">
+                                <c:forEach items="${requestScope.pageSizeArray}" var="pageSizeElement">
+                                    <option value="${pageSizeElement}" ${param.pageSize == pageSizeElement ? 'selected' : ''}>${pageSizeElement}</option>
                                 </c:forEach>
-                                <c:if test="${currentPage < totalPages}">
-                                    <a href="manageinsurance?page=${currentPage + 1}&searchIsu=${searchIsu}&typeIns=${typeIns}&status=${status}&sortFee=${sortFee}&CoverageRate=${CoverageRate}&MaxAmountOfLoan=${MaxAmountOfLoan}&pageSize=${pageSize}" class="next">Next</a>
-                                </c:if>
-                            </div>
-
-                        </div>
-
-
+                            </c:if>
+                        </select>
                     </div>
+                </form>
+                <button class="show-all-news-btn" onclick="window.location.href = '/timibank/manager/contract-management-for-manager'">Show All News</button>
+
+                <!-- Contract Table -->
+                <table class="contract-table">
+                    <thead>
+                        <tr>
+                            <th class="contractid-column center-align">ID</th>
+                            <td class="contracttype-column" style="width: 150px; background: #4caf50;color: white;font-weight: 600;padding: 15px;font-size: 0.95em;text-transform: uppercase;letter-spacing: 0.5px;">Type</td>
+                            <td class="contracttype-column" style="width: 150px; background: #4caf50;color: white;font-weight: 600;padding: 15px;font-size: 0.95em;text-transform: uppercase;letter-spacing: 0.5px;">Customer</td>
+                            <th class="contractamount-column sortable" style="width: 150px">
+                                <div style="width: 100%; display: flex">
+                                    <div>Amount</div>
+                                    <span class="sort-icons">
+                                        <i class="fa fa-caret-up" style="display: ${param.sortBy == 'AmountDESC' ? 'none' : ''}; color: white; font-size: 1.5em;" 
+                                           onclick="updateURLParameter('sortBy', 'AmountDESC')"></i>
+                                        <i class="fa fa-caret-down" style="display: ${param.sortBy == 'AmountASC' ? 'none' : ''}; color: white; font-size: 1.5em;"
+                                           onclick="updateURLParameter('sortBy', 'AmountASC')"></i>
+                                    </span>
+                                </div>
+                            </th>
+                            <th class="contractperiod-column sortable">
+                                <div style="width: 100%; display: flex">
+                                    <div>Period (months)</div>
+                                    <span class="sort-icons">
+                                        <i class="fa fa-caret-up" style="display: ${param.sortBy == 'PeriodDESC' ? 'none' : ''}; color: white; font-size: 1.5em;" 
+                                           onclick="updateURLParameter('sortBy', 'PeriodDESC')"></i>
+                                        <i class="fa fa-caret-down" style="display: ${param.sortBy == 'PeriodASC' ? 'none' : ''}; color: white; font-size: 1.5em;"
+                                           onclick="updateURLParameter('sortBy', 'PeriodASC')"></i>
+                                    </span>
+                                </div>
+                            </th>
+                            <th class="contractmonthlypayment-column" style="width: 250px">Monthly Payment</th>
+                            <th class="contractcreatedat-column sortable">
+                                <div style="width: 100%; display: flex">
+                                    <div>Created At</div>
+                                    <span class="sort-icons">
+                                        <i class="fa fa-caret-up icon-sort" style="display: ${param.sortBy == 'CreatedAtDESC' ? 'none' : ''}; color: white; font-size: 1.5em;"
+                                           onclick="updateURLParameter('sortBy', 'CreatedAtDESC')"></i>
+                                        <i class="fa fa-caret-down icon-sort" style="display: ${param.sortBy == 'CreatedAtASC' ? 'none' : ''}; color: white; font-size: 1.5em;"
+                                           onclick="updateURLParameter('sortBy', 'CreatedAtASC')"></i>
+                                    </span>
+                                </div>
+                            </th>
+                            <th class="contractmonthlypayment-column">Status</th>
+                            <th class="contractstatus-column">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${requestScope.contractList}" var="contract">
+                            <!-- Hàng hiển thị thông tin chính -->
+                            <tr>
+                                <td class="center-align">${contract.getContractID()}</td>
+                                <td class="Type">${contract.getType()}</td>
+                                <td class="Amount"> <a class="btn btn-pending js-toggle"  toggle-target="#modal-${contract.getCustomer().getCustomerId()}">${contract.getCustomer().getFullName()} </a> </td>
+                                <td class="Amount"><fmt:formatNumber value="${contract.getAmount()}" pattern="#,###"/></td>
+                                <td class="Type" style="text-align: center">${contract.getPeriod()}</td>
+                                <td class="Type">${contract.isMonthlyPayment()?(contract.getMonthlyPaymentType().equals("Fixed")?"Fixed Payment":"Reducing Balance"):"No monthly payment"}</td>
+                                <td class="created-time" style="text-align: center">${contract.getCreateAt()}</td>
+                                <td class="created-time" style="text-align: center">
+                                    <span class="status-label status-${contract.getStatusID()}">
+                                        <c:choose>
+                                            <c:when test="${contract.getStatusID() == 1}">Pending</c:when>
+                                            <c:when test="${contract.getStatusID() == 3}">Doing</c:when>
+                                            <c:when test="${contract.getStatusID() == 4}">Rejected</c:when>
+                                            <c:when test="${contract.getStatusID() == 5}">Completed</c:when>
+                                            <c:otherwise>Unknown</c:otherwise>
+                                        </c:choose>
+                                    </span>
+                                </td>
+                                <td class="action-column">
+                                    <div class="action-buttons-container">                                     
+                                        <form action="update-contract" method="Post">
+                                            <c:if test="${contract.getStatusID() == 1 || contract.getStatusID() == 5 || contract.getStatusID() == 4 || contract.getStatusID() == 3}">
+
+                                                <c:if test="${contract.getStatusID() == 1}">
+
+                                                    <button type="button" name="statusID" value="4"   toggle-target="#modal-Re-${contract.getContractID()}" class="action-button reject-btn js-toggle" >Rejected</button>
+                                                    <button type="submit" name="statusID" value="3" class="action-button doing-btn" >Doing</button>
+                                                </c:if>
+
+                                                <c:if test="${contract.getStatusID() == 3}">
+                                                    <button type="submit" name="statusID" value="5" class="action-button complete-btn" >Completed</button>
+                                                    <button type="button" name="statusID" value="4" toggle-target="#modal-Re-${contract.getContractID()}" class="action-button reject-btn js-toggle">Rejected</button>
+                                                </c:if>
+                                                <input type="hidden" name="contractID" value="${contract.getContractID()}">
+
+                                            </c:if>
+                                        </form>
+                                        <button type="submit" class="action-button" style="background: #cccccc" onclick="toggleDetails(${contract.getContractID()}, this)">Show Detail</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr id="details-${contract.getContractID()}" class="contract-detail" style="display: none;">
+                                <td colspan="9">
+                                    <div class="contract-detail-container" style="display: grid">
+                                        <div class="info-row" style="grid-column: 2/7; margin-bottom: 10px"><strong>Interest Rate:</strong> ${contract.getInterestRate()}%</div>
+
+                                        <c:if test="${contract.getType().equals('Saving')}">
+                                            <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Early Withdraw Rate:</strong> ${contract.getEarlyWithdrawRate()}%</div>
+                                        </c:if>
+
+                                        <c:if test="${!contract.getType().equals('Saving')}">
+                                            <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Late Payment Rate:</strong> ${contract.getLatePaymentRate()}%</div>
+                                        </c:if>
+
+                                        <div class="info-row" style="grid-column: 2/12; margin-bottom: 10px"><strong>Description:</strong> ${contract.getDescription()}</div>
+
+                                        <c:if test="${!contract.getType().equals('Saving')}">
+                                            <c:if test="${contract.getType().equals('Secured Loan')}">
+                                                <div class="info-row" style="grid-column: 2/7; margin-bottom: 10px"><strong>Asset Title:</strong> ${contract.getAsset().getTitle()}</div>
+                                                <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Asset Valuation Amount:</strong> <fmt:formatNumber value="${contract.getAsset().getValuationAmount()}" pattern="#,###"/></div>
+                                            </c:if>
+
+                                            <c:if test="${contract.getType().equals('Unsecured Loan')}">
+                                                <div class="info-row" style="grid-column: 2/7; margin-bottom: 10px"><strong>Salary Title:</strong> ${contract.getSalary().getTitle()}</div>
+                                                <div class="info-row" style="grid-column: 8/13; margin-bottom: 10px"><strong>Salary Valuation Amount:</strong> <fmt:formatNumber value="${contract.getSalary().getValuationAmount()}" pattern="#,###"/></div>
+                                            </c:if>
+
+                                            <div class="info-row" style="grid-column: 2/7"><strong>Insurance Name:</strong> ${contract.getInsurance().getInsuranceName()}</div>
+                                            <div class="info-row" style="grid-column: 8/13"><strong>Insurance Coverage Rate:</strong> ${contract.getInsuranceCoverage()}</div>
+                                        </c:if>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+
+                    </tbody>
+                </table>
+
+                <!-- Pagination Controls -->
+                <div class="pagination">
+                    <button class="pagination-button" onclick='changePage(${currentPage - 1})' ${currentPage == 1 ? 'disabled' : ''}>
+                        Previous
+                    </button>
+
+                    <c:forEach begin="1" end="${totalPages}" var="page">
+                        <button class="pagination-button ${currentPage == page ? 'active' : ''}" 
+                                onclick="changePage(${page})">
+                            ${page}
+                        </button>
+                    </c:forEach>
+
+                    <button class="pagination-button" onclick="changePage(${currentPage + 1})" ${currentPage == totalPages ? 'disabled' : ''}>
+                        Next
+                    </button>
+
+                    <span class="pagination-info">
+                        Page ${currentPage} of ${totalPages}
+                    </span>
                 </div>
             </div>
-
 
         </main>
+
         <!--end main content-->
 
-        <c:forEach items="${ListInsu}" var="sal" >
-            <div id="modal-${sal.getInsuranceID()}" class="modal modal--large hide">
+        <c:forEach items="${requestScope.contractList}" var="contract">
+            <div id="modal-Re-${contract.getContractID()}" class="modal modal--large hide">
                 <div class="modal__content">
-                    <button class="modal__close js-toggle" toggle-target="#modal-${sal.getInsuranceID()}">&times;</button>
-                    <div style="color: #008000;
-                         text-align: center;">
-                        <h2>Update Insurance</h2>
+
+                    <div class="customer__container">
+                        <button class="modal__close js-toggle" toggle-target="#modal-Re-${contract.getContractID()}">&times;</button>
+                        <h3>Reason for Rejected</h3>
+
+                        <form action="rejected" method="post" class="mil-subscripe-form-footer" id="form">
+                             <input type="hidden" name="contractID" value="${contract.getContractID()}">
+                            <input hidden="" name="emailcus" value="${contract.getCustomer().getEmail()}">
+                            <!-- Nội dung Input -->
+                            <div class="mb-3">
+                                <textarea class="form-control form-control__textarea" rows="3" placeholder="Nội dung" name="noidung" required></textarea>                                    
+                            </div>                 
+
+                            <div class="form-control__row--reverse">
+                                <!-- Submit Button -->
+                                <button type="submit" class="form-control__btn form-control__btn--green mil-btn mil-ssm">
+                                    <i class="far fa-envelope-open form-control__icon"></i> Gửi
+                                </button>
+                                <!-- Checkbox -->
+
+                            </div>
+
+                        </form>
                     </div>
 
-                    <div class="modal__text">
-                        <label for="insuranceName">Insurance Name:</label>
-                        <input  id="insuranceName" value="${sal.getInsuranceName()}" readonly="">
-                    </div>
-                    <form action="updateinsurance" method="get" id="updateinsurance-${sal.getInsuranceID()}">
-
-                        <div class="row">  
-                            <div class="col-6">
-                                <div class="form__group modal__text">
-                                    <label for="type">TYPE:</label>
-                                    <select name="type" id="type">
-                                        <option value="">-- Select Type --</option>
-                                        <option value="Secured Loan" ${sal.getType() == 'Secured Loan' ? 'selected' : ''}>Secured Loan</option>
-                                        <option value="Unsecured Loan" ${sal.getType() == 'Unsecured Loan' ? 'selected' : ''}>Unsecured Loan</option>
-                                    </select
-                                    <p class="form__error"></p>         
-                                </div>
-
-                                <div class="form__group modal__text">
-                                    <label for="feerate">Fee rate: </label>
-                                    <div class="form__text-input">
-                                        <input type="number" step="0.01"  name="feerate" id="feerate" value="${sal.getFeeRate()}"
-                                               class="form__input" placeholder="Fee Rate" >
-                                        <span   class="sub-text-input1">%/năm</span>
-                                    </div>
-                                    <p class="form__error"></p>
-                                </div>       
-                            </div>
-                            <div class="col-6">
-                                <div class="form__group modal__text">
-                                    <label for="coverage">Coverage Rate:</label>
-                                    <div class="form__text-input" >                                        
-                                        <input  step="0.01" name="coverage" type="number" id="coverage" value="${sal.getCoverageRate()}" 
-                                                class="form__input" placeholder="Cover Rate"
-                                                >
-
-                                        <span class="sub-text-input1">%/năm</span>
-                                    </div>
-                                    <p class="form__error"></p>
-                                </div>
-                                <div class="modal__text">
-                                    <label for="maxamount">Max Amount Of Loan:</label>
-
-                                    <div class="form-group__input-wrap">
-                                        <input type="text" class="form-group__input" id="maxamount" name="maxamount" value="<fmt:formatNumber value="${sal.getMaxAmountOfLoan()}" pattern="#,###" />" 
-                                               oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
-                                        <span class="sub-text-input">VNĐ</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <input type="hidden" name="isuid" value="${sal.getInsuranceID()}">
-
-
-
-                        <div class="modal__text" style="text-align: center;">
-                            <button class="btn btn-pending" type="submit">Update</button>
-                        </div>
-                    </form>
                 </div>
-                <div class="modal__overlay js-toggle" toggle-target="#modal-${sal.getInsuranceID()}"></div>
+
+
+                <div class="modal__overlay js-toggle" toggle-target="#modal-Re${contract.getContractID()}"></div>
             </div>
         </c:forEach>
 
+        <!--        modal customer info-->
+        <c:forEach items="${requestScope.contractList}" var="contract">
+            <div id="modal-${contract.getCustomer().getCustomerId()}" class="modal modal--large hide">
+                <div class="modal__content">
 
+                    <div class="customer__container">
+                        <button class="modal__close js-toggle" toggle-target="#modal-${contract.getCustomer().getCustomerId()}">&times;</button>
+                        <h3>Information Customer</h3>
+
+                        <div class="customer__grid">
+                            <!-- Ô 1: Ảnh -->
+                            <div class="customer__image">
+                                <img src="${contract.getCustomer().getImage()}" alt="Customer Image">
+                            </div>
+
+                            <!-- Ô 2: Tên, Credit Score, Phone -->
+                            <div class="customer__info">
+                                <p><strong>Name:</strong> ${contract.getCustomer().getFullName()}</p>
+                                <p><strong>Credit Score:</strong> ${contract.getCustomer().getCreditScore()}</p>
+                                <p><strong>Phone:</strong> ${contract.getCustomer().getPhone()}</p>
+                            </div>
+
+                            <!-- Ô 3: Email, Address -->
+                            <div class="customer__info">
+                                <p><strong>Email:</strong> ${contract.getCustomer().getEmail()}</p>
+                                <p><strong>Address:</strong> ${contract.getCustomer().getAddress()}</p>
+                            </div>
+
+                            <!-- Ô 4: Date of Birth, Gender -->
+                            <div class="customer__info">
+                                <p><strong>Date of Birth:</strong> ${contract.getCustomer().getDateOfBirth()}</p>
+                                <p><strong>Gender:</strong> ${contract.getCustomer().isGender() ? 'Male' : 'Female'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="modal__overlay js-toggle" toggle-target="#modal-${contract.getCustomer().getCustomerId()}"></div>
+            </div>
+        </c:forEach>
 
         <!--        add insurance-->
-        <div id="modal-addInsurance" class="modal modal--large hide">
-            <div class="modal__content">
-                <button class="modal__close js-toggle" toggle-target="#modal-addInsurance">&times;</button>
-                <div style="color: #008000;
-                     text-align: center;">
-                    <h2>Add Insurance</h2>
-                </div>
-                <form action="updateinsurance" method="post" id="updateinsurance1">
-                    <div class="modal__text">
-                        <label for="insuranceName">Insurance Name:</label>
-                        <input type="text" id="insuranceName" name="insuranceName1" >
-                    </div>
-
-
-                    <div class="row">  
-                        <div class="col-6">
-                            <div class="modal__text">
-                                <label for="type">TYPE:</label>
-                                <select name="type1" id="type">
-                                    <option value="">-- Select Type --</option>
-                                    <option value="Secured Loan" ${sal.getType() == 'Secured Loan' ? 'selected' : ''}>Secured Loan</option>
-                                    <option value="Unsecured Loan" ${sal.getType() == 'Unsecured Loan' ? 'selected' : ''}>Unsecured Loan</option>
-                                </select>
-                                <p class="form__error"></p>
-
-                            </div>
-                            <div class="form__group modal__text">
-                                <label for="feerate">Fee rate: </label>
-                                <div class="form__text-input">
-                                    <input type="number" step="0.01"  name="feerate1" id="feerate1" value="${sal.getFeeRate()}"
-                                           class="form__input" placeholder="Fee Rate" >
-                                    <span   class="sub-text-input1">%/năm</span>
-                                </div>
-                                <p class="form__error"></p>
-                            </div>       
-                        </div>
-                        <div class="col-6">
-                            <div class="form__group modal__text">
-                                <label for="coverage">Coverage Rate:</label>
-                                <div class="form__text-input" >                                        
-                                    <input  step="0.01" name="coverage1" type="number" id="coverage1" value="${sal.getCoverageRate()}" 
-                                            class="form__input" placeholder="Cover Rate"
-                                            >
-
-                                    <span class="sub-text-input1">%/năm</span>
-                                </div>
-                                <p class="form__error"></p>
-                            </div>
-                            <div class="modal__text">
-                                <label for="maxamount">Max Amount Of Loan:</label>
-
-                                <div class="form-group__input-wrap">
-                                    <input type="text" class="form-group__input" id="maxamount" name="maxamount1"  
-                                           oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
-                                    <span class="sub-text-input">VNĐ</span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-                    <div class="modal__text" style="text-align: center;">
-                        <button class="btn btn-pending" type="submit">Add</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal__overlay js-toggle" toggle-target="#modal-addInsurance"></div>
-        </div>
+    
 
 
 
@@ -1342,41 +1559,7 @@
 
             </div>
         </div>
-        <script src="assets/js/validationForm.js"></script>
-        <script>
-            <c:forEach items="${ListInsu}" var="sal" >
-                                               Validator({
 
-                                                   form: '#updateinsurance-${sal.getInsuranceID()}',
-                                                   formGroupSelector: '.form__group',
-                                                   errorSelector: '.form__error',
-                                                   rules: [
-                                                       Validator.isLessThan('#feerate', 30, 'Vui lòng nhập giá trị nhỏ hơn 30%'),
-                                                       Validator.isLessThan('#coverage', 100, 'Vui lòng nhập giá trị nhỏ hơn 100%')
-
-                                                   ],
-                                                   onsubmit: function (formValue) {
-                                                       document.querySelector('#updateinsurance-${sal.getInsuranceID()}').submit();
-                                                   }
-                                               })
-
-            </c:forEach>
-
-                                               Validator({
-                                                   form: '#updateinsurance1',
-                                                   formGroupSelector: '.form__group',
-                                                   errorSelector: '.form__error',
-                                                   rules: [
-                                                       Validator.isLessThan('#feerate1', 30, 'Vui lòng nhập giá trị nhỏ hơn 30%'),
-                                                       Validator.isLessThan('#coverage1', 100, 'Vui lòng nhập giá trị nhỏ hơn 100%')
-
-                                                   ],
-                                                   onsubmit: function (formValue) {
-                                                       document.querySelector('#updateinsurance1').submit();
-                                                   }
-                                               })
-
-        </script>
         <!--end theme customization-->
         <!--plugins-->
 
@@ -1390,7 +1573,116 @@
         <!--BS Scripts-->
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/main.js"></script>
+        <script>
+                                               function changePage(page) {
+                                                   const form = document.querySelector('.filter-controls');
+                                                   const input = document.createElement('input');
+                                                   input.type = 'hidden';
+                                                   input.name = 'page';
+                                                   input.value = page;
+                                                   form.appendChild(input);
+                                                   form.submit();
+                                               }
 
+                                               function showContractModal(title, description, image) {
+                                                   const modal = document.getElementById('newsModal');
+                                                   const modalTitle = document.getElementById('modalTitle');
+                                                   const modalDescription = document.getElementById('modalDescription');
+                                                   const modalImage = document.getElementById('modalImage');
+
+                                                   modalTitle.innerHTML = title;
+                                                   modalDescription.innerHTML = description;
+                                                   modalImage.src = image;
+
+                                                   modal.style.display = 'block';
+                                               }
+
+                                               function closeNewsModal() {
+                                                   const modal = document.getElementById('contractModal');
+                                                   modal.style.display = 'none';
+                                               }
+
+                                               // Close modal when clicking outside of it
+                                               window.onclick = function (event) {
+                                                   const modal = document.getElementById('contractModal');
+                                                   if (event.target == modal) {
+                                                       modal.style.display = 'none';
+                                                   }
+                                               };
+
+                                               // Toast message animation
+                                               document.addEventListener('DOMContentLoaded', function () {
+                                                   const toast = document.getElementById('toastMessage');
+                                                   if (toast) {
+                                                       // Show toast
+                                                       setTimeout(() => {
+                                                           toast.classList.add('show');
+                                                       }, 100);
+
+                                                       // Hide toast after 3 seconds
+                                                       setTimeout(() => {
+                                                           toast.classList.remove('show');
+                                                           // Remove toast from DOM after animation
+                                                           setTimeout(() => {
+                                                               toast.remove();
+                                                           }, 500);
+                                                       }, 3000);
+                                                   }
+                                               });
+
+                                               function updateURLParameter(param, value) {
+                                                   let url = new URL(window.location.href);
+                                                   let params = new URLSearchParams(url.search);
+
+                                                   params.set(param, value);
+                                                   params.delete('fromAdd');
+                                                   params.delete('page');
+
+                                                   window.location.href = 'contract-management-for-manager?' + params.toString();
+                                               }
+
+//                                               function changeStatus(contractID, newStatus, element) {
+//                                                   $.ajax({
+//                                                       url: 'manager/update-contract',
+//                                                       type: 'POST',
+//                                                       data: {
+//                                                           contractID: contractID,
+//                                                           statusID: newStatus
+//                                                       },
+//                                                       success: function (response) {
+//                                                           const statusElement = document.getElementById("status-" + contractID);
+//                                                           if (statusElement) {
+//                                                               switch (newStatus) {
+//                                                                   case 5:
+//                                                                       statusElement.textContent = 'Completed';
+//                                                                       break;
+//                                                                   case 4:
+//                                                                       statusElement.textContent = 'Rejected';
+//                                                                       break;
+//                                                                   case 3:
+//                                                                       statusElement.textContent = 'Doing';
+//                                                                       break;
+//                                                               }
+//                                                           }
+//                                                       },
+//                                                       error: function (error) {
+//                                                           console.error("Error updating status", error);
+//                                                       }
+//                                                   });
+//                                               }
+
+
+                                               function toggleDetails(contractID, button) {
+                                                   var detailsRow = document.getElementById("details-" + contractID);
+                                                   if (detailsRow.style.display === "none" || detailsRow.style.display === "") {
+                                                       detailsRow.style.display = "table-row";
+                                                       button.textContent = 'Close Detail';
+                                                   } else {
+                                                       detailsRow.style.display = "none";
+                                                       button.textContent = 'Show Detail';
+                                                   }
+                                               }
+        </script>
     </body>
 
 </html>

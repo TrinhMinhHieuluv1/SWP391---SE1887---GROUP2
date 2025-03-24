@@ -82,7 +82,8 @@ public class GeneratePDFee extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-     {
+     
+         HttpSession session = request.getSession();
         String imageBase64 = request.getParameter("imageFee");
         if (imageBase64 == null || !imageBase64.startsWith("data:image/png;base64,")) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid image data");
@@ -101,6 +102,11 @@ public class GeneratePDFee extends HttpServlet {
     int percentfeerate100 = Integer.parseInt(request.getParameter("percentfeerate100"));
     int totalFeerate = Integer.parseInt(request.getParameter("totalFeerate"));
         String statusFilter = request.getParameter("statusFilterFee");
+        
+         if (statusFilter == null) {
+            statusFilter = "BothChartFee";
+        }
+         session.setAttribute("statusFilterFee", statusFilter);
 
         // Tính phần trăm
         DecimalFormat df = new DecimalFormat("#.##");
@@ -152,7 +158,7 @@ public class GeneratePDFee extends HttpServlet {
             Logger.getLogger(GeneratePDFServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    }
+    
 
     /** 
      * Returns a short description of the servlet.

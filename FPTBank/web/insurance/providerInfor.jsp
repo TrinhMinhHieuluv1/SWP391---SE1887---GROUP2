@@ -830,11 +830,11 @@
                     <form action="SendAdmin" method="post" class="mil-subscripe-form-footer" id="form">
                     <!-- Email Input -->
                     <div class="mb-3">
-                        <input class="form-control form-control__input mil-input" type="email" placeholder="Email" name="email" required>
+                        <input style="background-color: #fff" class="form-control form-control__input mil-input" type="email" placeholder="Email" name="email" required>
                     </div>
                     <!-- Tiêu đề Input -->
                     <div class="mb-3">
-                        <input  class="form-control form-control__input mil-input" type="text" placeholder="Tiêu đề" name="tieude" value="Provider Insurance ID=${user.getUserID()} yêu cầu hỗ trợ" readonly="">
+                        <input style="background-color: #fff" class="form-control form-control__input mil-input" type="text" placeholder="Tiêu đề" name="tieude" value="Provider Insurance ID là ${user.getUserID()} yêu cầu hỗ trợ" readonly="">
                     </div>
                     <!-- Nội dung Input -->
                     <div class="mb-3">

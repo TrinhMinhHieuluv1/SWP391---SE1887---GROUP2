@@ -80,7 +80,7 @@ public class UpdateInsurance extends HttpServlet {
 // Kiểm tra điều kiện feerate và coverage phải < 100
         if (feeratef >= 30 || coveragef >= 100) {
             session.setAttribute("error", "Update failed! FeeRate must be be less than 30% and CoverageRate must be less than 100%.");
-            response.sendRedirect("showinsurance"); // Quay lại trang hiển thị với thông báo lỗi
+            response.sendRedirect("manageinsurance"); // Quay lại trang hiển thị với thông báo lỗi
             return; // Thoát khỏi hàm để không thực hiện cập nhật
         }
 
@@ -135,14 +135,14 @@ public class UpdateInsurance extends HttpServlet {
 // Kiểm tra điều kiện feerate và coverage phải < 100
         if (feeratef >= 30 || coveragef >= 100) {
             session.setAttribute("error", "Add failed! FeeRate must be less than 30% and CoverageRate must be less than 100%.");
-            response.sendRedirect("showinsurance"); // Quay lại trang hiển thị với thông báo lỗi
+            response.sendRedirect("manageinsurance"); // Quay lại trang hiển thị với thông báo lỗi
             return; // Thoát khỏi hàm để không thực hiện cập nhật
         }
 
 // Kiểm tra xem insuranceName đã tồn tại chưa
         if (a.isInsuranceNameExists(insuranceName)) {
             session.setAttribute("error", "Add failed! Insurance Name already exists.");
-            response.sendRedirect("showinsurance"); // Quay lại trang hiển thị với thông báo lỗi
+            response.sendRedirect("manageinsurance"); // Quay lại trang hiển thị với thông báo lỗi
             return; // Thoát khỏi hàm để không thực hiện cập nhật
         }
 
@@ -164,7 +164,7 @@ public class UpdateInsurance extends HttpServlet {
         } else {
             session.setAttribute("error", "Add failed! Please try again.");
         }
-        response.sendRedirect("showinsurance");
+        response.sendRedirect("manageinsurance");
     }
 
     /**
