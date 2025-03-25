@@ -27,7 +27,7 @@ public class Config {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_ReturnUrl = "http://localhost:9999/timibank/vnpayReturn";
     public static String vnp_TmnCode = "BFQ5YZQA";
-    public static String secretKey = "JHKXFJDPM6X4Y0V8L87MABU5G5DZ0BQL";
+    public static String secretKey = "LWGQ15BW5ASDVGBGQIW5HS26YAGTB2IW";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {

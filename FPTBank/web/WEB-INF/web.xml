@@ -88,4 +88,13 @@
         <servlet-name>FindFeedback</servlet-name>
         <url-pattern>/feedback</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>vnpayRefund</servlet-name>
+        <servlet-class>controller.vnpay.com.vnpayRefund</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>vnpayRefund</servlet-name>
+        <url-pattern>/vnpayReturn</url-pattern>
+    </servlet-mapping>
+
 </web-app>

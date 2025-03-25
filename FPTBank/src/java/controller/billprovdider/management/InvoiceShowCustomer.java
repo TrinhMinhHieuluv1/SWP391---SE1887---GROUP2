@@ -67,7 +67,10 @@ public class InvoiceShowCustomer extends HttpServlet {
         String number = request.getParameter("pagesize");
         String date_1 = request.getParameter("date1");
         String date_2 = request.getParameter("date2");
-
+        String status = request.getParameter("status");
+        if(status != null && !status.isEmpty()){
+            request.setAttribute("error", "Paid successfully and sent a email about bill");            ;
+        }
         if(status_bill == null){
             status_bill = "";
         }

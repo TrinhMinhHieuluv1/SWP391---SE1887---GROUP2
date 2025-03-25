@@ -4,6 +4,7 @@
  */
 package controller;
 
+import controller.billprovdider.management.sendMailbillProvider;
 import dal.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,8 +14,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 import model.Customer;
+import model.TransactionHistory;
 
 /**
  *
@@ -76,40 +80,50 @@ public class Transaction extends HttpServlet {
         String amount_raw = request.getParameter("amount");
         String note_raw = request.getParameter("note");
         String action = request.getParameter("action");
-        System.out.println("Action =  " + action);
         CustomerDAO dao = new CustomerDAO();
         String error = "";
         Customer customer = dao.selectCustomerByConditions(uid, "", "", "");
         request.setAttribute("customer", customer);
+        if ("continue".equals(action)) {
+            // Các kiểm tra dữ liệu từ form
+            if (number_raw == null || number_raw.trim().isEmpty()) {
+                error = "Please input account to transfer";
+            } else if (amount_raw == null || amount_raw.trim().isEmpty()) {
+                error = "Please input amount payment";
+            } else if (note_raw == null || note_raw.trim().isEmpty()) {
+                error = "Please input note";
+            } else if (!dao.isFieldExistsToUpdate("Phone", number_raw, uid)) {
+                error = "Account not exist in system";
+            } else if (number_raw.equals(customer.getPhone())) {
+                error = "Don't fill out your phone";
+            } else{
+                String amountt = amount_raw.replace(",", "");
+                double amount = Double.parseDouble(amountt);
+                BigDecimal amounnt = BigDecimal.valueOf(amount);
+                if(amounnt.compareTo(customer.getBalance()) > 0){
+                error = "Your balance is not enough to transfer";
+                }
+            }
 
-        if (number_raw == null || number_raw.trim().isEmpty()) {
-            error = "Please input account to transfer";
-        } else if (amount_raw == null || amount_raw.trim().isEmpty()) {
-            error = "Please input amount payment";
-        } else if (note_raw == null || note_raw.trim().isEmpty()) {
-            error = "Please input note";
-        } else if (!dao.isFieldExistsToUpdate("Phone", number_raw, uid)) {
-            error = "Account not exist in system";
-        }else if ( number_raw.equals(customer.getPhone()) ){
-           error = "Don't fill out your phone";
-        }
-
-        if (!error.isEmpty()) {
-            request.setAttribute("error", error);
+            if (!error.isEmpty()) {
+                request.setAttribute("error", error);
+                request.getRequestDispatcher("transaction.jsp").forward(request, response);
+                return;
+            }
+            
+            // Xử lý giao dịch khi không có lỗi
+            Customer transferor = customer; // vì uid là của người chuyển
+            Customer receivecustomer = dao.selectCustomerByConditions(0, "", number_raw, "");
+            request.setAttribute("receivecustomer", receivecustomer);
+            request.setAttribute("transferor", transferor);
+            request.setAttribute("number", number_raw);
+            request.setAttribute("amount", amount_raw);
+            request.setAttribute("note", note_raw);
+            request.getRequestDispatcher("confirmtransaction.jsp").forward(request, response);
+        } else {
+            // Nếu action không bằng "continue", forward về trang giao dịch mặc định
             request.getRequestDispatcher("transaction.jsp").forward(request, response);
-            return;
         }
-       
-        Customer tranferor = dao.selectCustomerByConditions(uid, "", "", "");
-        Customer receivecustomer = dao.selectCustomerByConditions(0, "", number_raw, "");
-        request.setAttribute("receivecustomer", receivecustomer);
-        request.setAttribute("transferor", tranferor);
-
-
-        request.setAttribute("number", number_raw);
-        request.setAttribute("amount", amount_raw);
-        request.setAttribute("note", note_raw);
-        request.getRequestDispatcher("confirmtransaction.jsp").forward(request, response);
 
     }
 

@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.math.BigDecimal;
 import java.util.List;
 import model.TransactionHistory;
 import java.sql.Connection;
@@ -29,11 +30,13 @@ public class TransactionHistoryDAO extends DBContext {
             while (rs.next()) {
                 CustomerDAO dao = new CustomerDAO();
                 Customer customer = dao.getCustomerByID(rs.getInt("CustomerID"));
+                Customer receiver = dao.getCustomerByID(rs.getInt("ReceiverID"));
                 // Tạo đối tượng TransactionHistory
                 TransactionHistory transaction = new TransactionHistory(
                         rs.getInt("TransactionID"),
                         rs.getInt("Status"),
                         customer,
+                        receiver,
                         rs.getBigDecimal("Amount"),
                         rs.getBigDecimal("BalanceBefore"),
                         rs.getBigDecimal("BalanceAfter"),
@@ -48,24 +51,40 @@ public class TransactionHistoryDAO extends DBContext {
         }
         return transactions;
     }
+    public int getTotalTransactionID() {
+    int total = 0;
+    String sql = "SELECT COUNT(TransactionID) AS Total FROM TransactionHistory";
+    
+    try (PreparedStatement stmt = connection.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        
+        if (rs.next()) {
+            total = rs.getInt("Total");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return total;
+}
 
     public boolean addTransaction(TransactionHistory transaction) {
-    String sql = "INSERT INTO TransactionHistory (CustomerID, Amount, BalanceBefore, BalanceAfter, Transaction_type, Note) "
-               + "VALUES (?, ?, ?, ?, ?, ?)";
+     String sql = "INSERT INTO TransactionHistory (CustomerID, Amount, BalanceBefore, BalanceAfter, Transaction_type, Status, ReceiverID, Note, CreatedAt) "
+               + "VALUES (?, ?, ?, ?, ?, 1, ?, ?, GETDATE())";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
         stmt.setInt(1, transaction.getCustomer().getCustomerId());
         stmt.setBigDecimal(2, transaction.getAmount());
         stmt.setBigDecimal(3, transaction.getBalanceBefore());
         stmt.setBigDecimal(4, transaction.getBalanceAfter());
         stmt.setString(5, transaction.getTransaction_type());
-        stmt.setString(6, transaction.getNote());
+        stmt.setInt(6, transaction.getReceiver().getCustomerId());
+        stmt.setString(7, transaction.getNote());
 
         return stmt.executeUpdate() > 0; // Trả về true nếu thêm thành công
     } catch (SQLException e) {
         e.printStackTrace();
     }
     return false;
-}
+    }
 
     public List<TransactionHistory> filterListCustomer(String date1, String date2, int uid) {
         String sql = "SELECT * FROM TransactionHistory WHERE 1=1 and Status = 1 and CustomerID = " + uid + " ";
@@ -83,11 +102,13 @@ public class TransactionHistoryDAO extends DBContext {
             while (rs.next()) {
                 CustomerDAO dao = new CustomerDAO();
                 Customer customer = dao.getCustomerByID(rs.getInt("CustomerID"));
+                Customer receiver = dao.getCustomerByID(rs.getInt("ReceiverID"));
                 // Tạo đối tượng TransactionHistory
                 TransactionHistory transaction = new TransactionHistory(
                         rs.getInt("TransactionID"),
                         rs.getInt("Status"),
                         customer,
+                        receiver,
                         rs.getBigDecimal("Amount"),
                         rs.getBigDecimal("BalanceBefore"),
                         rs.getBigDecimal("BalanceAfter"),
@@ -112,6 +133,12 @@ public class TransactionHistoryDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-
+        CustomerDAO dao = new CustomerDAO();
+        TransactionHistoryDAO tdao = new TransactionHistoryDAO();
+        Customer customer = dao.getCustomerByID(1);
+        Customer receiver = dao.getCustomerByID(0);
+        TransactionHistory history = new TransactionHistory(1, customer, receiver, customer.getBalance(), customer.getBalance(), customer.getBalance(),"OK", "Ok");
+        tdao.addTransaction(history);
+        
     }
 }

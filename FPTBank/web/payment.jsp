@@ -491,9 +491,65 @@
                 background-color: white;
                 padding: 10px;
             }
-
+            .container {
+                display: flex;
+                gap: 20px;
+            }
+            .card {
+                width: 150px;
+                height: 150px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                cursor: pointer;
+                transition: 0.3s;
+                text-align: center;
+            }
+            .card:hover {
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                transform: scale(1.05);
+            }
+            .card img {
+                width: 40px;
+                height: 40px;
+            }
+            .card p {
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                margin: 0;
+            }
         </style>
+        <script>
+            function selectPayment(method) {
+                document.getElementById('paymentMethod').value = method;
 
+                // Xóa viền của tất cả thẻ trước khi chọn lại
+                document.querySelectorAll('.card').forEach(card => {
+                    card.style.border = "none";
+                });
+
+                // Tô viền xanh cho thẻ được chọn
+                event.currentTarget.style.border = "3px solid blue";
+            }
+
+            function validatePayment(event) {
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                if (!paymentMethod) {
+                    alert("Please choose a payment method!");
+                    event.preventDefault(); // Ngăn form gửi nếu chưa chọn
+                    return false;
+                }
+
+                // Gửi form với phương thức thanh toán trên URL
+                const form = document.getElementById('paymentForm');
+                form.action = form.action + "&paymentMethod=" + encodeURIComponent(paymentMethod);
+        </script>
     </head>
 
     <body>
@@ -511,18 +567,9 @@
         </div>
 
         <script>
-            function closeNotification() {
-                const notification = document.getElementById('notification');
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 500);
-            }
-
-            // Auto close after 5 seconds
-            if (document.getElementById('notification').classList.contains('show')) {
-                setTimeout(closeNotification, 5000);
-            }
+                function setPaymentMethod(method) {
+                    document.getElementById("paymentMethod").value = method;
+                }
         </script>
 
         <!-- wrapper -->
@@ -635,7 +682,7 @@
     </div>
     <!-- top panel end -->
     <div class="content">
-        <form action="payment" method="get">
+        <form action="payment" method="get" onsubmit="validatePayment(event)">
             <header>
                 <h1>Payment</h1>
 
@@ -689,18 +736,26 @@
                 </table>
 
             </article>
-                        <select name="paymentmethod" style="border: solid 1px; height: 20px; border-radius: 3px;">
-                <option value="balance" ${param.paymentmethod == 'balance' ? 'selected' :''}>Directly Balance</option>
-                <option  value="transfer" ${param.paymentmethod == 'transfer' ? 'selected' :''}>Transfer</option>
-            </select>
-            <div style="diplay: flex;">
-                <button type="submit" name="action" value="Paid" style="display: inline-block; background-color: blue; color: white;
-                        border-radius: 5px; padding: 5px 10px; text-decoration: none; margin-left: 0%;"> 
-                    Paid
+            <div style="font-weight: bold;  ">Please choose payment method</div>
+            <input type="hidden" name="paymentMethod" id="paymentMethod">
+
+            <div class="container">
+                <!-- Button Balance -->
+                <button style="width: 180px; height: 180px; border: 2px solid grey; border-radius: 5px; padding: 5px;" type="submit" class="payment-btn" onclick="setPaymentMethod('balance')">
+                    <img src="https://png.pngtree.com/png-clipart/20220616/original/pngtree-icon-game-golden-coin-png-image_8090807.png" alt="Balance">
+                    Balance
                 </button>
+
+                <!-- Button VNPay -->
+                <button type="submit" style="width: 180px; height: 180px; margin-left: 10px; border: 2px solid grey;padding: 5px;" class="payment-btn" onclick="setPaymentMethod('vnpay')">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp1v7T287-ikP1m7dEUbs2n1SbbLEqkMd1ZA&s" alt="VNPay">
+                    VNPay
+                </button>
+            </div>
+            <div style="diplay: flex;">
                 <a href="invoiceshowcustomer" 
                    style="display: inline-block; background-color: blue; color: white;
-                   border-radius: 5px; padding: 5px 10px; text-decoration: none;">
+                   border-radius: 5px; padding: 5px 10px; text-decoration: none; margin-top: 30px;">
                     Back to list bill
                 </a>
             </div>

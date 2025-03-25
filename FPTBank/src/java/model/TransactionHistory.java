@@ -13,15 +13,16 @@ import java.sql.Date;
  */
 public class TransactionHistory {
     private int TransactionID, Status;
-    private Customer customer;
+    private Customer customer, receiver;
     private BigDecimal Amount, BalanceBefore, BalanceAfter;
     private String Transaction_type, Note;
     private Date CreatedAt;
 
-    public TransactionHistory(int TransactionID, int Status, Customer customer, BigDecimal Amount, BigDecimal BalanceBefore, BigDecimal BalanceAfter, String Transaction_type, String Note, Date CreatedAt) {
+    public TransactionHistory(int TransactionID, int Status, Customer customer, Customer receiver, BigDecimal Amount, BigDecimal BalanceBefore, BigDecimal BalanceAfter, String Transaction_type, String Note, Date CreatedAt) {
         this.TransactionID = TransactionID;
         this.Status = Status;
         this.customer = customer;
+        this.receiver = receiver;
         this.Amount = Amount;
         this.BalanceBefore = BalanceBefore;
         this.BalanceAfter = BalanceAfter;
@@ -30,9 +31,10 @@ public class TransactionHistory {
         this.CreatedAt = CreatedAt;
     }
 
-    public TransactionHistory(int Status, Customer customer, BigDecimal Amount, BigDecimal BalanceBefore, BigDecimal BalanceAfter, String Transaction_type, String Note) {
+    public TransactionHistory(int Status, Customer customer, Customer receiver, BigDecimal Amount, BigDecimal BalanceBefore, BigDecimal BalanceAfter, String Transaction_type, String Note) {
         this.Status = Status;
         this.customer = customer;
+        this.receiver = receiver;
         this.Amount = Amount;
         this.BalanceBefore = BalanceBefore;
         this.BalanceAfter = BalanceAfter;
@@ -112,9 +114,19 @@ public class TransactionHistory {
         this.CreatedAt = CreatedAt;
     }
 
+    public Customer getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Customer receiver) {
+        this.receiver = receiver;
+    }
+
     @Override
     public String toString() {
-        return "TransactionHistory{" + "TransactionID=" + TransactionID + ", Status=" + Status + ", customer=" + customer + ", Amount=" + Amount + ", BalanceBefore=" + BalanceBefore + ", BalanceAfter=" + BalanceAfter + ", Transaction_type=" + Transaction_type + ", Note=" + Note + ", CreatedAt=" + CreatedAt + '}';
+        return "TransactionHistory{" + "TransactionID=" + TransactionID + ", Status=" + Status + ", customer=" + customer + ", receiver=" + receiver + ", Amount=" + Amount + ", BalanceBefore=" + BalanceBefore + ", BalanceAfter=" + BalanceAfter + ", Transaction_type=" + Transaction_type + ", Note=" + Note + ", CreatedAt=" + CreatedAt + '}';
     }
+
+    
     
 }

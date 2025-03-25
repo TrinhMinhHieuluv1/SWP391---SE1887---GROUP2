@@ -218,7 +218,7 @@
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                margin-top: 300px;
+                margin-top: 70px;
             }
             .btn-custom {
                 width: 100%;
@@ -322,11 +322,11 @@
 
             <!-- top panel end -->
             <%@ include file="header.jsp"%>
-
+            <%@ include file="toolBar.jsp"%>
             <!-- top panel end -->
 
 
-            <form action="confirmtransaction" method="get">
+            <form action="transaction" method="get">
 
 
                 <input name="number" type="hidden" value="${number}">
@@ -338,21 +338,35 @@
 
                     <div class="border p-3 rounded">
                         <p class="fw-bold">Amount Transfer</p>
-                        <h5 class="text-danger" id="confirmAmount">${amount}</h5>
+                        <h5 class="text-danger" id="confirmAmount">${amount} VND</h5>
                     </div>
+                    <script>
+                        window.addEventListener('DOMContentLoaded', () => {
+                            const confirmAmountElem = document.getElementById('confirmAmount');
+                            // Loại bỏ phần "VND" và khoảng trắng thừa
+                            let rawText = confirmAmountElem.textContent.replace('VND', '').trim();
+                            // Loại bỏ các ký tự không phải số (giữ lại chữ số, dấu chấm và dấu trừ nếu có)
+                            const rawValue = rawText.replace(/[^\d.-]/g, '');
+                            const numberValue = parseFloat(rawValue);
+                            if (!isNaN(numberValue)) {
+                                // Định dạng số theo locale "en-US" với dấu phẩy phân cách hàng nghìn
+                                confirmAmountElem.textContent = numberValue.toLocaleString('en-US') + ' VND';
+                            }
+                        });
+                    </script>
 
                     <div class="border p-3 rounded">
                         <p class="fw-bold">Transferor</p>
                         <p id="confirmSenderName">${transferor.getFullName()}</p>
                         <p id="confirmSenderPhone">${transferor.getPhone()}</p>
-                        <p id="confirmSenderBank">TimkBank</p>
+                        <p id="confirmSenderBank">TimiBank</p>
                     </div>
 
                     <div class="border p-3 rounded">
                         <p class="fw-bold">Receiver</p>
                         <p id="confirmReceiverName">${receivecustomer.getFullName()}</p>
                         <p id="confirmReceiverPhone">${receivecustomer.getPhone()}</p>
-                        <p id="confirmReceiverBank">TimkBank</p>
+                        <p id="confirmReceiverBank">TimiBank</p>
                     </div>
 
                     <div class="border p-3 rounded">
@@ -363,36 +377,16 @@
 
                     <div class="d-flex mt-4">
                         <button type="button" class="btn btn-outline-danger w-50 me-2"">Return</button>
-                        <button type="submit" class="btn btn-custom w-50" onclick="showOtpForm()">Confirm</button>
-                    </div>
-                </div>
-                <div id="otpSection" name="otpcontainer" class="mt-4" style="display: none;">
-                    <h4 class="text-center text-primary">Enter OTP</h4>
-                    <p class="text-center">A 6-digit OTP has been sent to your phone</p>
+                        <a href="otp?receiverID=${receivecustomer.getCustomerId()}&transferor=${transferor.getCustomerId()}&amount=${amount}&number=${number}&note=${note}" 
+                           class="btn btn-custom w-50"     >
+                            Confirm
+                        </a>
 
-                    <div class="border p-3 rounded">
-                        <input type="text" name="otp" class="form-control text-center" maxlength="6" pattern="\d{6}" required placeholder="Enter OTP">
-                    </div>
-                    <% if(request.getAttribute("error")!=null)  {%>
-                        <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error"));%></a>
-                        <%}%>
-                    <div class="d-flex mt-4">
-                        <button type="button" class="btn btn-outline-secondary w-50" onclick="showConfirmForm()">Back</button>
-                        <button type="submit" class="btn btn-success w-50">Verify</button>
                     </div>
                 </div>
+
         </div>
-        <script>
-            function showOtpForm() {
-                document.getElementById("confirmSection").style.display = "none";
-                document.getElementById("otpSection").style.display = "block";
-            }
 
-            function showConfirmForm() {
-                document.getElementById("otpSection").style.display = "none";
-                document.getElementById("confirmSection").style.display = "block";
-            }
-        </script>
     </form>
 
     <!-- brands -->

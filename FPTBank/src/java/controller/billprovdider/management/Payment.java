@@ -98,8 +98,7 @@ public class Payment extends HttpServlet {
         String billID_raw = request.getParameter("billID");
         String providerID_raw = request.getParameter("providerID");
         String total_raw = request.getParameter("total");
-        String action = request.getParameter("action");
-        String paymentmethod = request.getParameter("paymentmethod");
+        String paymentMethod = request.getParameter("paymentMethod");
         if (total_raw == null || total_raw.isEmpty()) {
             total_raw = "0";
         }
@@ -116,7 +115,7 @@ public class Payment extends HttpServlet {
         CompanyBillProvider company = cdao.getCompanyById("ProviderID", providerID);
         Customer customer = udao.selectCustomerByConditions(uid, "", "", "");
         String error = "";
-        if ("Paid".equals(action) && "balance".equals(paymentmethod)) {
+        if ( "balance".equals(paymentMethod)) {
             BigDecimal total = BigDecimal.valueOf(totall);
             BigDecimal balance = customer.getBalance();
 
@@ -125,7 +124,7 @@ public class Payment extends HttpServlet {
             } else {
                 LocalDateTime now = LocalDateTime.now();
                 Timestamp paymentTimestamp = Timestamp.valueOf(now);
-                BigDecimal balanceBefore = customer.getBalance(); 
+                BigDecimal balanceBefore = customer.getBalance();
                 BigDecimal balanceAfter = balanceBefore.subtract(total);
                 bill.setStatusOfBill(0);
                 bill.setPaymentDate(paymentTimestamp);
@@ -135,13 +134,16 @@ public class Payment extends HttpServlet {
                     error = "Paid successfully and send invoice to email";
                     dao.updateDetailBill(bill);
                     udao.updateACustomer(customer);
-                    TransactionHistory transaction = new TransactionHistory(1, customer, total, balanceBefore, balanceAfter, "Bill Payment", "Bill Payment");
+                    TransactionHistory transaction = new TransactionHistory(1, customer, customer, total, balanceBefore, balanceAfter, "Bill Payment", "Bill Payment");
                     tdao.addTransaction(transaction);
+                    request.setAttribute("error", error);
+                    request.getRequestDispatcher("invoiceshowcustomer").forward(request, response);
+                    return;
                 } else {
                     error = "Don't send email";
                 }
             }
-        } else if ("Paid".equals(action) && "transfer".equals(paymentmethod)) {
+        } else if ("vnpay".equals(paymentMethod)) {
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";

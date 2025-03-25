@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -502,9 +503,16 @@
                         <tr>
                             <td>${count}</td>
                             <td>${transaction.getCustomer().getPhone()}</td>
-                            <td>${requestScope.check == false ? "+" : "-"} ${transaction.getAmount()}</td>
-                            <td>${transaction.getBalanceBefore()}</td>
-                            <td>${transaction.getBalanceAfter()}</td>
+                            <td>
+                                ${requestScope.check == false ? "+" : "-"} 
+                                <fmt:formatNumber value="${transaction.getAmount()}" type="number" groupingUsed="true" /><span> VND</span>
+                            </td>
+                            <td>
+                                <fmt:formatNumber value="${transaction.getBalanceBefore()}" type="number" groupingUsed="true" /><span> VND</span>
+                            </td>
+                            <td>
+                                <fmt:formatNumber value="${transaction.getBalanceAfter()}" type="number" groupingUsed="true" /><span> VND</span>
+                            </td>
                             <td>${transaction.getTransaction_type()}</td>
                             <td>${transaction.getCreatedAt()}</td>
                             <td>${transaction.getNote()}</td>

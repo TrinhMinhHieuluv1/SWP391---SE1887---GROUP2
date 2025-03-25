@@ -8,6 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Customer" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -218,7 +219,7 @@
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                margin-top: 300px;
+                margin-top: 70px;
             }
             .btn-custom {
                 width: 100%;
@@ -313,43 +314,71 @@
 
             <!-- top panel end -->
             <%@ include file="header.jsp"%>
-
+            <%@ include file="toolBar.jsp"%>
             <!-- top panel end -->
 
 
             <form action="transaction" method="get">
                 <!-- Phần nhập thông tin -->
-                
-                    <div class="container">
-                        <h4 class="text-center text-danger">Transfer to number account</h4>
+                <% 
+    String message = (String) request.getAttribute("error"); 
+    String errorMessage = (String) request.getAttribute("error2"); 
 
-                        <label class="fw-bold">Source transfer</label>
-                        <div class="border p-3 rounded">
-                            <p class="mb-0">Payment Account - ${customer.getPhone()}</p>
-                            <h5 class="text-danger">${customer.getBalance()}</h5>
-                        </div>
+    if (message != null && !message.trim().isEmpty()) { 
+                %>
+                <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #c3e6cb; width: 1000px; margin-left: 230px;">
+                    <strong>✅ Message:</strong> <%= message %>
+                </div>
+                <% } else if (errorMessage != null && !errorMessage.trim().isEmpty()) { %>
+                <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #f5c6cb; width: 1000px; margin-left: 230px;">
+                    <strong>❌ Error:</strong> <%= errorMessage %>
+                </div>
+                <% } %>
+                <div class="container">
+                    <h4 class="text-center text-danger">Transfer to number account</h4>
 
-                        <label class="fw-bold mt-3">Transfer to</label>
-                        <div class="border p-3 rounded">
-                            <label class="form-label mt-2">Account Number</label>
-                            <input type="text" class="form-control" name="number" id="number" placeholder="Input account number">
-                            
-                        </div>
-
-                        <label class="fw-bold mt-3">Amount Payment</label>
-                        <input type="number" class="form-control" id="amount" name="amount" placeholder="Input amount" min="0">
-
-                        <label class="fw-bold mt-3">Transfer Content</label>
-                        <input type="text" class="form-control" id="note" name="note" placeholder="Enter note">
-                        <% if(request.getAttribute("error")!=null)  {%>
-                        <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error"));%></a>
-                        <%}%>
-                        <div class="d-flex mt-4">
-                            <button type="button" class="btn btn-outline-danger w-50 me-2">Return</button>
-                            <button type="submit" class="btn btn-custom w-50" name="action" value="continue" id="continueBtn">Continue</button>
-                        </div>
+                    <label class="fw-bold">Source transfer</label>
+                    <div class="border p-3 rounded">
+                        <p class="mb-0">Payment Account - ${customer.getPhone()}</p>
+                        <h5 class="text-danger">
+                            <fmt:formatNumber value="${customer.getBalance()}" type="number" groupingUsed="true" /> <span class="text-danger"> VND</span>
+                        </h5>
                     </div>
-                   
+
+                    <label class="fw-bold mt-3">Transfer to</label>
+                    <div class="border p-3 rounded">
+                        <label class="form-label mt-2">Account Number</label>
+                        <input type="text" class="form-control" name="number" id="number" placeholder="Input account number">
+
+                    </div>
+
+                    <label class="fw-bold mt-3">Amount Payment</label>
+                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Input amount" min="0" oninput="formatAmount(this)">
+                    <script>
+                        function formatAmount(input) {
+// Loại bỏ dấu phẩy hiện có
+                            let value = input.value.replace(/,/g, '');
+// Loại bỏ các ký tự không phải số
+                            value = value.replace(/\D/g, '');
+                            if (value) {
+                                // Chuyển về số rồi định dạng theo locale 'en-US' để dùng dấu phẩy phân cách hàng nghìn
+                                input.value = parseInt(value, 10).toLocaleString('en-US');
+                            } else {
+                                input.value = '';
+                            }
+                        }
+                    </script>
+                    <label class="fw-bold mt-3">Transfer Content</label>
+                    <input type="text" class="form-control" id="note" name="note" placeholder="Enter note">
+                    <% if(request.getAttribute("error")!=null)  {%>
+                    <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error"));%></a>
+                    <%}%>
+                    <div class="d-flex mt-4">
+                        <button type="button" class="btn btn-outline-danger w-50 me-2">Return</button>
+                        <button type="submit" class="btn btn-custom w-50" name="action" value="continue" id="continueBtn">Continue</button>
+                    </div>
+                </div>
+
             </form>
 
             <!-- brands -->
