@@ -1310,7 +1310,7 @@
                                                 <c:if test="${contract.getStatusID() == 1}">
 
                                                     <button type="button" name="statusID" value="4"   toggle-target="#modal-Re-${contract.getContractID()}" class="action-button reject-btn js-toggle" >Rejected</button>
-                                                    <button type="submit" name="statusID" value="3" class="action-button doing-btn" >Doing</button>
+                                                    <button type="submit" name="statusID" value="3" class="action-button doing-btn" onclick="addPayment(${contract.getContractID()})">Doing</button>
                                                 </c:if>
 
                                                 <c:if test="${contract.getStatusID() == 3}">
@@ -1609,7 +1609,16 @@
                                                        modal.style.display = 'none';
                                                    }
                                                };
-
+                                               
+                                               function addPayment(ContractID){
+                                                   $.ajax({
+                                                       url: '/timibank/add-payment-for-contract',
+                                                       data: {
+                                                           ContractID : ContractID
+                                                       }
+                                                   });
+                                               }
+                                               
                                                // Toast message animation
                                                document.addEventListener('DOMContentLoaded', function () {
                                                    const toast = document.getElementById('toastMessage');

@@ -65,7 +65,7 @@ public class LoanPaymentDAO extends DBContext {
             sql = sql + " AND (ContractID=" + ContractID + ")";
         }
 
-        if (Status != null && !Status.isEmpty()) {
+        if (Status != null && !Status.isEmpty() && !Status.equals("none")) {
             sql = sql + " AND (PaymentStatus='" + Status + "')";
         }
 
@@ -145,5 +145,26 @@ public class LoanPaymentDAO extends DBContext {
         } catch (SQLException e) {
         }
     }
-
+    
+    public List<LoanPayment> selectAllLoanPaymentUpToDate() {
+        List<LoanPayment> loanPaymentList = new ArrayList<>();
+        String sql = "SELECT * FROM LoanPayment WHERE PaymentDate <= DATEADD(day, 3, CAST(GETDATE() AS DATE))";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                LoanPayment loanPaymentToAdd
+                        = new LoanPayment(rs.getInt("LoanPaymentID"),
+                                ctdao.selectAContractByID(rs.getInt("ContractID")),
+                                rs.getDate("PaymentDate"),
+                                rs.getDate("PaidDate"),
+                                rs.getBigDecimal("PaymentAmount"),
+                                rs.getBigDecimal("LateAmount"),
+                                rs.getString("PaymentStatus"));
+                loanPaymentList.add(loanPaymentToAdd);
+            }
+        } catch (SQLException e) {
+        }
+        return loanPaymentList;
+    }
 }

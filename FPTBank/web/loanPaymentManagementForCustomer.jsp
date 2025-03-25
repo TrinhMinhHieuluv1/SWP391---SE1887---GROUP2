@@ -584,6 +584,96 @@
             .status-5:hover {
                 background-color: #27ae60;
             }
+
+            /* Container cho bảng con */
+            .contract-detail td {
+                padding: 15px; /* Khoảng cách bên trong td */
+                background-color: #f9fafb; /* Nền nhạt để phân biệt với bảng chính */
+                border-top: 1px solid #e0e6e8; /* Đường viền trên để tách biệt */
+            }
+
+            /* Bảng con */
+            .contract-detail table {
+                width: 90%; /* Độ rộng 90% để căn giữa và có khoảng trống hai bên */
+                margin: 0 auto; /* Căn giữa bảng con */
+                border-collapse: collapse; /* Gộp viền để gọn gàng hơn */
+                background-color: #ffffff; /* Nền trắng cho bảng con */
+                border-radius: 8px; /* Bo góc nhẹ */
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Bóng nhẹ để nổi bật */
+            }
+
+            /* Tiêu đề trong bảng con */
+            .contract-detail th {
+                background: #e8f5e9; /* Màu xanh nhạt cho tiêu đề, đồng bộ với giao diện */
+                color: #2e7d32; /* Màu chữ xanh đậm */
+                font-weight: 600;
+                padding: 12px 15px; /* Khoảng cách đều hơn */
+                font-size: 0.9em;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 2px solid #d0e8d3; /* Viền dưới nhẹ */
+                text-align: left; /* Căn trái tiêu đề cho nhất quán */
+            }
+
+            /* Ô dữ liệu trong bảng con */
+            .contract-detail td {
+                padding: 12px 15px; /* Khoảng cách đều với tiêu đề */
+                color: #333; /* Màu chữ tối cho dễ đọc */
+                font-size: 0.9em;
+                border-bottom: 1px solid #eef2f5; /* Viền dưới nhẹ */
+                text-align: left; /* Căn trái dữ liệu */
+            }
+
+            /* Hàng cuối cùng không có viền dưới */
+            .contract-detail tr:last-child td {
+                border-bottom: none;
+            }
+
+            /* Hiệu ứng hover cho hàng */
+            .contract-detail tr:hover td {
+                background-color: #f1f8f2; /* Màu nền hover nhẹ */
+            }
+
+            /* Cột Action */
+            .contract-detail td:last-child {
+                text-align: center; /* Căn giữa nút Pay */
+            }
+
+            /* Nút Pay trong bảng con */
+            .contract-detail .action-button {
+                padding: 6px 20px; /* Nút nhỏ gọn hơn */
+                background: #4caf50; /* Màu xanh chủ đạo thay vì #cccccc */
+                color: white;
+                border-radius: 6px;
+                font-size: 0.85em;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+            .contract-detail .action-button:hover {
+                background: #43a047; /* Màu tối hơn khi hover */
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+            }
+
+            /* Responsive cho bảng con */
+            @media (max-width: 768px) {
+                .contract-detail table {
+                    width: 100%; /* Chiếm toàn bộ độ rộng trên mobile */
+                    margin: 0; /* Xóa margin để tận dụng không gian */
+                }
+
+                .contract-detail th,
+                .contract-detail td {
+                    padding: 10px; /* Giảm padding trên mobile */
+                    font-size: 0.85em; /* Giảm kích thước chữ */
+                }
+
+                .contract-detail .action-button {
+                    padding: 5px 15px; /* Nút nhỏ hơn trên mobile */
+                    font-size: 0.8em;
+                }
+            }
         </style>
     </head>
     <body>
@@ -593,183 +683,202 @@
                 ${requestScope.message}
             </div>
         </c:if>
+        <%@include file="header.jsp" %>
+        <div id="smooth-content" style="margin-top: 50px">
+            <div class="contract-management">
+                <h1 class="page-title">My Loan Payments</h1>
 
-        <div class="contract-management">
-            <h1 class="page-title">My Loan Payments</h1>
+                <!-- Filter Controls -->
+                <form action="loan-payment-management-for-customer" method="get" class="filter-controls">
 
-            <!-- Filter Controls -->
-            <form action="loan-payment-management-for-customer" method="get" class="filter-controls">
-
-                <div class="filter-group">
-                    <label for="Status">Status:</label>
-                    <select name="Status" id="Status" onchange="updateURLParameter('Status', this.value)">
-                        <option value="none" ${param.Status == 'none' ? 'selected' : ''}>All Status</option>
-                        <option value="late" ${param.Status == 'late' ? 'selected' : ''}>Late</option>
-                        <option value="complete" ${param.Status == 'complete' ? 'selected' : ''}>Complete</option>
-                        <option value="pending" ${param.Status == 'pending' ? 'selected' : ''}>Pending</option>
-                    </select>
-
-                    <label for="SortBy">SortBy:</label>
-                    <select name="SortBy" id="SortBy" onchange="updateURLParameter('SortBy', this.value)">
-                        <option value="none" ${param.SortBy == 'none' ? 'selected' : ''}>None</option>
-                        <option value="PaymentDateASC" ${param.SortBy == 'PaymentDateASC' ? 'selected' : ''}>Earliest Payment Date</option>
-                        <option value="PaymentDateDESC" ${param.SortBy == 'PaymentDateDESC' ? 'selected' : ''}>Latest Payment Date</option>
-                        <option value="PaymentAmountASC" ${param.SortBy == 'PaymentAmountASC' ? 'selected' : ''}> Smallest Payment Amount</option>
-                        <option value="PaymentAmountDESC" ${param.SortBy == 'PaymentAmountDESC' ? 'selected' : ''}> Biggest Payment Amount</option>
-                    </select>
-
-                    <label class="mine-checkbox">
-                        <input type="checkbox" name="groupByContract" value="true" ${param.groupByContract == 'true'? 'checked' : ''} onchange="updateURLParameter('groupByContract', this.checked)">
-                        Group By Contract
-                    </label>
-
-                    <label for="pageSize">Items per page:</label>
-                    <c:if test="${requestScope.groupByContract.equals('true')}">
-                        <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
-                            <c:if test="${requestScope.numberOfContract <= 100}">
-                                <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
-                                <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
-                                <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
-                                <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
-                                <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
-                            </c:if>
-                            <c:if test="${requestScope.numberOfContract > 100}">
-                                <c:forEach items="${requestScope.pageSizeArray}" var="pageSizeElement">
-                                    <option value="${pageSizeElement}" ${param.pageSize == pageSizeElement ? 'selected' : ''}>${pageSizeElement}</option>
-                                </c:forEach>
-                            </c:if>
+                    <div class="filter-group">
+                        <label for="Status">Status:</label>
+                        <select name="Status" id="Status" onchange="updateURLParameter('Status', this.value)">
+                            <option value="none" ${param.Status == 'none' ? 'selected' : ''}>All Status</option>
+                            <option value="late" ${param.Status == 'late' ? 'selected' : ''}>Late</option>
+                            <option value="complete" ${param.Status == 'complete' ? 'selected' : ''}>Complete</option>
+                            <option value="pending" ${param.Status == 'pending' ? 'selected' : ''}>Pending</option>
                         </select>
-                    </c:if>
-                    <c:if test="${requestScope.groupByContract.equals('false')}">
-                        <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
-                            <c:if test="${requestScope.numberOfLoanPayment <= 100}">
-                                <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
-                                <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
-                                <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
-                                <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
-                                <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
-                            </c:if>
-                            <c:if test="${requestScope.numberOfLoanPayment > 100}">
-                                <c:forEach items="${requestScope.pageSizeArray}" var="pageSizeElement">
-                                    <option value="${pageSizeElement}" ${param.pageSize == pageSizeElement ? 'selected' : ''}>${pageSizeElement}</option>
-                                </c:forEach>
-                            </c:if>
-                        </select>
-                    </c:if>
-                </div>
-            </form>
 
-            <!-- Loan Payment Table if group by contract -->
-            <c:if test="${requestScope.groupByContract.equals('true')}">
-                <table class="contract-table">
-                    <thead>
-                        <tr>
-                            <th class="contractid-column center-align">ID</th>
-                            <td class="contracttype-column" style="width: 150px; background: #4caf50;color: white;font-weight: 600;padding: 15px;font-size: 0.95em;text-transform: uppercase;letter-spacing: 0.5px;">Type</td>
-                            <th class="contractamount-column sortable" style="width: 150px">
-                                <div style="width: 100%; display: flex">
-                                    <div>Amount</div>
-                                </div>
-                            </th>
-                            <th class="contractperiod-column sortable">
-                                <div style="width: 100%; display: flex">
-                                    <div>Period (months)</div>
-                                </div>
-                            </th>
-                            <th class="contractstatus-column"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${requestScope.entryList}" var="mapEntry">
-                            <!-- Hàng hiển thị thông tin chính -->
+                        <label for="SortBy">SortBy:</label>
+                        <select name="SortBy" id="SortBy" onchange="updateURLParameter('SortBy', this.value)">
+                            <option value="none" ${param.SortBy == 'none' ? 'selected' : ''}>None</option>
+                            <option value="PaymentDateASC" ${param.SortBy == 'PaymentDateASC' ? 'selected' : ''}>Earliest Payment Date</option>
+                            <option value="PaymentDateDESC" ${param.SortBy == 'PaymentDateDESC' ? 'selected' : ''}>Latest Payment Date</option>
+                            <option value="PaymentAmountASC" ${param.SortBy == 'PaymentAmountASC' ? 'selected' : ''}> Smallest Payment Amount</option>
+                            <option value="PaymentAmountDESC" ${param.SortBy == 'PaymentAmountDESC' ? 'selected' : ''}> Biggest Payment Amount</option>
+                        </select>
+
+                        <label class="mine-checkbox">
+                            <input type="checkbox" name="groupByContract" value="true" ${param.groupByContract == 'true'? 'checked' : ''} onchange="updateURLParameter('groupByContract', this.checked)">
+                            Group By Contract
+                        </label>
+
+                        <label for="pageSize">Items per page:</label>
+                        <c:if test="${requestScope.groupByContract.equals('true')}">
+                            <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
+                                <c:if test="${requestScope.numberOfContract <= 100}">
+                                    <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
+                                    <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
+                                    <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
+                                    <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
+                                    <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
+                                </c:if>
+                                <c:if test="${requestScope.numberOfContract > 100}">
+                                    <c:forEach items="${requestScope.pageSizeArray}" var="pageSizeElement">
+                                        <option value="${pageSizeElement}" ${param.pageSize == pageSizeElement ? 'selected' : ''}>${pageSizeElement}</option>
+                                    </c:forEach>
+                                </c:if>
+                            </select>
+                        </c:if>
+                        <c:if test="${requestScope.groupByContract.equals('false')}">
+                            <select name="pageSize" id="pageSize" onchange="updateURLParameter('pageSize', this.value)">
+                                <c:if test="${requestScope.numberOfLoanPayment <= 100}">
+                                    <option value="5" ${param.pageSize == 5 ? 'selected' : ''}>5</option>
+                                    <option value="10" ${param.pageSize==null || param.pageSize == 10 ? 'selected' : ''}>10</option>
+                                    <option value="20" ${param.pageSize == 20 ? 'selected' : ''}>20</option>
+                                    <option value="30" ${param.pageSize == 30 ? 'selected' : ''}>30</option>
+                                    <option value="50" ${param.pageSize == 50 ? 'selected' : ''}>50</option>
+                                </c:if>
+                                <c:if test="${requestScope.numberOfLoanPayment > 100}">
+                                    <c:forEach items="${requestScope.pageSizeArray}" var="pageSizeElement">
+                                        <option value="${pageSizeElement}" ${param.pageSize == pageSizeElement ? 'selected' : ''}>${pageSizeElement}</option>
+                                    </c:forEach>
+                                </c:if>
+                            </select>
+                        </c:if>
+                    </div>
+                </form>
+
+                <!-- Loan Payment Table if group by contract -->
+                <c:if test="${requestScope.groupByContract.equals('true')}">
+                    <table class="contract-table">
+                        <thead>
                             <tr>
-                                <td class="center-align">${mapEntry.getKey().getContractID()}</td>
-                                <td class="Type">${mapEntry.getKey().getType()}</td>
-                                <td class="Amount"><fmt:formatNumber value="${mapEntry.getKey().getAmount()}" pattern="#,###"/></td>
-                                <td class="Type" style="text-align: center">${mapEntry.getKey().getPeriod()}</td>
-                                <td class="action-column">
-                                    <div class="action-buttons-container">
-                                        <button type="submit" class="action-button" style="background: #cccccc" onclick="toggleDetails(${mapEntry.getKey().getContractID()}, this)">Show Detail</button>
+                                <th class="contractid-column center-align">ID</th>
+                                <td class="contracttype-column" style="width: 150px; background: #4caf50;color: white;font-weight: 600;padding: 15px;font-size: 0.95em;text-transform: uppercase;letter-spacing: 0.5px;">Type</td>
+                                <th class="contractamount-column sortable" style="width: 120px">
+                                    <div style="width: 100%; display: flex">
+                                        <div>Amount</div>
                                     </div>
-                                </td>
+                                </th>
+                                <th class="contractperiod-column sortable">
+                                    <div style="width: 100%; display: flex">
+                                        <div>Period (months)</div>
+                                    </div>
+                                </th>
+                                <th class="contractmonthlypayment-column" style="width: 250px">Monthly Payment</th>
+                                <th class="contractmonthlypayment-column">Status</th>
+                                <th class="contractmonthlypayment-column"></th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${requestScope.entryList}" var="mapEntry">
+                                <!-- Hàng hiển thị thông tin chính -->
+                                <tr>
+                                    <td class="center-align">${mapEntry.getKey().getContractID()}</td>
+                                    <td class="Type">${mapEntry.getKey().getType()}</td>
+                                    <td class="Amount"><fmt:formatNumber value="${mapEntry.getKey().getAmount()}" pattern="#,###"/></td>
+                                    <td class="Type" style="text-align: center">${mapEntry.getKey().getPeriod()}</td>
+                                    <td class="Type" style="text-align: center">${mapEntry.getKey().isMonthlyPayment()?(mapEntry.getKey().getMonthlyPaymentType().equals("Fixed")?"Fixed Payment":"Reducing Balance"):"No monthly payment"}</td>
+                                    <td class="created-time" style="text-align: center">
+                                        <span class="status-label status-${mapEntry.getKey().getStatusID()}">
+                                            <c:choose>
+                                                <c:when test="${mapEntry.getKey().getStatusID() == 1}">Pending</c:when>
+                                                <c:when test="${mapEntry.getKey().getStatusID() == 2}">Canceled</c:when>
+                                                <c:when test="${mapEntry.getKey().getStatusID() == 3}">Doing</c:when>
+                                                <c:when test="${mapEntry.getKey().getStatusID() == 4}">Rejected</c:when>
+                                                <c:when test="${mapEntry.getKey().getStatusID() == 5}">Completed</c:when>
+                                                <c:otherwise>Unknown</c:otherwise>
+                                            </c:choose>
+                                        </span>
+                                    </td>
+                                    <td class="action-column">
+                                        <div class="action-buttons-container">
+                                            <button type="submit" class="action-button" style="background: #cccccc" onclick="toggleDetails(${mapEntry.getKey().getContractID()}, this)">Show Detail</button>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                            <tr id="details-${mapEntry.getKey().getContractID()}" class="contract-detail" style="display: none;">
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <th>Payment Amount</th>
-                                            <th>Payment Date</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        <c:forEach items="${mapEntry.getValue()}" var="lp">
+                                <tr id="details-${mapEntry.getKey().getContractID()}" class="contract-detail" style="display: none;">
+                                    <td colspan="7">
+                                        <table style="width: 80%; margin: 0 auto; max-height: 200px; overflow-y: auto; display: block">
                                             <tr>
-                                                <th><fmt:formatNumber value="${lp.getPaymentAmount()}" pattern="#,###"/></th>
-                                                <th>${lp.getPaymentDate()}</th>
-                                                <th>${lp.getPaymentStatus()}</th>
-                                                <th>
-                                                    <c:if test="${!lp.getPaymentStatus().equals('Complete')}">
-                                                        <button type="submit" class="action-button" style="background: #cccccc" onclick="pay(${lp.getLoanPaymentID()})">Pay</button>
-                                                    </c:if>
-                                                </th>
+                                                <th>Payment Amount</th>
+                                                <th>Payment Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
-                                        </c:forEach>
-                                    </table>
-                                </td>
+                                            <c:forEach items="${mapEntry.getValue()}" var="lp">
+                                                <tr>
+                                                    <th><fmt:formatNumber value="${lp.getPaymentAmount()}" pattern="#,###"/></th>
+                                                    <th><fmt:formatDate value="${lp.getPaymentDate()}" pattern="dd/MM/yyyy"/></th>
+                                                    <th>${lp.getPaymentStatus()}</th>
+                                                    <th>
+                                                        <c:if test="${!lp.getPaymentStatus().equals('Complete')}">
+                                                            <button type="button" class="action-button" style="background: #cccccc" onclick="">Pay</button>
+                                                        </c:if>
+                                                    </th>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+
+                        </tbody>
+                    </table>
+                </c:if>
+
+                <!-- Loan Payment Table if don't group by contract -->
+                <c:if test="${requestScope.groupByContract.equals('false')}">
+                    <table class="contract-table">
+                        <tr>
+                            <th>Payment Amount</th>
+                            <th>Payment Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        <c:forEach items="${requestScope.lpList}" var="lp">
+                            <tr>
+                                <th><fmt:formatNumber value="${lp.getPaymentAmount()}" pattern="#,###"/></th>
+                                <th><fmt:formatDate value="${lp.getPaymentDate()}" pattern="dd/MM/yyyy"/></th>
+                                <th>${lp.getPaymentStatus()}</th>
+                                <th>
+                                    <c:if test="${!lp.getPaymentStatus().equals('Complete')}">
+                                        <button type="submit" class="action-button" style="background: #cccccc" onclick="pay(${lp.getLoanPaymentID()})">Pay</button>
+                                    </c:if>
+                                </th>
                             </tr>
                         </c:forEach>
+                    </table>
+                </c:if>
 
-                    </tbody>
-                </table>
-            </c:if>
-
-            <!-- Loan Payment Table if don't group by contract -->
-            <c:if test="${requestScope.groupByContract.equals('false')}">
-                <table>
-                    <tr>
-                        <th>Payment Amount</th>
-                        <th>Payment Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    <c:forEach items="${requestScope.lpList}" var="lp">
-                        <tr>
-                            <th><fmt:formatNumber value="${lp.getPaymentAmount()}" pattern="#,###"/></th>
-                            <th>${lp.getPaymentDate()}</th>
-                            <th>${lp.getPaymentStatus()}</th>
-                            <th>
-                                <c:if test="${!lp.getPaymentStatus().equals('Complete')}">
-                                    <button type="submit" class="action-button" style="background: #cccccc" onclick="pay(${lp.getLoanPaymentID()})">Pay</button>
-                                </c:if>
-                            </th>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </c:if>
-
-            <!-- Pagination Controls -->
-            <div class="pagination">
-                <button class="pagination-button" onclick='changePage(${currentPage - 1})' ${currentPage == 1 ? 'disabled' : ''}>
-                    Previous
-                </button>
-
-                <c:forEach begin="1" end="${totalPages}" var="page">
-                    <button class="pagination-button ${currentPage == page ? 'active' : ''}" 
-                            onclick="changePage(${page})">
-                        ${page}
+                <!-- Pagination Controls -->
+                <div class="pagination">
+                    <button class="pagination-button" onclick='changePage(${currentPage - 1})' ${currentPage == 1 ? 'disabled' : ''}>
+                        Previous
                     </button>
-                </c:forEach>
 
-                <button class="pagination-button" onclick="changePage(${currentPage + 1})" ${currentPage == totalPages ? 'disabled' : ''}>
-                    Next
-                </button>
+                    <c:forEach begin="1" end="${totalPages}" var="page">
+                        <button class="pagination-button ${currentPage == page ? 'active' : ''}" 
+                                onclick="changePage(${page})">
+                            ${page}
+                        </button>
+                    </c:forEach>
 
-                <span class="pagination-info">
-                    Page ${currentPage} of ${totalPages}
-                </span>
+                    <button class="pagination-button" onclick="changePage(${currentPage + 1})" ${currentPage == totalPages ? 'disabled' : ''}>
+                        Next
+                    </button>
+
+                    <span class="pagination-info">
+                        Page ${currentPage} of ${totalPages}
+                    </span>
+                </div>
             </div>
         </div>
+                    
+        <%@include file="footer.jsp" %>
 
         <script src="./js/scripts.js"></script>
 
@@ -792,95 +901,94 @@
         <script src="/js/main.js"></script>
 
         <script>
-                    function changePage(page) {
-                        const form = document.querySelector('.filter-controls');
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'page';
-                        input.value = page;
-                        form.appendChild(input);
-                        form.submit();
-                    }
+                        function changePage(page) {
+                            const form = document.querySelector('.filter-controls');
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = 'page';
+                            input.value = page;
+                            form.appendChild(input);
+                            form.submit();
+                        }
 
-                    // Toast message animation
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const toast = document.getElementById('toastMessage');
-                        if (toast) {
-                            // Show toast
-                            setTimeout(() => {
-                                toast.classList.add('show');
-                            }, 100);
-
-                            // Hide toast after 3 seconds
-                            setTimeout(() => {
-                                toast.classList.remove('show');
-                                // Remove toast from DOM after animation
+                        // Toast message animation
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const toast = document.getElementById('toastMessage');
+                            if (toast) {
+                                // Show toast
                                 setTimeout(() => {
-                                    toast.remove();
-                                }, 500);
-                            }, 3000);
+                                    toast.classList.add('show');
+                                }, 100);
+
+                                // Hide toast after 3 seconds
+                                setTimeout(() => {
+                                    toast.classList.remove('show');
+                                    // Remove toast from DOM after animation
+                                    setTimeout(() => {
+                                        toast.remove();
+                                    }, 500);
+                                }, 3000);
+                            }
+                        });
+
+                        function updateURLParameter(param, value) {
+                            let url = new URL(window.location.href);
+                            let params = new URLSearchParams(url.search);
+
+                            params.delete('page');
+                            params.delete('pageSize');
+                            params.set(param, value);
+                            if (param === 'Status' || param === 'SortBy')
+                            {
+                                params.delete('groupByContract');
+                            }
+                            ;
+                            if (param === 'groupByContract')
+                            {
+                                params.delete('Status');
+                                params.delete('SortBy');
+                            }
+                            ;
+
+                            window.location.href = 'loan-payment-management-for-customer?' + params.toString();
                         }
-                    });
 
-                    function updateURLParameter(param, value) {
-                        let url = new URL(window.location.href);
-                        let params = new URLSearchParams(url.search);
-
-                        params.delete('page');
-                        params.delete('pageSize');
-                        params.set(param, value);
-                        if (param === 'Status' || param === 'SortBy')
-                        {
-                            params.delete('groupByContract');
-                        }
-                        ;
-                        if (param === 'groupByContract')
-                        {
-                            params.delete('Status');
-                            params.delete('SortBy');
-                        }
-                        ;
-
-                        window.location.href = 'loan-payment-management-for-customer?' + params.toString();
-                    }
-
-                    function changeStatus(ContractID, StatusID) {
-                        $.ajax({
-                            url: 'update-status-of-contract',
-                            type: 'POST',
-                            data: {
-                                ContractID: ContractID,
-                                StatusID: StatusID
-                            },
-                            success: function () {
-                                const status = document.getElementById("status-" + NewsID);
-                                if (status.textContent.trim() === 'Active') {
-                                    status.textContent = 'Inactive';
-                                    element.textContent = 'Activate';
-                                    element.classList.remove('inactivate-btn');
-                                    element.classList.add('activate-btn');
-                                } else {
-                                    status.textContent = 'Active';
-                                    element.textContent = 'Inactivate';
-                                    element.classList.remove('activate-btn');
-                                    element.classList.add('inactivate-btn');
+                        function changeStatus(ContractID, StatusID) {
+                            $.ajax({
+                                url: 'update-status-of-contract',
+                                type: 'POST',
+                                data: {
+                                    ContractID: ContractID,
+                                    StatusID: StatusID
+                                },
+                                success: function () {
+                                    const status = document.getElementById("status-" + NewsID);
+                                    if (status.textContent.trim() === 'Active') {
+                                        status.textContent = 'Inactive';
+                                        element.textContent = 'Activate';
+                                        element.classList.remove('inactivate-btn');
+                                        element.classList.add('activate-btn');
+                                    } else {
+                                        status.textContent = 'Active';
+                                        element.textContent = 'Inactivate';
+                                        element.classList.remove('activate-btn');
+                                        element.classList.add('inactivate-btn');
+                                    }
                                 }
+
+                            });
+                        }
+
+                        function toggleDetails(contractID, button) {
+                            var detailsRow = document.getElementById("details-" + contractID);
+                            if (detailsRow.style.display === "none" || detailsRow.style.display === "") {
+                                detailsRow.style.display = "table-row";
+                                button.textContent = 'Close Detail';
+                            } else {
+                                detailsRow.style.display = "none";
+                                button.textContent = 'Show Detail';
                             }
                         }
-
-                        });
-                    }
-
-                    function toggleDetails(contractID, button) {
-                        var detailsRow = document.getElementById("details-" + contractID);
-                        if (detailsRow.style.display === "none" || detailsRow.style.display === "") {
-                            detailsRow.style.display = "table-row";
-                            button.textContent = 'Close Detail';
-                        } else {
-                            detailsRow.style.display = "none";
-                            button.textContent = 'Show Detail';
-                        }
-                    }
         </script>
     </body>
 </html>

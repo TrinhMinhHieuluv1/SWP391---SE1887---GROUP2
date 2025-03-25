@@ -83,7 +83,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
     ContractDAO contractDAO = new ContractDAO();
     boolean success = contractDAO.updateStatus(contractID, statusID);
-
+    
     if (success) {
         session.setAttribute("message", "Update successfully!");
         response.sendRedirect("contract-management-for-manager"); // Chuyển hướng sau khi cập nhật thành công

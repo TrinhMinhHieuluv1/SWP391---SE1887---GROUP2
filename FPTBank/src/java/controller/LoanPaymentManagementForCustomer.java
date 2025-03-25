@@ -76,8 +76,14 @@ public class LoanPaymentManagementForCustomer extends HttpServlet {
         if (groupByContract != null && !groupByContract.isEmpty() && groupByContract.equals("true")) {
             request.setAttribute("groupByContract", "true");
             HashMap<Contract, List<LoanPayment>> contractMap = new HashMap<>();
-            List<Contract> contractList = ctdao.selectContractListWithConditions(account.getCustomerId(), null, null, 0, null);
-            for (Contract contract : contractList) {
+            List<Contract> contractListDoing = ctdao.selectContractListWithConditions(account.getCustomerId(), null, null, 3, null);
+            List<Contract> contractListComplete = ctdao.selectContractListWithConditions(account.getCustomerId(), null, null, 5, null);
+            for (Contract contract : contractListDoing) {
+                if (!contract.getType().equals("Saving")) {
+                    contractMap.put(contract, lpdao.selectAllLoanPaymentWithConditions(contract.getContractID(), null, null));
+                }
+            }
+            for (Contract contract : contractListComplete) {
                 if (!contract.getType().equals("Saving")) {
                     contractMap.put(contract, lpdao.selectAllLoanPaymentWithConditions(contract.getContractID(), null, null));
                 }
