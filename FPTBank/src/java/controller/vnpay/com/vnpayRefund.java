@@ -26,7 +26,7 @@ import java.util.Map;
 import model.CompanyBillProvider;
 import model.Customer;
 import model.DetailBill;
-
+import Tools.HashString;
 /**
  *
  * @author ACER
@@ -47,45 +47,38 @@ public class vnpayRefund extends HttpServlet {
         HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-           
+            String billID_raw = request.getParameter("billID");
+            int billID = 0;
+            if (billID_raw != null && !billID_raw.isEmpty()) {
+                billID = Integer.parseInt(billID_raw);
+            }
+            String error = "";
+            int uid = (int) session.getAttribute("uid");
+            CustomerDAO cdao = new CustomerDAO();
+            Customer customer = cdao.selectCustomerByConditions(uid, "", "", "");
+            DetailBillDAO dao = new DetailBillDAO();
+            DetailBill bill = dao.getDetailBillByID("BillID", billID);
+            boolean transSuccess = false;
+            LocalDateTime now = LocalDateTime.now();
+            Timestamp paymentTimestamp = Timestamp.valueOf(now);
+            CompanyBillProviderDAO cdaoo = new CompanyBillProviderDAO();
+            CompanyBillProvider company = cdaoo.getCompanyById("ProviderID", bill.getProvider().getUserID());
+            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                bill.setStatusOfBill(0);
+                bill.setPaymentDate(paymentTimestamp);
+                boolean mail = sendMailbillProvider.guiMailforPaying(customer.getEmail(), billID, bill.getTitle(), bill.getDescription(), bill.getStartDate(), bill.getEndDate(), bill.getCreatedAt(), bill.getTotal(), company.getCompanyName(), customer, paymentTimestamp);
+                
+                transSuccess = true;
+            } else {
+                bill.setStatusOfBill(1);
+                request.setAttribute("error2", "Paid failed");
+            }
+            request.setAttribute("company", company);
+            dao.updateDetailBill(bill);
+            request.setAttribute("bill", bill);
+            HashString string = new HashString();
+            response.sendRedirect("invoiceshowcustomer?status="+ string.hashString(request.getParameter("vnp_ResponseCode")));
 
-                String billID_raw = request.getParameter("billID");
-                int billID = 0;
-                if (billID_raw != null && !billID_raw.isEmpty()) {
-                    billID = Integer.parseInt(billID_raw);
-                }
-                String error = "";
-                int uid = (int) session.getAttribute("uid");
-                CustomerDAO cdao = new CustomerDAO();
-                Customer customer = cdao.selectCustomerByConditions(uid, "", "", "");
-                DetailBillDAO dao = new DetailBillDAO();
-                DetailBill bill = dao.getDetailBillByID("BillID", billID);
-                boolean transSuccess = false;
-                LocalDateTime now = LocalDateTime.now();
-                Timestamp paymentTimestamp = Timestamp.valueOf(now);
-                CompanyBillProviderDAO cdaoo = new CompanyBillProviderDAO();
-                CompanyBillProvider company = cdaoo.getCompanyById("ProviderID", bill.getProvider().getUserID());
-                if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
-                    bill.setStatusOfBill(0);
-                    bill.setPaymentDate(paymentTimestamp);
-                    boolean mail = sendMailbillProvider.guiMailforPaying(customer.getEmail(), billID, bill.getTitle(), bill.getDescription(), bill.getStartDate(), bill.getEndDate(), bill.getCreatedAt(), bill.getTotal(), company.getCompanyName(), customer, paymentTimestamp);
-                    if (mail) {
-                        error = "Paid successfully and sent a email for customer";
-                    } else {
-                        error = "Don't send mail";
-                    }
-                    transSuccess = true;
-                } else {
-                    bill.setStatusOfBill(1);
-                    error = "Paid failed";
-                    System.out.println(error);
-                }
-                dao.updateDetailBill(bill);
-                request.setAttribute("bill", bill);
-                request.setAttribute("error", error);
-                request.getRequestDispatcher("payment.jsp").forward(request, response);
-           
         }
 
     }

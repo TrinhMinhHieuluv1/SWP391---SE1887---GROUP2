@@ -18,4 +18,10 @@ public class HashString {
             throw new RuntimeException(e);
         }
     }
+    public static void main(String[] args) {
+        HashString string = new HashString();
+        String a = string.hashString("00");
+        System.out.println(a);
+        System.out.println(string.hashString("00").equals(a));
+    }
 }

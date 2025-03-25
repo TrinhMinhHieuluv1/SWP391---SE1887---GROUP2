@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -182,374 +183,146 @@
                     padding: 15px;
                 }
             }
-            *
-            {
-                border: 0;
-                box-sizing: content-box;
-                color: inherit;
-                font-family: inherit;
-                font-size: inherit;
-                font-style: inherit;
-                font-weight: inherit;
-                line-height: inherit;
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                text-decoration: none;
-                vertical-align: top;
+            .content {
+                margin-top: 150px ;
+                padding: 20px;
             }
-
-            /* content editable */
-
-            *[contenteditable] {
-                border-radius: 0.25em;
-                min-width: 1em;
-                outline: 0;
+            h2 {
+                color: #4CAF50; /* Màu xanh lá cây cho tiêu đề */
             }
-
-            *[contenteditable] {
-                cursor: pointer;
-            }
-
-            *[contenteditable]:hover, *[contenteditable]:focus, td:hover *[contenteditable], td:focus *[contenteditable], img.hover {
-                background: #DEF;
-                box-shadow: 0 0 1em 0.5em #DEF;
-            }
-
-            span[contenteditable] {
-                display: inline-block;
-            }
-
-            /* heading */
-
-            h1 {
-                font: bold 100% sans-serif;
-                letter-spacing: 0.5em;
-                text-align: center;
-                text-transform: uppercase;
-            }
-
-            /* table */
 
             table {
-                font-size: 75%;
-                table-layout: fixed;
-                width: 100%;
-            }
-            table {
-                border-collapse: separate;
-                border-spacing: 2px;
-            }
-            th, td {
-                border-width: 1px;
-                padding: 0.5em;
-                position: relative;
-                text-align: left;
-            }
-            th, td {
-                border-radius: 0.25em;
-                border-style: solid;
-            }
-            th {
-                background: #EEE;
-                border-color: #BBB;
-            }
-            td {
-                border-color: #DDD;
-            }
-
-            /* page */
-
-
-
-
-
-            /* header */
-
-            header {
-                margin: 0 0 3em;
-            }
-            header:after {
-                clear: both;
-                content: "";
-                display: table;
-            }
-
-            header h1 {
-                background: #000;
-                border-radius: 0.25em;
-                color: #FFF;
-                margin: 0 0 1em;
-                padding: 0.5em 0;
-            }
-            header address {
-                float: left;
-                font-size: 75%;
-                font-style: normal;
-                line-height: 1.25;
-                margin: 0 1em 1em 0;
-            }
-            header address p {
-                margin: 0 0 0.25em;
-            }
-            header span, header img {
-                display: block;
-                float: right;
-            }
-            header span {
-                margin: 0 0 1em 1em;
-                max-height: 25%;
-                max-width: 60%;
-                position: relative;
-            }
-            header img {
-                max-height: 100%;
-                max-width: 100%;
-            }
-            header input {
-                cursor: pointer;
-                -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-                height: 100%;
-                left: 0;
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                width: 100%;
-            }
-
-            /* article */
-
-            article, article address, table.meta, table.inventory {
-                margin: 0 0 3em;
-            }
-            article:after {
-                clear: both;
-                content: "";
-                display: table;
-            }
-            article h1 {
-                clip: rect(0 0 0 0);
-                position: absolute;
-            }
-
-            article address {
-                float: left;
-                font-size: 125%;
-                font-weight: bold;
-            }
-
-            /* table meta & balance */
-
-            table.meta, table.balance {
-                float: right;
-                width: 36%;
-            }
-            table.meta:after, table.balance:after {
-                clear: both;
-                content: "";
-                display: table;
-            }
-
-            /* table meta */
-
-            table.meta th {
-                width: 40%;
-            }
-            table.meta td {
-                width: 60%;
-                text-align: center;
-                vertical-align: middle;
-            }
-
-            /* table items */
-
-            table.inventory {
-                clear: both;
-                width: 100%;
-            }
-            table.inventory th {
-                font-weight: bold;
-                text-align: center;
-            }
-
-            table.inventory td:nth-child(1) {
-                width: 26%;
-            }
-            table.inventory td:nth-child(2) {
-                width: 38%;
-            }
-            table.inventory td:nth-child(3) {
-                text-align: right;
-                width: 12%;
-            }
-            table.inventory td:nth-child(4) {
-                text-align: right;
-                width: 12%;
-            }
-            table.inventory td:nth-child(5) {
-                text-align: right;
-                width: 12%;
-            }
-
-            /* table balance */
-
-            table.balance th, table.balance td {
-                width: 50%;
-            }
-            table.balance td {
-                text-align: right;
-            }
-
-            /* aside */
-
-            aside h1 {
-                border: none;
-                border-width: 0 0 1px;
-                margin: 0 0 1em;
-            }
-            aside h1 {
-                border-color: #999;
-                border-bottom-style: solid;
-            }
-
-            /* javascript */
-
-            .add, .cut
-            {
-                border-width: 1px;
-                display: block;
-                font-size: .8rem;
-                padding: 0.25em 0.5em;
-                float: left;
-                text-align: center;
-                width: 0.6em;
-            }
-
-            .add, .cut
-            {
-                background: #9AF;
-                box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-                background-image: -moz-linear-gradient(#00ADEE 5%, #0078A5 100%);
-                background-image: -webkit-linear-gradient(#00ADEE 5%, #0078A5 100%);
-                border-radius: 0.5em;
-                border-color: #0076A3;
-                color: #FFF;
-                cursor: pointer;
-                font-weight: bold;
-                text-shadow: 0 -1px 2px rgba(0,0,0,0.333);
-            }
-
-            .add {
-                margin: -2.5em 0 0;
-            }
-
-            .add:hover {
-                background: #00ADEE;
-            }
-
-            .cut {
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                left: -1.5em;
-            }
-            .cut {
-                -webkit-transition: opacity 100ms ease-in;
-            }
-
-            tr:hover .cut {
-                opacity: 1;
-            }
-
-            @media print {
-                * {
-                    -webkit-print-color-adjust: exact;
-                }
-                html {
-                    background: none;
-                    padding: 0;
-                }
-                body {
-                    box-shadow: none;
-                    margin: 0;
-                }
-                span:empty {
-                    display: none;
-                }
-                .add, .cut {
-                    display: none;
-                }
-            }
-
-            @page {
-                margin: 0;
-            }
-            .content{
                 width: 70%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                background-color: #ffffff;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 margin: 0 auto;
-                margin-top: 15%;
-                background-color: white;
+            }
+
+            th, td {
                 padding: 10px;
-            }
-            .container {
-                display: flex;
-                gap: 20px;
-            }
-            .card {
-                width: 150px;
-                height: 150px;
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-                cursor: pointer;
-                transition: 0.3s;
-                text-align: center;
-            }
-            .card:hover {
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-                transform: scale(1.05);
-            }
-            .card img {
-                width: 40px;
-                height: 40px;
-            }
-            .card p {
+                text-align: left;
                 font-size: 16px;
-                font-weight: bold;
+            }
+
+            th {
+                background-color: #4CAF50; /* Màu xanh lá cây cho tiêu đề bảng */
+                color: white;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9; /* Màu nền của dòng chẵn */
+            }
+
+            tr:hover {
+                background-color: #f1f1f1; /* Đổi màu nền khi hover trên dòng */
+            }
+
+            td {
+                color: #333; /* Màu chữ của các ô */
+            }
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: auto;
+            }
+
+            .pagination a {
+                padding: 9px 10px;
+                margin: 0 5px;
+                background-color: #f4f4f4;
+
                 color: #333;
-                margin: 0;
+                text-decoration: none;
+                border-radius: 25px;
+                font-weight: bold;
+                transition: all 0.3s ease-in-out;
             }
+
+            .pagination a:hover {
+                background-color: yellowgreen;
+            }
+
+            .pagination a.active {
+                background-color: green;
+                color: #fff;
+                border-radius: 30px;
+            }
+            select {
+                margin-top: 15px;
+                background-color: #0d6efd;
+                color: white ;
+                padding: 3px 8px; /* Giảm padding để ô nhỏ hơn */
+                border-radius: 6px; /* Bo tròn góc nhẹ */
+                font-size: 14px; /* Giảm kích thước chữ */
+                cursor: pointer;
+            }
+
+
+            /* Khi focus vào ô chọn */
+            select:focus {
+                outline: none;
+                box-shadow: 0 0 5px #007bff;
+            }
+            .control-form{
+                width: 50px;
+            }
+            .filter-group {
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                margin: 0 auto;
+                width: 70%;
+            }
+
+            .filter-group label {
+                font-weight: 500;
+                color: #333;
+                margin-right: 15px;
+            }
+
+            .filter-group select {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                background-color: white;
+                color: #333;
+                font-size: 0.95em;
+            }
+            .transaction-list {
+                width: 70%;
+                margin: 20px auto;
+
+            }
+
+            .transaction-item {
+                background: #f8f9fa;
+                border-left: 5px solid #2ecc71;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                color: #333;
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .transaction-item:hover {
+                transform: scale(1.02);
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .transaction-item span {
+                font-weight: bold;
+                color: #27ae60;
+            }
+
         </style>
-        <script>
-            function selectPayment(method) {
-                document.getElementById('paymentMethod').value = method;
 
-                // Xóa viền của tất cả thẻ trước khi chọn lại
-                document.querySelectorAll('.card').forEach(card => {
-                    card.style.border = "none";
-                });
-
-                // Tô viền xanh cho thẻ được chọn
-                event.currentTarget.style.border = "3px solid blue";
-            }
-
-            function validatePayment(event) {
-                const paymentMethod = document.getElementById('paymentMethod').value;
-                if (!paymentMethod) {
-                    alert("Please choose a payment method!");
-                    event.preventDefault(); // Ngăn form gửi nếu chưa chọn
-                    return false;
-                }
-
-                // Gửi form với phương thức thanh toán trên URL
-                const form = document.getElementById('paymentForm');
-                form.action = form.action + "&paymentMethod=" + encodeURIComponent(paymentMethod);
-        </script>
     </head>
 
     <body>
@@ -567,9 +340,18 @@
         </div>
 
         <script>
-                function setPaymentMethod(method) {
-                    document.getElementById("paymentMethod").value = method;
-                }
+            function closeNotification() {
+                const notification = document.getElementById('notification');
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 500);
+            }
+
+            // Auto close after 5 seconds
+            if (document.getElementById('notification').classList.contains('show')) {
+                setTimeout(closeNotification, 5000);
+            }
         </script>
 
         <!-- wrapper -->
@@ -682,86 +464,82 @@
     </div>
     <!-- top panel end -->
     <div class="content">
-        <form action="payment" method="get" onsubmit="validatePayment(event)">
-            <header>
-                <h1>Payment</h1>
+        <h2 style="text-align:  center;">History Transaction</h2>
 
-                <span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
-            </header>
-            <h3 class="balance">Your Balance: <span>${requestScope.customer.getBalance()} VNĐ</span></h3>
-            <% if(request.getAttribute("error")!=null)  {%>
-            <a style="color:red; font-style: italic; "><%out.println(request.getAttribute("error"));%></a>
-            <%}%>
-            <article>
+        <form action="historytransaction" method="get">
 
+            <div class="filter-group" style="display: flex;">
+                <label for="number" style="margin-left: 30px;" >Number in Page:</label>
+                <select class="form-control" id="statusFilter" name="pagesize">
+                    <c:forEach var="num" items="${requestScope.listint}">
+                        <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
+                    </c:forEach>
+                </select>
+                <label for="status" style="margin-left: 30px;">Status of Bill:</label>
 
-                <table class="inventory">
-
-                    <thead>
-                        <tr>
-
-                            <th><span contenteditable>InvoiceID#</span></th>
-                            <th><span contenteditable>Title</span></th>
-                            <th><span contenteditable>Description</span></th>
-                            <th><span contenteditable>Company</span></th>                     
-                            <th><span contenteditable>StartDate</span></th>
-
-                            <th><span contenteditable>EndDate</span></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-
-                            <td><a class="cut">-</a><span contenteditable>${bill.getBillID()}</span>
-                                <input type="hidden" name="billID" value="${bill.getBillID()}">
-                                <input type="hidden" name="providerID" value="${bill.getProvider().getUserID()}"></td>
-                            <td><span contenteditable>${bill.getTitle()}</span></td>
-                            <td><span data-prefix></span><span contenteditable>${bill.getDescription()}</span></td>
-                            <td><span contenteditable></span>${company.getCompanyName()}</td>
-                            <td><span data-prefix></span><span style="margin-left: 5px;">${bill.getStartDate()}</span></td>
-                            <td><span data-prefix></span><span style="margin-left: 5px;">${bill.getEndDate()}</span></td>
-                        </tr>
-                    </tbody>
-
-                </table>
-                <table class="balance">
+                <label for="status" style="margin-left: 30px;">From:</label>
+                <input class="form-control" type="date" name="date1" placeholder="Date"></input>
+                <label for="status" style="margin-left: 30px;">To:</label>
+                <input class="form-control" type="date" name="date2" placeholder="Date"></input>
+            </div>
+            <button type="submit" style="background-color: green; color: white; margin-left: 15%;">Filter</button>
+            <table>
+                <thead>
                     <tr>
-                        <th><span contenteditable>Total</span></th>
-                        <td><span data-prefix>VNĐ</span><span id="total">${bill.getTotal()}</span>
-                            <input type="hidden" name="total" value="${bill.getTotal()}">
-                        </td>
+                        <th>No.</th>
+                        <th>Account</th>
+                        <th>Amount</th>
+                        <th>Balance Before</th>
+                        <th>Balance Remaining</th>
+                        <th>Service</th>
+                        <th>Created At</th>
+                        <th>Note</th>
                     </tr>
-
-                </table>
-
-            </article>
-            <div style="font-weight: bold;  ">Please choose payment method</div>
-            <input type="hidden" name="paymentMethod" id="paymentMethod">
-
-            <div class="container">
-                <!-- Button Balance -->
-                <button style="width: 180px; height: 180px; border: 2px solid grey; border-radius: 5px; padding: 5px;" type="submit" class="payment-btn" onclick="setPaymentMethod('balance')">
-                    <img src="https://png.pngtree.com/png-clipart/20220616/original/pngtree-icon-game-golden-coin-png-image_8090807.png" alt="Balance">
-                    Balance
-                </button>
-
-                <!-- Button VNPay -->
-                <button type="submit" style="width: 180px; height: 180px; margin-left: 10px; border: 2px solid grey;padding: 5px;" class="payment-btn" onclick="setPaymentMethod('vnpay')">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp1v7T287-ikP1m7dEUbs2n1SbbLEqkMd1ZA&s" alt="VNPay">
-                    VNPay
-                </button>
-            </div>
-            <div style="diplay: flex;">
-                <a href="invoiceshowcustomer" 
-                   style="display: inline-block; background-color: blue; color: white;
-                   border-radius: 5px; padding: 5px 10px; text-decoration: none; margin-top: 30px;">
-                    Back to list bill
-                </a>
-            </div>
+                </thead>
+                <tbody>
+                    <c:set var="count" value="0" />
+                    <c:forEach items="${listTr}" var="transaction">
+                        <c:set var="count" value="${count + 1}" />
+                        <tr>
+                            <td>${count}</td>
+                            <td>${transaction.getCustomer().getPhone()}</td>
+                            <td>
+                                ${requestScope.check == false ? "+" : "-"} 
+                                <fmt:formatNumber value="${transaction.getAmount()}" type="number" groupingUsed="true" /><span> VND</span>
+                            </td>
+                            <td>
+                                <fmt:formatNumber value="${transaction.getBalanceBefore()}" type="number" groupingUsed="true" /><span> VND</span>
+                            </td>
+                            <td>
+                                <fmt:formatNumber value="${transaction.getBalanceAfter()}" type="number" groupingUsed="true" /><span> VND</span>
+                            </td>
+                            <td>${transaction.getTransaction_type()}</td>
+                            <td>${transaction.getCreatedAt()}</td>
+                            <td>${transaction.getNote()}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         </form>
-    </div>
 
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            <c:if test="${currentPage > 1}">
+                <a href="invoiceshowcustomer?page=${currentPage - 1}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" 
+                   class="prev">Previous</a>
+            </c:if>
+
+            <c:forEach var="i" begin="1" end="${totalPages}">
+                <a href="invoiceshowcustomer?page=${i}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+            </c:forEach>
+
+            <c:if test="${currentPage < totalPages}">
+                <a href="invoiceshowcustomer?page=${currentPage + 1}&pagesize=${param.pagesize}&date1=${param.date1}&d&pagesize=${param.pagesize}&datate2=${param.date2}" class="next">Next</a>
+            </c:if>
+        </div>
+
+    </div>
 
     <!-- footer -->
     <footer class="mil-footer-with-bg mil-p-160-0">

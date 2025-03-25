@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -131,7 +132,7 @@
                         <div class="card bg-info text-white mb-4">
                             <div class="card-body">
                                 <h5>Renevue</h5>
-                                <h3>${total != null ? total : 0} VNĐ</h3>
+                                <h3><fmt:formatNumber value="${total}" type="number" pattern="#,###" /> VND</h3>
                             </div>
                         </div>
                     </div>

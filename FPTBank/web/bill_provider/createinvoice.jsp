@@ -85,16 +85,21 @@
                             <label>Customer *</label>
                             <select name="customerid" id="customerSelect" class="form-control">
                                 <option>--Select Customer--</option>
-                                <c:forEach var="customer" items="${requestScope.listC}">
-                                    <option value="${customer.getCustomerId()}" ${param.customerid == customer.getCustomerId() ? 'selected' : ''}
-                                            data-phone="${customer.getPhone()}" 
-                                            data-email="${customer.getEmail()}" 
-                                            data-address="${customer.getAddress()}" 
-                                            data-dob="${customer.getDateOfBirth()}"
-                                            data-cccd="${customer.getCCCD()}"
-                                            data-gender="${customer.isGender() == true ? "Male" : "Female"}"
-                                            >${customer.getFullName()}</option>
-                                </c:forEach>
+                                <c:if test="${not empty requestScope.listC}">
+                                    <c:forEach var="customer" items="${requestScope.listC}">
+                                        <c:set var="isSelected" value="${not empty param.customerid and param.customerid eq customer.customerId.toString()}" />
+                                        <option value="${customer.customerId}" 
+                                                ${isSelected ? 'selected' : ''}
+                                                data-phone="${customer.phone}" 
+                                                data-email="${customer.email}"
+                                                data-address="${customer.address}"
+                                                data-dob="${customer.dateOfBirth}"
+                                                data-cccd="${customer.CCCD}"
+                                                data-gender="${customer.gender == true ? "Male" : "Female"}">
+                                            ${customer.fullName}
+                                        </option>
+                                    </c:forEach>
+                                </c:if>
                             </select>
                         </div>
                         <div class="form-group col-md-4">

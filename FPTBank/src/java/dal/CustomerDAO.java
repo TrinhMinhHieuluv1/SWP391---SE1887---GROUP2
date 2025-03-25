@@ -511,7 +511,7 @@ public class CustomerDAO extends DBContext {
     }
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-        boolean a = dao.isFieldExistsToUpdate("Email", "User10@example.com", 1);
-        System.out.println(a);
+       Customer cus = dao.selectCustomerByConditions(0, "", "0523456789", "");
+        System.out.println(cus);
     }
 }

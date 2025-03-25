@@ -438,7 +438,20 @@
         <h2 style="text-align:  center;">List of Bill</h2>
 
         <form action="invoiceshowcustomer" method="get">
+            <% 
+    String message = (String) request.getAttribute("error"); 
+    String errorMessage = (String) request.getAttribute("error2"); 
 
+    if (message != null && !message.trim().isEmpty()) { 
+            %>
+            <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #c3e6cb; width: 1000px; margin-left: 230px;">
+                <strong>✅ Message:</strong> <%= message %>
+            </div>
+            <% } else if (errorMessage != null && !errorMessage.trim().isEmpty()) { %>
+            <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #f5c6cb; width: 1000px; margin-left: 230px;">
+                <strong>❌ Error:</strong> <%= errorMessage %>
+            </div>
+            <% } %>
             <div class="filter-group" style="display: flex;">
                 <label for="number" style="margin-left: 30px;" >Number in Page:</label>
                 <select class="form-control" id="statusFilter" name="pagesize">

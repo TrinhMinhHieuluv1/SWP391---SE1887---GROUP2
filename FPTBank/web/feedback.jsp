@@ -134,6 +134,9 @@
                 outline: none;
                 box-shadow: 0 0 5px #007bff;
             }
+            .content{
+                margin-top: 150px;
+            }
         </style>
     </head>
 
@@ -157,7 +160,8 @@
 
             <!-- top panel end -->
             <%@ include file="header.jsp"%>
-            <h2 style="color: green; text-align: center;">Your Feedback</h2>
+            <div class="content">
+                <h2 style="color: green; text-align: center;">Your Feedback</h2>
             <!-- top panel end -->
             <a href="contact"><button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 260px; margin-bottom: 10px;">ADD Feedback +</button></a>
             <form action="myfeedback" method="get">
@@ -238,6 +242,7 @@
                 <c:if test="${currentPage < totalPages}">
                     <a href="myfeedback?page=${currentPage + 1}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" class="next">Next</a>
                 </c:if>
+            </div>
             </div>
                     <%@ include file="footer.jsp"%>
                     </div>

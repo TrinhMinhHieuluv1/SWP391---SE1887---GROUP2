@@ -105,6 +105,15 @@
                                                  <li><a href="/timibank/contract-management-for-customer">My Contract</a></li>
                                                  <li><a href="/timibank/loan-payment-management-for-customer?groupByContract=true">My Payment</a></li>
                                                  </c:if>
+                                                 <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <li><a href="/timibank/invoiceshowcustomer">My Bill</a></li>
+                                                 </c:if>
+                                                 <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <li><a href="/timibank/historytransaction">History Transaction</a></li>
+                                                 </c:if>
+                                                  <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <li><a href="/timibank/transaction">Tranfer money</a></li>
+                                                 </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==4}">
                                                  <li><a href="/timibank/insurance/manageInsurance.jsp">Management</a></li>
                                                  </c:if>

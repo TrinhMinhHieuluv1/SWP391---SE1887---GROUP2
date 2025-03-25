@@ -2,11 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package controller;
 
-package controller.billprovdider.management;
-
-import dal.CompanyBillProviderDAO;
-import dal.DetailBillDAO;
+import dal.TransactionHistoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,42 +15,45 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import model.CompanyBillProvider;
+import model.TransactionHistory;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name="InvoiceShowCustomer", urlPatterns={"/invoiceshowcustomer"})
-public class InvoiceShowCustomer extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "HistoryTransaction", urlPatterns = {"/historytransaction"})
+public class HistoryTransaction extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InvoiceShowCustomer</title>");  
+            out.println("<title>Servlet HistoryTransaction</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InvoiceShowCustomer at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet HistoryTransaction at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -60,20 +61,20 @@ public class InvoiceShowCustomer extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
-        int uid = (int) session.getAttribute("uid");
-        String status_bill = request.getParameter("statusbill");
+        Integer uidObj = (Integer) session.getAttribute("uid");
+        if (uidObj == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        int uid = uidObj;
+
         String number = request.getParameter("pagesize");
         String date_1 = request.getParameter("date1");
         String date_2 = request.getParameter("date2");
-        String status = request.getParameter("status");
-        if(status != null && !status.isEmpty()){
-            request.setAttribute("error", "Paid successfully and sent a email about bill");            ;
-        }
-        if(status_bill == null){
-            status_bill = "";
-        }
+        boolean check = false;
+        
         if(date_1 == null){
             date_1 = "";
         }
@@ -81,8 +82,11 @@ public class InvoiceShowCustomer extends HttpServlet {
             date_2 = "";
         }
         
-        DetailBillDAO dao = new DetailBillDAO();
-        List<model.DetailBill> list = dao.filterListCustomer(status_bill, date_1, date_2, uid);
+        TransactionHistoryDAO dao = new TransactionHistoryDAO();
+        List<TransactionHistory> list = dao.filterListCustomer( date_1, date_2, uid);
+        for(TransactionHistory transaction : list){
+           check = transaction.getBalanceBefore().compareTo(transaction.getBalanceAfter()) > 0;
+        }
         int page = 1;
         int pagesize = 10;
         if (request.getParameter("page") != null) {
@@ -106,19 +110,19 @@ public class InvoiceShowCustomer extends HttpServlet {
         int end = page*pagesize > totalbill ? totalbill : page*pagesize;
         list = dao.getListByPage(list, start, end);
         request.setAttribute("listint", listint);
-        request.setAttribute("statusbill", status_bill);
         request.setAttribute("currentPage", page);
+        request.setAttribute("check", check);
         request.setAttribute("pagesize", number);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("date1", date_1);
         request.setAttribute("date2", date_2);
-        request.setAttribute("listB", list);
-        request.setAttribute("listB", list);
-        request.getRequestDispatcher("mybill.jsp").forward(request, response);
-    } 
+        request.setAttribute("listTr", list);
+        request.getRequestDispatcher("transactionhistory.jsp").forward(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -126,12 +130,13 @@ public class InvoiceShowCustomer extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

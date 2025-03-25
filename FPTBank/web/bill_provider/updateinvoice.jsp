@@ -138,7 +138,7 @@
                         <div class="table-row">
                             <div class="table-header">Total</div>
                             <div class="table-cell"> <input type="text" id="total" name="total" 
-                                                            value="<fmt:formatNumber value='${requestScope.bill.total}' pattern='#,###.00'/>"
+                                                            value="<fmt:formatNumber value='${requestScope.bill.total}' pattern='#,###'/>"
                                                             class="form-control" oninput="formatNumber(this)"></div>
                         </div>
                         <script>
