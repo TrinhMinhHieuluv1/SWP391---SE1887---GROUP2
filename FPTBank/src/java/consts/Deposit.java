@@ -3,9 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.insurance.manager;
+package consts;
 
-import dal.InsuranceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +12,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Insurance;
+import java.io.BufferedReader;
+import org.json.JSONObject;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="BothChartCover", urlPatterns={"/insurance/BothChartCover"})
-public class BothChartCover extends HttpServlet {
+@WebServlet(name="Deposit", urlPatterns={"/Deposit"})
+public class Deposit extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +37,10 @@ public class BothChartCover extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BothChartCover</title>");  
+            out.println("<title>Servlet Deposit</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BothChartCover at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Deposit at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,50 +57,7 @@ public class BothChartCover extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-            
-            response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        InsuranceDAO insudao = new InsuranceDAO();
-        HttpSession session = request.getSession();
-        int insuranceID = (int) session.getAttribute("uid");
-        List<Insurance> insuranceList = insudao.getAllInsuranceByProviderID(insuranceID);
-        
-        if (insuranceList.isEmpty()) {
-            response.getWriter().write("{\"error\": \"No data valiable !!\"}");
-            return;
-        }
-
-       //chart coverate
-        int coverate30 = 0;
-        int coverate50 = 0;
-        int coverate60 = 0;
-        int coverate70 = 0;
-        int coverate80 = 0;
-        int coverate100 = 0;
-        for (Insurance insurance : insuranceList) {
-           
-                 if (insurance.getCoverageRate()<= 30) {
-                coverate30++;
-            } else if (insurance.getCoverageRate()> 30 && insurance.getCoverageRate() <= 50) {
-                coverate50++;
-            } else if (insurance.getCoverageRate()> 50 && insurance.getCoverageRate() <= 60) {
-                coverate60++;
-            }  else if (insurance.getCoverageRate()> 60 && insurance.getCoverageRate() <= 70) {
-                coverate70++;
-            }  else if (insurance.getCoverageRate()> 70 && insurance.getCoverageRate() <= 80) {
-                coverate80++;
-            }  else {
-                coverate100++;
-            } 
-            
-           
-        }
-        int totalCoverate = insuranceList.size();
-        String jsonResponse = String.format(
-                "{\"data21\": [%d, %d, %d, %d, %d, %d], \"total_Cover\": %d}",
-                coverate30, coverate50, coverate60, coverate70,coverate80,coverate100, totalCoverate
-        );
-        response.getWriter().write(jsonResponse); // Gửi dữ liệu JSON về client
+        request.getRequestDispatcher("Deposit.jsp").forward(request, response);
     } 
 
     /** 
@@ -115,7 +70,33 @@ public class BothChartCover extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       BufferedReader reader = request.getReader();
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
+        String requestData = sb.toString();
+        System.out.println(requestData);
+
+        try {
+            JSONObject json = new JSONObject(requestData);
+            double amount = json.optDouble("transferAmount", 0);
+            String description = json.optString("description", "");
+
+            if (amount == 2000 && description.contains("timibank")) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("{\"success\": true}");
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"error\": \"Lỗi\"}");
+            }
+
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"error\": \"Invalid JSON format\"}");
+        }
+    
     }
 
     /** 

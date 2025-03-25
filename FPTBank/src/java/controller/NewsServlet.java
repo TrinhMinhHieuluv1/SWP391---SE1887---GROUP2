@@ -65,10 +65,31 @@ public class NewsServlet extends HttpServlet {
         NewsCategoryDAO dao = new NewsCategoryDAO();
         NewsDAO newsDAO = new NewsDAO();
         List<NewsCategory> list = dao.selectAllNewsCategory();
-        List<News> listnew = newsDAO.selectAllNews();
-        request.setAttribute("dataCate", list);
-        request.setAttribute("data", listnew);
-        request.getRequestDispatcher("news.jsp").forward(request, response);
+        String id_raw = request.getParameter("idCate");
+        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+        int size = 8;
+        int totalNews = newsDAO.getTotalNewsCount();
+        try {
+            List<News> listnew = newsDAO.selectNewsListByConditionsAndPageSize("", "CreatedAtASC", "active", "", 1, 0, 1, 8);
+            int id = 1;
+            if (id_raw != null) {
+                id = Integer.parseInt(id_raw);
+                request.setAttribute("idCate", id);
+                listnew = newsDAO.selectNewsListByConditionsAndPageSize("", "CreatedAtASC", "active", "", id, 0, page, size);
+            } else {
+                request.setAttribute("idCate", id);
+            }
+
+            request.setAttribute("dataCate", list);
+            request.setAttribute("data", listnew);
+            request.setAttribute("totalNews", totalNews);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", size);
+            request.getRequestDispatcher("news.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -86,16 +107,21 @@ public class NewsServlet extends HttpServlet {
         String opDate = request.getParameter("opDate");
         NewsCategoryDAO dao = new NewsCategoryDAO();
         NewsDAO newsDAO = new NewsDAO();
+        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+        int size = 8;
+        int totalNews = newsDAO.getTotalNewsCount();
         try {
-            if (id_raw != null) {
-                int id = Integer.parseInt(id_raw);
-                request.setAttribute("idCate", id);
-                request.setAttribute("opDate", opDate);
-                List<News> list = newsDAO.selectNewsListByConditions("", opDate, "active", "", id, 0);
-                List<NewsCategory> listcate = dao.selectAllNewsCategory();
-                request.setAttribute("dataCate", listcate);
-                request.setAttribute("data", list);
-            }
+
+            int id = Integer.parseInt(id_raw);
+            request.setAttribute("idCate", id);
+            request.setAttribute("opDate", opDate);
+            List<News> list = newsDAO.selectNewsListByConditionsAndPageSize("", opDate, "active", "", id, 0, 1, 8);
+            List<NewsCategory> listcate = dao.selectAllNewsCategory();
+            request.setAttribute("totalNews", totalNews);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", size);
+            request.setAttribute("dataCate", listcate);
+            request.setAttribute("data", list);
 
             request.getRequestDispatcher("news.jsp").forward(request, response);
         } catch (Exception e) {

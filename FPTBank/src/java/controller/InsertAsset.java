@@ -38,7 +38,9 @@ import utils.FileUploadHelper;
         maxRequestSize = 1024 * 1024 * 50
 )
 public class InsertAsset extends HttpServlet {
+
     private static final String IMAGE_DIR = "uploads";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -99,9 +101,18 @@ public class InsertAsset extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             Customer account = (Customer) session.getAttribute("account");
+            List<Asset> data = dao.getAssetByCId(account.getCustomerId());
+            for (Asset asset : data) {
+                if (asset.getTitle().equalsIgnoreCase(name)) {
+                    request.setAttribute("messType", "false");
+                    request.setAttribute("messT", "The title is exist!");
+                    request.getRequestDispatcher("addAsset.jsp").forward(request, response);
+                    return;
+                }
+            }
             Asset a = new Asset();
             a.setCustomer(account);
-            a.setTitle(name);
+            a.setTitle(normalizeString(name));
             a.setDescription(description);
             String valueR = value_raw.replace(".", "");
             double value = Double.parseDouble(valueR);
@@ -113,9 +124,9 @@ public class InsertAsset extends HttpServlet {
                 request.getRequestDispatcher("addAsset.jsp").forward(request, response);
                 return;
             }
-             String pathHost = getServletContext().getRealPath("")+ File.separator + IMAGE_DIR;
-            String imagePath = "uploads/" + FileUploadHelper.saveProfilePicture(filePartImage,pathHost, 1);
-                FileUploadHelper.saveProfilePicture(filePartImage,pathHost, 2);
+            String pathHost = getServletContext().getRealPath("") + File.separator + IMAGE_DIR;
+            String imagePath = "uploads/" + FileUploadHelper.saveProfilePicture(filePartImage, pathHost, 1);
+            FileUploadHelper.saveProfilePicture(filePartImage, pathHost, 2);
             a.setImage(imagePath);
             a.setStatus("Not Processed");
 
@@ -128,6 +139,13 @@ public class InsertAsset extends HttpServlet {
             e.printStackTrace();
         }
 
+    }
+
+    public String normalizeString(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return "";
+        }
+        return keyword.trim().replaceAll("\\s+", " ");
     }
 
     public void descriptionSetup(List<Asset> data) {

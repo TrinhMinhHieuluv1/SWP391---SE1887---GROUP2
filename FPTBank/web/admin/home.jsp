@@ -9,6 +9,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!doctype html>
 <html lang="en" data-bs-theme="light">
@@ -658,6 +659,7 @@
 
                             <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Staffs</a>
                             <li> <a href="manage_customers"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
+                            <li> <a href="manage_serviceItems"><span class="material-symbols-outlined">arrow_right</span>Service Items</a>
 
 
                                 <!--                    </li>
@@ -1030,7 +1032,9 @@
                             <div class="d-flex align-items-center">
                                 <div class="">
                                     <p class="mb-1">Bounce Rate</p>
-                                    <h4 class="mb-0 text-danger">${bounceRate}%</h4>
+                                    <h4 class="mb-0 text-danger">
+                                        <fmt:formatNumber value="${bounceRate}" maxFractionDigits="1" minFractionDigits="1"/>%
+                                    </h4>
                                 </div>
                                 <div class="ms-auto widget-icon bg-danger text-white">
                                     <i class="bi bi-graph-down-arrow"></i>
@@ -1078,11 +1082,11 @@
                                 </div>
 
 
-                                <form id="contractFilterForm" class="ms-auto me-2 d-flex align-items-center">
+                                <form action="home" id="contractFilterForm" class="ms-auto me-2 d-flex align-items-center">
                                     <label for="fromDate" class="me-1">From:</label>
-                                    <input type="date" id="fromDate" name="fromDate" class="form-control me-2">
+                                    <input type="date" value="${fromDate}" id="fromDate" name="fromDate" class="form-control me-2">
                                     <label for="toDate" class="me-1">To:</label>
-                                    <input type="date" id="toDate" name="toDate" class="form-control me-2">
+                                    <input type="date" value="${toDate}" id="toDate" name="toDate" class="form-control me-2">
                                     <input name="urlToServletContract" id="urlToSvlContract" type="hidden" value="${urlToServletContract}">
                                     <button type="submit" class="btn btn-primary">Filter</button>
                                 </form>
@@ -1505,10 +1509,10 @@
 
                                 <form id="savingContractFilterForm" class="ms-auto me-2 d-flex align-items-center">
                                     <label for="fromDateSaving" class="me-1">From:</label>
-                                    <input type="date" id="fromDateSaving" name="fromDateSaving" class="form-control me-2">
+                                    <input type="date" value="${fromDate}" id="fromDateSaving" name="fromDateSaving" class="form-control me-2">
 
                                     <label for="toDateSaving" class="me-1">To:</label>
-                                    <input type="date" id="toDateSaving" name="toDateSaving" class="form-control me-2">
+                                    <input type="date" value="${toDate}" id="toDateSaving" name="toDateSaving" class="form-control me-2">
 
                                     <button type="submit" class="btn btn-primary">Filter</button>
                                 </form>
@@ -1565,10 +1569,10 @@
 
                                 <form action="home" id="loanContractFilterForm" class="ms-auto me-2 d-flex align-items-center">
                                     <label for="fromDateLoan" class="me-1">From:</label>
-                                    <input type="date" id="fromDateLoan" name="fromDateLoan" class="form-control me-2">
+                                    <input type="date" value="${fromDate}" id="fromDateLoan" name="fromDateLoan" class="form-control me-2">
 
                                     <label for="toDateLoan" class="me-1">To:</label>
-                                    <input type="date" id="toDateLoan" name="toDateLoan" class="form-control me-2">
+                                    <input type="date" value="${toDate}" id="toDateLoan" name="toDateLoan" class="form-control me-2">
 
                                     <button type="submit" class="btn btn-primary">Filter</button>
                                 </form>
@@ -1969,6 +1973,11 @@
                                                                 var urlSvlContract = document.getElementById("urlToSvlContract");
                                                                 urlSvlContract.value = response.urlSvl;
 
+                                                                //
+                                                                document.getElementById('fromDate').value = response.fromDate;
+                                                                document.getElementById('toDate').value = response.toDate;
+
+
                                                                 // cập nhật giá trị cho form xuất excel 
                                                                 var chart1Input = document.querySelector('#chart1').closest('.card').querySelector('input[name="data"]');
                                                                 chart1Input.value = "null";
@@ -1977,9 +1986,6 @@
                                                                 var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
                                                                 chart1Label.value = "null";
 
-                                                                // Reset giá trị của fromDate và toDate
-                                                                document.getElementById('fromDate').value = "";
-                                                                document.getElementById('toDate').value = "";
                                                             } else {
                                                                 chart1.updateOptions({
                                                                     xaxis: {title: {
@@ -2002,9 +2008,10 @@
                                                                 var chart1Label = document.querySelector('#chart1').closest('.card').querySelector('input[name="labels"]');
                                                                 chart1Label.value = response.labels01.replaceAll("'", "");
 
-                                                                // Reset giá trị của fromDate và toDate
-                                                                document.getElementById('fromDate').value = "";
-                                                                document.getElementById('toDate').value = "";
+                                                                //
+                                                                document.getElementById('fromDate').value = response.fromDate;
+                                                                document.getElementById('toDate').value = response.toDate;
+
                                                             }
                                                         },
                                                         error: function (xhr, status, error) {
@@ -2079,9 +2086,8 @@
                                                                 var chart3Label = document.querySelector('#chart3').closest('.card').querySelector('input[name="labels"]');
                                                                 chart3Label.value = "null";
 
-                                                                // Reset giá trị của fromDate và toDate
-                                                                document.getElementById('fromDateSaving').value = "";
-                                                                document.getElementById('toDateSaving').value = "";
+                                                                document.getElementById('fromDate').value = response.fromDate;
+                                                                document.getElementById('toDate').value = response.toDate;
                                                             } else {
                                                                 chart3.updateOptions({
                                                                     xaxis: {
@@ -2098,9 +2104,8 @@
                                                                 var chart3Label = document.querySelector('#chart3').closest('.card').querySelector('input[name="labels"]');
                                                                 chart3Label.value = response.labels03.replaceAll("'", "");
 
-                                                                // Reset giá trị của fromDate và toDate
-                                                                document.getElementById('fromDateSaving').value = "";
-                                                                document.getElementById('toDateSaving').value = "";
+                                                                document.getElementById('fromDate').value = response.fromDate;
+                                                                document.getElementById('toDate').value = response.toDate;
                                                             }
                                                         },
                                                         error: function (xhr, status, error) {
@@ -2121,9 +2126,6 @@
                                                             var chart3Label = document.querySelector('#chart3').closest('.card').querySelector('input[name="labels"]');
                                                             chart3Label.value = "null";
 
-                                                            // Reset giá trị của fromDate và toDate
-                                                            document.getElementById('fromDateSaving').value = "";
-                                                            document.getElementById('toDateSaving').value = "";
                                                         }
                                                     });
                                                 }
@@ -2170,9 +2172,8 @@
                                                                 var chart4Label = document.querySelector('#chart4').closest('.card').querySelector('input[name="labels"]');
                                                                 chart4Label.value = "null";
 
-                                                                // Reset giá trị của fromDate và toDate
-                                                                document.getElementById('fromDateLoan').value = "";
-                                                                document.getElementById('toDateLoan').value = "";
+                                                                document.getElementById('fromDate').value = response.fromDate;
+                                                                document.getElementById('toDate').value = response.toDate;
                                                             } else {
                                                                 chart4.updateOptions({
                                                                     xaxis: {
@@ -2189,9 +2190,8 @@
                                                                 var chart4Label = document.querySelector('#chart4').closest('.card').querySelector('input[name="labels"]');
                                                                 chart4Label.value = response.labels04.replaceAll("'", "");
 
-                                                                // Reset giá trị của fromDate và toDate
-                                                                document.getElementById('fromDateLoan').value = "";
-                                                                document.getElementById('toDateLoan').value = "";
+                                                                document.getElementById('fromDate').value = response.fromDate;
+                                                                document.getElementById('toDate').value = response.toDate;
                                                             }
                                                         },
                                                         error: function (xhr, status, error) {

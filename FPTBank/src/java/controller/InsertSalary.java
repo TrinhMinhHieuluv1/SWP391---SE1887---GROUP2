@@ -102,7 +102,7 @@ public class InsertSalary extends HttpServlet {
             Customer account = (Customer) session.getAttribute("account");
             Salary a = new Salary();
             a.setCustomer(account);
-            a.setTitle(name);
+            a.setTitle(normalizeString(name));
             a.setDescription(description);
             String valueR = value_raw.replace(".", "");
             double value = Double.parseDouble(valueR);
@@ -129,6 +129,12 @@ public class InsertSalary extends HttpServlet {
             e.printStackTrace();
         }
 
+    }
+        public String normalizeString(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return "";
+        }
+        return keyword.trim().replaceAll("\\s+", " ");
     }
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");

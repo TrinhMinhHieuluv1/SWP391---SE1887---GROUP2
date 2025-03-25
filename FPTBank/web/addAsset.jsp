@@ -350,8 +350,6 @@
                     <button class="notification-close" onclick="closeNotification()">&times;</button>
                 </div>
             </c:if>
-
-
             <script>
                 function closeNotification() {
                     const notification = document.getElementById('notification');
@@ -389,6 +387,9 @@
                     <div class="form-group">
                         <label for="assetName">Asset Name</label>
                         <input type="text" id="assetName" name="name" required>
+                        <c:if test="${requestScope.messT!=null}">
+                            <div style="color: red">${requestScope.messT}</div>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="editValuation">Valuation</label>                   

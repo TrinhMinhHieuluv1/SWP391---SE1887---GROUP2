@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.insurance.manager;
+package controller.contract.manager;
 
-import dal.InsuranceDAO;
+import dal.ContractDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,15 +14,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Insurance;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="BothChartFee", urlPatterns={"/insurance/BothChartFee"})
-public class BothChartFee extends HttpServlet {
+@WebServlet(name="UpdatestatusContract", urlPatterns={"/manager/update-contract"})
+public class UpdatestatusContract extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +37,10 @@ public class BothChartFee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BothChartFee</title>");  
+            out.println("<title>Servlet UpdatestatusContract</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BothChartFee at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UpdatestatusContract at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,48 +54,17 @@ public class BothChartFee extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+  @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-            response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        InsuranceDAO insudao = new InsuranceDAO();
-        HttpSession session = request.getSession();
-        int insuranceID = (int) session.getAttribute("uid");
-        List<Insurance> insuranceList = insudao.getAllInsuranceByProviderID(insuranceID);
-       
-        if (insuranceList.isEmpty()) {
-            response.getWriter().write("{\"error\": \"No data valiable !!\"}");
-            return;
-        }
-
-        //chart feerate        
-        int feerate10 = 0;
-        int feerate20 = 0;
-        int feerate30 = 0;
-        int feerate100 = 0;
-        for (Insurance insurance : insuranceList) {
-           
-                if (insurance.getFeeRate() <= 5) {
-                    feerate10++;
-                } else if (insurance.getFeeRate() > 5 && insurance.getFeeRate() <= 10) {
-                    feerate20++;
-                } else if (insurance.getFeeRate() > 10 && insurance.getFeeRate() <= 15) {
-                    feerate30++;
-                } else {
-                    feerate100++;
-                }
-
-            
-
-        }
-        int totalFeerate =insuranceList.size();
-        String jsonResponse = String.format(
-                "{\"data2\": [%d, %d, %d, %d], \"total_fee\": %d}",
-                feerate10, feerate20, feerate30, feerate100, totalFeerate
-        );
-        response.getWriter().write(jsonResponse); // Gửi dữ liệu JSON về client
-    } 
+//    int contractID = Integer.parseInt(request.getParameter("ContractID"));
+//    int newStatus = Integer.parseInt(request.getParameter("newStatus"));
+//    
+//    ContractDAO ctdao = new ContractDAO();
+//    ctdao.updateContractStatus(contractID, newStatus);
+//    
+//    response.setStatus(HttpServletResponse.SC_OK);
+}
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -107,10 +74,24 @@ public class BothChartFee extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+   protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+                       HttpSession session = request.getSession();
+
+    int contractID = Integer.parseInt(request.getParameter("contractID"));
+    int statusID = Integer.parseInt(request.getParameter("statusID"));
+
+    ContractDAO contractDAO = new ContractDAO();
+    boolean success = contractDAO.updateStatus(contractID, statusID);
+    
+    if (success) {
+        session.setAttribute("message", "Update successfully!");
+        response.sendRedirect("contract-management-for-manager"); // Chuyển hướng sau khi cập nhật thành công
+    } else {
+        response.sendRedirect("error.jsp"); // Chuyển hướng đến trang lỗi nếu thất bại
     }
+}
+
 
     /** 
      * Returns a short description of the servlet.

@@ -86,6 +86,8 @@ public class GeneratePDFServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, MalformedURLException {
+                 HttpSession session = request.getSession();
+
         String imageBase64 = request.getParameter("image");
         if (imageBase64 == null || !imageBase64.startsWith("data:image/png;base64,")) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid image data");
@@ -106,6 +108,12 @@ public class GeneratePDFServlet extends HttpServlet {
         int amount10 = Integer.parseInt(request.getParameter("amount10"));
         int ToltalAmount = Integer.parseInt(request.getParameter("ToltalAmount"));
         String statusFilter = request.getParameter("statusFilterAmount");
+        // Nếu statusFilter là null, đặt giá trị mặc định
+        if (statusFilter == null) {
+            statusFilter = "BothChartAmount";
+        }
+                 session.setAttribute("statusFilterAmount", statusFilter);
+
 
         // Tính phần trăm
         DecimalFormat df = new DecimalFormat("#.##");

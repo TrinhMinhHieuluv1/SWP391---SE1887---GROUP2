@@ -80,6 +80,9 @@ public class ChartOfSecuredLoan extends HttpServlet {
         List<String> listDataContract = chart.calculateCharContract(contractMapByMonth);
 
         JSONObject jsonResponse = new JSONObject();
+        
+        jsonResponse.put("fromDate",fromDate.toString());
+        jsonResponse.put("toDate",toDate.toString());
         if (contractMapByMonth.isEmpty() || contractMapByMonth == null) {
             jsonResponse.put("error", "No data available !!");
         } else {

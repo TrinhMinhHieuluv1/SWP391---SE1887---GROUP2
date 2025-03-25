@@ -13,10 +13,12 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
 import consts.Mail;
+import dal.ContractDAO;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.internet.MimeUtility;
 import java.io.UnsupportedEncodingException;
+import model.Contract;
 
 public class sendMail {
 
@@ -303,4 +305,86 @@ public class sendMail {
 
     }
 
+   public static boolean guiMailRejected(String email, String noidung,int ContractId) throws UnsupportedEncodingException {
+    Properties props = new Properties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.host", Mail.HOST_NAME);
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.port", Mail.TSL_PORT);
+
+        
+    Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication("timibank.se1887@gmail.com", "dczj xqjz xmsa csdt");
+        }
+    });
+
+    try {
+                ContractDAO contractDAO = new ContractDAO();
+Contract con= contractDAO.selectAContractByID(ContractId);
+        MimeMessage message = new MimeMessage(session);
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+        
+        String subject = "Cảm ơn quý khách đã quan tâm đến dịch vụ của chúng tôi";
+        
+        // Chèn nội dung tùy chỉnh vào email
+       String emailContent = "<!DOCTYPE html>\n"
+        + "<html>\n"
+        + "<head>\n"
+        + "    <meta charset=\"utf-8\">\n"
+        + "    <title>Hợp đồng</title>\n"
+        + "    <style>\n"
+        + "        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }\n"
+        + "        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }\n"
+        + "        h1 { color: #2c3e50; text-align: center; }\n"
+        + "        .contract-header { text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 20px; }\n"
+        + "        .content { padding: 10px; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; margin-top: 10px; }\n"
+        + "        .content h2 { color: #e74c3c; font-size: 16px; }\n"
+        + "        .content p { font-size: 14px; line-height: 1.6; }\n"
+        + "        .footer { margin-top: 20px; text-align: center; font-size: 12px; color: #7f8c8d; }\n"
+        + "    </style>\n"
+        + "</head>\n"
+        + "<body>\n"
+        + "    <div class=\"container\">\n"
+        + "        <h1>TiMiBank – Ngàn ưu đãi</h1>\n"
+        + "        <div class=\"contract-header\">HỢP ĐỒNG VAY GỬI TIẾT KIỆM</div>\n"
+                + "    Mã hợp đồng :       <p>" + con.getContractID() + "</p>\n"
+                + "   Ngày tạo :       <p>" + con.getCreateAt() + "</p>\n"
+                 + "   Số tiền :        <p>" + con.getAmount()+ "</p>\n"
+              
+                + "   Loại bảo hiểm :        <p>" + con.getType() + "</p>\n"
+                 + "    Người dùng :       <p>" + con.getCustomer().getImage()+ "</p>\n"
+                + "    Họ và tên :     <p>" + con.getCustomer().getFullName() + "</p>\n"
+                 + "    SDt:        <p>" + con.getCustomer().getPhone()+ "</p>\n"
+        + "        <div class=\"content\">\n"
+        + "            <h2>Lý do từ chối hợp đồng:</h2>\n"
+        + "            <p>" + noidung + "</p>\n"
+        + "        </div>\n"
+        + "        <div class=\"footer\">© 2025 TiMiBank. Mọi quyền được bảo lưu.</div>\n"
+        + "    </div>\n"
+        + "</body>\n"
+        + "</html>";
+
+
+        // Đặt tiêu đề với UTF-8
+        message.setSubject(MimeUtility.encodeText(subject, "UTF-8", "B"));
+
+        // Đặt nội dung email với UTF-8
+        MimeMultipart multipart = new MimeMultipart();
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent(emailContent, "text/html; charset=UTF-8");
+        multipart.addBodyPart(messageBodyPart);
+        message.setContent(multipart);
+        
+        Transport.send(message);
+        System.out.println("Mail đã được gửi: " + System.currentTimeMillis());
+
+        return true;
+    } catch (MessagingException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+ 
+    
 }

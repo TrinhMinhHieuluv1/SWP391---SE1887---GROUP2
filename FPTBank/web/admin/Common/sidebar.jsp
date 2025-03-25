@@ -76,7 +76,7 @@
 
                     <li> <a href="manage_users"><span class="material-symbols-outlined">arrow_right</span>Staffs</a>
                     <li> <a href="manage_customers"><span class="material-symbols-outlined">arrow_right</span>Customers</a>
-
+                    <li> <a href="manage_serviceItems"><span class="material-symbols-outlined">arrow_right</span>Service Items</a>
 
                         <!--                    </li>
                                             <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>

@@ -97,4 +97,11 @@
         <url-pattern>/vnpayReturn</url-pattern>
     </servlet-mapping>
 
+    <welcome-file-list>
+        <welcome-file>redirect.jsp</welcome-file>
+    </welcome-file-list>
+    <listener>
+        <listener-class>controller.LoanPaymentReminder</listener-class>
+    </listener>
+    
 </web-app>

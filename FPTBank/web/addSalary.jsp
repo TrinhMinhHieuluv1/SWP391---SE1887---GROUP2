@@ -330,9 +330,9 @@
         <div class="sidebar">
             <div class="logo">My Asset And Salary</div>
             <ul>
-                    <li><a href="myassetsalary" >My Assets</a></li>
-                    <li><a href="mysalary" >My Salaries</a></li>
-              
+                <li><a href="myassetsalary" >My Assets</a></li>
+                <li><a href="mysalary" >My Salaries</a></li>
+
             </ul>
         </div>
 
@@ -389,6 +389,9 @@
                     <div class="form-group">
                         <label for="assetName">Salary title</label>
                         <input type="text" id="assetName" name="name" required>
+                        <c:if test="${requestScope.messT!=null}">
+                            <div style="color: red">${requestScope.messT}</div>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="editValuation">Valuation</label>                   
