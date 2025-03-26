@@ -111,9 +111,11 @@ public class UpdateImage extends HttpServlet {
         String fileName = ImageUploadUtil.uploadImage(request, "image", uploadPath);
         String img = "";
         String error = "";
-        if (fileName == null) {
+        if (fileName.startsWith("No file name provided !!")) {
             error = "File upload failed! Please try again.";
-        }
+        }else if(fileName.startsWith("File size exceeds 10MB limit!")){
+            error = "File is not over 10MB";
+        }else
         if (fileName.startsWith("Invalid file format")) {
             error = "Invalid file format! Please upload only .jpg, .jpeg, or .png files.";
         } else if (fileName.startsWith("File size exceeds")) {
@@ -128,6 +130,11 @@ public class UpdateImage extends HttpServlet {
             ((User) account).setImage(img);
             dao.updateAUser((User) account);
             error = "Upload Success";
+            request.setAttribute("status", true);
+            session.setAttribute("message", error);
+            session.setAttribute("account", account);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+            return;
         } else if (account instanceof Customer) {
             img = "../uploads/" + fileName;
             CustomerDAO dao = new CustomerDAO();
@@ -135,12 +142,13 @@ public class UpdateImage extends HttpServlet {
             dao.updateCustomer((Customer) account);
             error = "Upload Success";
             request.setAttribute("status", true);
+            session.setAttribute("message", error);
+            session.setAttribute("account", account);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+            return;
         }
-        session.removeAttribute("account");
-        session.setAttribute("account", account);
         request.setAttribute("error2", error);
-        request.getRequestDispatcher(
-                "home.jsp").forward(request, response);
+        request.getRequestDispatcher("updateprofile.jsp").forward(request, response);
     }
 
     /**

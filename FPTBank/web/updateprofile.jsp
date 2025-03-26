@@ -154,13 +154,13 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-           
+
             <!-- scroll progress end -->
 
             <!-- back to top -->
 
             <!-- top panel end -->
-           <%@ include file="header.jsp"%>
+            <%@ include file="header.jsp"%>
             <!-- top panel end -->
             <div class="cuong"></div>
             <div class="container-xl px-4 mt-4">
@@ -179,9 +179,12 @@
                                         <input style="color: white;" id="inputUsername" name="image" type="file" accept="uploads/*" >
                                         <span id="imgError" class="error"></span>
                                     </div>
-                                    <% if(request.getAttribute("error2")!=null)  {%>
-                                    <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error2"));%></a>
-                                    <%}%>
+                                    <% if(request.getAttribute("error2") != null) { %>
+                                    <div style="color: red; font-style: italic; margin-bottom: 10px;">
+                                        <%= request.getAttribute("error2") %>
+                                    </div>
+                                    <% } %>
+
                                     <!-- Profile picture upload button-->
                                     <button class="btn btn-primary" type="submit">Upload new image</button>
                                 </form>
@@ -290,7 +293,7 @@
                 </div>
             </div>
             <!-- footer -->
-                              <%@ include file="footer.jsp"%>
+            <%@ include file="footer.jsp"%>
 
             <!-- footer end -->
 

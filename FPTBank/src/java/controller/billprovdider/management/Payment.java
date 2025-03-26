@@ -167,7 +167,7 @@ public class Payment extends HttpServlet {
             } else {
                 vnp_Params.put("vnp_Locale", "vn");
             }
-            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl + "?total=" + bill.getTotal() + "&billID=" + bill.getBillID() + "&providerID=" + bill.getProvider().getUserID());
+            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl + "?total=" + bill.getTotal() + "&billID=" + bill.getBillID() + "&providerID=" + bill.getProvider().getUserID()+"&total" + amount);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
