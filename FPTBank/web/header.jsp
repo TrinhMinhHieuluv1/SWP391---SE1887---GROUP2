@@ -60,16 +60,16 @@
                          </a>
                          <nav class="mil-top-menu">
                              <ul>
-                                 <li><a href="/timibank/home">Trang trủ</a></li>
-                                 <li class="mil-has-children mil-active">
-                                     <a href="/create-loan-request">Service</a>
+                                 <li><a href="/timibank/home">Home</a></li>
+                                 <li class="mil-has-children ">
+                                     <a href="/timibank/create-loan-request">Service</a>
                                      <ul>
                                          <li><a href="/timibank/create-loan-request?Type=Secured">Secured Loan</a><li>
                                          <li><a href="/timibank/create-loan-request?Type=Unsecured">Unsecured Loan</a><li>
-                                         <li><a>Saving</a><li>
+                                         <li class="mil-has-children mil-active"><a>Saving</a><li>
                                      </ul>
                                  </li>
-                                 <li>
+                                 <li >
                                      <a href="about">About</a>
                                  </li>
                                  <li>
@@ -121,7 +121,7 @@
                                                  <li><a href="/timibank/admin/home.jsp">Management</a></li>
                                                  </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==2}">
-                                                 <li><a href="/timibank/seller/home.jsp">Management</a></li>
+                                                 <li><a href="/timibank/seller/faq-management">Management</a></li>
                                                  </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==3}">
                                                  <li><a href="/timibank/manager/manageAsset.jsp">Management</a></li>

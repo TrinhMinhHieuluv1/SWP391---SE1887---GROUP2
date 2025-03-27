@@ -246,7 +246,7 @@
                     <form action="faq-servlet-search"  class="filter-controls">  
                         <div class="search-container"  > 
                             <i class="fa fa-search"></i>
-                            <input   type="text" name="searchKeyword"  value="${keyword}" placeholder="Tìm câu hỏi nhanh ..." class="search-input">
+                            <input   type="text" name="searchKeyword"  value="${keyword}" placeholder="Quickly find a question..." class="search-input">
                             <button style="color: white; background-color: #008000" class="add-news-btn" type="submit" >Search </button>
                         </div>
                     </form>
@@ -254,7 +254,7 @@
                 <div class="container" >
                     <form action="faq-servlet-type" method="get" class="filter-controls">
                         <div class="filter-group">
-                            <h3>Câu hỏi về</h3>
+                            <h3>Questions about</h3>
                             <div class="checkbox-bar">
                                 <%
                                     String selectedType = request.getAttribute("selectedType") != null ? request.getAttribute("selectedType").toString() : "";
@@ -262,29 +262,27 @@
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="faq1" name="faqType" value="account" class="faq-checkbox"
                                            <%= "account".equals(selectedType) ? "checked" : "" %>>
-                                    <label for="faq1">Tài khoản ngân hàng</label>
+                                    <label for="faq1">Bank Account</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="faq2" name="faqType" value="borrow" class="faq-checkbox"
                                            <%= "borrow".equals(selectedType) ? "checked" : "" %>>
-                                    <label for="faq2">Vay tiền</label>
+                                    <label for="faq2">Loan</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="faq3" name="faqType" value="savings" class="faq-checkbox"
                                            <%= "savings".equals(selectedType) ? "checked" : "" %>>
-                                    <label for="faq3">Gửi tiền</label>
+                                    <label for="faq3">Savings</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="faq4" name="faqType" value="card" class="faq-checkbox"
                                            <%= "card".equals(selectedType) ? "checked" : "" %>>
-                                    <label for="faq4">Thẻ</label>
+                                    <label for="faq4">Card</label>
                                 </div>
-
                             </div>
                             <button  class="add-news-btn checkbox-btn" type="submit">Search</button>
                         </div>
                     </form>     
-
                 </div>
                 <div class="container" >
                     <div class="search-container"  > 
@@ -307,9 +305,6 @@
                             <li class="faq-question__ques-item">
                                 <div class="faq-question__ques-wrap">
                                     <p class="faq-question__ques-title">${faq.getQuestion()}</p>
-
-
-
                                     <i class="fa-solid fa-angle-down faq-question__ques-icon"></i>
                                 </div>
                                 <div class="faq-question__ques-ans">
@@ -333,20 +328,13 @@
                         <a href="?page=${currentPage + 1}&searchKeyword=${keyword}&faqType=${selectedType}&entries=${entries}" class="next">Next</a>
                     </c:if>
                 </div>
-
-
-
             </div>
-
-
-
-
 
             <!-- footer -->
             <%@ include file="footer.jsp"%>
-
             <!-- footer end -->
         </div>
+
         <script>
             function changePage(page) {
                 const form = document.querySelector(".filter-controls"); // Chỉ lấy form đầu tiên

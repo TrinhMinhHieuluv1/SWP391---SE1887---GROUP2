@@ -13,7 +13,7 @@
     <head>
         <meta charset="UTF-8">
 
-        <title>TIMI - Công cụ tính lãi suất</title>
+        <title>TIMI - Interest Calculator</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -310,7 +310,7 @@
                 }
                 return true;
             }
-            
+
 
         </script>
         <div id="smooth-wrapper" class="mil-wrapper">
@@ -330,14 +330,16 @@
                 <div class="cal-container">
                     <a href="about"><i class="fa-solid fa-arrow-left-long"></i></a>
                     <div class="tabs">
-                        <a href="calSaving.jsp" class="tab">LÃI SUẤT TIẾT KIỆM</a>
-                        <a href="calLoan.jsp" class="tab active">LÃI VAY NGÂN HÀNG</a>
+                        <a href="calSaving.jsp" class="tab">SAVINGS INTEREST RATE</a>
+                        <a href="calLoan.jsp" class="tab active">BANK LOAN INTEREST RATE</a>
                     </div>
-                    <div class="title">CÔNG CỤ TÍNH LÃI SUẤT VAY NGÂN HÀNG</div>
+                    <div class="title">BANK LOAN INTEREST RATE CALCULATOR</div>
                     <div class="description"><br/>
-                        Công cụ tính lãi suất vay ngân hàng của LuatVietnam giúp bạn dự tính được số tiền lãi phải trả định kỳ, 
-                        tổng gốc và lãi trong từng thời điểm. Từ đó dễ dàng hoạch định tài chính tốt nhất cho mình.<br/><br/>
+                        LuatVietnam's bank loan interest rate calculator helps you estimate the periodic interest payments, 
+                        as well as the total principal and interest at different points in time. 
+                        This allows you to plan your finances more effectively.<br/><br/>
                     </div>
+
                     <c:if test="${not empty error}">
                         <div class="error-message" style="color: red; font-weight: bold;">
                             ${error}
@@ -348,7 +350,7 @@
                         <form action="congcu2"  id="myForm" class="cal-form">
 
                             <div class="form-group">
-                                <label for="nameLoan" class="form-group__label">Tên Người dùng</label>
+                                <label for="nameLoan" class="form-group__label">Name</label>
                                 <div class="form-group__input-wrap">
                                     <input type="text" class="form-group__input" id="nameLoan" name="nameLoan" value="${nameLoan}" 
                                            required>
@@ -359,7 +361,7 @@
                             <div class="form-group">
                                 <label for="emailLoan" class="form-group__label">Email</label>
                                 <div class="form-group__input-wrap">
-                                    
+
 
                                     <input type="email" class="form-group__input" id="emailLoan" name="emailLoan" value="${emailLoan}" 
                                            required
@@ -368,14 +370,14 @@
                                            oninput="validateEmail()">
                                     <span id="emailError"  class="sub-text-input"></span>
                                 </div>
-                                          
-                                          
-                                          
+
+
+
                             </div>
 
 
                             <div class="form-group">
-                                <label for="loanAmount" class="form-group__label">Số tiền vay</label>
+                                <label for="loanAmount" class="form-group__label"> Loan Amount</label>
                                 <div class="form-group__input-wrap">
                                     <input type="text" class="form-group__input" id="loanAmount" name="loanAmount" value="${loanAmount}"  
                                            oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
@@ -383,7 +385,7 @@
                                 </div>
                             </div>
                             <div class="form-group" >
-                                <label for="loanRate" class="form-group__label">Lãi suất vay</label>
+                                <label for="loanRate" class="form-group__label">Loan Rate</label>
                                 <div class="form-group__input-wrap" >
 
                                     <input class="form-group__input" step="0.01" type="number" id="loanRate" value="${loanRate}" name="loanRate" 
@@ -391,29 +393,29 @@
                                            pattern="^[a-zA-Z0-9_.]{6,20}$" 
                                            title="LoanRate phải là số dương, không chứa chữ cái, không kí tự đặc biệt ngoài[.,]"
                                            oninput="validateLoanRate()">
-                                    <span id="nameError"  class="sub-text-input">%/năm</span>
+                                    <span id="nameError"  class="sub-text-input">%/Year</span>
                                 </div>
 
                             </div>
                             <div class="form-group" >
-                                <label for="loanMonths" class="form-group__label">Kỳ hạn vay</label>
+                                <label for="loanMonths" class="form-group__label">loan term</label>
                                 <div class="form-group__input-wrap">
                                     <select style="width: 50%" class="form-group__input" name="loanMonths" id="numberSelect">
                                         <option  value="${loanMonths}" selected >${loanMonths}</option>
                                     </select>
-                                    <span class="sub-text-input">Tháng</span>
+                                    <span class="sub-text-input">Months</span>
                                 </div>
                             </div>
                             <div class="form-group" >
-                                <label class="form-group__label">Phương pháp tính:</label>
+                                <label class="form-group__label">Calculation method:</label>
                                 <div class="radio-group">
                                     <input type="radio" id="reducingBalance" name="calculationMethod" value="reducing" 
                                            ${calculationMethod == 'reducing' ? 'checked' : ''}>
-                                    <label for="reducingBalance" class="radio-label">Trả trên dư nợ giảm dần</label>
+                                    <label for="reducingBalance" class="radio-label">Pay on reducing balance</label>
 
                                     <input type="radio" id="initialBalance" name="calculationMethod" value="initial"
                                            ${calculationMethod == 'initial' ? 'checked' : ''}>
-                                    <label for="initialBalance" class="radio-label">Trả trên dư nợ ban đầu</label>
+                                    <label for="initialBalance" class="radio-label">Pay on original balance</label>
                                 </div>
 
                             </div>
@@ -424,15 +426,15 @@
 
 
                             <div class="form-group">
-                                <label for="disbursementDate" class="form-group__label">Ngày giải ngân</label>
+                                <label for="disbursementDate" class="form-group__label">Disbursement Date</label>
                                 <div class="form-group__input-wrap">
                                     <input type="date" class="form-group__input" id="disbursementDate" name="disbursementDate" 
                                            value="<%= today %>" required> <!-- Hiển thị ngày hiện tại -->
                                 </div>
                             </div>
-                            <button type="submit"  onclick="setMethod('post')" class="btn-submit">THỰC HIỆN</button>
+                            <button type="submit"  onclick="setMethod('post')" class="btn-submit">Executed</button>
 
-                            <button type="submit" id="save" onclick="setMethod('get')" class="btn-submit">Click xác nhận để tải thông tin xuống</button>
+                            <button type="submit" id="save" onclick="setMethod('get')" class="btn-submit">Click confirm to download information</button>
 
 
                         </form>
@@ -440,40 +442,41 @@
 
                         <table class="result-table">
                             <tr>
-                                <th>Số tiền vay</th>
-                                <td>${loanAmount} VNĐ</td>
+                                <th>Loan Amount</th>
+                                <td>${loanAmount} VND</td>
                             </tr>
                             <tr>
-                                <th>Lãi suất vay</th>
-                                <td>${loanRate} %/năm</td>
+                                <th>Loan Interest Rate</th>
+                                <td>${loanRate} %/year</td>
                             </tr>
                             <tr>
-                                <th>Kỳ hạn vay</th>
-                                <td>${loanMonths} Tháng</td>
+                                <th>Loan Term</th>
+                                <td>${loanMonths} Months</td>
                             </tr>
                             <tr>
-                                <th>Phương pháp tính</th>
-                                <td>${calculationMethod == 'reducing' ? 'Trả trên dư nợ giảm dần' : 'Trả trên dư nợ ban đầu'}</td>
+                                <th>Calculation Method</th>
+                                <td>${calculationMethod == 'reducing' ? 'Based on reducing balance' : 'Based on initial balance'}</td>
                             </tr>
                             <tr>
-                                <th>Tổng tiền lãi</th>
-                                <td>${loanResult} VNĐ</td>
+                                <th>Total Interest</th>
+                                <td>${loanResult} VND</td>
                             </tr>
                             <tr>
-                                <th>Tổng số tiền phải trả</th>
-                                <td style="color: red;">${total} VNĐ</td>
+                                <th>Total Amount Payable</th>
+                                <td style="color: red;">${total} VND</td>
                             </tr>
                             <tr>
-                                <th>Ngày giải ngân</th>
-                                <td>${today}</td> <!-- Hiển thị ngày hiện tại -->
+                                <th>Disbursement Date</th>
+                                <td>${today}</td> <!-- Displays the current date -->
                             </tr>
                         </table>
+
                     </div>
                     <form  action="export" method="get">
                         <input type="hidden" name="dateScheducle2" value="${dateScheducle2}">
                         <c:if test="${ms == 'Add sucesslly'}" >
 
-                            <button type="submit" class="btn-submit">Đồng ý tải xuống Excel</button>
+                            <button type="submit" class="btn-submit">Agree to download Excel</button>
                         </c:if>
 
                         <br/><!-- comment -->
@@ -486,87 +489,95 @@
                     <!-- Bảng hiển thị kết quả tổng -->
                     <c:if test="${not empty loanResult}">
 
-
-                        <!-- Bảng chi tiết từng tháng -->
-                        <h3>Chi tiết từng tháng</h3>
+                        <!-- Monthly Payment Details Table -->
+                        <h3>Monthly Payment Details</h3>
                         <table class="monthly-table">
                             <tr>
-                                <th>Tháng</th>
-                                <th>Ngày thanh toán</th>
-                                <th>Số gốc còn lại</th>
-                                <th>Tiền gốc</th>
-                                <th>Tiền lãi</th>
-                                <th>Tổng tiền phải trả</th>
+                                <th>Month</th>
+                                <th>Payment Date</th>
+                                <th>Remaining Principal</th>
+                                <th>Principal Payment</th>
+                                <th>Interest Payment</th>
+                                <th>Total Payment</th>
                             </tr>
                             <c:forEach var="payment" items="${monthlyPayments}">
                                 <tr>
                                     <td>${payment.month}</td>
                                     <td>${payment.paymentDate}</td>
-                                    <td>${payment.remainingPrincipal} VNĐ</td>
-                                    <td>${payment.principal} VNĐ</td>
-                                    <td>${payment.interest} VNĐ</td>
-                                    <td>${payment.totalPayment} VNĐ</td>
+                                    <td>${payment.remainingPrincipal} VND</td>
+                                    <td>${payment.principal} VND</td>
+                                    <td>${payment.interest} VND</td>
+                                    <td>${payment.totalPayment} VND</td>
                                 </tr>
-
                             </c:forEach>
                             <tr>
-                                <td style="color: red;"> Tổng tiền </td>
+                                <td style="color: red;">Total Amount</td>
                                 <td></td>
                                 <td></td>
-                                <td>${loanAmount} VNĐ</td>
-                                <td>${loanResult} VNĐ</td>
-                                <td>${total} VNĐ</td>
-
+                                <td>${loanAmount} VND</td>
+                                <td>${loanResult} VND</td>
+                                <td>${total} VND</td>
                             </tr>
                         </table>
                     </c:if>
-                    <div class="details-title">DIỄN GIẢI CHI TIẾT CÁCH TÍNH LÃI SUẤT VAY NGÂN HÀNG:</div>
+
+                    <div class="details-title">DETAILED EXPLANATION OF BANK LOAN INTEREST RATE CALCULATION:</div>
                     <br/>
-                    <div class="congthuc"> <div>
-                            <h3>Cách 1: Cách tính lãi suất vay theo số dư nợ gốc</h3> <br/>
-                            Với cách tính lãi suất vay theo số dư nợ gốc, tiền lãi của mỗi kỳ trả lãi sẽ bằng nhau trong toàn bộ quá trình vay và được tính theo số tiền gốc ban đầu.
-
-                            <br/> <div class="red">Tiền lãi hàng tháng = Dư nợ gốc x Lãi suất vay/Thời gian vay</div> <br/>
-
-                            Ví dụ:<br/>
-
-                            A vay 300 triệu đồng trong 12 tháng với mức lãi suất là 12%/năm.<br/>
-
-                            Số tiền gốc phải trả ngân hàng hàng tháng là: 300 triệu/12 tháng = 25.000.000 đồng<br/>
-
-                            Số lãi phải trả ngân hàng hàng tháng là: (300 triệu x 12%)/12 tháng = 3.000.000 đồng<br/>
-
-                            Số tiền phải trả hàng tháng là 28.000.000 đồng <br/>
-                        </div><br/><!-- comment -->
+                    <div class="congthuc"> 
                         <div>
-                            <h3> Cách 2: Cách tính lãi suất vay theo số dư nợ giảm dần</h3><br/>
+                            <h3>Method 1: Loan Interest Calculation Based on Initial Principal</h3> 
+                            <br/>
+                            With this method, the interest amount for each repayment period remains the same throughout the loan term and is calculated based on the original loan amount.
 
-                            Trường hợp tính lãi suất vay theo số dư nợ giảm dần thì số dư nợ dựa trên số tiền thực tế còn nợ sau khi đã trừ đi phần nợ gốc người vay đã trả trong những tháng trước đó. Số dư nợ giảm dần thì tiền lãi mà người vay phải trả cũng giảm dần.<br/>
-
-                            Công thức tính lãi suất theo dư nợ giảm dần cụ thể như sau:<br/>
-                            <div class="red"> - Tiền gốc hàng tháng = Số tiền vay/số tháng vay<br/>
-
-                                - Tiền lãi tháng đầu = Số tiền vay x Lãi suất vay theo tháng<br/>
-
-                                - Tiền lãi các tháng tiếp theo = Số tiền gốc còn lại x Lãi suất vay<br/></div>
-
+                            <br/> 
+                            <div class="red">Monthly Interest = Initial Principal x Loan Interest Rate / Loan Term</div> 
                             <br/>
 
-                            Ví dụ:<br/>
+                            Example:<br/>
 
-                            B vay 300 triệu đồng thời hạn trong 12 tháng với mức lãi suất 12%/năm<br/>
+                            A borrows 300 million VND for 12 months at an interest rate of 12% per year.<br/>
 
-                            Tiền gốc trả hàng tháng = 300triệu/12 = 25.000.000 đồng<br/>
+                            The monthly principal repayment: 300 million / 12 months = 25,000,000 VND<br/>
 
-                            Tiền lãi tháng đầu = (300 triệu x 12%)/12 = 3.000.000 đồng. <br/>Tổng số tiền phải trả tháng đầu là 25 triệu + 3 triệu = 28.000.000 đồng.<br/>
+                            The monthly interest repayment: (300 million x 12%) / 12 months = 3,000,000 VND<br/>
 
-                            Tiền lãi tháng thứ 2 = (300 triệu - 25 triệu) x 12%/12 = 2.750.000 đồng. Tổng tiền phải trả tháng thứ 2 là 25 triệu + 2.750.000 = 27.750.000 đồng.<br/>
+                            The total monthly payment is 28,000,000 VND. <br/>
+                        </div>
+                        <br/>
 
-                            Tiền lãi tháng thứ 3 = (275 triệu - 25 triệu) x 12%/12 = 2.500.000 đồng. Tổng tiền phải trả tháng thứ 3 là 25 triệu + 2,5 triệu = 27.500.000 đồng.<br/>
+                        <div>
+                            <h3>Method 2: Loan Interest Calculation Based on Reducing Balance</h3>
+                            <br/>
 
-                            Các tháng tiếp theo tính tương tự như vậy cho đến khi hết nợ.<br/>
+                            In this method, the loan balance is based on the actual remaining amount after deducting the principal payments made in previous months. As the loan balance decreases, the interest payment also decreases.<br/>
 
-                        </div></div>
+                            The interest calculation formula for the reducing balance method is as follows:<br/>
+                            <div class="red">
+                                - Monthly Principal = Loan Amount / Loan Term<br/>
+                                - First Month's Interest = Loan Amount x Monthly Interest Rate<br/>
+                                - Interest for Subsequent Months = Remaining Principal x Loan Interest Rate<br/>
+                            </div>
+                            <br/>
+
+                            Example:<br/>
+
+                            B borrows 300 million VND for 12 months at an interest rate of 12% per year.<br/>
+
+                            Monthly principal repayment = 300 million / 12 = 25,000,000 VND<br/>
+
+                            First month's interest = (300 million x 12%) / 12 = 3,000,000 VND.<br/> 
+                            Total payment for the first month = 25 million + 3 million = 28,000,000 VND.<br/>
+
+                            Second month's interest = (300 million - 25 million) x 12% / 12 = 2,750,000 VND.<br/> 
+                            Total payment for the second month = 25 million + 2,750,000 = 27,750,000 VND.<br/>
+
+                            Third month's interest = (275 million - 25 million) x 12% / 12 = 2,500,000 VND.<br/> 
+                            Total payment for the third month = 25 million + 2.5 million = 27,500,000 VND.<br/>
+
+                            The same calculation continues for the following months until the loan is fully repaid.<br/>
+                        </div>
+                    </div>
+
 
 
                 </div>
