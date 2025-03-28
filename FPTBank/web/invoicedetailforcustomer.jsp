@@ -96,6 +96,9 @@
                     <p class="total">Total: ${billdetail.getTotal()}</p>
                 </div>
             </form>
+            <div style="margin-top: 20px;">
+                <a href="invoiceshowcustomer" class="btn btn-secondary">Back</a>
+            </div>
         </div>
     </body>
 </html>

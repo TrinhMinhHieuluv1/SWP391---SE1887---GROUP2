@@ -89,7 +89,7 @@ public class CreateInvoice extends HttpServlet {
         UserDAO udao = new UserDAO();
         String error = "";
         if ("Add".equals(action)) {
-            if (customerid == null || customerid.isEmpty()) {
+            if (customerid == null || customerid.isEmpty() || customerid.equals("none")) {
                 error = "Please choose a customer. ";
             } else if (title == null || title.isEmpty()) {
                 error = "Please fill out title. ";
@@ -105,8 +105,8 @@ public class CreateInvoice extends HttpServlet {
                 int cid = Integer.parseInt(customerid);
                 DetailBill lastbill = dao.getLastDetailBill(cid, uid);
                 total_raw = total_raw.replace(",", "");
-                System.out.println(total_raw); 
-               double total = Double.parseDouble(total_raw);
+                System.out.println(total_raw);
+                double total = Double.parseDouble(total_raw);
                 BigDecimal totalamount = BigDecimal.valueOf(total);
                 java.sql.Date startdate = java.sql.Date.valueOf(startdate_raw);
                 java.sql.Date enddate = java.sql.Date.valueOf(enddate_raw);
@@ -133,16 +133,16 @@ public class CreateInvoice extends HttpServlet {
                     DetailBill bill = new DetailBill(title, description, startdate, enddate, totalamount,
                             cdao.getCustomerByID(cid),
                             udao.selectAnUserByConditions(uid, "", "", ""));
-                    
+
                     CompanyBillProvider company = bdao.getCompanyById("ProviderID", uid);
                     boolean mail = sendMailbillProvider.guiMailforCreatingBill(cdao.getCustomerByID(cid).getEmail(), bill.getBillID(), title, description, startdate, enddate, bill.getCreatedAt(), totalamount, company.getCompanyName(), cdao.getCustomerByID(cid));
-                    if(mail){
+                    if (mail) {
                         error = "Add bill successfully and your customer is receive this email about bill";
                         dao.add(bill);
-                    }else{
+                    } else {
                         error = "Add bill failed";
                     }
-                        
+
                 }
             }
         }
@@ -153,11 +153,11 @@ public class CreateInvoice extends HttpServlet {
     }
 
     public boolean isNumeric(String str) {
-    if (str == null || str.trim().isEmpty()) {
-        return false; // Chuỗi rỗng hoặc null
+        if (str == null || str.trim().isEmpty()) {
+            return false; // Chuỗi rỗng hoặc null
+        }
+        return str.matches("\\d{1,3}(?:,\\d{3})*"); // Cho phép số nguyên với dấu phẩy
     }
-    return str.matches("\\d+(,\\d+)?"); // Cho phép số nguyên hoặc số thập phân với dấu ,
-}
 
     /**
      * Handles the HTTP <code>POST</code> method.

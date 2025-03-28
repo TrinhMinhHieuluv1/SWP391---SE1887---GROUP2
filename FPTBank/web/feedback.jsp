@@ -153,7 +153,7 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-           
+
             <!-- scroll progress end -->
 
             <!-- back to top -->
@@ -162,110 +162,130 @@
             <%@ include file="header.jsp"%>
             <div class="content">
                 <h2 style="color: green; text-align: center;">Your Feedback</h2>
-            <!-- top panel end -->
-            <a href="contact"><button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 260px; margin-bottom: 10px;">ADD Feedback +</button></a>
-            <form action="myfeedback" method="get">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <label for="dateInput" style="white-space: nowrap; font-weight: bold; margin-left: 200px;">From:</label>
-                    <input type="date" class="form-control" name="date_1" placeholder="Date">
-                    <label for="dateInput" style="white-space: nowrap; font-weight: bold; margin-left: 30px;">To:</label>
-                    <input type="date" class="form-control" name="date_2" placeholder="Date">
-                    <select class="form-control" id="statusFilter" name="status" style="margin-left: 30px;">
-                        <option value="">-- Select Status --</option>
-                        <option value="true" ${param.status == 'true' ? 'selected' :''}>Responsed</option>
-                        <option value="false" ${param.status == 'false' ? 'selected' :''}>Not Responsed</option>
-                    </select>
-                    <input class="form-control" id="inputFullName" name="search" type="text" style="margin-left: 30px; " placeholder="Searching">
-                    <label for="dateInput" style="white-space: nowrap; font-weight: bold;">Number in page:</label>
-                    <select class="form-control" id="statusFilter2" name="pagesize">
-                        <c:forEach var="num" items="${requestScope.listint}">
-                            <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
-                        </c:forEach>
-                    </select>
-
-                    <button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 30px;">Filter</button>
-                    <br>
-                </div>
-                <% if(request.getAttribute("error")!=null)  {%>
-                <a style="color:red; font-style: italic; margin-left: 18%;"><%out.println(request.getAttribute("error"));%></a>
-                <%}%>
-                <% if(request.getAttribute("error2")!=null)  {%>
-                <a style="color:red; font-style: italic; margin-left: 18%;"><%out.println(request.getAttribute("error2"));%></a>
-                <%}%>
-            </form>
-
-
-
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>No.Feedback</th>
-                        <th>Message</th>
-                        <th>Status</th>
-                        <th>StarsRating</th>
-                        <th>CreatedAt</th>
-                        <th colspan="2">Action</th>
-                    </tr>
-                </thead>
-                <tbody>        
-                    <c:set var="count" value="0" />
-                    <c:forEach items="${requestScope.listfeedback}" var="feedback" varStatus="loop">
-
-                        <c:set var="count" value="${count + 1}" />
-                        <tr>
-                            <td>${count}</td> 
-                            <td>${feedback.message}</td>
-                            <td>${feedback.response == null ? "Not responsed":"Responsed"}</td>
-                            <td><c:forEach begin="1" end="${feedback.starScore}">
-                                    <i class="fa fa-star" style="color: gold;"></i>
+                <!-- top panel end -->
+                <a href="contact"><button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 260px; margin-bottom: 10px;">ADD Feedback +</button></a>
+                <form action="myfeedback" method="get">
+                    <c:if test="${listsize == 0}">
+                        <div style="
+                             width: 80%;
+                             padding: 20px;
+                             font-weight: bold;
+                             font-size: 20px;
+                             color: #003d33;
+                             background-color: #f0faf4;
+                             border-radius: 12px;
+                             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+                             margin: 0 auto;
+                             text-align: center;
+                             margin-bottom: 50px;
+                             ">
+                            You don't have any feedback.<br>
+                            Please update <span style="color: red;">Your Feedback</span> or provide <span style="color: red;">New Comments</span>.
+                        </div>
+                    </c:if>
+                    <c:if test="${listsize != 0}">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label for="dateInput" style="white-space: nowrap; font-weight: bold; margin-left: 200px;">From:</label>
+                            <input type="date" class="form-control" name="date_1" placeholder="Date">
+                            <label for="dateInput" style="white-space: nowrap; font-weight: bold; margin-left: 30px;">To:</label>
+                            <input type="date" class="form-control" name="date_2" placeholder="Date">
+                            <select class="form-control" id="statusFilter" name="status" style="margin-left: 30px;">
+                                <option value="">-- Select Status --</option>
+                                <option value="true" ${param.status == 'true' ? 'selected' :''}>Responsed</option>
+                                <option value="false" ${param.status == 'false' ? 'selected' :''}>Not Responsed</option>
+                            </select>
+                            <input class="form-control" id="inputFullName" name="search" type="text" style="margin-left: 30px; " placeholder="Searching">
+                            <label for="dateInput" style="white-space: nowrap; font-weight: bold;">Number in page:</label>
+                            <select class="form-control" id="statusFilter2" name="pagesize">
+                                <c:forEach var="num" items="${requestScope.listint}">
+                                    <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
                                 </c:forEach>
-                            </td>
-                            <td>${feedback.createdAt}</td>
-                            <td><a href="reclaim?fid=${feedback.feedbackID}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}"><button style="color: white; background-color: green; border-radius: 5px; padding: 5px 5px;">Reclaim</button></a></td>
-                            <td><a href="detailfeedback?fid=${feedback.feedbackID}"><button style="color: white; background-color: green; border-radius: 5px; padding: 5px 5px;">Detail</button></a></td>
-                        </tr>
+                            </select>
 
-                    </c:forEach>
+                            <button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 30px;">Filter</button>
+                            <br>
+                        </div>
+                        <% if(request.getAttribute("error")!=null)  {%>
+                        <a style="color:red; font-style: italic; margin-left: 18%;"><%out.println(request.getAttribute("error"));%></a>
+                        <%}%>
+                        <% if(request.getAttribute("error2")!=null)  {%>
+                        <a style="color:red; font-style: italic; margin-left: 18%;"><%out.println(request.getAttribute("error2"));%></a>
+                        <%}%>
+                    </form>
 
-                </tbody>
-            </table>
-            <div class="pagination">
-                <c:if test="${currentPage > 1}">
-                    <a href="myfeedback?page=${currentPage - 1}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" class="prev">Previous</a>
-                </c:if>
 
-                <c:forEach var="i" begin="1" end="${totalPages}">
-                    <a href="myfeedback?page=${i}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" 
-                       class="${i == currentPage ? 'active' : ''}">${i}</a>
-                </c:forEach>
 
-                <c:if test="${currentPage < totalPages}">
-                    <a href="myfeedback?page=${currentPage + 1}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" class="next">Next</a>
-                </c:if>
-            </div>
-            </div>
-                    <%@ include file="footer.jsp"%>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>No.Feedback</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>StarsRating</th>
+                                <th>CreatedAt</th>
+                                <th colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>        
+                            <c:set var="count" value="0" />
+                            <c:forEach items="${requestScope.listfeedback}" var="feedback" varStatus="loop">
+
+                                <c:set var="count" value="${count + 1}" />
+                                <tr>
+                                    <td>${count}</td> 
+                                    <td>${feedback.message}</td>
+                                    <td>${feedback.response == null ? "Not responsed":"Responsed"}</td>
+                                    <td><c:forEach begin="1" end="${feedback.starScore}">
+                                            <i class="fa fa-star" style="color: gold;"></i>
+                                        </c:forEach>
+                                    </td>
+                                    <td>${feedback.createdAt}</td>
+                                    <td><a href="reclaim?fid=${feedback.feedbackID}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}"><button style="color: white; background-color: green; border-radius: 5px; padding: 5px 5px;">Reclaim</button></a></td>
+                                    <td><a href="detailfeedback?fid=${feedback.feedbackID}"><button style="color: white; background-color: green; border-radius: 5px; padding: 5px 5px;">Detail</button></a></td>
+                                </tr>
+
+                            </c:forEach>
+
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <c:if test="${currentPage > 1}">
+                            <a href="myfeedback?page=${currentPage - 1}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" class="prev">Previous</a>
+                        </c:if>
+
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <a href="myfeedback?page=${i}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" 
+                               class="${i == currentPage ? 'active' : ''}">${i}</a>
+                        </c:forEach>
+
+                        <c:if test="${currentPage < totalPages}">
+                            <a href="myfeedback?page=${currentPage + 1}&date_1=${param.date_1}&date_2=${param.date_2}&search=${param.search}&status=${param.status}&pagesize=${param.pagesize}" class="next">Next</a>
+                        </c:if>
                     </div>
-            <!-- wrapper end -->
-                
+                </div>
+            </c:if>
+            <%@ include file="footer.jsp"%>
+        </div>
+        <!-- wrapper end -->
 
-            <!-- jquery js -->
-            <script src="js/plugins/jquery.min.js"></script>
 
-            <!-- swiper css -->
-            <script src="js/plugins/swiper.min.js"></script>
-            <!-- gsap js -->
-            <script src="js/plugins/gsap.min.js"></script>
-            <!-- scroll smoother -->
-            <script src="js/plugins/ScrollSmoother.min.js"></script>
-            <!-- scroll trigger js -->
-            <script src="js/plugins/ScrollTrigger.min.js"></script>
-            <!-- scroll to js -->
-            <script src="js/plugins/ScrollTo.min.js"></script>
-            <!-- magnific -->
-            <script src="js/plugins/magnific-popup.js"></script>
-            <!-- plax js -->
-            <script src="js/main.js"></script>
+        <!-- jquery js -->
+        <script src="js/plugins/jquery.min.js"></script>
+
+        <!-- swiper css -->
+        <script src="js/plugins/swiper.min.js"></script>
+        <!-- gsap js -->
+        <script src="js/plugins/gsap.min.js"></script>
+        <!-- scroll smoother -->
+        <script src="js/plugins/ScrollSmoother.min.js"></script>
+        <!-- scroll trigger js -->
+        <script src="js/plugins/ScrollTrigger.min.js"></script>
+        <!-- scroll to js -->
+        <script src="js/plugins/ScrollTo.min.js"></script>
+        <!-- magnific -->
+        <script src="js/plugins/magnific-popup.js"></script>
+        <!-- plax js -->
+        <script src="js/main.js"></script>
 
     </body>
 </html>

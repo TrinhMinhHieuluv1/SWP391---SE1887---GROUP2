@@ -6,6 +6,8 @@
 package controller.contract.manager;
 
 import dal.ContractDAO;
+import dal.CustomerDAO;
+import dal.TransactionHistoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +16,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import model.Contract;
+import model.Customer;
+import model.TransactionHistory;
 
 /**
  *
@@ -83,8 +89,36 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
     ContractDAO contractDAO = new ContractDAO();
     boolean success = contractDAO.updateStatus(contractID, statusID);
-    
+    Contract contract = contractDAO.selectAContractByID(contractID);
+    String type  = contract.getType();
     if (success) {
+        if(contract.getStatusID() == 3){
+            if(type.contains("Loan")){
+                int cid = contract.getCustomer().getCustomerId();
+                CustomerDAO dao = new CustomerDAO();
+                TransactionHistoryDAO tdao = new TransactionHistoryDAO();
+                Customer customer = dao.selectCustomerByConditions(cid, "", "", "");
+                BigDecimal amount  = contract.getAmount();
+                BigDecimal balancebefore = customer.getBalance();
+                BigDecimal balanceafter = balancebefore.add(amount);
+                customer.setBalance(balanceafter);
+                TransactionHistory history = new TransactionHistory(1, customer, customer, amount, balancebefore, balanceafter, type, contract.getDescription());
+                dao.updateACustomer(customer);
+                tdao.addTransaction(history);
+            }else if(type.contains("Saving")){
+                int cid = contract.getCustomer().getCustomerId();
+                CustomerDAO dao = new CustomerDAO();
+                TransactionHistoryDAO tdao = new TransactionHistoryDAO();
+                Customer customer = dao.selectCustomerByConditions(cid, "", "", "");
+                BigDecimal amount  = contract.getAmount();
+                BigDecimal balancebefore = customer.getBalance();
+                BigDecimal balanceafter = balancebefore.subtract(amount);
+                customer.setBalance(balanceafter);
+                TransactionHistory history = new TransactionHistory(1, customer, customer, amount, balancebefore, balanceafter, type, contract.getDescription());
+                dao.updateACustomer(customer);
+                tdao.addTransaction(history);
+            }
+        }
         session.setAttribute("message", "Update successfully!");
         response.sendRedirect("contract-management-for-manager"); // Chuyển hướng sau khi cập nhật thành công
     } else {

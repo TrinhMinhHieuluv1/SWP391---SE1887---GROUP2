@@ -72,9 +72,9 @@
                             <th>StartDate</th>
                             <th>EndDate</th>
                             <th>StatusOfBill</th>
-                            <c:if test="${billdetail.getPaymentDate() != null}">
-                            <th>PaymentDate</th>
-                            </c:if>
+                                <c:if test="${billdetail.getPaymentDate() != null}">
+                                <th>PaymentDate</th>
+                                </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,16 +86,19 @@
                             <td>${billdetail.getEndDate()}</td>
                             <td>${billdetail.getStatusOfBill() == 1 ? "UnPaid" : "Paid"}</td>
                             <c:if test="${billdetail.getPaymentDate() != null}">
-                            <td>${billdetail.getPaymentDate()}</td>
+                                <td>${billdetail.getPaymentDate()}</td>
                             </c:if>
                         </tr>
-                        
+
                     </tbody>
                 </table>
                 <div class="total-section">
                     <p class="total">Total: ${billdetail.getTotal()}</p>
                 </div>
             </form>
+            <div style="margin-top: 20px;">
+                <a href="invoice" class="btn btn-secondary">Back</a>
+            </div>
         </div>
     </body>
 </html>

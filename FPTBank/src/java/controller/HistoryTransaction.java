@@ -117,6 +117,7 @@ public class HistoryTransaction extends HttpServlet {
         request.setAttribute("date1", date_1);
         request.setAttribute("date2", date_2);
         request.setAttribute("listTr", list);
+        request.setAttribute("listsize", list.size());
         request.getRequestDispatcher("transactionhistory.jsp").forward(request, response);
     }
 

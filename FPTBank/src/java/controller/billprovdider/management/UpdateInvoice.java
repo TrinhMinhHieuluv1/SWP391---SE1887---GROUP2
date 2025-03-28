@@ -92,7 +92,10 @@ public class UpdateInvoice extends HttpServlet {
                 error = "Please fill out the end date";
             } else if (total_raw == null || total_raw.isEmpty()) {
                 error = "Please fill out the total or only number";
-            } else if (error.length() == 0) {
+            }else if (isNumeric(total_raw) == false) {
+                error = "Please fill out total or only number.";
+            }
+            else if (error.length() == 0) {
                 DetailBill lastbill = dao.getLastDetailBill(bill.getCustomer().getCustomerId(), uid);
                 total_raw = total_raw.replace(",", "");
                 double total_raw2 = Double.parseDouble(total_raw);
@@ -129,7 +132,12 @@ public class UpdateInvoice extends HttpServlet {
         request.getRequestDispatcher("updateinvoice.jsp").forward(request, response);
 
     }
-
+    public boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false; // Chuỗi rỗng hoặc null
+        }
+        return str.matches("\\d{1,3}(?:,\\d{3})*"); // Cho phép số nguyên với dấu phẩy
+    }
    
 
     /**
