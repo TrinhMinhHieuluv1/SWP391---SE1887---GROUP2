@@ -27,6 +27,8 @@ import model.CompanyBillProvider;
 import model.Customer;
 import model.DetailBill;
 import Tools.HashString;
+import dal.TransactionHistoryDAO;
+import model.TransactionHistory;
 /**
  *
  * @author ACER
@@ -48,6 +50,11 @@ public class vnpayRefund extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String billID_raw = request.getParameter("billID");
+            String amount_raw = request.getParameter("total");
+            double amount = 0;
+            if(amount_raw != null && !amount_raw.isEmpty()){
+                amount = Double.parseDouble(amount_raw);
+            }
             int billID = 0;
             if (billID_raw != null && !billID_raw.isEmpty()) {
                 billID = Integer.parseInt(billID_raw);
@@ -55,6 +62,7 @@ public class vnpayRefund extends HttpServlet {
             String error = "";
             int uid = (int) session.getAttribute("uid");
             CustomerDAO cdao = new CustomerDAO();
+            TransactionHistoryDAO tdao = new TransactionHistoryDAO();
             Customer customer = cdao.selectCustomerByConditions(uid, "", "", "");
             DetailBillDAO dao = new DetailBillDAO();
             DetailBill bill = dao.getDetailBillByID("BillID", billID);
@@ -64,10 +72,16 @@ public class vnpayRefund extends HttpServlet {
             CompanyBillProviderDAO cdaoo = new CompanyBillProviderDAO();
             CompanyBillProvider company = cdaoo.getCompanyById("ProviderID", bill.getProvider().getUserID());
             if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                BigDecimal total = BigDecimal.valueOf(amount);
+                BigDecimal balancebefore = customer.getBalance();
+                BigDecimal balanceafter = balancebefore.subtract(total);
+                customer.setBalance(balanceafter);
                 bill.setStatusOfBill(0);
                 bill.setPaymentDate(paymentTimestamp);
+                TransactionHistory history = new TransactionHistory(1, customer, customer, total, balancebefore, balanceafter, "Bill payment through VNPay", "Bill payment through VNPay");
+                cdao.updateACustomer(customer);
+                tdao.addTransaction(history);
                 boolean mail = sendMailbillProvider.guiMailforPaying(customer.getEmail(), billID, bill.getTitle(), bill.getDescription(), bill.getStartDate(), bill.getEndDate(), bill.getCreatedAt(), bill.getTotal(), company.getCompanyName(), customer, paymentTimestamp);
-                
                 transSuccess = true;
             } else {
                 bill.setStatusOfBill(1);

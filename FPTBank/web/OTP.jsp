@@ -374,18 +374,18 @@
                     <input name="note" type="hidden" value="${note}"><input name="receiverID" type="hidden" value="${receiverID}">
                     <input name="transferor" type="hidden" value="${transferor}">
                     <div id="otpSection" name="otpcontainer" class="mt-4">
-                        <h4 class="text-center text-primary">Enter OTP</h4>
-                        <p class="text-center">A 6-digit OTP has been sent to your phone</p>
+                        <h4 class="text-center text-primary" style="text-align: center;">Enter OTP</h4>
+                        <p class="text-center" style="text-align: center;">A 6-digit OTP has been sent to your phone</p>
 
-                        <div class="border p-3 rounded">
-                            <input type="text" name="otp" class="form-control text-center" maxlength="6" pattern="\d{6}" required placeholder="Enter OTP">
+                        <div class="border p-3 rounded" >
+                            <input type="password" name="otp" style="width: 300px; height: 42px;" class="form-control text-center" maxlength="6" pattern="\d{6}" required placeholder="Enter OTP">
                         </div>
                         <% if(request.getAttribute("error")!=null)  {%>
                         <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error"));%></a>
                         <%}%>
                         <div class="d-flex mt-4">
-                            <button type="button" class="btn btn-outline-secondary w-50" onclick="showConfirmForm()">Back</button>
-                            <button type="submit" name="action" value="verify" class="btn btn-success w-50">Verify</button>
+                           
+                            <button type="submit" name="action" value="verify" style="margin-left: 20px; color: white; width: 90%;" class="btn btn-success w-50">Verify</button>
                         </div>
                     </div>
                 </form>

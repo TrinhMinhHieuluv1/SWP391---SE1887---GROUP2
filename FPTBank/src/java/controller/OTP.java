@@ -83,7 +83,10 @@ public class OTP extends HttpServlet {
         String action = request.getParameter("action");
         String OTP_raw = request.getParameter("otp"); // Lấy OTP mà người dùng nhập từ form
         String error = "";
-
+        Integer solannhap = (Integer) userSession.getAttribute("solannhap");
+        if (solannhap == null) {
+            solannhap = 0; // Initialize if this is the user's first attempt
+        }
         CustomerDAO dao = new CustomerDAO();
         TransactionHistoryDAO tdao = new TransactionHistoryDAO();
         Customer customer = dao.selectCustomerByConditions(uid, "", "", "");
@@ -110,10 +113,23 @@ public class OTP extends HttpServlet {
             } else {
                 // Nếu người dùng nhấn Verify
                 if ("verify".equals(action)) {
+                    // Kiểm tra nếu đã vượt quá 3 lần thử
+                    if (solannhap >= 3) {
+                        error = "You have exceeded the maximum number of OTP attempts.";
+                        request.setAttribute("message2", error);
+                        request.getRequestDispatcher("transaction").forward(request, response);
+                        solannhap = 0; // Reset the attempt count after 3 attempts
+                        userSession.setAttribute("solannhap", solannhap); // Save the reset count
+                        return;
+                    }
                     if (OTP_raw == null || OTP_raw.isEmpty()) {
                         error = "Please fill out the OTP";
+                        solannhap++;
+
                     } else if (!sessionOTP.equals(OTP_raw)) {
                         error = "OTP incorrect";
+                        solannhap++;
+
                     } else {
                         try {
                             String amountt = amount.replace(",", "");
@@ -139,15 +155,17 @@ public class OTP extends HttpServlet {
 
                                 error = "Transfer money successfully";
 
-                                
                                 userSession.removeAttribute("OTP");
-                                request.setAttribute("error", error);
+                                request.setAttribute("message", error);
+                                request.getRequestDispatcher("transaction.jsp").forward(request, response);
+                                return;
                             }
                         } catch (NumberFormatException e) {
                             error = "Invalid amount format";
-                            request.setAttribute("error2", error);
+                            request.setAttribute("error", error);
                         }
                     }
+                     userSession.setAttribute("solannhap", solannhap);
                 }
             }
         } catch (NumberFormatException e) {
@@ -160,9 +178,9 @@ public class OTP extends HttpServlet {
         request.setAttribute("note", note);
         request.setAttribute("receiverID", receiveID);
         request.setAttribute("transferor", transferID);
-        
-        
-        request.getRequestDispatcher("transaction.jsp").forward(request, response);
+        request.setAttribute("error", error);
+
+        request.getRequestDispatcher("OTP.jsp").forward(request, response);
 
     }
 

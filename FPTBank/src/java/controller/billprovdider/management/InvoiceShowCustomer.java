@@ -114,6 +114,7 @@ public class InvoiceShowCustomer extends HttpServlet {
         request.setAttribute("date2", date_2);
         request.setAttribute("listB", list);
         request.setAttribute("listB", list);
+        request.setAttribute("listsize", list.size());
         request.getRequestDispatcher("mybill.jsp").forward(request, response);
     } 
 

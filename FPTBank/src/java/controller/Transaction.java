@@ -96,7 +96,7 @@ public class Transaction extends HttpServlet {
                 error = "Account not exist in system";
             } else if (number_raw.equals(customer.getPhone())) {
                 error = "Don't fill out your phone";
-            } else{
+            }else{
                 String amountt = amount_raw.replace(",", "");
                 double amount = Double.parseDouble(amountt);
                 BigDecimal amounnt = BigDecimal.valueOf(amount);
@@ -126,7 +126,7 @@ public class Transaction extends HttpServlet {
         }
 
     }
-
+  
     /**
      * Handles the HTTP <code>POST</code> method.
      *

@@ -140,7 +140,7 @@ public class Login extends HttpServlet {
                             response.sendRedirect("/timibank/insurance/manageInsurance.jsp");
                             break;
                         case 6: 
-                            response.sendRedirect("/timibank/bill_provider/createinvoice");
+                            response.sendRedirect("/timibank/bill_provider/invoice");
                             break;
                     }
                 } else {

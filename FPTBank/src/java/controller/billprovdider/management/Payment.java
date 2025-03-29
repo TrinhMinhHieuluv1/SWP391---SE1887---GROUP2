@@ -99,13 +99,13 @@ public class Payment extends HttpServlet {
         String providerID_raw = request.getParameter("providerID");
         String total_raw = request.getParameter("total");
         String paymentMethod = request.getParameter("paymentMethod");
-        if (total_raw == null || total_raw.isEmpty()) {
+        if (total_raw == null || total_raw.trim().isEmpty()) {
             total_raw = "0";
         }
-        if (billID_raw == null || billID_raw.isEmpty()) {
+        if (billID_raw == null || billID_raw.trim().isEmpty()) {
             billID_raw = "0";
         }
-        if (providerID_raw == null || providerID_raw.isEmpty()) {
+        if (providerID_raw == null || providerID_raw.trim().isEmpty()) {
             providerID_raw = "0";
         }
         double totall = Double.parseDouble(total_raw);
@@ -167,7 +167,7 @@ public class Payment extends HttpServlet {
             } else {
                 vnp_Params.put("vnp_Locale", "vn");
             }
-            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl + "?total=" + bill.getTotal() + "&billID=" + bill.getBillID() + "&providerID=" + bill.getProvider().getUserID());
+            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl + "?total=" + bill.getTotal() + "&billID=" + bill.getBillID() + "&providerID=" + bill.getProvider().getUserID()+"&total" + amount);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));

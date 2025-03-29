@@ -126,6 +126,9 @@
                                                  <c:if test="${sessionScope.account.getRoleID()==3}">
                                                  <li><a href="/timibank/manager/manageAsset.jsp">Management</a></li>
                                                  </c:if>
+                                                 <c:if test="${sessionScope.account.getRoleID()==6}">
+                                                 <li><a href="/timibank/bill_provider/invoice">Management</a></li>
+                                                 </c:if>
 
 
                                              <li><a href="/timibank/logout">Sign out</a></li>
