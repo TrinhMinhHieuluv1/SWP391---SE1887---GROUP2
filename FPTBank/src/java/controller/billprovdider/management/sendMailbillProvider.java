@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.sql.Date;
 import model.Customer;
+import java.text.DecimalFormat;
 
 public class sendMailbillProvider {
 
@@ -44,6 +45,8 @@ public class sendMailbillProvider {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            DecimalFormat df = new DecimalFormat("#,###");
+            String formattedTotal = df.format(total);
 
             String subject = "Thank you for paying one bill from " + CompanyName;
             String emailContent = "<!DOCTYPE html>\n"
@@ -130,7 +133,7 @@ public class sendMailbillProvider {
                     + "                    </tbody>\n"
                     + "                </table>\n"
                     + "                <div class=\"total-section\">\n"
-                    + "                    <p class=\"total\">Total: " + total + "</p>\n"
+                    + "                    <p class=\"total\">Total: " + formattedTotal + " VND</p>\n"
                     + "                </div>\n"
                     + "            </form>\n"
                     + "        </div>\n"
@@ -173,6 +176,8 @@ public class sendMailbillProvider {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            DecimalFormat df = new DecimalFormat("#,###");
+            String formattedTotal = df.format(total);
 
             String subject = "You are recieve a bill which is need to pay from " + CompanyName;
             String emailContent = "<!DOCTYPE html>\n"
@@ -257,7 +262,7 @@ public class sendMailbillProvider {
                     + "                    </tbody>\n"
                     + "                </table>\n"
                     + "                <div class=\"total-section\">\n"
-                    + "                    <p class=\"total\">Total: " + total + "</p>\n"
+                    + "                    <p class=\"total\">Total: " + formattedTotal + " VND</p>\n"
                     + "                </div>\n"
                     + "            </form>\n"
                     + "        </div>\n"
@@ -301,7 +306,7 @@ public class sendMailbillProvider {
             MimeMessage message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 
-            String subject = "Receive OTP From Timibank " ;
+            String subject = "Receive OTP From Timibank ";
             String emailContent = "<!DOCTYPE html>\n"
                     + "<html>\n"
                     + "    <head>\n"
@@ -347,7 +352,7 @@ public class sendMailbillProvider {
                     + "        </style>\n"
                     + "    </head>\n"
                     + "    <body>\n"
-                    + "    Your OTP is "+OTP+"\n"
+                    + "    Your OTP is " + OTP + "\n"
                     + "    </body>\n"
                     + "</html>";
 
