@@ -495,6 +495,14 @@
                             <div class="menu-title">Dashboard</div>
                         </a>
                     </li>
+                     <li>
+                        <a href="/timibank/home">
+                            <div class="parent-icon">
+                                <span class="material-symbols-outlined">arrow_back</span>
+                            </div>
+                            <div class="menu-title">Back to home</div>
+                        </a>
+                    </li>
                     <!--                <li>
                                       <a href="javascript:;" class="has-arrow">
                                         <div class="parent-icon"><span class="material-symbols-outlined">apps</span>
