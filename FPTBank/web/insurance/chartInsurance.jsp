@@ -534,7 +534,7 @@
 
                             <li> <a href="insurancedetail"><span class="material-symbols-outlined">arrow_right</span>Provider Information</a>
                             </li>
-                            <li> <a href="showinsurance"><span class="material-symbols-outlined">arrow_right</span>Manage Insurance</a>
+                            <li> <a href="manageinsurance"><span class="material-symbols-outlined">arrow_right</span>Manage Insurance</a>
                             </li>
 
                         </ul>
@@ -676,7 +676,7 @@
 
                                         <input type="hidden" name="image" id="imageInput">
                                         <input type="hidden" name="statusFilterAmount" id="statusFilterAmountInput" value="<%= request.getParameter("statusFilterAmount") != null ? request.getParameter("statusFilterAmount") : "BothChartAmount" %>">
-                                        <button class="btn btn-pending" type="submit" onclick="convertCanvasToImage()">Tải PDF</button>
+                                        <button class="btn btn-pending" type="submit" onclick="convertCanvasToImage()">DownLoad PDF</button>
 
                                     </div>
                                     <div class="btn-group position-static">
@@ -748,7 +748,7 @@
                                         <input type="hidden" name="imageCover" id="imageInputCover">
                                         <input type="hidden" name="statusFilterCover" id="statusFilterCoverInput" value="<%= request.getParameter("statusFilterCover") != null ? request.getParameter("statusFilterCover") : "BothChartCover" %>">
 
-                                        <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageCover()">Tải PDF</button>
+                                        <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageCover()">DownLoad PDF</button>
 
                                     </div>
                                     <div class="btn-group position-static">
@@ -813,7 +813,7 @@
                                         <input type="hidden" name="imageFee" id="imageInputFee">
                                         <input type="hidden" name="statusFilterFee" id="statusFilterFeeInput" value="<%= request.getParameter("statusFilterFee") != null ? request.getParameter("statusFilterFee") : "BothChartFee" %>">
 
-                                        <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageFee()">Tải PDF</button>
+                                        <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageFee()">DownLoad PDF</button>
 
                                     </div>
                                     <div class="btn-group position-static">
@@ -845,7 +845,7 @@
 
                                 <div >
                                     <input type="hidden" name="imageType" id="imageInputType">
-                                    <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageType()">Tải PDF</button>
+                                    <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageType()">DownLoad PDF</button>
 
                                 </div>
                                 <div class="card-header bg-transparent py-3 d-flex align-items-center">
@@ -878,7 +878,7 @@
                             <form id="pdfForm" action="ChartToPDFServletType1" method="post">
                                 <div >
                                     <input type="hidden" name="imageType1" id="imageInputType1">
-                                    <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageType1()">Tải PDF</button>
+                                    <button class="btn btn-pending" type="submit" onclick="convertCanvasToImageType1()">DownLoad PDF</button>
 
                                 </div>
                                 <div class="card-header bg-transparent py-3 d-flex align-items-center">

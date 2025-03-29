@@ -617,7 +617,7 @@
 
                             <li> <a href="insurancedetail"><span class="material-symbols-outlined">arrow_right</span>Provider Information</a>
                             </li>
-                            <li> <a href="showinsurance"><span class="material-symbols-outlined">arrow_right</span>Manage Insurance</a>
+                            <li> <a href="manageinsurance"><span class="material-symbols-outlined">arrow_right</span>Manage Insurance</a>
                             </li>
 
                         </ul>

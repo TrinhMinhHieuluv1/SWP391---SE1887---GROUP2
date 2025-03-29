@@ -131,7 +131,7 @@ public class Login extends HttpServlet {
                             response.sendRedirect("/timibank/admin/home");
                             break;
                         case 2:
-                            response.sendRedirect("/timibank/seller");
+                            response.sendRedirect("/timibank/seller/faq-management");
                             break;
                         case 3:
                             response.sendRedirect("/timibank/manager/manageAsset.jsp");

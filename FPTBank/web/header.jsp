@@ -69,7 +69,7 @@
                                          <li><a href="/timibank/create-saving-request">Saving</a><li>
                                      </ul>
                                  </li>
-                                 <li>
+                                 <li >
                                      <a href="about">About</a>
                                  </li>
                                  <li>
@@ -121,7 +121,7 @@
                                                  <li><a href="/timibank/admin/home.jsp">Management</a></li>
                                                  </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==2}">
-                                                 <li><a href="/timibank/seller/home.jsp">Management</a></li>
+                                                 <li><a href="/timibank/seller/faq-management">Management</a></li>
                                                  </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==3}">
                                                  <li><a href="/timibank/manager/manageAsset.jsp">Management</a></li>

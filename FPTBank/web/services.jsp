@@ -50,7 +50,7 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-          
+
             <!-- scroll progress end -->
 
             <!-- back to top -->
@@ -68,8 +68,7 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-xl-8">
                                 <div class="mil-banner-text mil-text-center">
-
-                                    <h2 >Dịch vụ TIMIBANK mang lại </h2>
+                                    <h2>TIMIBANK Services</h2>
                                     <ul class="mil-breadcrumbs mil-center">
                                         <li><a href="index.jsp">Home</a></li>
                                         <li><a href="services.jsp">Services</a></li>
@@ -86,31 +85,25 @@
                     <div class="container">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-xl-5 mil-mb-80">
-                                <h2 class="mil-mb-30 mil-up">Gửi tiền tiết kiệm</h2>
+                                <h2 class="mil-mb-30 mil-up">Savings Deposit</h2>
                                 <div class="about-introduction__content about-introduction__content--current">
                                     <p class="about-introduction__desc">
-                                        Gửi tiết kiệm ngân hàng là một hình thức đầu tư an toàn, trong đó khách hàng gửi một khoản tiền vào ngân hàng trong một khoảng thời gian nhất định để nhận lãi suất. Đây là một trong những cách phổ biến nhất để bảo vệ và gia tăng giá trị tài sản một cách ổn định, đặc biệt là đối với những người không muốn chịu rủi ro cao từ các kênh đầu tư khác như chứng khoán hay bất động sản.                                        </p>
+                                        Bank savings deposits are a safe investment method, where customers deposit a certain amount of money in the bank for a specified period to earn interest. This is one of the most popular ways to protect and grow assets steadily, especially for those who do not want to take high risks in other investment channels such as stocks or real estate.
+                                    </p>
                                     <ul class="about-introduction__more send-money__more">
-                                        <li class="about-introduction__more-item">
-                                            An toàn cao: Tiền gửi được bảo hiểm theo quy định của Ngân hàng Nhà nước.    </li>
-                                        <li class="about-introduction__more-item">
-                                            Lãi suất ổn định: Giúp bảo toàn và gia tăng giá trị tài sản theo thời gian.  </li>
-                                        <li class="about-introduction__more-item">
-                                            Tính thanh khoản: Dễ dàng rút tiền khi cần thiết, đặc biệt là với tiết kiệm không kỳ hạn. </li>
-                                        <li class="about-introduction__more-item">
-                                            Lựa chọn linh hoạt: Có nhiều kỳ hạn và hình thức gửi phù hợp với từng nhu cầu. </li>
+                                        <li class="about-introduction__more-item">High security: Deposits are insured according to State Bank regulations.</li>
+                                        <li class="about-introduction__more-item">Stable interest rates: Help preserve and grow assets over time.</li>
+                                        <li class="about-introduction__more-item">Liquidity: Easily withdraw money when needed, especially for non-term savings.</li>
+                                        <li class="about-introduction__more-item">Flexible options: Various terms and deposit methods suit different needs.</li>
                                     </ul>
                                     <button type="button" class="about-history__btn-more mil-btn mil-ssm mil-empty send-money__toggle--btn">
-                                        <span class="text-collapsed" style="display: none">Thu gọn</span>
-                                        <span class="text-expand" >Xem thêm</span>
-
-                                        <span class="icon-arrow-right">
-                                        </span>
+                                        <span class="text-collapsed" style="display: none">Collapse</span>
+                                        <span class="text-expand">See more</span>
+                                        <span class="icon-arrow-right"></span>
                                     </button>
                                 </div>  
                                 <br/>
-                                <!--                            <p class="mil-text-m mil-soft mil-mb-30 mil-up">.</p>-->
-                                <div class="mil-up"><a href="register.jsp" class="mil-btn mil-m mil-add-arrow">Hướng dẫn sử dụng</a></div>
+                                <div class="mil-up"><a href="register.jsp" class="mil-btn mil-m mil-add-arrow">User Guide</a></div>
                             </div>
                             <div class="col-xl-6 mil-mb-80">
                                 <div class="mil-image-frame mil-up">
@@ -127,31 +120,25 @@
                     <div class="container">
                         <div class="row flex-sm-row-reverse justify-content-between align-items-center">
                             <div class="col-xl-5 mil-mb-80">
-                                <h2 class="mil-mb-30 mil-up">Vay tiền</h2>
+                                <h2 class="mil-mb-30 mil-up">Loan Services</h2>
                                 <div class="about-introduction__content about-introduction__content--current">
                                     <p class="about-introduction__desc">
-                                        Vay ngân hàng là dịch vụ tài chính mà ngân hàng cung cấp cho cá nhân hoặc doanh nghiệp một khoản tiền để sử dụng cho các mục đích khác nhau, với cam kết hoàn trả trong một khoảng thời gian nhất định cùng với lãi suất. Đây là một phương thức giúp khách hàng đáp ứng nhu cầu tài chính như mua nhà, mua xe, kinh doanh hoặc tiêu dùng cá nhân.</p>
+                                        Bank loans are financial services where the bank provides individuals or businesses with a sum of money for various purposes, with a commitment to repay within a specified period along with interest. This method helps customers meet financial needs such as buying a house, purchasing a car, running a business, or personal spending.
+                                    </p>
                                     <ul class="about-introduction__more borrow-money__more">
-                                        <li class="about-introduction__more-item">
-                                            Hỗ trợ tài chính linh hoạt: Giúp cá nhân và doanh nghiệp tiếp cận vốn nhanh chóng.</li>
-                                        <li class="about-introduction__more-item">
-                                            Đa dạng sản phẩm vay: Có nhiều lựa chọn phù hợp với từng nhu cầu. </li>
-                                        <li class="about-introduction__more-item">
-                                            Thời gian vay linh hoạt: Có thể vay ngắn hạn hoặc dài hạn tùy theo khả năng trả nợ. </li>
-                                        <li class="about-introduction__more-item">
-                                            Lãi suất cạnh tranh: Thấp hơn so với các hình thức vay bên ngoài như tín dụng đen.</li>
+                                        <li class="about-introduction__more-item">Flexible financial support: Quick access to capital for individuals and businesses.</li>
+                                        <li class="about-introduction__more-item">Diverse loan products: Various options tailored to different needs.</li>
+                                        <li class="about-introduction__more-item">Flexible loan terms: Short-term or long-term loans based on repayment capacity.</li>
+                                        <li class="about-introduction__more-item">Competitive interest rates: Lower than other forms of borrowing like payday loans.</li>
                                     </ul>
                                     <button type="button" class="about-history__btn-more mil-btn mil-ssm mil-empty borrow-money__toggle--btn">
-                                        <span class="text-collapsed" style="display: none">Thu gọn</span>
-                                        <span class="text-expand" >Xem thêm</span>
-
-                                        <span class="icon-arrow-right">
-                                        </span>
+                                        <span class="text-collapsed" style="display: none">Collapse</span>
+                                        <span class="text-expand">See more</span>
+                                        <span class="icon-arrow-right"></span>
                                     </button>
                                 </div>  
                                 <br/>
-                                <!--                            <p class="mil-text-m mil-soft mil-mb-30 mil-up">.</p>-->
-                                <div class="mil-up"><a href="register.jsp" class="mil-btn mil-m mil-add-arrow">Hướng dẫn sử dụng</a></div>
+                                <div class="mil-up"><a href="register.jsp" class="mil-btn mil-m mil-add-arrow">User Guide</a></div>
                             </div>
                             <div class="col-xl-6 mil-mb-80">
                                 <div class="mil-image-frame ml-up">
@@ -163,110 +150,12 @@
                 </div>
                 <!-- service end -->
 
-                <!-- call to action -->
-                <div class="mil-cta mil-up">
-                    <div class="container">
-                        <div class="mil-out-frame mil-p-160-100">
-                            <div class="row justify-content-center mil-text-center">
-                                <div class="col-xl-8 mil-mb-80-adaptive-30">
-                                    <h2 class="mil-up">Tiêu chí tài chính ngân hàng TIMIBANK</h2>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xl-4 mil-mb-60">
-                                    <div class="mil-icon-box">
-                                        <img src="img/inner-pages/icons/4.svg" alt="icon" class="mil-mb-30 mil-up">
-                                        <h5 class="mil-mb-20 mil-up">An toàn và ổn định tài chính</h5>
-                                        <p class="mil-text-m mil-soft mil-up">Duy trì tỷ lệ an toàn vốn (CAR - Capital Adequacy Ratio) theo quy định của Ngân hàng Nhà nước và tiêu chuẩn quốc tế (Basel II, III).
-                                            Đảm bảo tính thanh khoản để đáp ứng nhu cầu rút tiền và thanh toán.
-                                            Kiểm soát nợ xấu ở mức cho phép để tránh rủi ro mất khả năng thanh toán.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 mil-mb-60">
-                                    <div class="mil-icon-box">
-                                        <img src="img/inner-pages/icons/5.svg" alt="icon" class="mil-mb-30 mil-up">
-                                        <h5 class="mil-mb-20 mil-up">Minh bạch và tuân thủ quy định</h5>
-                                        <p class="mil-text-m mil-soft mil-up">Ngân hàng phải công khai thông tin tài chính, lãi suất, điều kiện cho vay/gửi tiền để khách hàng dễ dàng tiếp cận.
-                                            Tuân thủ các quy định của pháp luật về tín dụng, phòng chống rửa tiền và bảo vệ quyền lợi khách hàng.</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 mil-mb-60">
-                                    <div class="mil-icon-box">
-                                        <img src="img/inner-pages/icons/6.svg" alt="icon" class="mil-mb-30 mil-up">
-                                        <h5 class="mil-mb-20 mil-up">Hiệu quả kinh doanh và phát triển bền vững</h5>
-                                        <p class="mil-text-m mil-soft mil-up">Duy trì tăng trưởng lợi nhuận ổn định, quản lý chi phí hợp lý và mở rộng thị phần.
-                                            Đầu tư vào chuyển đổi số như ngân hàng số, thanh toán điện tử để nâng cao trải nghiệm khách hàng.
-                                            Đáp ứng các tiêu chí ESG (Môi trường - Xã hội - Quản trị) để phát triển bền vững và tạo niềm tin cho nhà đầu tư.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- call to action end -->
-
-                <!-- quote -->
-                <div class="mil-quote mil-p-160-130">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-xl-10">
-                                <h2 class="mil-mb-30">"Tại TIMIBANK, tính minh bạch không chỉ là lời hứa; Đó là nền tảng cho mối quan hệ của chúng tôi với bạn. Chúng tôi tin rằng niềm tin được xây dựng bằng chính sách rõ ràng và hành động nhất quán."</h2>
-                                <p class="mil-text-m mil-soft mil-mb-60">- TIMI Team</p>
-                                <div class="row">
-                                    <div class="col-xl-6">
-                                        <ul class="mil-list-2 mil-type-2 mil-mb-30">
-                                            <li>
-                                                <div class="mil-up">
-                                                    <h5 class="mil-mb-15">Chính sách bảo mật</h5>
-                                                    <p class="mil-text-m mil-soft">Quyền riêng tư của bạn là ưu tiên hàng đầu của chúng tôi. Chúng tôi không bao giờ chia sẻ thông tin của bạn với bên thứ ba mà không có sự đồng ý rõ ràng của bạn.</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <ul class="mil-list-2 mil-type-2 mil-mb-30">
-                                            <li>
-                                                <div class="mil-up">
-                                                    <h5 class="mil-mb-15">Bảo vệ dữ liệu</h5>
-                                                    <p class="mil-text-m mil-soft">Chúng tôi cam kết bảo vệ dữ liệu cá nhân và tài chính của bạn bằng các biện pháp bảo mật cao nhất</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- quote end -->
-
-                <!-- call to action -->
-                <div class="mil-cta mil-up">
-                    <div class="container">
-                        <div class="mil-out-frame mil-p-160-160" style="background-image: url(img/home-3/5.png)">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-xl-7 mil-sm-text-center">
-                                    <h2 class="mil-light mil-mb-30 mil-up">Khám phá sự tự do của <br>Kiểm soát tài chính toàn diện</h2>
-                                    <p class="mil-text-m mil-mb-60 mil-dark-soft mil-up">Hãy tham gia TIMIBANK và thực hiện bước đầu tiên hướng đến một cuộc sống  <br> tài chính cân bằng và ít rắc rối hơn.</p>
-                                    <div class="mil-buttons-frame mil-up">
-                                        <a href="https://apps.apple.com/vn/app/vcb-digibank/id561433133?l=vi" class="mil-btn mil-md">App Store</a>
-                                        <a href="https://play.google.com/store/apps/details?id=com.VCB" class="mil-btn mil-border mil-md">Google Play</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br/>
-
                 <!-- footer -->
-                                    <%@ include file="footer.jsp"%>
-
-
+                <%@ include file="footer.jsp"%>
                 <!-- footer end -->
 
             </div>
+
             <!-- content end -->
         </div>
         <!-- wrapper end -->
