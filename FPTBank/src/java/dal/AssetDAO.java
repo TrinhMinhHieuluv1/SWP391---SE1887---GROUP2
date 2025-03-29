@@ -26,7 +26,7 @@ public class AssetDAO extends DBContext {
         List<Asset> assets = new ArrayList<>();
 
         try {
-            String sql = "SELECT  * FROM Asset";
+            String sql = "SELECT  * FROM Asset ORDER BY CreatedAt DESC";
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet resultSet = st.executeQuery();
 
@@ -209,9 +209,8 @@ public class AssetDAO extends DBContext {
 
     public List<Asset> getAssetsSortedByDate(String ascending) throws SQLException {
         List<Asset> assets = new ArrayList<>();
-        String query = "SELECT a.* FROM Asset a "
-                + " join Customer c on a.CustomerId = c.CustomerId"
-                + " ORDER BY c.CreatedAt  " + ascending;
+        String query = "SELECT  * FROM Asset ORDER BY CreatedAt "+ascending;
+               
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -344,7 +343,7 @@ public class AssetDAO extends DBContext {
         // Tính offset (vị trí bắt đầu của trang)
         int offset = (page - 1) * size;
 
-        String query = "SELECT * FROM Asset where CustomerID = ? ORDER BY AssetId OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String query = "SELECT * FROM Asset where CustomerID = ? ORDER BY CreatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, cid); // Số lượng tin tức mỗi trang
             stmt.setInt(2, offset); // Số lượng tin tức mỗi trang

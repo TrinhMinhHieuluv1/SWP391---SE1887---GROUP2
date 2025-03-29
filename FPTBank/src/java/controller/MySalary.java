@@ -76,7 +76,7 @@ public class MySalary extends HttpServlet {
         List<Integer> listOfPageSize = removeDuplicates(calculatePageSize(dao.getSalaryByCId(account.getCustomerId()).size()));
         request.setAttribute("listSize", listOfPageSize);
          int page = 1; // trang đầu tiên
-        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : listOfPageSize.get(0);
+        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : listOfPageSize.get(listOfPageSize.size()-1);
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
@@ -93,7 +93,6 @@ public class MySalary extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("pageSize", pageSize);
-        request.setAttribute("data", data);
         request.setAttribute("data", data);
         request.getRequestDispatcher("mySalary.jsp").forward(request, response);
 

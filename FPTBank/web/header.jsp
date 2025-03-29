@@ -77,7 +77,7 @@
                                  <li class="mil-has-children">
                                      <a href="#.">Blog</a>
                                      <ul>
-                                           <li>  <a href="/timibank/news">Tin nổi bật </a></li>
+                                         <li><a href="/timibank/news">Tin nổi bật </a></li>
                                          <li><a href="blog.jsp">Blog list</a></li>
                                          <li><a href="publication.jsp">Blog details</a></li>
                                      </ul>

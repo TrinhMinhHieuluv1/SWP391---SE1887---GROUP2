@@ -91,15 +91,20 @@ public class ListSalary extends HttpServlet {
     }
 
     public void descriptionSetup(List<Salary> data) {
-        for (Salary sala : data) {
-            StringBuilder result = new StringBuilder();
-            String descript = sala.getDescription();
-            String[] des = descript.split("\n");
+        for (Salary salary : data) {
+                       StringBuilder result = new StringBuilder();
+            String descript = salary.getDescription();
+            String regex = "\n";
+            if (!salary.getDescription().contains(regex)) {
+                continue;
+            }
+            String[] des = descript.split(regex);
             for (String de : des) {
-                result.append(de.trim()).append("<br>-");
+
+                result.append(de.trim()).append("<br>");
             }
             result.deleteCharAt(result.toString().length() - 1);
-            sala.setDescription(result.toString());
+            salary.setDescription(result.toString());
         }
     }
 

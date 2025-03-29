@@ -44,6 +44,9 @@
                         <li class="menu-label">
                             <a href="/timibank/news">Tin nổi bật </a>
                         </li>
+                        <li class="menu-label">
+                            <a href="savingGoals.jsp">Mục tiêu tiết kiệm </a>
+                        </li>
                     </ul>
                 </div>
             </div>
