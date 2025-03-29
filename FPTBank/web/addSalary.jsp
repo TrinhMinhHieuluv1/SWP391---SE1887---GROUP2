@@ -328,11 +328,10 @@
     <body>
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="logo">My Asset And Salary</div>
+            <div class="logo"style="color: white">My Asset And Salary</div>
             <ul>
                 <li><a href="myassetsalary" >My Assets</a></li>
                 <li><a href="mysalary" >My Salaries</a></li>
-
             </ul>
         </div>
 
@@ -373,13 +372,7 @@
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="logo">My Asset And Salary</div>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search">
-                    <div class="icons">
-                        <i>🔔</i>
-                        <i>⚙️</i>
-                    </div>
-                </div>
+
             </div>
 
             <!-- Form Section -->

@@ -23,7 +23,7 @@ public class SalaryDAO extends DBContext {
         List<Salary> salarys = new ArrayList<>();
         try {
 
-            String sql = "SELECT  * FROM Salary";
+            String sql = "SELECT  * FROM Salary ORDER BY CreatedAt DESC";
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet resultSet = st.executeQuery();
 
@@ -137,9 +137,7 @@ public class SalaryDAO extends DBContext {
 
     public List<Salary> getSalarySortedByDate(String ascending) throws SQLException {
         List<Salary> salarys = new ArrayList<>();
-        String query = "SELECT * FROM Salary s "
-                + " join Customer c on s.CustomerId = c.CustomerId"
-                + " ORDER BY c.CreatedAt " + ascending;
+        String query = "SELECT  * FROM Salary ORDER BY CreatedAt "+ascending;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -271,12 +269,14 @@ public class SalaryDAO extends DBContext {
         List<Salary> salarys = new ArrayList<>();
         String query = "SELECT * FROM Salary s "
                 + " join Customer c on s.CustomerId = c.CustomerId"
-                + " WHERE s.Description LIKE ? or c.FullName LIKE ?";
+                + " WHERE a.Title LIKE ? or c.FullName LIKE ? or c.Email LIKE ? or c.Phone like ?";
 
         try {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, "%" + description + "%");
             pstmt.setString(2, "%" + description + "%");
+            pstmt.setString(3, "%" + description + "%");
+            pstmt.setString(4, "%" + description + "%");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
                 Salary salary = new Salary();
@@ -354,7 +354,7 @@ public class SalaryDAO extends DBContext {
         // Tính offset (vị trí bắt đầu của trang)
         int offset = (page - 1) * size;
 
-        String query = "SELECT * FROM Asset where CustomerID = ? ORDER BY AssetId OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String query = "SELECT * FROM Asset where CustomerID = ? ORDER BY CreatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, cid); // Số lượng tin tức mỗi trang
             stmt.setInt(2, offset); // Số lượng tin tức mỗi trang

@@ -328,11 +328,11 @@
     <body>
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="logo">My Asset And Salary</div>
+            <div class="logo" style="color: white">My Asset And Salary</div>
             <ul>
-                <li><a href="myAsset_Salary.jsp">List Assets</a></li>
-                <li><a href="listAssets.jsp">List Salaries</a></li>
-                <li><a href="#">Other Menu</a></li>
+                <li><a href="myassetsalary">List Assets</a></li>
+                <li><a href="mysalary">List Salaries</a></li>
+ 
             </ul>
         </div>
 
@@ -371,13 +371,6 @@
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="logo">My Asset And Salary</div>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search">
-                    <div class="icons">
-                        <i>🔔</i>
-                        <i>⚙️</i>
-                    </div>
-                </div>
             </div>
 
             <!-- Form Section -->

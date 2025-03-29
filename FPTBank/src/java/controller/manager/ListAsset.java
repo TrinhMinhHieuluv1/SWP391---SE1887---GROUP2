@@ -88,11 +88,16 @@ public class ListAsset extends HttpServlet {
 
     public void descriptionSetup(List<Asset> data) {
         for (Asset asset : data) {
-            StringBuilder result = new StringBuilder();
+           StringBuilder result = new StringBuilder();
             String descript = asset.getDescription();
-            String[] des = descript.split("\n");
+            String regex = "\n";
+            if (!asset.getDescription().contains(regex)) {
+                continue;
+            }
+            String[] des = descript.split(regex);
             for (String de : des) {
-                result.append(de.trim()).append("<br>-");
+
+                result.append(de.trim()).append("<br>");
             }
             result.deleteCharAt(result.toString().length() - 1);
             asset.setDescription(result.toString());
