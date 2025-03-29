@@ -354,7 +354,7 @@ public class SalaryDAO extends DBContext {
         // Tính offset (vị trí bắt đầu của trang)
         int offset = (page - 1) * size;
 
-        String query = "SELECT * FROM Asset where CustomerID = ? ORDER BY CreatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String query = "SELECT * FROM Salary where CustomerID = ? ORDER BY CreatedAt DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, cid); // Số lượng tin tức mỗi trang
             stmt.setInt(2, offset); // Số lượng tin tức mỗi trang
@@ -363,7 +363,7 @@ public class SalaryDAO extends DBContext {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 Salary salary = new Salary();
-                salary.setId(resultSet.getInt("AssetId"));
+                salary.setId(resultSet.getInt("SalaryId"));
                 salary.setCustomer(customerDAO.getCustomerByID(resultSet.getInt("CustomerID")));
                 salary.setImage(resultSet.getString("Image"));
                 salary.setTitle(resultSet.getString("Title"));

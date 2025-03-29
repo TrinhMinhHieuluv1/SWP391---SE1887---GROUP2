@@ -33,7 +33,7 @@
                             <a href="/timibank/news">Featured News</a>
                         </li>
                         <li class="menu-label">
-                            <a href="savingGoals.jsp">Mục tiêu tiết kiệm </a>
+                            <a href="savingGoals.jsp">Savings goal</a>
                         </li>
                     </ul>
                 </div>

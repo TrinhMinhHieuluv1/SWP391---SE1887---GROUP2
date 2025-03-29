@@ -389,14 +389,14 @@
             }
 
             .balance-card h2 {
-                color: #0066cc;
+                color: #28a745;
                 margin-bottom: 15px;
             }
 
             .balance-amount .value {
                 font-size: 1.8rem;
                 font-weight: 600;
-                color: #28a745;
+                color: #0066cc;
             }
         </style>
     </head>
