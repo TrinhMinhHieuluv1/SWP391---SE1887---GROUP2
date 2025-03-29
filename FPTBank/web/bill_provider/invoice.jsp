@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -227,7 +228,7 @@
                                 <td>${count}</td>
                                 <td>${bill.getCreatedAt()}</td>
                                 <td>${bill.getCustomer().getFullName()}</td>
-                                <td>${bill.getTotal()}</td>
+                                <td><fmt:formatNumber value="${bill.getTotal()}" type="number" pattern="#,##0"/> VND</td>
                                 <td>${bill.getStatusOfBill() == 1 ? "Unpaid" : "Paid"}</td>
                                 <td>${bill.getStatus() == 1 ? "Active" : "InActive"}</td>
                                 <c:if test="${bill.getStatusOfBill() == 1}">

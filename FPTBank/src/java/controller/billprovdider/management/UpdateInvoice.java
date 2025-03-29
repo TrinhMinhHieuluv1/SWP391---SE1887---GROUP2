@@ -80,17 +80,17 @@ public class UpdateInvoice extends HttpServlet {
         request.setAttribute("bill", bill);
         String error = "";
         if ("Update".equals(action)) {
-            if (billID_raw == null || billID_raw.isEmpty()) {
+            if (billID_raw == null || billID_raw.trim().isEmpty()) {
                 error = "Please choose a bill";
-            } else if (title_raw == null || title_raw.isEmpty()) {
+            } else if (title_raw == null || title_raw.trim().isEmpty()) {
                 error = "Please fill out the title";
-            } else if (description_raw == null || description_raw.isEmpty()) {
+            } else if (description_raw == null || description_raw.trim().isEmpty()) {
                 error = "Please fill out the description";
-            } else if (startdate_raw == null || startdate_raw.isEmpty()) {
+            } else if (startdate_raw == null || startdate_raw.trim().isEmpty()) {
                 error = "Please fill out the start date";
-            } else if (enddate_raw == null || enddate_raw.isEmpty()) {
+            } else if (enddate_raw == null || enddate_raw.trim().isEmpty()) {
                 error = "Please fill out the end date";
-            } else if (total_raw == null || total_raw.isEmpty()) {
+            } else if (total_raw == null || total_raw.trim().isEmpty()) {
                 error = "Please fill out the total or only number";
             }else if (isNumeric(total_raw) == false) {
                 error = "Please fill out total or only number.";

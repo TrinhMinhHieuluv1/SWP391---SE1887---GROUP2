@@ -395,25 +395,7 @@
         <h2 style="text-align:  center;">History Transaction</h2>
 
         <form action="historytransaction" method="get">
-            <c:if test="${listsize == 0}">
-                <div style="
-                     width: 80%;
-                     padding: 20px;
-                     font-weight: bold;
-                     font-size: 20px;
-                     color: #003d33;
-                     background-color: #f0faf4;
-                     border-radius: 12px;
-                     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-                     margin: 0 auto;
-                     text-align: center;
-                     margin-bottom: 50px;
-                     ">
-                    You don't have any transaction.<br>
-                    Please wait to use the <span style="color: red;">My Service</span> or Update <span style="color: red;">New Transaction</span>.
-                </div>
-            </c:if>
-            <c:if test="${listsize != 0}">
+        
                 <div class="filter-group" style="display: flex;">
                     <label for="number" style="margin-left: 30px;" >Number in Page:</label>
                     <select class="form-control" id="statusFilter" name="pagesize">
@@ -421,8 +403,6 @@
                             <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
                         </c:forEach>
                     </select>
-                    <label for="status" style="margin-left: 30px;">Status of Bill:</label>
-
                     <label for="status" style="margin-left: 30px;">From:</label>
                     <input class="form-control" type="date" name="date1" placeholder="Date"></input>
                     <label for="status" style="margin-left: 30px;">To:</label>
@@ -465,19 +445,19 @@
             <!-- Pagination Controls -->
             <div class="pagination">
                 <c:if test="${currentPage > 1}">
-                    <a href="invoiceshowcustomer?page=${currentPage - 1}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" 
+                    <a href="historytransaction?page=${currentPage - 1}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" 
                        class="prev">Previous</a>
                 </c:if>
 
                 <c:forEach var="i" begin="1" end="${totalPages}">
-                    <a href="invoiceshowcustomer?page=${i}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                    <a href="historytransaction?page=${i}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                 </c:forEach>
 
                 <c:if test="${currentPage < totalPages}">
-                    <a href="invoiceshowcustomer?page=${currentPage + 1}&pagesize=${param.pagesize}&date1=${param.date1}&d&pagesize=${param.pagesize}&datate2=${param.date2}" class="next">Next</a>
+                    <a href="historytransaction?page=${currentPage + 1}&pagesize=${param.pagesize}&date1=${param.date1}&d&pagesize=${param.pagesize}&datate2=${param.date2}" class="next">Next</a>
                 </c:if>
             </div>
-        </c:if>
+       
     </div>
 
     <%@ include file="footer.jsp"%>

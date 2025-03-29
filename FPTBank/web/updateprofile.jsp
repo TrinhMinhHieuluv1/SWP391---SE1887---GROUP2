@@ -248,6 +248,12 @@
                                                 <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" value="Customer" readonly>
                                             </div>
                                         </c:if>
+                                        <c:if test="${sessionScope.account.roleID == 6}">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="inputOrgName">Role</label>
+                                                <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" value="Bill Provider" readonly>
+                                            </div>
+                                        </c:if>
                                         <!-- Form Group (location)-->
                                         <div class="col-md-6">
                                             <label class="small mb-1" for="inputLocation">Gender</label>
@@ -277,7 +283,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="small mb-1" for="inputEmailAddress">Address</label>
-                                        <input class="form-control" id="inputEmailAddress" name="address" type="text" placeholder="Enter your email address" value="${sessionScope.account.address}" require>
+                                        <input class="form-control" id="inputEmailAddress" name="address" type="text" placeholder="Enter your address" value="${sessionScope.account.address}" require>
                                     </div>
                                     <!-- Save changes button-->
                                     <% if(request.getAttribute("error")!=null)  {%>

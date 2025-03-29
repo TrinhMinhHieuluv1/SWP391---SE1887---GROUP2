@@ -99,13 +99,13 @@ public class Payment extends HttpServlet {
         String providerID_raw = request.getParameter("providerID");
         String total_raw = request.getParameter("total");
         String paymentMethod = request.getParameter("paymentMethod");
-        if (total_raw == null || total_raw.isEmpty()) {
+        if (total_raw == null || total_raw.trim().isEmpty()) {
             total_raw = "0";
         }
-        if (billID_raw == null || billID_raw.isEmpty()) {
+        if (billID_raw == null || billID_raw.trim().isEmpty()) {
             billID_raw = "0";
         }
-        if (providerID_raw == null || providerID_raw.isEmpty()) {
+        if (providerID_raw == null || providerID_raw.trim().isEmpty()) {
             providerID_raw = "0";
         }
         double totall = Double.parseDouble(total_raw);

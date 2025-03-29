@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -93,7 +94,9 @@
                     </tbody>
                 </table>
                 <div class="total-section">
-                    <p class="total">Total: ${billdetail.getTotal()}</p>
+                    <p class="total">Total: 
+                        <fmt:formatNumber value="${billdetail.getTotal()}" type="number" pattern="#,##0"/> VND
+                    </p>
                 </div>
             </form>
             <div style="margin-top: 20px;">

@@ -94,7 +94,10 @@ public class UpdateProfile extends HttpServlet {
             error = "Phone is used";
         } else if (dao.isFieldExistsToUpdate("CCCD", cccd, uID) == true || cdao.isFieldExistsToUpdate("CCCD", cccd, uID)) {
             error = "CCCD is used";
-        } else if (account instanceof User) {
+        } else if(address == null || address.trim().isEmpty()){
+            error = "Please input address";
+        }
+        else if (account instanceof User) {
             User accountUser = (User) account;
             accountUser.setFullName(fullname);
             accountUser.setCCCD(cccd);

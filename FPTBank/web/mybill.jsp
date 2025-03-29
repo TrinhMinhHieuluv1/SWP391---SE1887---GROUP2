@@ -333,25 +333,7 @@
         <h2 style="text-align:  center;">List of Bill</h2>
 
         <form action="invoiceshowcustomer" method="get">
-            <c:if test="${listsize == 0}">
-                <div style="
-                     width: 80%;
-                     padding: 20px;
-                     font-weight: bold;
-                     font-size: 20px;
-                     color: #003d33;
-                     background-color: #f0faf4;
-                     border-radius: 12px;
-                     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-                     margin: 0 auto;
-                     text-align: center;
-                     margin-bottom: 50px;
-                     ">
-                    You don't have any bill.<br>
-                    Please wait to update <span style="color: red;">Your Bill</span> or are provided <span style="color: red;">New Invoices</span>.
-                </div>
-            </c:if>
-            <c:if test="${listsize != 0}">
+           
                 <% 
         String message = (String) request.getAttribute("error"); 
         String errorMessage = (String) request.getAttribute("error2"); 
@@ -430,19 +412,18 @@
             <!-- Pagination Controls -->
             <div class="pagination">
                 <c:if test="${currentPage > 1}">
-                    <a href="invoiceshowcustomer?page=${currentPage - 1}&statusresponse=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" 
+                    <a href="invoiceshowcustomer?page=${currentPage - 1}&statusbill=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" 
                        class="prev">Previous</a>
                 </c:if>
 
                 <c:forEach var="i" begin="1" end="${totalPages}">
-                    <a href="invoiceshowcustomer?page=${i}&statusresponse=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                    <a href="invoiceshowcustomer?page=${i}&statusbill=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                 </c:forEach>
 
                 <c:if test="${currentPage < totalPages}">
-                    <a href="invoiceshowcustomer?page=${currentPage + 1}&statusresponse=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="next">Next</a>
+                    <a href="invoiceshowcustomer?page=${currentPage + 1}&statusbill=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="next">Next</a>
                 </c:if>
             </div>
-        </c:if>
     </div>
 
     <%@ include file="footer.jsp"%>

@@ -165,25 +165,6 @@
                 <!-- top panel end -->
                 <a href="contact"><button type="submit" style="color: white; background-color: green; padding: 10px 5px; border-radius: 5px; margin-left: 260px; margin-bottom: 10px;">ADD Feedback +</button></a>
                 <form action="myfeedback" method="get">
-                    <c:if test="${listsize == 0}">
-                        <div style="
-                             width: 80%;
-                             padding: 20px;
-                             font-weight: bold;
-                             font-size: 20px;
-                             color: #003d33;
-                             background-color: #f0faf4;
-                             border-radius: 12px;
-                             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-                             margin: 0 auto;
-                             text-align: center;
-                             margin-bottom: 50px;
-                             ">
-                            You don't have any feedback.<br>
-                            Please update <span style="color: red;">Your Feedback</span> or provide <span style="color: red;">New Comments</span>.
-                        </div>
-                    </c:if>
-                    <c:if test="${listsize != 0}">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <label for="dateInput" style="white-space: nowrap; font-weight: bold; margin-left: 200px;">From:</label>
                             <input type="date" class="form-control" name="date_1" placeholder="Date">
@@ -263,7 +244,6 @@
                         </c:if>
                     </div>
                 </div>
-            </c:if>
             <%@ include file="footer.jsp"%>
         </div>
         <!-- wrapper end -->

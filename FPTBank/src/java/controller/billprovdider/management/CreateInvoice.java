@@ -91,13 +91,13 @@ public class CreateInvoice extends HttpServlet {
         if ("Add".equals(action)) {
             if (customerid == null || customerid.isEmpty() || customerid.equals("none")) {
                 error = "Please choose a customer. ";
-            } else if (title == null || title.isEmpty()) {
+            } else if (title == null || title.trim().isEmpty()) {
                 error = "Please fill out title. ";
-            } else if (description == null || description.isEmpty()) {
+            } else if (description == null || description.trim().isEmpty()) {
                 error = "Please fill out description. ";
-            } else if (startdate_raw == null || startdate_raw.isEmpty()) {
+            } else if (startdate_raw == null || startdate_raw.trim().isEmpty()) {
                 error = "Please fill out startdate. ";
-            } else if (enddate_raw == null || enddate_raw.isEmpty()) {
+            } else if (enddate_raw == null || enddate_raw.trim().isEmpty()) {
                 error = "Please fill out enddate. ";
             } else if (isNumeric(total_raw) == false) {
                 error = "Please fill out total or only number.";
@@ -135,7 +135,18 @@ public class CreateInvoice extends HttpServlet {
                             udao.selectAnUserByConditions(uid, "", "", ""));
 
                     CompanyBillProvider company = bdao.getCompanyById("ProviderID", uid);
-                    boolean mail = sendMailbillProvider.guiMailforCreatingBill(cdao.getCustomerByID(cid).getEmail(), bill.getBillID(), title, description, startdate, enddate, bill.getCreatedAt(), totalamount, company.getCompanyName(), cdao.getCustomerByID(cid));
+                    boolean mail = sendMailbillProvider.guiMailforCreatingBill(
+                            cdao.getCustomerByID(cid).getEmail(),
+                            bill.getBillID(),
+                            title,
+                            description,
+                            startdate,
+                            enddate,
+                            bill.getCreatedAt(),
+                            totalamount,
+                            company.getCompanyName(),
+                            cdao.getCustomerByID(cid)
+                    );
                     if (mail) {
                         error = "Add bill successfully and your customer is receive this email about bill";
                         dao.add(bill);
