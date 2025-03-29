@@ -149,56 +149,56 @@
             .view-all a:hover {
                 text-decoration: underline;
             }
- .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
 
-        .dropdown button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+            .dropdown button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
 
-        .dropdown button:hover {
-            background-color: #0056b3;
-        }
+            .dropdown button:hover {
+                background-color: #0056b3;
+            }
 
-        /* Style cho nội dung dropdown */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 200px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            border-radius: 5px;
-            margin-top: 5px;
-            overflow: hidden;
-        }
+            /* Style cho nội dung dropdown */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 200px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                z-index: 1;
+                border-radius: 5px;
+                margin-top: 5px;
+                overflow: hidden;
+            }
 
-        .dropdown-content a {
-            color: #333;
-            padding: 10px 15px;
-            text-decoration: none;
-            display: block;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
+            .dropdown-content a {
+                color: #333;
+                padding: 10px 15px;
+                text-decoration: none;
+                display: block;
+                font-size: 14px;
+                transition: background-color 0.3s;
+            }
 
-        .dropdown-content a:hover {
-            background-color: #f2f2f2;
-        }
+            .dropdown-content a:hover {
+                background-color: #f2f2f2;
+            }
 
-        /* Hiện dropdown */
-        .show {
-            display: block;
-        }
+            /* Hiện dropdown */
+            .show {
+                display: block;
+            }
         </style>
         <script>
             // Hàm để hiển thị hoặc ẩn dropdown
@@ -223,6 +223,12 @@
     <body>
         <%@ include file="header.jsp"%>
         <div class="container" style="margin-top: 150px">
+            <div style="text-align: left">
+                <a href="/timibank/news" 
+                   style="display: inline-block; padding: 5px 5px; background: #f0f0f0;  font-size: 14px; ">
+                    ← Back
+                </a>
+            </div>
             <c:set value="${requestScope.newdetail}" var="detail"/>
             <h3>${detail.getTitle()}</h3>
             <div class="date">${detail.getCreatedAt()}</div>
@@ -231,32 +237,35 @@
             </div>
             <div class="actions">
                 <div class="dropdown">
-                    <button onclick="toggleDropdown()">Chia sẻ</button>
+                    <button onclick="toggleDropdown()">Share</button>
                     <div id="myDropdown" class="dropdown-content">
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://your-article-link.com" target="_blank">Chia sẻ trên Facebook</a>
-                        <a href="mailto:?subject=${detail.getTitle()}&body=${detail.getDescription()}: https://your-article-link.com" target="_blank">Chia sẻ qua Email</a>
-                        <a href="https://twitter.com/intent/tweet?url=https://your-article-link.com&text=Tiêu đề bài viết" target="_blank">Chia sẻ trên Twitter</a>
-                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://your-article-link.com" target="_blank">Chia sẻ trên LinkedIn</a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://your-article-link.com" target="_blank">Share on Facebook</a>
+                        <a href="mailto:?subject=${detail.getTitle()}&body=${detail.getDescription()}: https://your-article-link.com" target="_blank">Share via Email</a>
+                        <a href="https://twitter.com/intent/tweet?url=https://your-article-link.com&text=Tiêu đề bài viết" target="_blank">Share on Twitter</a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://your-article-link.com" target="_blank">Share on LinkedIn</a>
                     </div>
                 </div> 
             </div>
+
         </div>
+
         <div class="related-news">
             <h2>Tin liên quan</h2>
+            <div class="view-all">
+                <a href="/timibank/news?idCate=${detail.getNewsCategory().getNewsCategoryID()}">View all →</a>
+            </div>
             <div class="news-grid">
                 <c:forEach  items="${requestScope.data}" var="news">
                     <div class="news-item">
                         <img src="${pageContext.request.contextPath}/${news.getImage()}" alt="News Image 1">
                         <h3>${news.getTitle()}</h3>
                         <p class="news-date">${news.getCreatedAt()}</p>
-                        <p class="news-date">Số lượng xem:${news.getNumberOfAccess()}</p>
-                        <a href="/timibank/newdetail?newId=${news.getNewsID()}"class="read-more">Xem chi tiết →</a>
+                        <p class="news-date">Number of views:${news.getNumberOfAccess()}</p>
+                        <a href="/timibank/newdetail?newId=${news.getNewsID()}"class="read-more">See details →</a>
                     </div>
                 </c:forEach>
             </div>
-            <div class="view-all">
-                <a href="/timibank/news?idCate=${detail.getNewsCategory().getNewsCategoryID()}">Xem tất cả →</a>
-            </div>
+
         </div>
         <%@ include file="footer.jsp"%>
     </body>

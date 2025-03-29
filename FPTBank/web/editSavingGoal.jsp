@@ -37,7 +37,7 @@
             }
 
             header h1 {
-                color: #0066cc;
+                color: #28a745;
                 margin-bottom: 10px;
             }
 
@@ -139,7 +139,7 @@
 
             .back-link {
                 display: inline-block;
-                color: #0066cc;
+                color: #28a745;
                 text-decoration: none;
                 margin-top: 10px;
             }
@@ -244,7 +244,7 @@
             }
 
             .goal-header h2 {
-                color: #0066cc;
+                color: #28a745;
                 font-size: 1.4rem;
             }
 
@@ -401,7 +401,7 @@
     <body>
         <div class="container">
             <header>
-                <h1>Edit Savig Goal</h1>
+                <h1>Edit Saving Goal</h1>
                 <a href="goals" class="back-link">←Back</a>
             </header>
 

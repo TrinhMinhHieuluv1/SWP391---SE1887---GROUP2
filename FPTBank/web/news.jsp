@@ -246,14 +246,14 @@
                         <div class="card-content">
                             <h3>${news.getTitle()}</h3>
                             <p>${news.getCreatedAt()}</p>
-                            <p>Số lượng xem:${news.getNumberOfAccess()}</p>
-                            <a href="/timibank/newdetail?newId=${news.getNewsID()}">Xem chi tiết</a>
+                            <p>Number of views:${news.getNumberOfAccess()}</p>
+                            <a href="/timibank/newdetail?newId=${news.getNewsID()}">See details</a>
                         </div>
                     </div>
                 </c:forEach>
             </div>
             <div class="load-more" id="loadMore">
-                <button onclick="loadMoreNews()">Xem thêm</button>
+                <button onclick="loadMoreNews()">See more</button>
             </div>
         </div>
         <%@ include file="footer.jsp"%>
@@ -305,7 +305,7 @@
                     // Tạo liên kết "Xem chi tiết"
                     const link = document.createElement('a');
                     link.href = `/timibank/newdetail?newId=${news.NewsID}`;
-                    link.textContent = 'Xem chi tiết';
+                    link.textContent = 'See detail';
 
                     // Gắn các phần tử con vào card-content
                     cardContent.appendChild(title);

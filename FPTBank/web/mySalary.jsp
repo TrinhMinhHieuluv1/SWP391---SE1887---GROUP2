@@ -882,8 +882,8 @@
                 document.getElementById("idAsset").value = id || 'N/A';
                 document.getElementById("editImage").src = image ? (image + "?t=" + new Date().getTime()) : 'placeholder.jpg';
                 document.getElementById("editDescription").innerHTML = description || 'Không có mô tả';
-                document.getElementById("editValuation").value = value || 'N/A';
-                document.getElementById("editName").value = name || 'N/A';
+                document.getElementById("editValuation").value = value || '';
+                document.getElementById("editName").value = name || '';
 
                 const pdfListContainer = document.getElementById("pdfList2");
                 if (!pdfListContainer) {
