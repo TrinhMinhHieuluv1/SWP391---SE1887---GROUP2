@@ -440,7 +440,7 @@
                     <img src="assets/images/logo-icon.png" class="logo-img" alt="">
                 </div>
                 <div class="logo-name flex-grow-1">
-                    <h5 class="mb-0">Roksyn</h5>
+                    <h5 class="mb-0">BANK</h5>
                 </div>
                 <div class="sidebar-close">
                     <span class="material-symbols-outlined">close</span>
@@ -450,11 +450,11 @@
 
                 <!--navigation-->
                 <ul class="metismenu" id="menu">
-                    <li>
-                        <a href="home.jsp">
+                     <li>
+                        <a href="/timibank/home.jsp">
                             <div class="parent-icon"><span class="material-symbols-outlined">home</span>
                             </div>
-                            <div class="menu-title">Dashboard</div>
+                            <div class="menu-title">Back to home</div>
                         </a>
                     </li>
 
@@ -473,9 +473,6 @@
                 </ul>
                 </li> 
                 </ul>
-
-
-
             </div>
                 <div class="btn btn-sm btn-primary ms-3">
                     <a href="/timibank/logout"><span style="color: white">Sign Out</span></a>

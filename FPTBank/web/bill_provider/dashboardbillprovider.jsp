@@ -6,33 +6,64 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <title>TIMI - Finance</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="author" content="bslthemes" />
+
+        <!-- switzer font css -->
+        <link rel="stylesheet" href="fonts/css/switzer.css" type="text/css" media="all">
+        <!-- font awesome css -->
+        <link rel="stylesheet" href="fonts/css/font-awesome.min.css" type="text/css" media="all">
+        <!-- bootstrap grid css -->
+        <link rel="stylesheet" href="css/plugins/bootstrap-grid.css" type="text/css" media="all">
+        <!-- swiper css -->
+        <link rel="stylesheet" href="css/plugins/swiper.min.css" type="text/css" media="all">
+        <!-- magnific popup -->
+        <link rel="stylesheet" href="css/plugins/magnific-popup.css" type="text/css" media="all">
+        <!-- plax css -->
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+        <link rel="icon" href="img/favicon.png" type="image/x-icon">
+
+        <!-- Toarst -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
-            .sidebar {
-                height: 100vh;
-                width: 250px;
-                position: fixed;
+           .sidebar {
+                width: 250px; /* or any other width you prefer */
+                background-color: green;
+                position: fixed; /* Fix the sidebar to the side */
                 top: 0;
                 left: 0;
-                background-color: #f8f9fa;
+                height: 100%;
                 padding-top: 20px;
-                background-color: green;
+                display: block; /* Ensure it's visible */
+                z-index: 1000; /* Ensure it’s on top of other elements */
             }
+
             .sidebar a {
-                padding: 10px 15px;
+                padding: 8px 16px;
                 text-decoration: none;
                 font-size: 18px;
-                color: #333;
+                color: white;
                 display: block;
-                color : white;
             }
+
             .sidebar a:hover {
-                background-color: #ddd;
+                background-color: #575757;
             }
             .content {
                 margin-left: 260px;
@@ -117,9 +148,12 @@
     </head>
     <body>
         <div class="sidebar">
-            <img src="img/logo1.png" alt="Plax" width="200">
+            <a href="/timibank/home" class="mil-logo">
+                <i class="fas fa-home"></i> Home <!-- Add home icon here -->
+            </a>
             <a href="/timibank/bill_provider/dashboardbillprovider"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             <a href="/timibank/bill_provider/invoice"><i class="fas fa-file-invoice"></i> Invoices</a>
+            <a href="/timibank/logout"><i class="fas fa-sign-out-alt"></i> Logout</a> <!-- Logout icon -->
         </div>
         <form action="dashboardbillprovider" method="get">
             <div class="container mt-5">
@@ -131,7 +165,7 @@
                         <div class="card bg-info text-white mb-4">
                             <div class="card-body">
                                 <h5>Renevue</h5>
-                                <h3>${total != null ? total : 0} VNĐ</h3>
+                                <h3><fmt:formatNumber value="${total}" type="number" pattern="#,###" /> VND</h3>
                             </div>
                         </div>
                     </div>

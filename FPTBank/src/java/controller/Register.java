@@ -109,7 +109,7 @@ public class Register extends HttpServlet {
         CustomerDAO cdao = new CustomerDAO();
         cdao.addACustomer(customerToAdd);
         session.setAttribute("account", cdao.selectCustomerByConditions(0, username, "", ""));
-        response.sendRedirect("/timibank/register-email");
+        response.sendRedirect("/timibank/login?fromRegister=true");
     }
 
     /**

@@ -15,34 +15,22 @@
                 <div class="menu-list">
                     <ul class="menu-item">
                         <li class="menu-label">
-                            <a href="services.jsp">Dịch vụ</a>
+                            <a href="services.jsp">Services</a>
                         </li>
                         <li class="menu-label">
-                            Công cụ
+                            Tools
                             <ul class="sub-menu-item">
                                 <li>
-
-                                    <a class="sub-menu-link" href="calSaving.jsp">Lãi suất tiết kiệm</a>
+                                    <a class="sub-menu-link" href="calSaving.jsp">Savings Interest Rate</a>
                                 </li>
                                 <li>
-                                    <a class="sub-menu-link" href="calLoan.jsp">Lãi vay ngân hàng</a>
+                                    <a class="sub-menu-link" href="calLoan.jsp">Bank Loan Interest</a>
                                 </li>
                             </ul>
                         </li>
+                        
                         <li class="menu-label">
-                            Ưu đãi
-                            <ul class="sub-menu-item">
-                                <li>
-
-                                    <a class="sub-menu-link" href="prefer-card.jsp">Thẻ TIMI - Chi tiêu giảm giá hàng đầu Việt Nam</a>
-                                </li>
-                                <li>
-                                    <a class="sub-menu-link" href="prefer.jsp">Tất cả ưu đãi</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="menu-label">
-                            <a href="/timibank/news">Tin nổi bật </a>
+                            <a href="/timibank/news">Featured News</a>
                         </li>
                         <li class="menu-label">
                             <a href="savingGoals.jsp">Mục tiêu tiết kiệm </a>
@@ -51,15 +39,16 @@
                 </div>
             </div>
 
-            <div class="col">
+<!--            <div class="col">
                 <form action="#!" class="menu-form__search">
                     <input type="text" name="search_value" class="menu-form__search-input"/>
                     <div class="mil-menu-buttons">
                         <input type="submit" class="mil-btn mil-ssm" value="Search" />
                     </div>
                 </form>
-            </div>
+            </div>-->
         </nav>
     </div>
 </div>
+
 <!-- Menu end -->

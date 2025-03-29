@@ -80,19 +80,22 @@ public class UpdateInvoice extends HttpServlet {
         request.setAttribute("bill", bill);
         String error = "";
         if ("Update".equals(action)) {
-            if (billID_raw == null || billID_raw.isEmpty()) {
+            if (billID_raw == null || billID_raw.trim().isEmpty()) {
                 error = "Please choose a bill";
-            } else if (title_raw == null || title_raw.isEmpty()) {
+            } else if (title_raw == null || title_raw.trim().isEmpty()) {
                 error = "Please fill out the title";
-            } else if (description_raw == null || description_raw.isEmpty()) {
+            } else if (description_raw == null || description_raw.trim().isEmpty()) {
                 error = "Please fill out the description";
-            } else if (startdate_raw == null || startdate_raw.isEmpty()) {
+            } else if (startdate_raw == null || startdate_raw.trim().isEmpty()) {
                 error = "Please fill out the start date";
-            } else if (enddate_raw == null || enddate_raw.isEmpty()) {
+            } else if (enddate_raw == null || enddate_raw.trim().isEmpty()) {
                 error = "Please fill out the end date";
-            } else if (total_raw == null || total_raw.isEmpty()) {
+            } else if (total_raw == null || total_raw.trim().isEmpty()) {
                 error = "Please fill out the total or only number";
-            } else if (error.length() == 0) {
+            }else if (isNumeric(total_raw) == false) {
+                error = "Please fill out total or only number.";
+            }
+            else if (error.length() == 0) {
                 DetailBill lastbill = dao.getLastDetailBill(bill.getCustomer().getCustomerId(), uid);
                 total_raw = total_raw.replace(",", "");
                 double total_raw2 = Double.parseDouble(total_raw);
@@ -129,7 +132,12 @@ public class UpdateInvoice extends HttpServlet {
         request.getRequestDispatcher("updateinvoice.jsp").forward(request, response);
 
     }
-
+    public boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false; // Chuỗi rỗng hoặc null
+        }
+        return str.matches("\\d{1,3}(?:,\\d{3})*"); // Cho phép số nguyên với dấu phẩy
+    }
    
 
     /**

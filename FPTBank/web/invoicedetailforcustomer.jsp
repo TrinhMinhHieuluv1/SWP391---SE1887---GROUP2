@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -72,9 +73,9 @@
                             <th>StartDate</th>
                             <th>EndDate</th>
                             <th>StatusOfBill</th>
-                            <c:if test="${billdetail.getPaymentDate() != null}">
-                            <th>PaymentDate</th>
-                            </c:if>
+                                <c:if test="${billdetail.getPaymentDate() != null}">
+                                <th>PaymentDate</th>
+                                </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,16 +87,21 @@
                             <td>${billdetail.getEndDate()}</td>
                             <td>${billdetail.getStatusOfBill() == 1 ? "UnPaid" : "Paid"}</td>
                             <c:if test="${billdetail.getPaymentDate() != null}">
-                            <td>${billdetail.getPaymentDate()}</td>
+                                <td>${billdetail.getPaymentDate()}</td>
                             </c:if>
                         </tr>
-                        
+
                     </tbody>
                 </table>
                 <div class="total-section">
-                    <p class="total">Total: ${billdetail.getTotal()}</p>
+                    <p class="total">Total: 
+                    <fmt:formatNumber value="${billdetail.getTotal()}" type="number" pattern="#,##0"/> VND
+                    </p> 
                 </div>
             </form>
+            <div style="margin-top: 20px;">
+                <a href="invoiceshowcustomer" class="btn btn-secondary">Back</a>
+            </div>
         </div>
     </body>
 </html>

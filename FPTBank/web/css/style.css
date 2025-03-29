@@ -3309,10 +3309,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/style.scss to edit thi
   --content-width: 400px;
 }
 .modal--large .modal__content {
-  --content-width: 1100;
+  --content-width: 1100px;
 }
 .modal--xl .modal__content {
-  --content-width: 1290;
+  --content-width: 1290px;
 }
 .modal--fill .modal__content {
   width: 100%;

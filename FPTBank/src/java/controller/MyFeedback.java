@@ -115,6 +115,7 @@ public class MyFeedback extends HttpServlet {
         listf = dao.getListByPage(listf, start, end);
         request.setAttribute("listint", listint);
         request.setAttribute("listfeedback", listf);
+        request.setAttribute("listsize", listf.size());
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("date_1", date_raw1);

@@ -158,14 +158,14 @@
                                         </c:if>
                                         <c:if test="${sessionScope.account.roleID == 2}">
                                             <tr>
-                                                <th width="30%">Roll</th>
+                                                <th width="30%">Role</th>
                                                 <td width="2%">:</td>
                                                 <td>Seller</td>
                                             </tr>
                                         </c:if>
                                         <c:if test="${sessionScope.account.roleID == 3}">
                                             <tr>
-                                                <th width="30%">Roll</th>
+                                                <th width="30%">Role</th>
                                                 <td width="2%">:</td>
                                                 <td>Manager</td>
                                             </tr>

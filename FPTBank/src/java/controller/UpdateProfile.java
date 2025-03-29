@@ -94,7 +94,10 @@ public class UpdateProfile extends HttpServlet {
             error = "Phone is used";
         } else if (dao.isFieldExistsToUpdate("CCCD", cccd, uID) == true || cdao.isFieldExistsToUpdate("CCCD", cccd, uID)) {
             error = "CCCD is used";
-        } else if (account instanceof User) {
+        } else if(address == null || address.trim().isEmpty()){
+            error = "Please input address";
+        }
+        else if (account instanceof User) {
             User accountUser = (User) account;
             accountUser.setFullName(fullname);
             accountUser.setCCCD(cccd);
@@ -104,7 +107,8 @@ public class UpdateProfile extends HttpServlet {
             accountUser.setDateOfBirth(dob);
             accountUser.setAddress(address);
             dao.updateAUser(accountUser);
-            error = "Update Successfully, Please to back to your profile";
+            error = "Update profile Successfully";
+            session.setAttribute("message", error);
             session.setAttribute("account", accountUser);
             request.getRequestDispatcher("home.jsp").forward(request, response);
             return;
@@ -118,7 +122,8 @@ public class UpdateProfile extends HttpServlet {
             accountCustomer.setDateOfBirth(dob);
             accountCustomer.setAddress(address);
             cdao.updateACustomer(accountCustomer);
-            error = "Update Successfully, Please to back to your profile";
+            error = "Update profile Successfully";
+            session.setAttribute("message", error);
             session.setAttribute("account", accountCustomer);
             request.getRequestDispatcher("home.jsp").forward(request, response);
             return;

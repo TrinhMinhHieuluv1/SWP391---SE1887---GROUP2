@@ -10,7 +10,7 @@
     <head>
         <meta charset="UTF-8">
 
-        <title>TIMI - Công cụ tính lãi suất</title>
+        <title>TIMI - Interest Calculator</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -204,34 +204,34 @@
             font-weight: bold;
             color: black;
         }
-          /* Toast Message Styles */
-            .toast-message {
-                position: fixed;
-                top: -100px; /* Start above viewport */
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: #4CAF50;
-                color: white;
-                padding: 16px 32px;
-                border-radius: 8px;
-                font-size: 16px;
-                font-weight: 500;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                z-index: 1000;
-                transition: top 0.5s ease-in-out;
-            }
+        /* Toast Message Styles */
+        .toast-message {
+            position: fixed;
+            top: -100px; /* Start above viewport */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transition: top 0.5s ease-in-out;
+        }
 
-            .toast-message.show {
-                top: 20px; /* Slide down to this position */
-            }
+        .toast-message.show {
+            top: 20px; /* Slide down to this position */
+        }
 
-            .toast-message i {
-                font-size: 24px;
-            }
-        
+        .toast-message i {
+            font-size: 24px;
+        }
+
     </style>
     <body>
         <script type="text/javascript">
@@ -261,19 +261,19 @@
             <%@ include file="header.jsp"%>
             <!-- top panel end -->
             <!--show message-->
-      
+
             <!-- content -->
             <div id="smooth-content">
                 <div class="cal-container">
                     <a href="about.jsp"><i class="fa-solid fa-arrow-left-long"></i></a>
                     <div class="tabs">
-                        <a href="calSaving.jsp" class="tab active">LÃI SUẤT TIẾT KIỆM</a>
-                        <a href="calLoan.jsp" class="tab">LÃI VAY NGÂN HÀNG</a>
+                        <a href="calSaving.jsp" class="tab active">SAVINGS INTEREST</a>
+                        <a href="calLoan.jsp" class="tab">BANK LOAN INTEREST</a>
                     </div>
-                    <div class="title">CÔNG CỤ TÍNH LÃI SUẤT VAY NGÂN HÀNG</div>
+                    <div class="title">BANK LOAN INTEREST CALCULATOR</div>
                     <div class="description"><br/>
-                        Công cụ tính lãi suất vay ngân hàng của LuatVietnam giúp bạn dự tính được số tiền lãi phải trả định kỳ, 
-                        tổng gốc và lãi trong từng thời điểm. Từ đó dễ dàng hoạch định tài chính tốt nhất cho mình.<br/><br/>
+                        LuatVietnam's bank loan interest calculator helps you estimate the periodic interest payments, 
+                        total principal and interest at each stage. This allows you to better plan your finances.<br/><br/>
                     </div>
                     <c:if test="${not empty error}">
                         <div class="error-message" style="color: red; font-weight: bold;">
@@ -282,142 +282,136 @@
                     </c:if>
                     <div class="cal-content">
 
-
                         <form action="congcu" id="myForm" class="cal-form">
 
                             <div class="form-group">
-                                <label for="nameSaving" class="form-group__label">Tên Người dùng</label>
+                                <label for="nameSaving" class="form-group__label">User Name</label>
                                 <div class="form-group__input-wrap">
                                     <input type="text" class="form-group__input" id="nameSaving" name="nameSaving" value="${nameSaving}" 
                                            required>
-
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="emailSaving" class="form-group__label">Email</label>
                                 <div class="form-group__input-wrap">
-                                    
                                     <input type="email" class="form-group__input" id="emailLoan" name="emailSaving" value="${emailSaving}" 
                                            required
                                            pattern="^(?!.*\.\.)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
-                                           title="Email is invalid"
+                                           title="Invalid email format"
                                            oninput="validateEmail()">
                                     <span id="emailError"  class="sub-text-input"></span>
                                 </div>
-                                    
                             </div>
+
                             <div class="form-group">
-                                <label for="loanAmount" class="form-group__label">Số tiền gửi</label>
+                                <label for="loanAmount" class="form-group__label">Deposit Amount</label>
                                 <div class="form-group__input-wrap">
                                     <input type="text" class="form-group__input" id="amount" name="amount" value="${amount}" 
                                            oninput="formatNumber(this)" onkeypress="return validateInput(event)" required>
-                                    <span class="sub-text-input">VNĐ</span>
+                                    <span class="sub-text-input">VND</span>
                                 </div>
                             </div>
 
-                            <div class="form-group" >
-                                <label for="loanRate" class="form-group__label">Lãi suất vay</label>
-                                <div class="form-group__input-wrap" >
-
+                            <div class="form-group">
+                                <label for="loanRate" class="form-group__label">Interest Rate</label>
+                                <div class="form-group__input-wrap">
                                     <input class="form-group__input" step="0.01" type="number" id="loanRate" value="${loanRate}" name="loanRate" 
                                            required
                                            pattern="^[a-zA-Z0-9_.]{6,20}$" 
-                                           title="LoanRate phải là số dương, không chứa chữ cái, không kí tự đặc biệt ngoài[.,]"
+                                           title="Interest rate must be a positive number without special characters except [.,]"
                                            oninput="validateLoanRate()">
-                                    <span id="nameError"  class="sub-text-input">%/năm</span>
+                                    <span id="nameError"  class="sub-text-input">%/year</span>
                                 </div>
-
                             </div>
+
                             <div class="form-group">
-                                <label for="duration" class="form-group__label">Kỳ hạn gửi (*)</label>
+                                <label for="duration" class="form-group__label">Deposit Term (*)</label>
                                 <div class="form-group__input-wrap" style="display: flex; align-items: center; ">
                                     <input class="form-group__input" step="1" type="number" id="duration" min="1"; value="${duration}" name="duration" 
                                            required
                                            pattern="^[1-9]\d*$" 
-                                           title="LoanRate phải là số nguyên dương, không chứa chữ cái, không kí tự đặc biệt "
+                                           title="Term must be a positive integer, no letters or special characters"
                                            oninput="validateTerm()">
                                     <span id="nameError2"  class="sub-text-input"></span>
-                                   <!--<input  type="number" class="form-group__input" id="duration" name="duration" min="1" value="${duration}" required>-->
                                     <select id="durationUnit" name="durationUnit" class="form-group__select">
-                                        <option value="days" ${durationUnit == 'days' ? 'selected' : ''}>Ngày</option>
-                                        <option value="months" ${durationUnit == 'months' ? 'selected' : ''}>Tháng</option>
-                                        <option value="years" ${durationUnit == 'years' ? 'selected' : ''}>Năm</option>
+                                        <option value="days" ${durationUnit == 'days' ? 'selected' : ''}>Days</option>
+                                        <option value="months" ${durationUnit == 'months' ? 'selected' : ''}>Months</option>
+                                        <option value="years" ${durationUnit == 'years' ? 'selected' : ''}>Years</option>
                                     </select>
-
                                 </div>
                             </div>
-                            <button type="submit" onclick="setMethod('post')"  class="btn-submit">THỰC HIỆN</button>
-                            <button type="submit" onclick="setMethod('get')"  class="btn-submit">Bấm để tải xuống Excel </button>
+
+                            <button type="submit" onclick="setMethod('post')"  class="btn-submit">CALCULATE</button>
+                            <button type="submit" onclick="setMethod('get')"  class="btn-submit">Download as Excel</button>
+
                             <input type="hidden" name="totalAmount" value="${totalAmount}">
                             <input type="hidden" name="interestPerDay" value="${interestPerDay}">
                             <input type="hidden" name="interestPerMonth" value="${interestPerMonth}">
                             <input type="hidden" name="interestPerYear" value="${interestPerYear}">
                         </form>
+
                         <table class="result-table">
                             <tr>
-                                <th>Số tiền gửi</th>
-                                <td>${amount} VNĐ</td>
+                                <th>Deposit Amount</th>
+                                <td>${amount} VND</td>
                             </tr>
                             <tr>
-                                <th>Tiền lãi 1 
-                                    ${durationUnit == 'days' ? 'Ngày' : durationUnit == 'months' ? 'Tháng' : durationUnit == 'years' ? 'Năm' : 'Ngày'}
+                                <th>Interest per 
+                                    ${durationUnit == 'days' ? 'Day' : durationUnit == 'months' ? 'Month' : durationUnit == 'years' ? 'Year' : 'Day'}
                                 </th>
                                 <td>
-                                    ${durationUnit == 'days' ? interestPerDay : durationUnit == 'months' ? interestPerMonth : durationUnit == 'years' ? interestPerYear : interestPerDay} VNĐ
-                                </td>                            </tr>
+                                    ${durationUnit == 'days' ? interestPerDay : durationUnit == 'months' ? interestPerMonth : durationUnit == 'years' ? interestPerYear : interestPerDay} VND
+                                </td>                            
+                            </tr>
                             <tr>
-                                <th>Tổng số tiền nhận được khi đến hạn</th>
-                                <td style="color: red;">${totalAmount} VNĐ</td>
+                                <th>Total Amount at Maturity</th>
+                                <td style="color: red;">${totalAmount} VND</td>
                             </tr>
                         </table>
-
-
-
-
                     </div>
                     <br/>
-                    <div class="congthuc">Công thức tính lãi suất tiết kiệm có kỳ hạn:</div><br/><!-- comment -->
-                    <div class="red">Số tiền lãi = Số tiền gửi x lãi suất (%năm)/12 x số tháng gửi.</div> <br/>
+                    <div class="congthuc">Formula for Fixed-Term Savings Interest Calculation:</div><br/>
+                    <div class="red">Interest = Deposit Amount x (Annual Interest Rate / 12) x Deposit Term</div> <br/>
 
-                    Ví dụ:<br/>
+                    Example:<br/>
 
-                    Gửi tiết kiệm 30.000.000 đồng với kỳ hạn 12 tháng tại ngân hàng có mức lãi suất 6,8%/năm, thì cách tính lãi suất ngân hàng cho số tiền tiết kiệm trong trường hợp này như sau:<br/>
+                    If you deposit 30,000,000 VND for a 12-month term at a bank with an annual interest rate of 6.8%, the interest calculation is as follows:<br/>
 
-                    * Lãi suất hàng tháng là 30.000.000 x 6,8/100/12 x 1 = 170.000 đồng<br/>
+                    * Monthly interest = 30,000,000 x (6.8 / 100) / 12 x 1 = 170,000 VND<br/>
 
-                    * Lãi suất sau 12 tháng gửi là 30.000.000 x 6,8/100/12 x 12 = 2.040.000 đồng<br/>
+                    * Total interest after 12 months = 30,000,000 x (6.8 / 100) / 12 x 12 = 2,040,000 VND<br/>
                 </div>
+
                 <!-- footer -->
                 <%@ include file="footer.jsp"%>
-
                 <!-- footer end -->
-
             </div>
+
             <script>
                 function setMethod(method) {
                     const form = document.getElementById('myForm');
                     form.method = method; // Cập nhật method cho form
                 }
-                  // Toast message animation
-            document.addEventListener('DOMContentLoaded', function () {
-                const toast = document.getElementById('toastMessage');
-                if (toast) {
-                    // Show toast
-                    setTimeout(() => {
-                        toast.classList.add('show');
-                    }, 100);
-
-                    // Hide toast after 3 seconds
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                        // Remove toast from DOM after animation
+                // Toast message animation
+                document.addEventListener('DOMContentLoaded', function () {
+                    const toast = document.getElementById('toastMessage');
+                    if (toast) {
+                        // Show toast
                         setTimeout(() => {
-                            toast.remove();
-                        }, 500);
-                    }, 3000);
-                }
-            });
+                            toast.classList.add('show');
+                        }, 100);
+
+                        // Hide toast after 3 seconds
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                            // Remove toast from DOM after animation
+                            setTimeout(() => {
+                                toast.remove();
+                            }, 500);
+                        }, 3000);
+                    }
+                });
             </script>
 
             <!-- content end -->

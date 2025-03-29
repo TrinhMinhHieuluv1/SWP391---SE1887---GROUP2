@@ -82,6 +82,8 @@ public class GeneratePDFCoverRate extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+                 HttpSession session = request.getSession();
+
         String imageBase64 = request.getParameter("imageCover");
         if (imageBase64 == null || !imageBase64.startsWith("data:image/png;base64,")) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid image data");
@@ -102,6 +104,11 @@ public class GeneratePDFCoverRate extends HttpServlet {
     int coverate100 = Integer.parseInt(request.getParameter("coverate100"));
     int totalCoverate = Integer.parseInt(request.getParameter("totalCoverate"));
         String statusFilter = request.getParameter("statusFilterCover");
+         if (statusFilter == null) {
+            statusFilter = "BothChartCover";
+        }
+                  session.setAttribute("statusFilterCover", statusFilter);
+
 
         // Tính phần trăm
         DecimalFormat df = new DecimalFormat("#.##");

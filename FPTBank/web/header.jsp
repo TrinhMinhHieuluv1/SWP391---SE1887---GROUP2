@@ -60,43 +60,27 @@
                          </a>
                          <nav class="mil-top-menu">
                              <ul>
-                                 <li class="mil-has-children mil-active">
-                                     <a href="#.">Home</a>
+                                 <li class="mil-active"><a href="/timibank/home">Trang trủ</a></li>
+                                 <li class="mil-has-children">
+                                     <a href="#">Service</a>
                                      <ul>
-                                         <li><a href="/timibank/home">Trang trủ</a></li>
-                                         <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-
+                                         <li><a href="/timibank/create-loan-request?Type=Secured">Secured Loan</a><li>
+                                         <li><a href="/timibank/create-loan-request?Type=Unsecured">Unsecured Loan</a><li>
+                                         <li><a href="/timibank/create-saving-request">Saving</a><li>
                                      </ul>
                                  </li>
-                                 <li>
+                                 <li >
                                      <a href="about">About</a>
                                  </li>
                                  <li>
                                      <a href="faq">FAQ</a>
                                  </li>
-                                 <li class="mil-has-children">
-                                     <a href="#.">Blog</a>
-                                     <ul>
-                                         <li><a href="/timibank/news">Tin nổi bật </a></li>
-                                         <li><a href="blog.jsp">Blog list</a></li>
-                                         <li><a href="publication.jsp">Blog details</a></li>
-                                     </ul>
-                                 </li>
-                             <c:if test="${sessionScope.account != null}">
+                                 <li><a href="/timibank/news">News</a></li>
+                                 <c:if test="${sessionScope.account != null}">
                                  <li>
-                                     <a href="contact.jsp">Feedback</a>
+                                     <a href="contact.jsp">Contact Us</a>
                                  </li>
                              </c:if>
-                             <li class="mil-has-children">
-                                 <a href="#.">Pages</a>
-                                 <ul>
-                                     <li><a href="career.jsp">Career</a></li>
-                                     <li><a href="career-details.jsp">Career details</a></li>
-                                     <li><a href="price.jsp">Pricing</a></li>
-                                     <li><a href="register.jsp">Register</a></li>
-
-                                 </ul>
-                             </li>
                          </ul>
                      </nav>
                      <div class="mil-menu-buttons">
@@ -118,6 +102,17 @@
                                              <li><a href="/timibank/myfeedback">My Feedback</a></li>
                                                  <c:if test="${sessionScope.account.getRoleID() == 5}">
                                                  <li><a href="/timibank/myassetsalary">My Asset and Salary</a></li>
+                                                 <li><a href="/timibank/contract-management-for-customer">My Contract</a></li>
+                                                 <li><a href="/timibank/loan-payment-management-for-customer?groupByContract=true">My Payment</a></li>
+                                                 </c:if>
+                                                 <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <li><a href="/timibank/invoiceshowcustomer">My Bill</a></li>
+                                                 </c:if>
+                                                 <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <li><a href="/timibank/historytransaction">History Transaction</a></li>
+                                                 </c:if>
+                                                  <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <li><a href="/timibank/transaction">Tranfer money</a></li>
                                                  </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==4}">
                                                  <li><a href="/timibank/insurance/manageInsurance.jsp">Management</a></li>
@@ -126,7 +121,13 @@
                                                  <li><a href="/timibank/admin/home.jsp">Management</a></li>
                                                  </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==2}">
-                                                 <li><a href="/timibank/seller/home.jsp">Management</a></li>
+                                                 <li><a href="/timibank/seller/faq-management">Management</a></li>
+                                                 </c:if>
+                                                 <c:if test="${sessionScope.account.getRoleID()==3}">
+                                                 <li><a href="/timibank/manager/manageAsset.jsp">Management</a></li>
+                                                 </c:if>
+                                                 <c:if test="${sessionScope.account.getRoleID()==6}">
+                                                 <li><a href="/timibank/bill_provider/invoice">Management</a></li>
                                                  </c:if>
 
 
@@ -165,5 +166,6 @@
         <script src="js/plugins/magnific-popup.js"></script>
         <!-- plax js -->
         <script src="js/main.js"></script>
+        <%@include file="messenger.jsp" %>
     </body>
 </html>

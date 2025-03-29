@@ -326,269 +326,107 @@
         </script>
 
         <!-- wrapper -->
-        <div id="smooth-wrapper" class="mil-wrapper">
-
-            <!-- preloader -->
-            <div class="mil-preloader">
-
-            </div>
-            <!-- preloader end -->
-
-            <!-- scroll progress -->
-            <div class="mil-progress-track">
-                <div class="mil-progress"></div>
-            </div>
-            <!-- scroll progress end -->
-
-            <!-- back to top -->
-            <div class="progress-wrap active-progress"></div>
-
-            <!-- top panel end -->
-            <div class="mil-top-panel">
-                <div class="container">
-                    <a href="/timibank/home" class="mil-logo">
-                        <img src="img/logo1.png" alt="Plax" width="200">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children mil-active">
-                                <a href="#.">Home</a>
-                                <ul>
-
-                                    <li><a href="/timibank/home">Trang trủ</a></li>
-                                    <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.html">Type 3</a></li>
-                                    <li><a href="home-4.html">Type 4</a></li>
-                                    <li><a href="home-5.html">Type 5</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="about">About</a>
-                            </li>
-                            <li>
-                                <a href="faq.jsp">FAQ</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <c:if test="${sessionScope.account != null}">
-                                <li>
-                                    <a href="contact.jsp">Feedback</a>
-                                </li>
-                            </c:if>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mil-menu-buttons">
-                        <c:if test="${sessionScope.account == null}">
-                            <div class="mil-menu-buttons">
-                                <a href="login" class="mil-btn mil-sm">Log in</a>
-                                <a href="register" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
-                            </div>
-                        </c:if>
-                        <c:if test="${sessionScope.account != null}">
-
-                            <nav class="mil-top-menu">
-                                <ul>
-                                    <li class="mil-has-children ">
-                                        <a href="#." class="mil-btn mil-sm">My Account</a>
-                                        <ul>
-                                            <li><a href="profile.jsp">My Profile</a></li>
-                                            <li><a href="/timibank/change-password">Change Password</a></li>
-                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
-                                                <li><a href="/timibank/invoiceshowcustomer">My Bill</a></li>
-                                                </c:if>
-                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
-                                                <li><a href="/timibank/myfeedback">My Feedback</a></li>
-                                                </c:if>
-                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
-                                                <li><a href="/timibank/myassetsalary">My Asset and Salary</a></li>
-                                                </c:if>
-                                            <li><a href="/timibank/logout">Sign out</a></li>
-                                        </ul>
-                                    </li>   
-                                </ul>
-
-
-                            </nav>  
-
-
-                        </c:if>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        <%@ include file="header.jsp"%>
     </div>
     <!-- top panel end -->
     <div class="content">
         <h2 style="text-align:  center;">List of Bill</h2>
 
         <form action="invoiceshowcustomer" method="get">
+           
+                <% 
+        String message = (String) request.getAttribute("error"); 
+        String errorMessage = (String) request.getAttribute("error2"); 
 
-            <div class="filter-group" style="display: flex;">
-                <label for="number" style="margin-left: 30px;" >Number in Page:</label>
-                <select class="form-control" id="statusFilter" name="pagesize">
-                    <c:forEach var="num" items="${requestScope.listint}">
-                        <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
-                    </c:forEach>
-                </select>
-                <label for="status" style="margin-left: 30px;">Status of Bill:</label>
-                <select class="form-control" id="statusFilter" name="statusbill">
-                    <option value="" ${param.statusbill == '' ? 'selected' :''}>-- Select Status --</option>
-                    <option value="true" ${param.statusbill == 'true' ? 'selected' : ''}>Paid</option>
-                    <option value="false" ${param.statusbill == 'false' ? 'selected' : ''}>Unpaid</option>
-                </select>
-                <label for="status" style="margin-left: 30px;">From:</label>
-                <input class="form-control" type="date" name="date1" placeholder="Date"></input>
-                <label for="status" style="margin-left: 30px;">To:</label>
-                <input class="form-control" type="date" name="date2" placeholder="Date"></input>
-            </div>
-            <button type="submit" style="background-color: green; color: white; margin-left: 15%;">Filter</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No.Number</th>
-                        <th>CreatedAt</th>
-                        <th>Customer</th>
-                        <th>Total</th>
-                        <th>Status Of Bill</th> 
-                        <th colspan="2">Action</th>
-                    </tr>
-                </thead>
-                <c:forEach var="bill" items="${requestScope.listB}">
-
-                    <tbody>
-                        <c:set var="count" value="${count + 1}" />
+        if (message != null && !message.trim().isEmpty()) { 
+                %>
+                <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #c3e6cb; width: 1000px; margin-left: 230px;">
+                    <strong>✅ Message:</strong> <%= message %>
+                </div>
+                <% } else if (errorMessage != null && !errorMessage.trim().isEmpty()) { %>
+                <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #f5c6cb; width: 1000px; margin-left: 230px;">
+                    <strong>❌ Error:</strong> <%= errorMessage %>
+                </div>
+                <% } %>
+                <div class="filter-group" style="display: flex;">
+                    <label for="number" style="margin-left: 30px;" >Number in Page:</label>
+                    <select class="form-control" id="statusFilter" name="pagesize">
+                        <c:forEach var="num" items="${requestScope.listint}">
+                            <option value="${num}" ${param.pagesize == num ? 'selected' : '' }>${num}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="status" style="margin-left: 30px;">Status of Bill:</label>
+                    <select class="form-control" id="statusFilter" name="statusbill">
+                        <option value="" ${param.statusbill == '' ? 'selected' :''}>-- Select Status --</option>
+                        <option value="true" ${param.statusbill == 'true' ? 'selected' : ''}>Paid</option>
+                        <option value="false" ${param.statusbill == 'false' ? 'selected' : ''}>Unpaid</option>
+                    </select>
+                    <label for="status" style="margin-left: 30px;">From:</label>
+                    <input class="form-control" type="date" name="date1" placeholder="Date"></input>
+                    <label for="status" style="margin-left: 30px;">To:</label>
+                    <input class="form-control" type="date" name="date2" placeholder="Date"></input>
+                </div>
+                <button type="submit" style="background-color: green; color: white; margin-left: 15%;">Filter</button>
+                <table>
+                    <thead>
                         <tr>
-                            <td>${count}</td>
-                            <td>${bill.getCreatedAt()}</td>
-                            <td>${bill.getCustomer().getFullName()}</td>
-                            <td>${bill.getTotal()}</td>
-                            <td>${bill.getStatusOfBill() == 1 ? "Unpaid" : "Paid"}</td>  
+                            <th>No.Number</th>
+                            <th>CreatedAt</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status Of Bill</th> 
+                            <th colspan="2">Action</th>
+                        </tr>
+                    </thead>
+                    <c:forEach var="bill" items="${requestScope.listB}">
 
-                            <td><a href="detailbillcustomer?billID=${bill.getBillID()}&providerID=${bill.getProvider().getUserID()}" 
-                                   style="display: inline-block; background-color: green; color: white;
-                                   border-radius: 5px; padding: 5px 10px; text-decoration: none;">
-                                    Detail
-                                </a></td>
-                                <c:if test="${bill.getStatusOfBill() == 1}">
-                                <td><a href="payment?billID=${bill.getBillID()}&providerID=${bill.getProvider().getUserID()}&total=${bill.getTotal()}" 
+                        <tbody>
+                            <c:set var="count" value="${count + 1}" />
+                            <tr>
+                                <td>${count}</td>
+                                <td>${bill.getCreatedAt()}</td>
+                                <td>${bill.getCustomer().getFullName()}</td>
+                                <td>${bill.getTotal()}</td>
+                                <td>${bill.getStatusOfBill() == 1 ? "Unpaid" : "Paid"}</td>  
+
+                                <td><a href="detailbillcustomer?billID=${bill.getBillID()}&providerID=${bill.getProvider().getUserID()}" 
                                        style="display: inline-block; background-color: green; color: white;
                                        border-radius: 5px; padding: 5px 10px; text-decoration: none;">
-                                        Paid
+                                        Detail
                                     </a></td>
-                                </c:if>
-                        </tr>
-                    </tbody>
+                                    <c:if test="${bill.getStatusOfBill() == 1}">
+                                    <td><a href="payment?billID=${bill.getBillID()}&providerID=${bill.getProvider().getUserID()}&total=${bill.getTotal()}" 
+                                           style="display: inline-block; background-color: green; color: white;
+                                           border-radius: 5px; padding: 5px 10px; text-decoration: none;">
+                                            Paid
+                                        </a></td>
+                                    </c:if>
+                            </tr>
+                        </tbody>
 
+                    </c:forEach>
+                </table>
+            </form>
+
+
+            <!-- Pagination Controls -->
+            <div class="pagination">
+                <c:if test="${currentPage > 1}">
+                    <a href="invoiceshowcustomer?page=${currentPage - 1}&statusbill=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" 
+                       class="prev">Previous</a>
+                </c:if>
+
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <a href="invoiceshowcustomer?page=${i}&statusbill=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                 </c:forEach>
-            </table>
-        </form>
 
-
-        <!-- Pagination Controls -->
-        <div class="pagination">
-            <c:if test="${currentPage > 1}">
-                <a href="invoiceshowcustomer?page=${currentPage - 1}&statusresponse=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" 
-                   class="prev">Previous</a>
-            </c:if>
-
-            <c:forEach var="i" begin="1" end="${totalPages}">
-                <a href="invoiceshowcustomer?page=${i}&statusresponse=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="${i == currentPage ? 'active' : ''}">${i}</a>
-            </c:forEach>
-
-            <c:if test="${currentPage < totalPages}">
-                <a href="invoiceshowcustomer?page=${currentPage + 1}&statusresponse=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="next">Next</a>
-            </c:if>
-        </div>
-
+                <c:if test="${currentPage < totalPages}">
+                    <a href="invoiceshowcustomer?page=${currentPage + 1}&statusbill=${param.statusbill}&pagesize=${param.pagesize}&date1=${param.date1}&date2=${param.date2}" class="next">Next</a>
+                </c:if>
+            </div>
     </div>
 
-    <!-- footer -->
-    <footer class="mil-footer-with-bg mil-p-160-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-3">
-                    <a href="#." class="mil-footer-logo mil-mb-60">
-                        <img src="img/logo-2.png" alt="Plax" width="28" height="32">
-                    </a>
-                </div>
-                <div class="col-xl-3 mil-mb-60">
-                    <h6 class="mil-mb-60">Usefull Links</h6>
-                    <ul class="mil-footer-list">
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="index.jsp">Home</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="about.jsp">About Us</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="contact.jsp">Contact Us</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="services.jsp">Services</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="price.jsp">Pricing</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-xl-3 mil-mb-60">
-                    <h6 class="mil-mb-60">Help</h6>
-                    <ul class="mil-footer-list">
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            999 Rue du Cherche-Midi, 7755500666 Paris, <br>France
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            +001 (808) 555-0111
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            support@plax.network
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-xl-3 mil-mb-80">
-                    <h6 class="mil-mb-60">Newsletter</h6>
-                    <p class="mil-text-xs mil-soft mil-mb-15">Subscribe to get the latest news form us</p>
-                    <form class="mil-subscripe-form-footer">
-                        <input class="mil-input" type="email" placeholder="Email">
-                        <button type="submit"><i class="far fa-envelope-open mil-dark"></i></button>
-                        <div class="mil-checkbox-frame mil-mt-15">
-                            <div class="mil-checkbox">
-                                <input type="checkbox" id="checkbox" checked>
-                                <label for="checkbox"></label>
-                            </div>
-                            <p class="mil-text-xs mil-soft">Subscribe to get the latest news</p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="mil-footer-bottom">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <p class="mil-text-s mil-soft"> 2024 Plax Finance & Fintech Design</p>
-                    </div>
-                    <div class="col-xl-6">
-                        <p class="mil-text-s mil-text-right mil-sm-text-left mil-soft">Developed by <a href="https://bslthemes.com" target="blank">bslthemes</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <%@ include file="footer.jsp"%>
     <!-- footer end -->
 
 </div>

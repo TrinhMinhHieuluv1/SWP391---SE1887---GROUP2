@@ -154,13 +154,13 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-           
+
             <!-- scroll progress end -->
 
             <!-- back to top -->
 
             <!-- top panel end -->
-           <%@ include file="header.jsp"%>
+            <%@ include file="header.jsp"%>
             <!-- top panel end -->
             <div class="cuong"></div>
             <div class="container-xl px-4 mt-4">
@@ -179,9 +179,12 @@
                                         <input style="color: white;" id="inputUsername" name="image" type="file" accept="uploads/*" >
                                         <span id="imgError" class="error"></span>
                                     </div>
-                                    <% if(request.getAttribute("error2")!=null)  {%>
-                                    <a style="color:red; font-style: italic"><%out.println(request.getAttribute("error2"));%></a>
-                                    <%}%>
+                                    <% if(request.getAttribute("error2") != null) { %>
+                                    <div style="color: red; font-style: italic; margin-bottom: 10px;">
+                                        <%= request.getAttribute("error2") %>
+                                    </div>
+                                    <% } %>
+
                                     <!-- Profile picture upload button-->
                                     <button class="btn btn-primary" type="submit">Upload new image</button>
                                 </form>
@@ -245,6 +248,12 @@
                                                 <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" value="Customer" readonly>
                                             </div>
                                         </c:if>
+                                        <c:if test="${sessionScope.account.roleID == 6}">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="inputOrgName">Role</label>
+                                                <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" value="Bill Provider" readonly>
+                                            </div>
+                                        </c:if>
                                         <!-- Form Group (location)-->
                                         <div class="col-md-6">
                                             <label class="small mb-1" for="inputLocation">Gender</label>
@@ -274,7 +283,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="small mb-1" for="inputEmailAddress">Address</label>
-                                        <input class="form-control" id="inputEmailAddress" name="address" type="text" placeholder="Enter your email address" value="${sessionScope.account.address}" require>
+                                        <input class="form-control" id="inputEmailAddress" name="address" type="text" placeholder="Enter your address" value="${sessionScope.account.address}" require>
                                     </div>
                                     <!-- Save changes button-->
                                     <% if(request.getAttribute("error")!=null)  {%>
@@ -290,7 +299,7 @@
                 </div>
             </div>
             <!-- footer -->
-                              <%@ include file="footer.jsp"%>
+            <%@ include file="footer.jsp"%>
 
             <!-- footer end -->
 

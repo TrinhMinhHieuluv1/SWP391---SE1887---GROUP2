@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -277,11 +278,19 @@
 
             header h1 {
                 background: #000;
-                border-radius: 0.25em;
+                border-radius: 10px; /* Làm bo góc mềm mại hơn */
                 color: #FFF;
-                margin: 0 0 1em;
-                padding: 0.5em 0;
+                margin: 20px auto; /* Căn giữa theo chiều ngang */
+                padding: 20px 0; /* Tăng padding để chữ không bị dính */
+                width: 100%; /* Thay vì cố định px, dùng % để linh hoạt */
+                max-width: 1000px; /* Giới hạn độ rộng tối đa */
+                height: auto; /* Để chiều cao tự động phù hợp nội dung */
+                text-align: center; /* Căn giữa chữ */
+                font-size: 2.5em; /* Làm chữ to rõ hơn */
+                font-weight: bold;
+                letter-spacing: 2px; /* Tạo khoảng cách giữa các ký tự */
             }
+
             header address {
                 float: left;
                 font-size: 75%;
@@ -491,11 +500,67 @@
                 background-color: white;
                 padding: 10px;
             }
-
+            .container {
+                display: flex;
+                gap: 20px;
+            }
+            .card {
+                width: 150px;
+                height: 150px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                cursor: pointer;
+                transition: 0.3s;
+                text-align: center;
+            }
+            .card:hover {
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                transform: scale(1.05);
+            }
+            .card img {
+                width: 40px;
+                height: 40px;
+            }
+            .card p {
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                margin: 0;
+            }
         </style>
+        <script>
+            function selectPayment(method) {
+                document.getElementById('paymentMethod').value = method;
 
+                // Xóa viền của tất cả thẻ trước khi chọn lại
+                document.querySelectorAll('.card').forEach(card => {
+                    card.style.border = "none";
+                });
+
+                // Tô viền xanh cho thẻ được chọn
+                event.currentTarget.style.border = "3px solid blue";
+            }
+
+            function validatePayment(event) {
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                if (!paymentMethod) {
+                    alert("Please choose a payment method!");
+                    event.preventDefault(); // Ngăn form gửi nếu chưa chọn
+                    return false;
+                }
+
+                // Gửi form với phương thức thanh toán trên URL
+                const form = document.getElementById('paymentForm');
+                form.action = form.action + "&paymentMethod=" + encodeURIComponent(paymentMethod);
+        </script>
     </head>
-
+        
     <body>
 
         <!-- Error Notification -->
@@ -511,138 +576,25 @@
         </div>
 
         <script>
-            function closeNotification() {
-                const notification = document.getElementById('notification');
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 500);
-            }
-
-            // Auto close after 5 seconds
-            if (document.getElementById('notification').classList.contains('show')) {
-                setTimeout(closeNotification, 5000);
-            }
+                function setPaymentMethod(method) {
+                    document.getElementById("paymentMethod").value = method;
+                }
         </script>
 
-        <!-- wrapper -->
-        <div id="smooth-wrapper" class="mil-wrapper">
-
-            <!-- preloader -->
-            <div class="mil-preloader">
-
-            </div>
-            <!-- preloader end -->
-
-            <!-- scroll progress -->
-            <div class="mil-progress-track">
-                <div class="mil-progress"></div>
-            </div>
-            <!-- scroll progress end -->
-
-            <!-- back to top -->
-            <div class="progress-wrap active-progress"></div>
-
-            <!-- top panel end -->
-            <div class="mil-top-panel">
-                <div class="container">
-                    <a href="/timibank/home" class="mil-logo">
-                        <img src="img/logo1.png" alt="Plax" width="200">
-                    </a>
-                    <nav class="mil-top-menu">
-                        <ul>
-                            <li class="mil-has-children mil-active">
-                                <a href="#.">Home</a>
-                                <ul>
-
-                                    <li><a href="/timibank/home">Trang trủ</a></li>
-                                    <li><a href="home-2.html">Gửi tiết kiệm</a></li>
-                                    <li><a href="home-3.html">Type 3</a></li>
-                                    <li><a href="home-4.html">Type 4</a></li>
-                                    <li><a href="home-5.html">Type 5</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="about">About</a>
-                            </li>
-                            <li>
-                                <a href="faq.jsp">FAQ</a>
-                            </li>
-                            <li class="mil-has-children">
-                                <a href="#.">Blog</a>
-                                <ul>
-                                    <li><a href="blog.jsp">Blog list</a></li>
-                                    <li><a href="publication.jsp">Blog details</a></li>
-                                </ul>
-                            </li>
-                            <c:if test="${sessionScope.account != null}">
-                                <li>
-                                    <a href="contact.jsp">Feedback</a>
-                                </li>
-                            </c:if>
-                            <li class="mil-has-children">
-                                <a href="#.">Pages</a>
-                                <ul>
-                                    <li><a href="career.jsp">Career</a></li>
-                                    <li><a href="career-details.jsp">Career details</a></li>
-                                    <li><a href="price.jsp">Pricing</a></li>
-                                    <li><a href="register.jsp">Register</a></li>
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mil-menu-buttons">
-                        <c:if test="${sessionScope.account == null}">
-                            <div class="mil-menu-buttons">
-                                <a href="login" class="mil-btn mil-sm">Log in</a>
-                                <a href="register" class="mil-btn mil-sm" style="margin-left: 10px">Register</a>
-                            </div>
-                        </c:if>
-                        <c:if test="${sessionScope.account != null}">
-
-                            <nav class="mil-top-menu">
-                                <ul>
-                                    <li class="mil-has-children ">
-                                        <a href="#." class="mil-btn mil-sm">My Account</a>
-                                        <ul>
-                                            <li><a href="profile.jsp">My Profile</a></li>
-                                            <li><a href="/timibank/change-password">Change Password</a></li>
-                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
-                                                <li><a href="/timibank/invoiceshowcustomer">My Bill</a></li>
-                                                </c:if>
-                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
-                                                <li><a href="/timibank/myfeedback">My Feedback</a></li>
-                                                </c:if>
-                                                <c:if test="${sessionScope.account.getRoleID() == 5}">
-                                                <li><a href="/timibank/myassetsalary">My Asset and Salary</a></li>
-                                                </c:if>
-                                            <li><a href="/timibank/logout">Sign out</a></li>
-                                        </ul>
-                                    </li>   
-                                </ul>
-
-
-                            </nav>  
-
-
-                        </c:if>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        <%@ include file="header.jsp"%>
     </div>
     <!-- top panel end -->
     <div class="content">
-        <form action="payment" method="get">
+        <form action="payment" method="get" onsubmit="validatePayment(event)">
             <header>
                 <h1>Payment</h1>
 
                 <span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
             </header>
-            <h3 class="balance">Your Balance: <span>${requestScope.customer.getBalance()} VNĐ</span></h3>
-            <% if(request.getAttribute("error")!=null)  {%>
+            <h3 class="balance">Your Balance: <span>
+                    <fmt:formatNumber value="${requestScope.customer.getBalance()}" type="number" maxFractionDigits="0"/> VNĐ
+                </span></h3>
+                <% if(request.getAttribute("error")!=null)  {%>
             <a style="color:red; font-style: italic; "><%out.println(request.getAttribute("error"));%></a>
             <%}%>
             <article>
@@ -689,18 +641,26 @@
                 </table>
 
             </article>
-                        <select name="paymentmethod" style="border: solid 1px; height: 20px; border-radius: 3px;">
-                <option value="balance" ${param.paymentmethod == 'balance' ? 'selected' :''}>Directly Balance</option>
-                <option  value="transfer" ${param.paymentmethod == 'transfer' ? 'selected' :''}>Transfer</option>
-            </select>
-            <div style="diplay: flex;">
-                <button type="submit" name="action" value="Paid" style="display: inline-block; background-color: blue; color: white;
-                        border-radius: 5px; padding: 5px 10px; text-decoration: none; margin-left: 0%;"> 
-                    Paid
+            <div style="font-weight: bold;  ">Please choose payment method</div>
+            <input type="hidden" name="paymentMethod" id="paymentMethod">
+
+            <div class="container">
+                <!-- Button Balance -->
+                <button style="width: 180px; height: 180px; border: 2px solid grey; border-radius: 5px; padding: 5px;" type="submit" class="payment-btn" onclick="setPaymentMethod('balance')">
+                    <img src="https://png.pngtree.com/png-clipart/20220616/original/pngtree-icon-game-golden-coin-png-image_8090807.png" alt="Balance">
+                    Balance
                 </button>
+
+                <!-- Button VNPay -->
+                <button type="submit" style="width: 180px; height: 180px; margin-left: 10px; border: 2px solid grey;padding: 5px;" class="payment-btn" onclick="setPaymentMethod('vnpay')">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp1v7T287-ikP1m7dEUbs2n1SbbLEqkMd1ZA&s" alt="VNPay">
+                    VNPay
+                </button>
+            </div>
+            <div style="diplay: flex;">
                 <a href="invoiceshowcustomer" 
                    style="display: inline-block; background-color: blue; color: white;
-                   border-radius: 5px; padding: 5px 10px; text-decoration: none;">
+                   border-radius: 5px; padding: 5px 10px; text-decoration: none; margin-top: 30px;">
                     Back to list bill
                 </a>
             </div>
@@ -708,77 +668,7 @@
     </div>
 
 
-    <!-- footer -->
-    <footer class="mil-footer-with-bg mil-p-160-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-3">
-                    <a href="#." class="mil-footer-logo mil-mb-60">
-                        <img src="img/logo-2.png" alt="Plax" width="28" height="32">
-                    </a>
-                </div>
-                <div class="col-xl-3 mil-mb-60">
-                    <h6 class="mil-mb-60">Usefull Links</h6>
-                    <ul class="mil-footer-list">
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="index.jsp">Home</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="about.jsp">About Us</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="contact.jsp">Contact Us</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="services.jsp">Services</a>
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            <a href="price.jsp">Pricing</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-xl-3 mil-mb-60">
-                    <h6 class="mil-mb-60">Help</h6>
-                    <ul class="mil-footer-list">
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            999 Rue du Cherche-Midi, 7755500666 Paris, <br>France
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            +001 (808) 555-0111
-                        </li>
-                        <li class="mil-text-m mil-soft mil-mb-15">
-                            support@plax.network
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-xl-3 mil-mb-80">
-                    <h6 class="mil-mb-60">Newsletter</h6>
-                    <p class="mil-text-xs mil-soft mil-mb-15">Subscribe to get the latest news form us</p>
-                    <form class="mil-subscripe-form-footer">
-                        <input class="mil-input" type="email" placeholder="Email">
-                        <button type="submit"><i class="far fa-envelope-open mil-dark"></i></button>
-                        <div class="mil-checkbox-frame mil-mt-15">
-                            <div class="mil-checkbox">
-                                <input type="checkbox" id="checkbox" checked>
-                                <label for="checkbox"></label>
-                            </div>
-                            <p class="mil-text-xs mil-soft">Subscribe to get the latest news</p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="mil-footer-bottom">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <p class="mil-text-s mil-soft"> 2024 Plax Finance & Fintech Design</p>
-                    </div>
-                    <div class="col-xl-6">
-                        <p class="mil-text-s mil-text-right mil-sm-text-left mil-soft">Developed by <a href="https://bslthemes.com" target="blank">bslthemes</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <%@ include file="footer.jsp"%>
     <!-- footer end -->
 
 </div>

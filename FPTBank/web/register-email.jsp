@@ -50,6 +50,10 @@
                 const emailToCheck = document.getElementById('email').value;
                 const err = document.getElementById('duplicated-email');
                 const emailArray = <%=request.getAttribute("emailArray")%>;
+                for (var item in emailArray) {
+                    console.log(item);
+                }
+
                 if (emailArray.includes(emailToCheck)) {
                     err.style.display = 'block';
                     return false;
@@ -85,13 +89,13 @@
             <!-- preloader end -->
 
             <!-- scroll progress -->
-            
+
             <!-- scroll progress end -->
 
             <!-- back to top -->
 
             <!-- top panel end -->
-          <%@ include file="header.jsp"%>
+            <%@ include file="header.jsp"%>
             <!-- top panel end -->
 
             <!-- content -->
@@ -130,7 +134,7 @@
                 </div>
                 <!-- register form end -->
 
-                               <%@ include file="footer.jsp"%>
+                <%@ include file="footer.jsp"%>
 
 
             </div>
