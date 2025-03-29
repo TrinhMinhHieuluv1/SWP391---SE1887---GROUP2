@@ -415,21 +415,21 @@
                     <div class="transaction-card">
                         <div class="transaction-date">${transaction.getCreatedAt()}</div>
                         <div class="row align-items-center">
-                            <div class="col-6 title-text">${check == true ? "Receive Money" : "Transfer Money"}</div>
+                            <div class="col-6 title-text">${check == false ? "Receive Money" : "Transfer Money"}</div>
                             <div class="col-6 text-end transaction-amount text-success">
-                                ${check == true ? "+" : "-"} <fmt:formatNumber value="${transaction.getAmount()}" type="number" pattern="#,##0"/> VND
+                                ${check == false ? "+" : "-"} <fmt:formatNumber value="${transaction.getAmount()}" type="number" pattern="#,##0"/> VND
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6 time-text">${transaction.getTransaction_type()}</div>
                             <div class="col-6 description-text">
                                 ${transaction.getNote()} <br/>
-                                <c:if test="${check == false}">
+                                <c:if test="${check == true}">
                                     <c:if test="${transaction.getCustomer().getCustomerId() != transaction.getReceiver().getCustomerId()}">
                                         <div>Receiver: ${transaction.getReceiver().getFullName() }</div>
                                     </c:if>
                                 </c:if>
-                                <c:if test="${check == true}">
+                                <c:if test="${check == false}">
                                     <c:if test="${transaction.getCustomer().getCustomerId() != transaction.getReceiver().getCustomerId()}">
                                         <div>Transferor: ${transaction.getCustomer().getFullName()}</div>
                                     </c:if>
