@@ -1,6 +1,11 @@
-package controller;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 
-import dal.ServiceItemDAO;
+package controller.service;
+
+import dal.InsuranceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,45 +16,42 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
-import model.ServiceItem;
+import model.Insurance;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "getServiceItemList", urlPatterns = {"/get-service-item-list"})
-public class getServiceItemList extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+@WebServlet(name="getInsuranceList", urlPatterns={"/get-insurance-list"})
+public class getInsuranceList extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet getServiceItemList</title>");
+            out.println("<title>Servlet getInsuranceList</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet getServiceItemList at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet getInsuranceList at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,8 +59,8 @@ public class getServiceItemList extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        ServiceItemDAO sidao = new ServiceItemDAO();
+    throws ServletException, IOException {
+        InsuranceDAO idao = new InsuranceDAO();
         String Amount_raw = request.getParameter("Amount");
         Amount_raw = Amount_raw.replace(".", "");
         String Type = request.getParameter("Type");
@@ -74,44 +76,38 @@ public class getServiceItemList extends HttpServlet {
         } else if (Type.equals("Unsecured")) {
             Type = "Unsecured Loan";
         }
-        List<ServiceItem> serviceItemList = sidao.getServiceItemList(Amount, Type);
-        if (serviceItemList.size() > 0) {
+        List<Insurance> insuranceList = idao.getInsuranceList(Amount, Type);
+        if (insuranceList.size() > 0) {
             response.getWriter().println("<tr>\n" +
-"                            <th></th>\n" +
-"                            <th>Service Item Name</th>\n" +
-"                            <th>Max Amount</th>\n" +
-"                            <th>Max Period (months)</th>\n" +
-"                            <th>Min Credit Score</th>\n" +
-"                            <th>Late Payment Rate (%)</th>\n" +
-"                            <th>Interest Rate (%)</th>\n" +
-"                        </tr>");
-            for (ServiceItem serviceItem : serviceItemList) {
+                                        "<th></th>\n" +
+                                        "<th>Insurance Name</th>\n" +
+                                        "<th>Fee Rate (%)</th>\n" +
+                                        "<th>Coverage Rate (months)</th>\n" +
+                                        "<th>Max Amount For Loan</th>\n" +
+                                                                                "</tr>");
+            for (Insurance insurance : insuranceList) {
                 response.getWriter().println("<tr>\n"
-                        + "<th><input name=\"choosenServiceItem\" type=\"radio\" "
-                                + "value=\"" + serviceItem.getServiceItemID() 
-                                + "-" + serviceItem.getServiceItemName() 
-                                + "-" + df.format(serviceItem.getMaxAmount())
-                                + "-" + serviceItem.getMaxPeriod() 
-                                + "-" + serviceItem.getMinCreditScore() 
-                                + "-" + serviceItem.getLatePaymentRate() 
-                                + "-" + serviceItem.getInterestRate() + "\"></th>\n"
-                        + "<th>" + serviceItem.getServiceItemName() + "</th>\n"
-                        + "<th>" + df.format(serviceItem.getMaxAmount()) + "</th>\n"
-                        + "<th>" + serviceItem.getMaxPeriod() + "</th>\n"
-                        + "<th>" + serviceItem.getMinCreditScore() + "</th>\n"
-                        + "<th>" + serviceItem.getLatePaymentRate() + "</th>\n"
-                        + "<th>" + serviceItem.getInterestRate() + "</th>\n"
+                        + "<th><input name=\"choosenInsurance\" type=\"radio\" "
+                                + "value=\"" + insurance.getInsuranceID()
+                                + "-" + insurance.getInsuranceName()
+                                + "-" + insurance.getFeeRate()
+                                + "-" + insurance.getCoverageRate()
+                                + "-" + df.format(BigDecimal.valueOf(insurance.getMaxAmountOfLoan()))
+                                + "\"></th>\n"
+                        + "<th>" + insurance.getInsuranceName() + "</th>\n"
+                        + "<th>" + insurance.getFeeRate() + "</th>\n"
+                        + "<th>" + insurance.getCoverageRate() +"</th>\n"
+                        + "<th>" + df.format(BigDecimal.valueOf(insurance.getMaxAmountOfLoan())) + "</th>\n"
                         + "</tr>");
             }
         }
         else {
-            response.getWriter().println("<tr><h5 style=\"color: red\">We don't provide any loan item for your loan requirement. Try to change your requirement!</h5></tr>");
+            response.getWriter().println("<tr><h5 style=\"color: red\">We don't provide any insurance for your loan requirement. Try to change your requirement!</h5></tr>");
         }
-    }
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -119,13 +115,12 @@ public class getServiceItemList extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

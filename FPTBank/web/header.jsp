@@ -60,13 +60,13 @@
                          </a>
                          <nav class="mil-top-menu">
                              <ul>
-                                 <li><a href="/timibank/home">Home</a></li>
-                                 <li class="mil-has-children ">
-                                     <a href="/timibank/create-loan-request">Service</a>
+                                 <li class="mil-active"><a href="/timibank/home">Trang trủ</a></li>
+                                 <li class="mil-has-children">
+                                     <a href="#">Service</a>
                                      <ul>
                                          <li><a href="/timibank/create-loan-request?Type=Secured">Secured Loan</a><li>
                                          <li><a href="/timibank/create-loan-request?Type=Unsecured">Unsecured Loan</a><li>
-                                         <li class="mil-has-children mil-active"><a>Saving</a><li>
+                                         <li><a href="/timibank/create-saving-request">Saving</a><li>
                                      </ul>
                                  </li>
                                  <li >

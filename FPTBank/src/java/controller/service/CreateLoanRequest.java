@@ -1,4 +1,4 @@
-package controller;
+package controller.service;
 
 import dal.AssetDAO;
 import dal.ContractDAO;
@@ -83,6 +83,10 @@ public class CreateLoanRequest extends HttpServlet {
         List<ServiceItem> serviceItemList = sidao.selectAllServiceItem();
         request.setAttribute("serviceItemList", serviceItemList);
 
+        if (account == null) {
+            response.sendRedirect("/timibank/home?RoleErr=true");
+            return;
+        }
         //Resource for Secured Loan
         if (Type == null || Type.isEmpty() || Type.equals("Secured")) {
             List<Asset> assetList = adao.getAssetListForCustomer(account.getCustomerId());

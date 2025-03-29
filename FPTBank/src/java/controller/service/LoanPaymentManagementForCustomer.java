@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.service;
 
 import dal.ContractDAO;
 import dal.LoanPaymentDAO;
@@ -72,6 +72,10 @@ public class LoanPaymentManagementForCustomer extends HttpServlet {
         LoanPaymentDAO lpdao = new LoanPaymentDAO();
         ContractDAO ctdao = new ContractDAO();
 
+        if (account == null) {
+            response.sendRedirect("/timibank/home?RoleErr=true");
+            return;
+        }
         String groupByContract = request.getParameter("groupByContract");
         if (groupByContract != null && !groupByContract.isEmpty() && groupByContract.equals("true")) {
             request.setAttribute("groupByContract", "true");

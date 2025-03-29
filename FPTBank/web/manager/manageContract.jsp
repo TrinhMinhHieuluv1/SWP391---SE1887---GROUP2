@@ -1295,6 +1295,7 @@
                                     <span class="status-label status-${contract.getStatusID()}">
                                         <c:choose>
                                             <c:when test="${contract.getStatusID() == 1}">Pending</c:when>
+                                            <c:when test="${contract.getStatusID() == 2}">Canceled</c:when>
                                             <c:when test="${contract.getStatusID() == 3}">Doing</c:when>
                                             <c:when test="${contract.getStatusID() == 4}">Rejected</c:when>
                                             <c:when test="${contract.getStatusID() == 5}">Completed</c:when>

@@ -130,7 +130,7 @@
 
 
     <div class="form-container">
-        <h3 class="fw-bold mb-3">UPDATE SAVING SERVICE ITEM</h3>
+        <h3 class="fw-bold mb-3">UPDATE LOAN SERVICE ITEM</h3>
         <form action="update_serviceItemLoan" method="post">
 
             <!-- Service Item Name -->
