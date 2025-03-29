@@ -1,4 +1,4 @@
-package controller;
+package controller.service;
 
 import dal.ServiceItemDAO;
 import java.io.IOException;
@@ -76,35 +76,61 @@ public class getServiceItemList extends HttpServlet {
         }
         List<ServiceItem> serviceItemList = sidao.getServiceItemList(Amount, Type);
         if (serviceItemList.size() > 0) {
-            response.getWriter().println("<tr>\n" +
-"                            <th></th>\n" +
-"                            <th>Service Item Name</th>\n" +
-"                            <th>Max Amount</th>\n" +
-"                            <th>Max Period (months)</th>\n" +
-"                            <th>Min Credit Score</th>\n" +
-"                            <th>Late Payment Rate (%)</th>\n" +
-"                            <th>Interest Rate (%)</th>\n" +
-"                        </tr>");
-            for (ServiceItem serviceItem : serviceItemList) {
+            if (Type.equals("Saving")) {
                 response.getWriter().println("<tr>\n"
-                        + "<th><input name=\"choosenServiceItem\" type=\"radio\" "
-                                + "value=\"" + serviceItem.getServiceItemID() 
-                                + "-" + serviceItem.getServiceItemName() 
-                                + "-" + df.format(serviceItem.getMaxAmount())
-                                + "-" + serviceItem.getMaxPeriod() 
-                                + "-" + serviceItem.getMinCreditScore() 
-                                + "-" + serviceItem.getLatePaymentRate() 
-                                + "-" + serviceItem.getInterestRate() + "\"></th>\n"
-                        + "<th>" + serviceItem.getServiceItemName() + "</th>\n"
-                        + "<th>" + df.format(serviceItem.getMaxAmount()) + "</th>\n"
-                        + "<th>" + serviceItem.getMaxPeriod() + "</th>\n"
-                        + "<th>" + serviceItem.getMinCreditScore() + "</th>\n"
-                        + "<th>" + serviceItem.getLatePaymentRate() + "</th>\n"
-                        + "<th>" + serviceItem.getInterestRate() + "</th>\n"
+                        + "     <th></th>\n"
+                        + "     <th>Service Item Name</th>\n"
+                        + "     <th>Min Amount</th>\n"
+                        + "     <th>Min Period (months)</th>\n"
+                        + "     <th>Early Withdraw Rate (%)</th>\n"
+                        + "     <th>Interest Rate (%)</th>\n"
                         + "</tr>");
+                for (ServiceItem serviceItem : serviceItemList) {
+                    response.getWriter().println("<tr>\n"
+                            + "<th><input name=\"choosenServiceItem\" type=\"radio\" "
+                            + "value=\"" + serviceItem.getServiceItemID()
+                            + "-" + serviceItem.getServiceItemName()
+                            + "-" + df.format(serviceItem.getMinAmount())
+                            + "-" + serviceItem.getMinPeriod()
+                            + "-" + serviceItem.getEarlyWithdrawRate()
+                            + "-" + serviceItem.getInterestRate() + "\"></th>\n"
+                            + "<th>" + serviceItem.getServiceItemName() + "</th>\n"
+                            + "<th>" + df.format(serviceItem.getMinAmount()) + "</th>\n"
+                            + "<th>" + serviceItem.getMinPeriod() + "</th>\n"
+                            + "<th>" + serviceItem.getEarlyWithdrawRate() + "</th>\n"
+                            + "<th>" + serviceItem.getInterestRate() + "</th>\n"
+                            + "</tr>");
+                }
+            } else {
+                response.getWriter().println("<tr>\n"
+                        + "<th></th>\n"
+                        + "<th>Service Item Name</th>\n"
+                        + "<th>Max Amount</th>\n"
+                        + "<th>Max Period (months)</th>\n"
+                        + "<th>Min Credit Score</th>\n"
+                        + "<th>Late Payment Rate (%)</th>\n"
+                        + "<th>Interest Rate (%)</th>\n"
+                        + "</tr>");
+                for (ServiceItem serviceItem : serviceItemList) {
+                    response.getWriter().println("<tr>\n"
+                            + "<th><input name=\"choosenServiceItem\" type=\"radio\" "
+                            + "value=\"" + serviceItem.getServiceItemID()
+                            + "-" + serviceItem.getServiceItemName()
+                            + "-" + df.format(serviceItem.getMaxAmount())
+                            + "-" + serviceItem.getMaxPeriod()
+                            + "-" + serviceItem.getMinCreditScore()
+                            + "-" + serviceItem.getLatePaymentRate()
+                            + "-" + serviceItem.getInterestRate() + "\"></th>\n"
+                            + "<th>" + serviceItem.getServiceItemName() + "</th>\n"
+                            + "<th>" + df.format(serviceItem.getMaxAmount()) + "</th>\n"
+                            + "<th>" + serviceItem.getMaxPeriod() + "</th>\n"
+                            + "<th>" + serviceItem.getMinCreditScore() + "</th>\n"
+                            + "<th>" + serviceItem.getLatePaymentRate() + "</th>\n"
+                            + "<th>" + serviceItem.getInterestRate() + "</th>\n"
+                            + "</tr>");
+                }
             }
-        }
-        else {
+        } else {
             response.getWriter().println("<tr><h5 style=\"color: red\">We don't provide any loan item for your loan requirement. Try to change your requirement!</h5></tr>");
         }
     }

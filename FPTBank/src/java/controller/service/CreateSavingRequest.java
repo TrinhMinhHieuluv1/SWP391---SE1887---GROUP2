@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.service;
 
-import Tools.HashString;
-import dal.CustomerDAO;
-import dal.UserDAO;
+import dal.ContractDAO;
+import dal.ServiceItemDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,17 +15,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.List;
+import model.Contract;
 import model.Customer;
-import model.User;
-import org.json.simple.JSONArray;
+import model.ServiceItem;
+import org.apache.catalina.connector.Response;
+import org.apache.poi.hpsf.Decimal;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "Register", urlPatterns = {"/register"})
-public class Register extends HttpServlet {
+@WebServlet(name = "CreateSavingRequest", urlPatterns = {"/create-saving-request"})
+public class CreateSavingRequest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +46,10 @@ public class Register extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Register</title>");
+            out.println("<title>Servlet CreateSavingRequest</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Register at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateSavingRequest at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,19 +67,12 @@ public class Register extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CustomerDAO cDAO = new CustomerDAO();
-        JSONArray usernameArray = new JSONArray();
-        JSONArray phoneArray = new JSONArray();
-        JSONArray cccdArray = new JSONArray();
-        for (Customer customer : cDAO.selectAllCustomer()) {
-            usernameArray.add(customer.getUsername());
-            phoneArray.add(customer.getPhone());
-            cccdArray.add(customer.getCCCD());
+        HttpSession session = request.getSession();
+        if (session.getAttribute("account") == null) {
+            response.sendRedirect("/timibank/home?RoleErr=true");
+            return;
         }
-        request.setAttribute("usernameArray", usernameArray);
-        request.setAttribute("phoneArray", phoneArray);
-        request.setAttribute("cccdArray", cccdArray);
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+        request.getRequestDispatcher("createSavingRequest.jsp").forward(request, response);
     }
 
     /**
@@ -92,24 +86,49 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ServiceItemDAO sidao = new ServiceItemDAO();
+        ContractDAO ctdao = new ContractDAO();
         HttpSession session = request.getSession();
-        HashString hs = new HashString();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        password = hs.hashString(password);
-        String name = request.getParameter("name");
-        String gender = request.getParameter("gender");
-        String dob_raw = request.getParameter("dob");
-        String image = request.getParameter("image");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String CCCD = request.getParameter("CCCD");
-        Date dob = Date.valueOf(dob_raw);
-        Customer customerToAdd = new Customer(0, 100, 5, username, password, name, image, phone, "", address, CCCD, dob, null, gender.equals("Male"), true, BigDecimal.ZERO);
-        CustomerDAO cdao = new CustomerDAO();
-        cdao.addACustomer(customerToAdd);
-        session.setAttribute("account", cdao.selectCustomerByConditions(0, username, "", ""));
-        response.sendRedirect("/timibank/login?fromRegister=true");
+        Customer account = (Customer) session.getAttribute("account");
+
+        //Get Amount
+        String Amount_raw = request.getParameter("Amount").replaceAll("\\.", "");
+        BigDecimal Amount = BigDecimal.ZERO;
+        try {
+            Amount = BigDecimal.valueOf(Long.parseLong(Amount_raw));
+        } catch (NumberFormatException e) {
+        }
+
+        //Get Service Item
+        String ServiceItemID_raw = request.getParameter("ServiceItem").split("-")[0];
+        int ServiceItemID = -1;
+        ServiceItem ServiceItem = null;
+        try {
+            ServiceItemID = Integer.parseInt(ServiceItemID_raw);
+            ServiceItem = sidao.selectAServiceItemByID(ServiceItemID);
+        } catch (NumberFormatException e) {
+        }
+
+        //Get Period
+        String Period_raw = request.getParameter("Period").split("-")[0];
+        int Period = -1;
+        try {
+            Period = Integer.parseInt(Period_raw);
+        } catch (NumberFormatException e) {
+        }
+
+        //Get Description
+        String Description = request.getParameter("Description");
+
+        //Insert Contract
+        Contract contractToAdd
+                = new Contract(0, account,
+                        Amount, Period,
+                        0, ServiceItem.getEarlyWithdrawRate(),
+                        ServiceItem.getInterestRate(),
+                        "Saving", Description, null, null, null, false, null, 0, null, 0);
+        ctdao.addAContract(contractToAdd);
+        response.sendRedirect("/timibank/contract-management-for-customer?fromAdd=true");
     }
 
     /**

@@ -178,6 +178,15 @@
                 ;
             }
 
+            //Function to validate DOB
+            function validateDOB() {
+                const dob = document.getElementById('dob').value;
+                const err = document.getElementById('err-dob');
+                console.log(dob);
+
+                ;
+            }
+
             function togglePassword(id) {
                 const passwordField = document.getElementById(id);
                 const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -193,13 +202,9 @@
     <body>
         <!-- wrapper -->
         <div id="smooth-wrapper" class="mil-wrapper">
-            <!-- preloader -->
-            <div class="mil-preloader">
-            </div>
-            <!-- preloader end -->
-
-            <!-- scroll progress -->
             
+            <!-- scroll progress -->
+
             <!-- scroll progress end -->
 
             <!-- back to top -->
@@ -254,7 +259,8 @@
                                         <option value="Male" ${requestScope.gender.equals("Male")?"selected":""}>Male</option>
                                         <option value="Female" ${requestScope.gender.equals("Female")?"selected":""}>Female</option>
                                     </select>
-                                    <input type="date" class="mil-input mil-up mil-mb-15" name="dob" placeholder="Date of birth">
+                                    <input id="dob" type="date" class="mil-input mil-up mil-mb-15" name="dob" placeholder="Date of birth" oninput="validateDOB()">
+                                    <div id="err-dob" style="color: red; display: none">Your dob must older than 1900 and you must be 18 years old or older!</div>    
                                     <input type="text" class="mil-input mil-up mil-mb-15" name="phone" placeholder="Phone" id="phone" oninput="validatePhone(); checkPhone()" required>
                                     <div id="err-phone" style="color: red; display: none">Phone has to have 10 digits and start with 0. Try again!</div>
                                     <div id="duplicated-phone" style="color: red; display: none">Phone already exists. Please choose another!</div>
@@ -276,12 +282,12 @@
                     </div>
                 </div>
                 <!-- register form end -->
-                
-             
+
+
 
             </div>
             <!-- content end -->
-                                <%@ include file="footer.jsp"%>
+            <%@ include file="footer.jsp"%>
 
         </div>
         <!-- wrapper end -->

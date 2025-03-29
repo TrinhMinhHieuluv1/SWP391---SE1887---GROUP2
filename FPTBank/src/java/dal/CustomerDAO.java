@@ -509,9 +509,5 @@ public class CustomerDAO extends DBContext {
 
         return 0;
     }
-    public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-       Customer cus = dao.selectCustomerByConditions(0, "", "0523456789", "");
-        System.out.println(cus);
-    }
+    
 }

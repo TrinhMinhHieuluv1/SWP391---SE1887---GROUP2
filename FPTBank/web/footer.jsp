@@ -253,7 +253,6 @@
             <script src="js/plugins/magnific-popup.js"></script>
             <!-- plax js -->
             <script src="js/main.js"></script>
-     <script src="./js/scripts.js"></script>
 </footer>
 
 <!-- footer end -->

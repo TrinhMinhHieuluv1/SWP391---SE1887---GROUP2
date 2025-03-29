@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.service;
 
 import dal.ContractDAO;
 import java.io.IOException;
@@ -66,6 +66,10 @@ public class ContractManagementForCustomer extends HttpServlet {
         Customer account = (Customer) session.getAttribute("account");
         ContractDAO ctdao = new ContractDAO();
 
+        if (account == null) {
+            response.sendRedirect("/timibank/home?RoleErr=true");
+            return;
+        }
         //Show message after add a contract
         String fromAdd = request.getParameter("fromAdd");
         if (fromAdd != null && fromAdd.equals("true")) {

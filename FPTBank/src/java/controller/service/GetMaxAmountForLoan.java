@@ -1,4 +1,4 @@
-package controller;
+package controller.service;
 
 import dal.LoanTermDAO;
 import java.io.IOException;
