@@ -472,6 +472,8 @@
                     </li>
                     <li> <a href="listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
                     </li>
+                    <li> <a href="contract-management-for-manager"><span class="material-symbols-outlined">arrow_right</span>Contract</a>
+                    </li>
 
                 </ul>
                 </li> 
