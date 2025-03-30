@@ -1023,31 +1023,12 @@
                         <img src="assets/images/avatars/01.png" alt="">
                     </div>
                     <div class="user-info">
-                        <h5 class="mb-0 user-name">Jhon Maxwell</h5>
-                        <p class="mb-0 user-designation">UI Engineer</p>
+                        <h5 class="mb-0 user-name">${sessionScope.account.getFullName()}</h5>
+                        <p class="mb-0 user-designation">${sessionScope.account.getEmail()}</p>
                     </div>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                account_circle
-                            </span><span>Profile</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                tune
-                            </span><span>Settings</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                dashboard
-                            </span><span>Dashboard</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                account_balance
-                            </span><span>Earnings</span></a>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-                                cloud_download
-                            </span><span>Downloads</span></a>
-                    </li>
+                    
                     <li>
                         <div class="dropdown-divider mb-0"></div>
                     </li>

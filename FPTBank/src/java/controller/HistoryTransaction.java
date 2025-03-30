@@ -74,27 +74,40 @@ public class HistoryTransaction extends HttpServlet {
         String date_1 = request.getParameter("date1");
         String date_2 = request.getParameter("date2");
         boolean check = false;
-        
-        if(date_1 == null){
+
+        if (date_1 == null) {
             date_1 = "";
         }
-        if(date_2 == null){
+        if (date_2 == null) {
             date_2 = "";
         }
-        
+
         TransactionHistoryDAO dao = new TransactionHistoryDAO();
-        List<TransactionHistory> list = dao.filterListCustomer( date_1, date_2, uid);
-        for(TransactionHistory transaction : list){
-           check = transaction.getBalanceBefore().compareTo(transaction.getBalanceAfter()) > 0;
+        List<TransactionHistory> list = dao.filterListCustomer(date_1, date_2, uid);
+        for (TransactionHistory transaction : list) {
+            boolean transactionCheck = false;  // Biến kiểm tra riêng cho từng giao dịch
+            String type = transaction.getTransaction_type().trim();
+
+            if (type.equalsIgnoreCase("Loan") || type.equalsIgnoreCase("Secured Loan") || type.equalsIgnoreCase("Secured Loans")) {
+                transactionCheck = false;
+            } else if (type.equalsIgnoreCase("Saving") || type.equalsIgnoreCase("Bill Payment")) {
+                transactionCheck = true;
+            } else if (transaction.getBalanceBefore().compareTo(transaction.getBalanceAfter()) > 0) {
+                transactionCheck = true;
+            }
+
+            
+            transaction.setCheck(transactionCheck);
         }
+
         int page = 1;
         int pagesize = 10;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
-        if(number == null || number.trim().isEmpty()){
+        if (number == null || number.trim().isEmpty()) {
             pagesize = 10;
-        }else{
+        } else {
             int numberinpage = Integer.parseInt(number);
             pagesize = numberinpage;
         }
@@ -105,9 +118,9 @@ public class HistoryTransaction extends HttpServlet {
         listint.add((int) Math.ceil((double) totalbill / 100 * 50));
         listint.add((int) Math.ceil((double) totalbill / 100 * 70));
         listint.add((int) Math.ceil((double) totalbill / 100 * 100));
-        int totalPages = totalbill % pagesize == 0 ? totalbill/pagesize : (totalbill/pagesize) + 1;
-        int start = (page - 1)*pagesize;
-        int end = page*pagesize > totalbill ? totalbill : page*pagesize;
+        int totalPages = totalbill % pagesize == 0 ? totalbill / pagesize : (totalbill / pagesize) + 1;
+        int start = (page - 1) * pagesize;
+        int end = page * pagesize > totalbill ? totalbill : page * pagesize;
         list = dao.getListByPage(list, start, end);
         request.setAttribute("listint", listint);
         request.setAttribute("currentPage", page);

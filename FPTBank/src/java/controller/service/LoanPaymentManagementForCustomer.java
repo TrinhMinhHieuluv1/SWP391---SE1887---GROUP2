@@ -133,7 +133,7 @@ public class LoanPaymentManagementForCustomer extends HttpServlet {
             request.setAttribute("pageSizeArray", pageSizeArray);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
-            request.setAttribute("entryList", entryList);
+            request.setAttribute("entryList", entryList);            
         } else {
             request.setAttribute("groupByContract", "false");
             String Status = request.getParameter("Status");
@@ -179,7 +179,7 @@ public class LoanPaymentManagementForCustomer extends HttpServlet {
             request.setAttribute("pageSizeArray", pageSizeArray);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
-            request.setAttribute("lpList", lpList);
+            request.setAttribute("lpList", lpList);            
         }
         request.getRequestDispatcher("loanPaymentManagementForCustomer.jsp").forward(request, response);
 

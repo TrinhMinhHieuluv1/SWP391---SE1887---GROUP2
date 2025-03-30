@@ -816,7 +816,7 @@
                                                     <th>${lp.getPaymentStatus()}</th>
                                                     <th>
                                                         <c:if test="${!lp.getPaymentStatus().equals('Complete')}">
-                                                            <button type="button" class="action-button" style="background: #cccccc" onclick="">Pay</button>
+                                                            <button type="button" class="action-button" style="background: #cccccc" onclick="paythepayment(this, ${lp.getPaymentAmount()}, ${lp.getLoanPaymentID()})">Pay</button>
                                                         </c:if>
                                                     </th>
                                                 </tr>
@@ -846,7 +846,7 @@
                                 <th>${lp.getPaymentStatus()}</th>
                                 <th>
                                     <c:if test="${!lp.getPaymentStatus().equals('Complete')}">
-                                        <button type="submit" class="action-button" style="background: #cccccc" onclick="pay(${lp.getLoanPaymentID()})">Pay</button>
+                                        <button type="submit" class="action-button" style="background: #cccccc" onclick="paythepayment(this, ${lp.getPaymentAmount()}, ${lp.getLoanPaymentID()})">Pay</button>
                                     </c:if>
                                 </th>
                             </tr>
@@ -877,7 +877,7 @@
                 </div>
             </div>
         </div>
-                    
+
         <%@include file="footer.jsp" %>
 
         <script src="./js/scripts.js"></script>
@@ -987,6 +987,22 @@
                             } else {
                                 detailsRow.style.display = "none";
                                 button.textContent = 'Show Detail';
+                            }
+                        }
+
+                        function paythepayment(button, amount, id) {
+                            if (confirm('Do you want to pay this payment?')) {
+                                $.ajax({
+                                    url: 'pay-the-payment',
+                                    type: 'GET',
+                                    data: {
+                                        LoanPaymentID: id
+                                    },
+                                    success: function () {
+                                        alert('Pay successfully!');
+                                        button.style.display = 'none';
+                                    }
+                                });
                             }
                         }
         </script>

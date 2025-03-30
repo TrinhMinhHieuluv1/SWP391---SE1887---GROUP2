@@ -180,11 +180,31 @@
 
             //Function to validate DOB
             function validateDOB() {
-                const dob = document.getElementById('dob').value;
-                const err = document.getElementById('err-dob');
-                console.log(dob);
+                const dobInput = document.getElementById("dob");
+                const err = document.getElementById("err-dob");
+                const dob = new Date(dobInput.value); // Lấy giá trị ngày sinh từ input
+                const today = new Date(); // Ngày hiện tại
 
-                ;
+                // Tính tuổi dựa trên năm, tháng, ngày
+                const age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+                const dayDiff = today.getDate() - dob.getDate();
+                
+                // Kiểm tra nếu ngày sinh trong tương lai
+                if (dob.getTime() > today.getTime()) {
+                    err.innerHTML = 'Your date of birth is invalid!';
+                    err.style.display = 'block';
+                    return false;
+                }
+
+                // Kiểm tra nếu tuổi chưa đủ 18
+                if (age < 18 || (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+                    err.innerHTML = 'You are smaller than 18 years old!';
+                    err.style.display = 'block';
+                    return false;
+                }
+
+                return true;
             }
 
             function togglePassword(id) {
@@ -202,7 +222,7 @@
     <body>
         <!-- wrapper -->
         <div id="smooth-wrapper" class="mil-wrapper">
-            
+
             <!-- scroll progress -->
 
             <!-- scroll progress end -->
@@ -259,7 +279,7 @@
                                         <option value="Male" ${requestScope.gender.equals("Male")?"selected":""}>Male</option>
                                         <option value="Female" ${requestScope.gender.equals("Female")?"selected":""}>Female</option>
                                     </select>
-                                    <input id="dob" type="date" class="mil-input mil-up mil-mb-15" name="dob" placeholder="Date of birth" oninput="validateDOB()">
+                                    <input id="dob" type="date" class="mil-input mil-up mil-mb-15" name="dob" placeholder="Date of birth" oninput="validateDOB()" required>
                                     <div id="err-dob" style="color: red; display: none">Your dob must older than 1900 and you must be 18 years old or older!</div>    
                                     <input type="text" class="mil-input mil-up mil-mb-15" name="phone" placeholder="Phone" id="phone" oninput="validatePhone(); checkPhone()" required>
                                     <div id="err-phone" style="color: red; display: none">Phone has to have 10 digits and start with 0. Try again!</div>

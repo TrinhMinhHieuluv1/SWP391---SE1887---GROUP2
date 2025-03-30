@@ -407,7 +407,7 @@
                                             <c:if test="${requestScope.assetList == null || requestScope.assetList.size() == 0}">
                                                 <div class="text-center">
                                                     <h4>You don't have any available asset.</h4>
-                                                    <h4>Please update <a href="#" style="color: #e53935">Your Asset</a> or use <a style="color: #e53935" href="/timibank/create-loan-request?Type=Unsecured">Unsecured Loan</a></h4>
+                                                    <h4>Please update <a href="/timibank/myassetsalary" style="color: #e53935;text-decoration: underline">Your Asset</a> or use <a style="color: #e53935; text-decoration: underline" href="/timibank/create-loan-request?Type=Unsecured">Unsecured Loan</a></h4>
                                                 </div>
                                             </c:if>
                                             <c:if test="${requestScope.assetList != null && requestScope.assetList.size() != 0}">
@@ -425,7 +425,7 @@
                                             <c:if test="${requestScope.salaryList == null || requestScope.salaryList.size() == 0}">
                                                 <div class="text-center">
                                                     <h4>You don't have any available Salary.</h4>
-                                                    <h4>Please update <a href="#" style="color: #e53935">Your Salary</a> or use <a style="color: #e53935" href="/timibank/create-loan-request?Type=Secured">Secured Loan</a></h4>
+                                                    <h4>Please update <a href="/timibank/mysalary" style="color: #e53935; text-decoration: underline">Your Salary</a> or use <a style="color: #e53935; text-decoration: underline" href="/timibank/create-loan-request?Type=Secured">Secured Loan</a></h4>
                                                 </div>
                                             </c:if>
                                             <c:if test="${requestScope.salaryList != null && requestScope.salaryList.size() != 0}">

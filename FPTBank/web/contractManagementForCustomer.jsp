@@ -718,7 +718,9 @@
                                 <td class="action-column">
                                     <div class="action-buttons-container">
                                         <c:if test="${contract.getStatusID() == 1 || contract.getStatusID() == 2 || contract.getStatusID() == 4}">
-                                            <a href="/timibank/update-contract-for-customer?ContractID=${contract.getContractID()}" class="action-button update-btn">Update</a>
+                                            <c:if test="${!contract.getType().equals('Saving')}">
+                                                <a href="/timibank/update-contract-for-customer?ContractID=${contract.getContractID()}" class="action-button update-btn">Update</a>
+                                            </c:if>
                                             <button id="cancelbtn-${contract.getContractID()}" type="submit" class="action-button inactivate-btn" onclick="changeStatus(${contract.getContractID()}, 2)" style="display: ${contract.getStatusID()==1?"block":"none"}">Cancel</button>
                                             <button id="resendbtn-${contract.getContractID()}" type="submit" class="action-button activate-btn" onclick="changeStatus(${contract.getContractID()}, 1)" style="display: ${contract.getStatusID()==1?"none":"block"}">Re-send</button>
                                         </c:if>

@@ -265,6 +265,9 @@
             function validateURL() {
                 const url = document.getElementById('url-image').value;
                 const URL_err = document.getElementById('URL-err');
+                if (document.getElementById('file-image').value !== null){
+                    return true;
+                }
                 if (url.endsWith('.jpg') || url.endsWith('.png')) {
                     URL_err.style.display = 'none';
                     return true;

@@ -85,8 +85,8 @@ public class CustomerDAO extends DBContext {
         }
         return cList;
     }
-    
-    public void addACustomer(Customer customerToAdd) {
+
+    public String addACustomer(Customer customerToAdd) {
         String sql = "INSERT INTO [dbo].[Customer] (Username, [Password], FullName, [Image], Phone, Email, DateOfBirth, Gender, Address, CCCD, CreditScore, Balance, RoleID, Status) VALUES "
                 + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -107,7 +107,9 @@ public class CustomerDAO extends DBContext {
             st.setBoolean(14, customerToAdd.isStatus());
             st.executeUpdate();
         } catch (SQLException e) {
+            return e.toString();
         }
+        return "Success";
     }
 
     public void updateACustomer(Customer customerToUpdate) {
@@ -509,5 +511,5 @@ public class CustomerDAO extends DBContext {
 
         return 0;
     }
-    
+
 }

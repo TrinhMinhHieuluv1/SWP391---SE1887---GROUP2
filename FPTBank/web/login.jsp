@@ -455,13 +455,7 @@
                                         <button type="submit" class="mil-btn mil-md mil-fw" 
                                             style="flex: 1; border-radius: 8px; background: #4caf50; color: white; 
                                             transition: all 0.3s ease; border: none; font-weight: 600; padding: 12px;">Log in</button>
-                                        <a href="#" class="mil-btn mil-md mil-fw" 
-                                            style="flex: 1; border-radius: 8px; background: #ffffff; color: #757575; 
-                                            transition: all 0.3s ease; border: 1px solid #e0e0e0; font-weight: 600; padding: 12px; 
-                                            text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                                            <img src="https://www.google.com/favicon.ico" alt="Google" style="width: 18px; height: 18px;">
-                                            Google
-                                        </a>
+                                        
                                     </div>
                                     <div class="mil-divider mil-mb-25" style="text-align: center; position: relative;">
                                         <span style="background: #fff; padding: 0 10px; color: #2e7d32; position: relative; z-index: 1;">Or</span>

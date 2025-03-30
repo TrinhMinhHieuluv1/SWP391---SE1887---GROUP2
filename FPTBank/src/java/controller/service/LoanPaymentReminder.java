@@ -56,7 +56,7 @@ public class LoanPaymentReminder implements ServletContextListener {
                 
                 //Complete Saving contract and send notification
             }
-        }, 0, 24 * 60 * 60 * 1000);
+        }, 0, 5 * 60 * 1000);
     }
 
     @Override
