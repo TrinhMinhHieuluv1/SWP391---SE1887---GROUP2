@@ -51,7 +51,7 @@ public class RequireEmailToCustomer implements Filter {
         
         // Lấy đường dẫn yêu cầu
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
-        if (path.contains("register-email")){
+        if (path.contains("register-email") || path.contains("logout")){
             chain.doFilter(request, response);
             return;
         }

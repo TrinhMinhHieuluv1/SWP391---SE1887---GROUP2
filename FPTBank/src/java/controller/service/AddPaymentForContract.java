@@ -82,7 +82,7 @@ public class AddPaymentForContract extends HttpServlet {
             Contract contract = ctdao.selectAContractByID(ContractID);
             //Add payment for contract don't use monthly payment
             if (!contract.isMonthlyPayment()) {
-                LoanPayment lpToAdd = new LoanPayment(0, contract, Date.valueOf(LocalDate.now().plusMonths(contract.getPeriod())), null, contract.getAmount().setScale(0, RoundingMode.CEILING), null, "Pending");
+                LoanPayment lpToAdd = new LoanPayment(0, contract, Date.valueOf(LocalDate.now().plusMonths(contract.getPeriod())), null, contract.getAmount().multiply(BigDecimal.valueOf(1 + contract.getInterestRate()*contract.getPeriod()/1200)).setScale(0, RoundingMode.CEILING), null, "Pending");
                 lpdao.addALoanPayment(lpToAdd);
             } //Add payment for contract use monthly payment
             else {

@@ -53,11 +53,15 @@
                 padding: 30px;
                 border: none;
                 width: 80%;
-                max-width: 800px;
+                max-width: 1000px;
                 border-radius: 12px;
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
                 animation: modalFadeIn 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                max-height: 90vh;
             }
+
 
             @keyframes modalFadeIn {
                 from {
@@ -77,6 +81,10 @@
                 margin-bottom: 25px;
                 padding-bottom: 15px;
                 border-bottom: 1px solid #eaeaea;
+                position: sticky;
+                top: 0;
+                background-color: #ffffff;
+                z-index: 1;
             }
 
             .modal-title {
@@ -103,6 +111,9 @@
                 margin-bottom: 25px;
                 display: flex;
                 gap: 20px;
+                flex: 1; /* Chiếm không gian còn lại giữa header và footer */
+                overflow-y: auto; /* Chỉ body cuộn */
+                overflow-x: hidden;
             }
 
             .modal-footer {
@@ -110,6 +121,10 @@
                 justify-content: flex-end;
                 padding-top: 15px;
                 border-top: 1px solid #eaeaea;
+                position: sticky;
+                bottom: 0;
+                background-color: #ffffff;
+                z-index: 1;
             }
             /*Modal Styles end*/
 

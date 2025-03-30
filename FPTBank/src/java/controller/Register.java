@@ -104,12 +104,16 @@ public class Register extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String CCCD = request.getParameter("CCCD");
-        Date dob = Date.valueOf(dob_raw);
+        Date dob = null;
+        try {
+            dob = Date.valueOf(dob_raw);
+        } catch (Exception e) {
+        }
         Customer customerToAdd = new Customer(0, 100, 5, username, password, name, image, phone, "", address, CCCD, dob, null, gender.equals("Male"), true, BigDecimal.ZERO);
         CustomerDAO cdao = new CustomerDAO();
-        cdao.addACustomer(customerToAdd);
+        response.getWriter().print(cdao.addACustomer(customerToAdd));
         session.setAttribute("account", cdao.selectCustomerByConditions(0, username, "", ""));
-        response.sendRedirect("/timibank/login?fromRegister=true");
+        response.sendRedirect("/timibank/register-email");
     }
 
     /**

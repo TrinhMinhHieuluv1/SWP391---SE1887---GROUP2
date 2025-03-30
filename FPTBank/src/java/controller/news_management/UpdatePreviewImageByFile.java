@@ -2,11 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.news_management;
 
-import Tools.HashString;
-import dal.CustomerDAO;
-import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +11,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Customer;
-import model.User;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.Part;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "changepassword", urlPatterns = {"/change-password"})
-public class ChangePassword extends HttpServlet {
+@WebServlet(name = "UploadImageToServer", urlPatterns = {"/seller/update-preview-image-by-file"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 2MB
+        maxFileSize = 1024 * 1024 * 100, // 50MB
+        maxRequestSize = 1024 * 1024 * 100)
+
+public class UpdatePreviewImageByFile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +44,10 @@ public class ChangePassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangePassword</title>");
+            out.println("<title>Servlet UploadImageToServer</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ChangePassword at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UploadImageToServer at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,7 +65,6 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("change-password.jsp").forward(request, response);
     }
 
     /**
@@ -77,29 +78,12 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String old_password = request.getParameter("password");
-        String new_password = request.getParameter("new-password");
-        UserDAO udao = new UserDAO();
-        CustomerDAO cdao = new CustomerDAO();
-        HashString hs = new HashString();
-        if (udao.checkAuthen(username, hs.hashString(old_password)) == null) {
-            String err = "Username or password is incorrect. Please try again!";
-            request.setAttribute("err", err);
-            request.getRequestDispatcher("change-password.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            if (session.getAttribute("account") instanceof User) {
-                User account = (User) session.getAttribute("account");
-                account.setPassword(hs.hashString(new_password));
-                udao.updateAUser(account);
-            } else if (session.getAttribute("account") instanceof Customer) {
-                Customer account = (Customer) session.getAttribute("account");
-                account.setPassword(hs.hashString(new_password));
-                cdao.updateCustomer(account);
-            }
-            session.removeAttribute("account");
-            response.sendRedirect("/timibank/login");
+        try {
+            Part filePart = request.getPart("file");
+            BufferedImage image = ImageIO.read(filePart.getInputStream());
+            response.setContentType("image/png");
+            ImageIO.write(image, "png", response.getOutputStream());
+        } catch (IOException e) {
         }
     }
 

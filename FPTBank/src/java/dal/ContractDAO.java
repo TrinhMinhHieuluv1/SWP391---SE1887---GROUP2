@@ -1,6 +1,7 @@
 package dal;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import model.Contract;
@@ -164,9 +165,9 @@ public class ContractDAO extends DBContext {
                 st.setInt(1, contractToAdd.getCustomer().getCustomerId());
                 st.setBigDecimal(2, contractToAdd.getAmount());
                 st.setInt(3, contractToAdd.getPeriod());
-                st.setFloat(4, contractToAdd.getLatePaymentRate());
+                st.setBigDecimal(4, BigDecimal.valueOf(contractToAdd.getLatePaymentRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setNull(5, Types.FLOAT);
-                st.setFloat(6, contractToAdd.getInterestRate());
+                st.setBigDecimal(6, BigDecimal.valueOf(contractToAdd.getInterestRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setString(7, contractToAdd.getType());
                 st.setString(8, contractToAdd.getDescription());
                 st.setInt(9, contractToAdd.getAsset().getId());
@@ -179,7 +180,7 @@ public class ContractDAO extends DBContext {
                     st.setNull(13, Types.NVARCHAR);
                 }
                 st.setInt(14, 1);
-                st.setFloat(15, contractToAdd.getInsuranceCoverage());
+                st.setBigDecimal(15, BigDecimal.valueOf(contractToAdd.getInsuranceCoverage()).setScale(2, RoundingMode.HALF_UP));
                 st.executeUpdate();
                 try {
                     ResultSet generatedKeys = st.getGeneratedKeys();
@@ -192,9 +193,9 @@ public class ContractDAO extends DBContext {
                 st.setInt(1, contractToAdd.getCustomer().getCustomerId());
                 st.setBigDecimal(2, contractToAdd.getAmount());
                 st.setInt(3, contractToAdd.getPeriod());
-                st.setFloat(4, contractToAdd.getLatePaymentRate());
+                st.setBigDecimal(4, BigDecimal.valueOf(contractToAdd.getLatePaymentRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setNull(5, Types.FLOAT);
-                st.setFloat(6, contractToAdd.getInterestRate());
+                st.setBigDecimal(6, BigDecimal.valueOf(contractToAdd.getInterestRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setString(7, contractToAdd.getType());
                 st.setString(8, contractToAdd.getDescription());
                 st.setNull(9, Types.INTEGER);
@@ -207,7 +208,7 @@ public class ContractDAO extends DBContext {
                     st.setNull(13, Types.NVARCHAR);
                 }
                 st.setInt(14, 1);
-                st.setFloat(15, contractToAdd.getInsuranceCoverage());
+                st.setBigDecimal(15, BigDecimal.valueOf(contractToAdd.getInsuranceCoverage()).setScale(2, RoundingMode.HALF_UP));
                 st.executeUpdate();
                 try {
                     ResultSet generatedKeys = st.getGeneratedKeys();
@@ -221,8 +222,8 @@ public class ContractDAO extends DBContext {
                 st.setBigDecimal(2, contractToAdd.getAmount());
                 st.setInt(3, contractToAdd.getPeriod());
                 st.setNull(4, Types.FLOAT);
-                st.setFloat(5, contractToAdd.getEarlyWithdrawRate());
-                st.setFloat(6, contractToAdd.getInterestRate());
+                st.setBigDecimal(5, BigDecimal.valueOf(contractToAdd.getEarlyWithdrawRate()).setScale(2, RoundingMode.HALF_UP));
+                st.setBigDecimal(6, BigDecimal.valueOf(contractToAdd.getInterestRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setString(7, contractToAdd.getType());
                 st.setString(8, contractToAdd.getDescription());
                 st.setNull(9, Types.INTEGER);
@@ -257,9 +258,9 @@ public class ContractDAO extends DBContext {
             if (ContractToUpdate.getType().equals("Secured Loan")) {
                 st.setBigDecimal(1, ContractToUpdate.getAmount());
                 st.setInt(2, ContractToUpdate.getPeriod());
-                st.setFloat(3, ContractToUpdate.getLatePaymentRate());
+                st.setBigDecimal(3, BigDecimal.valueOf(ContractToUpdate.getLatePaymentRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setNull(4, Types.FLOAT);
-                st.setFloat(5, ContractToUpdate.getInterestRate());
+                st.setBigDecimal(5, BigDecimal.valueOf(ContractToUpdate.getInterestRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setString(6, ContractToUpdate.getDescription());
                 st.setInt(7, ContractToUpdate.getAsset().getId());
                 st.setNull(8, Types.INTEGER);
@@ -271,14 +272,14 @@ public class ContractDAO extends DBContext {
                     st.setNull(11, Types.NVARCHAR);
                 }
                 st.setInt(12, ContractToUpdate.getStatusID());
-                st.setFloat(13, ContractToUpdate.getInsuranceCoverage());
+                st.setBigDecimal(13, BigDecimal.valueOf(ContractToUpdate.getInsuranceCoverage()).setScale(2, RoundingMode.HALF_UP));
                 st.setInt(14, ContractToUpdate.getContractID());
             } else if (ContractToUpdate.getType().equals("Unsecured Loan")) {
                 st.setBigDecimal(1, ContractToUpdate.getAmount());
                 st.setInt(2, ContractToUpdate.getPeriod());
-                st.setFloat(3, ContractToUpdate.getLatePaymentRate());
+                st.setBigDecimal(3, BigDecimal.valueOf(ContractToUpdate.getLatePaymentRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setNull(4, Types.FLOAT);
-                st.setFloat(5, ContractToUpdate.getInterestRate());
+                st.setBigDecimal(5, BigDecimal.valueOf(ContractToUpdate.getInterestRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setString(6, ContractToUpdate.getDescription());
                 st.setNull(7, Types.INTEGER);
                 st.setInt(8, ContractToUpdate.getSalary().getId());
@@ -290,14 +291,14 @@ public class ContractDAO extends DBContext {
                     st.setNull(11, Types.NVARCHAR);
                 }
                 st.setInt(12, ContractToUpdate.getStatusID());
-                st.setFloat(13, ContractToUpdate.getInsuranceCoverage());
+                st.setBigDecimal(13, BigDecimal.valueOf(ContractToUpdate.getInsuranceCoverage()).setScale(2, RoundingMode.HALF_UP));
                 st.setInt(14, ContractToUpdate.getContractID());
             } else {
                 st.setBigDecimal(1, ContractToUpdate.getAmount());
                 st.setInt(2, ContractToUpdate.getPeriod());
                 st.setNull(3, Types.FLOAT);
-                st.setFloat(4, ContractToUpdate.getEarlyWithdrawRate());
-                st.setFloat(5, ContractToUpdate.getInterestRate());
+                st.setBigDecimal(4, BigDecimal.valueOf(ContractToUpdate.getEarlyWithdrawRate()).setScale(2, RoundingMode.HALF_UP));
+                st.setBigDecimal(5, BigDecimal.valueOf(ContractToUpdate.getInterestRate()).setScale(2, RoundingMode.HALF_UP));
                 st.setString(6, ContractToUpdate.getDescription());
                 st.setNull(7, Types.INTEGER);
                 st.setNull(8, Types.INTEGER);
@@ -315,22 +316,15 @@ public class ContractDAO extends DBContext {
     }
 
     public boolean updateStatus(int contractID, int statusID) {
-    String sql = "UPDATE [Contract] SET StatusID=? WHERE ContractID=?";
-    try (PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setInt(1, statusID);
-        st.setInt(2, contractID);
-        return st.executeUpdate() > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
+        String sql = "UPDATE [Contract] SET StatusID=? WHERE ContractID=?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, statusID);
+            st.setInt(2, contractID);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    return false;
-}
 
-    public static void main(String[] args) {
-        ContractDAO ctdao = new ContractDAO();
-        Contract contract = ctdao.selectAContractByID(48);
-        contract.setStatusID(2);
-        ctdao.updateAContract(contract);
-        System.out.println(ctdao.selectAContractByID(48).getStatusID());
-    }
 }
