@@ -529,6 +529,8 @@
                     </li>
                     <li> <a href="/manager/listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
                     </li>
+                    <li> <a href="contract-management-for-manager"><span class="material-symbols-outlined">arrow_right</span>Contract</a>
+                            </li>
                     <!--                    <li> <a href="ecommerce-customer-details.html"><span class="material-symbols-outlined">arrow_right</span>Customer Details</a>
                                         </li>
                                         <li> <a href="ecommerce-orders.html"><span class="material-symbols-outlined">arrow_right</span>Orders</a>
@@ -548,8 +550,8 @@
                         <img src="assets/images/avatars/01.png" alt="">
                     </div>
                     <div class="user-info">
-                        <h5 class="mb-0 user-name">Jhon Maxwell</h5>
-                        <p class="mb-0 user-designation">UI Engineer</p>
+                        <h5 class="mb-0 user-name">${sessionScope.account.getFullName()}</h5>
+                        <p class="mb-0 user-designation">${sessionScope.account.getEmail()}</p>
                     </div>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">

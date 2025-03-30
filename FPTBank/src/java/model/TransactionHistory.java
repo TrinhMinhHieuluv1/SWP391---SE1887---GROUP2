@@ -17,6 +17,21 @@ public class TransactionHistory {
     private BigDecimal Amount, BalanceBefore, BalanceAfter;
     private String Transaction_type, Note;
     private Date CreatedAt;
+    private boolean check;
+
+    public TransactionHistory(int TransactionID, int Status, Customer customer, Customer receiver, BigDecimal Amount, BigDecimal BalanceBefore, BigDecimal BalanceAfter, String Transaction_type, String Note, Date CreatedAt, boolean check) {
+        this.TransactionID = TransactionID;
+        this.Status = Status;
+        this.customer = customer;
+        this.receiver = receiver;
+        this.Amount = Amount;
+        this.BalanceBefore = BalanceBefore;
+        this.BalanceAfter = BalanceAfter;
+        this.Transaction_type = Transaction_type;
+        this.Note = Note;
+        this.CreatedAt = CreatedAt;
+        this.check = check;
+    }
 
     public TransactionHistory(int TransactionID, int Status, Customer customer, Customer receiver, BigDecimal Amount, BigDecimal BalanceBefore, BigDecimal BalanceAfter, String Transaction_type, String Note, Date CreatedAt) {
         this.TransactionID = TransactionID;
@@ -44,6 +59,13 @@ public class TransactionHistory {
 
     public int getTransactionID() {
         return TransactionID;
+    }
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
     }
 
     public void setTransactionID(int TransactionID) {

@@ -6,6 +6,7 @@ package dal;
 
 import java.sql.Timestamp;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -323,9 +324,9 @@ public class DetailBillDAO extends DBContext {
         BigDecimal totalSum = BigDecimal.ZERO;
         String sql = "SELECT SUM(Total) AS TotalSum FROM DetailBill WHERE StatusOfBill = 0 AND ProviderID = ?";
 
-        try (PreparedStatement pre = connection.prepareStatement(sql)){
-                pre.setInt(1, providerID);
-                ResultSet rs = pre.executeQuery() ;
+        try (PreparedStatement pre = connection.prepareStatement(sql)) {
+            pre.setInt(1, providerID);
+            ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 totalSum = rs.getBigDecimal("TotalSum");
             }
@@ -338,9 +339,7 @@ public class DetailBillDAO extends DBContext {
 
     public BigDecimal getTotalByYearAndMonth(int year, int month) {
         BigDecimal totalSum = BigDecimal.ZERO;
-        String sql = "SELECT SUM(Total) AS TotalSum "
-                + "FROM DetailBill "
-                + "WHERE YEAR(CreatedAt) = ? AND MONTH(CreatedAt) = ? AND StatusOfBill = 0";
+        String sql = "select Sum(Total) as TotalSum from DetailBill where YEAR(CreatedAt) = ? and MONTH(CreatedAt) = ? And StatusOfBill = 0";
 
         try (PreparedStatement pre = connection.prepareStatement(sql)) {
             // Thiết lập giá trị cho tham số trong câu lệnh SQL
@@ -353,6 +352,9 @@ public class DetailBillDAO extends DBContext {
             // Nếu có kết quả, lấy tổng `Total`
             if (rs.next()) {
                 totalSum = rs.getBigDecimal("TotalSum");
+                if (totalSum == null) {
+                    totalSum = BigDecimal.ZERO;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -412,7 +414,7 @@ public class DetailBillDAO extends DBContext {
 
     public static void main(String[] args) {
         DetailBillDAO dao = new DetailBillDAO();
-        int list = dao.getBillCountByStatusOfBill(1, 9);
-        System.out.println(list);
+        int total = dao.getCustomerByYearAndMonth(2025, 3);
+        System.out.println(total);
     }
 }

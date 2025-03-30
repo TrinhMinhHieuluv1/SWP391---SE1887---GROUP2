@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : login
     Created on : Jan 13, 2025, 3:18:30 AM
@@ -450,7 +451,7 @@
 
                 <!--navigation-->
                 <ul class="metismenu" id="menu">
-                     <li>
+                    <li>
                         <a href="/timibank/home.jsp">
                             <div class="parent-icon"><span class="material-symbols-outlined">home</span>
                             </div>
@@ -470,13 +471,15 @@
                     </li>
                     <li> <a href="listSalary"><span class="material-symbols-outlined">arrow_right</span>Salary</a>
                     </li>
+                    <li> <a href="contract-management-for-manager"><span class="material-symbols-outlined">arrow_right</span>Contract</a>
+                    </li>
                 </ul>
                 </li> 
                 </ul>
             </div>
-                <div class="btn btn-sm btn-primary ms-3">
-                    <a href="/timibank/logout"><span style="color: white">Sign Out</span></a>
-                </div>
+            <div class="btn btn-sm btn-primary ms-3">
+                <a href="/timibank/logout"><span style="color: white">Sign Out</span></a>
+            </div>
         </aside>
         <!--end sidebar-->
 

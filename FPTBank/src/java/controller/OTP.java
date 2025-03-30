@@ -117,9 +117,10 @@ public class OTP extends HttpServlet {
                     if (solannhap >= 3) {
                         error = "You have exceeded the maximum number of OTP attempts.";
                         request.setAttribute("message2", error);
+                        request.setAttribute("customer", customer);
                         request.getRequestDispatcher("transaction").forward(request, response);
-                        solannhap = 0; // Reset the attempt count after 3 attempts
-                        userSession.setAttribute("solannhap", solannhap); // Save the reset count
+                        solannhap = 0;
+                        userSession.setAttribute("solannhap", solannhap);
                         return;
                     }
                     if (OTP_raw == null || OTP_raw.isEmpty()) {
@@ -157,7 +158,7 @@ public class OTP extends HttpServlet {
 
                                 userSession.removeAttribute("OTP");
                                 request.setAttribute("message", error);
-                                request.getRequestDispatcher("transaction.jsp").forward(request, response);
+                                request.getRequestDispatcher("transaction").forward(request, response);
                                 return;
                             }
                         } catch (NumberFormatException e) {
@@ -172,7 +173,7 @@ public class OTP extends HttpServlet {
             error = "Invalid ID format";
         }
 
-// Set attributes và chuyển hướng về OTP.jsp
+
         request.setAttribute("number", number);
         request.setAttribute("amount", amount);
         request.setAttribute("note", note);
