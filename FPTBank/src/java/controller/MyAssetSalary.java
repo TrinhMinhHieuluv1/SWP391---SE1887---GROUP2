@@ -76,18 +76,20 @@ public class MyAssetSalary extends HttpServlet {
         List<Integer> listOfPageSize = removeDuplicates(calculatePageSize(dao.getAssetByCId(account.getCustomerId()).size()));
         request.setAttribute("listSize", listOfPageSize);
         int page = 1; // trang đầu tiên
-        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : listOfPageSize.get(listOfPageSize.size()-1);
+        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : listOfPageSize.get(listOfPageSize.size() - 1);
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
         List<Asset> data = dao.getAssetByPage(account.getCustomerId(), page, pageSize);
-        descriptionSetup(data);
-        PdfDAO pdfDAO = new PdfDAO();
 
-        for (Asset asset : data) {
-            List<PdfLis> listPDF = pdfDAO.getpdfByAssetId(asset.getId());
-            asset.setListpdf(listPDF);
+        PdfDAO pdfDAO = new PdfDAO();
+        if (data != null) {
+            descriptionSetup(data);
+            for (Asset asset : data) {
+                List<PdfLis> listPDF = pdfDAO.getpdfByAssetId(asset.getId());
+                asset.setListpdf(listPDF);
+            }
         }
 
         int totalUsers = dao.getAssetByCId(account.getCustomerId()).size();

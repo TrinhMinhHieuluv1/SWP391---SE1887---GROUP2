@@ -32,9 +32,7 @@
                         <li class="menu-label">
                             <a href="/timibank/news">Featured News</a>
                         </li>
-                        <li class="menu-label">
-                            <a href="savingGoals.jsp">Savings goal</a>
-                        </li>
+
                     </ul>
                 </div>
             </div>

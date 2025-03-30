@@ -461,7 +461,13 @@
                 color: #fff;
                 border-radius: 30px;
             }
-
+            .empty-state {
+                text-align: center;
+                padding: 40px 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
         </style>
     </head>
     <body>
@@ -551,88 +557,96 @@
                         </tr>
                     </thead>
                     <tbody id="assetsTableBody">
-                        <c:if test="${not empty requestScope.data}" >
-                            <c:forEach items="${requestScope.data}" var="salary">
-                                <tr data-id="${salary.getId()}" data-names="${salary.getTitle()}" data-status="${salary.getStatus()}" data-service="${salary.isUsed()}" data-date="${salary.getCreatedAt()}">
-                                    <td>${salary.getTitle()}</td>
-                                    <td>
-                                        <c:if test="${empty salary.getComments()}">
-                                            Non comment
-                                        </c:if>
-                                        <c:if  test="${salary.getComments()!= null}" >
-                                            <div class="d-flex align-items-center">
-                                                <span 
-                                                    style="max-width: 150px;display: inline-block;overflow: hidden;vertical-align: middle;line-height: normal;text-overflow: ellipsis">
-                                                    Have a Comment
-                                                </span>
-                                                <i class="fas fa-info-circle detail-icon" style="display: inline-block; vertical-align: middle;line-height: normal;cursor: pointer;"
-                                                   data-comment="${fn:escapeXml(salary.getComments())}"
-                                                   onclick="showFullCommentFromElement(this)"
-                                                   title="Full comment"></i>
-                                            </div>
-                                        </c:if>
+                        <c:if test="${empty requestScope.data}">
+                            <tr>
+                        <div class="empty-state">
+                            <h2>You don't have any appraisal Salary yet?</h2>
+                            <p>Start by creating your first Salary.</p>
+                        </div>  
+                        </tr>
+                    </c:if>
+                    <c:if test="${not empty requestScope.data}" >
+                        <c:forEach items="${requestScope.data}" var="salary">
+                            <tr data-id="${salary.getId()}" data-names="${salary.getTitle()}" data-status="${salary.getStatus()}" data-service="${salary.isUsed()}" data-date="${salary.getCreatedAt()}">
+                                <td>${salary.getTitle()}</td>
+                                <td>
+                                    <c:if test="${empty salary.getComments()}">
+                                        Non comment
+                                    </c:if>
+                                    <c:if  test="${salary.getComments()!= null}" >
+                                        <div class="d-flex align-items-center">
+                                            <span 
+                                                style="max-width: 150px;display: inline-block;overflow: hidden;vertical-align: middle;line-height: normal;text-overflow: ellipsis">
+                                                Have a Comment
+                                            </span>
+                                            <i class="fas fa-info-circle detail-icon" style="display: inline-block; vertical-align: middle;line-height: normal;cursor: pointer;"
+                                               data-comment="${fn:escapeXml(salary.getComments())}"
+                                               onclick="showFullCommentFromElement(this)"
+                                               title="Full comment"></i>
+                                        </div>
+                                    </c:if>
 
-                                    </td>
-                                    <td>
-                                        <c:if test="${empty salary.getValuationAmount()}">
-                                            Non valuation amount
-                                        </c:if>
-                                        <fmt:formatNumber value="${salary.getValuationAmount()}" 
-                                                          pattern="###,###"/>
-                                    </td>
-                                    <td>${salary.isUsed() ? 'Used' : 'Non-Use'}</td>
-                                    <c:if test="${salary.getStatus()=='Not Processed'}">
-                                        <td><span class="status NotProcessed">${salary.getStatus()}</span></td>
-                                        </c:if>
-                                        <c:if test="${salary.getStatus()!='Not Processed'}">
-                                        <td><span class="status ${salary.getStatus()}">${salary.getStatus()}</span></td>
-                                        </c:if>
-                                    <td>${salary.getCreatedAt()}</td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="view-btn detail-icon-ass" 
+                                </td>
+                                <td>
+                                    <c:if test="${empty salary.getValuationAmount()}">
+                                        Non valuation amount
+                                    </c:if>
+                                    <fmt:formatNumber value="${salary.getValuationAmount()}" 
+                                                      pattern="###,###"/>
+                                </td>
+                                <td>${salary.isUsed() ? 'Used' : 'Non-Use'}</td>
+                                <c:if test="${salary.getStatus()=='Not Processed'}">
+                                    <td><span class="status NotProcessed">${salary.getStatus()}</span></td>
+                                    </c:if>
+                                    <c:if test="${salary.getStatus()!='Not Processed'}">
+                                    <td><span class="status ${salary.getStatus()}">${salary.getStatus()}</span></td>
+                                    </c:if>
+                                <td>${salary.getCreatedAt()}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="view-btn detail-icon-ass" 
+                                                data-image="${pageContext.request.contextPath}/${salary.getImage()}"
+                                                data-description="${salary.getDescription()}"
+                                                data-value="<fmt:formatNumber value="${salary.getValue()}" 
+                                                                  pattern="###,###"/>"
+                                                data-created-at="${salary.getCreatedAt()}"
+                                                data-list-pdf='<c:out value="${salary.getListpdfJs()}" escapeXml="true"/>'
+                                                title="Xem chi tiết"
+                                                style="pointer-events: auto;">Detail</button>
+                                        <c:if test="${salary.getStatus() =='Not Processed'||salary.getStatus() == 'Pending'||salary.getStatus() == 'Adjusting' }">
+                                            <button class="edit-btn edit-icon-ass"
+                                                    data-id="${salary.getId()}"
                                                     data-image="${pageContext.request.contextPath}/${salary.getImage()}"
+                                                    data-name ="${salary.getTitle()}"
                                                     data-description="${salary.getDescription()}"
                                                     data-value="<fmt:formatNumber value="${salary.getValue()}" 
                                                                       pattern="###,###"/>"
-                                                    data-created-at="${salary.getCreatedAt()}"
                                                     data-list-pdf='<c:out value="${salary.getListpdfJs()}" escapeXml="true"/>'
-                                                    title="Xem chi tiết"
-                                                    style="pointer-events: auto;">Detail</button>
-                                            <c:if test="${salary.getStatus() =='Not Processed'||salary.getStatus() == 'Pending'||salary.getStatus() == 'Adjusting' }">
-                                                <button class="edit-btn edit-icon-ass"
-                                                        data-id="${salary.getId()}"
-                                                        data-image="${pageContext.request.contextPath}/${salary.getImage()}"
-                                                        data-name ="${salary.getTitle()}"
-                                                        data-description="${salary.getDescription()}"
-                                                        data-value="<fmt:formatNumber value="${salary.getValue()}" 
-                                                                          pattern="###,###"/>"
-                                                        data-list-pdf='<c:out value="${salary.getListpdfJs()}" escapeXml="true"/>'
-                                                        style="pointer-events: auto;"
-                                                        >
-                                                    Edit
-                                                </button>  
-                                            </c:if>
+                                                    style="pointer-events: auto;"
+                                                    >
+                                                Edit
+                                            </button>  
+                                        </c:if>
 
 
-                                            <c:if test="${salary.getStatus()!='Approved'}">
-                                                <form action="mysalary" method="post">
-                                                    <input name="ass" value="${salary.getId()}" hidden/>
-                                                    <button class="confirm-btn" type="submit">Send Req</button>
-                                                </form>
-                                            </c:if>
-                                            <c:if test="${salary.getStatus()=='Not Processed'}">
-                                                <form action="mysalary" method="Post">
-                                                    <input name="assdelet" value="${salary.getId()}" hidden/>
-                                                    <button class="delete-btn" type="submit">Delete</button>
-                                                </form>
-                                            </c:if>
+                                        <c:if test="${salary.getStatus()!='Approved'}">
+                                            <form action="mysalary" method="post">
+                                                <input name="ass" value="${salary.getId()}" hidden/>
+                                                <button class="confirm-btn" type="submit">Send Req</button>
+                                            </form>
+                                        </c:if>
+                                        <c:if test="${salary.getStatus()=='Not Processed'}">
+                                            <form action="mysalary" method="Post">
+                                                <input name="assdelet" value="${salary.getId()}" hidden/>
+                                                <button class="delete-btn" type="submit">Delete</button>
+                                            </form>
+                                        </c:if>
 
-                                        </div>
-                                    </td>
-                                </tr>        
-                            </c:forEach>
-                        </c:if>
+                                    </div>
+                                </td>
+                            </tr>        
+                        </c:forEach>
+                    </c:if>
                     </tbody>
                 </table>
             </div>

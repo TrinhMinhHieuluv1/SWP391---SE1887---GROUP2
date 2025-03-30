@@ -73,6 +73,7 @@ public class NewDetail extends HttpServlet {
 
             News anew = newsDAO.selectANewsByNewsID(id);
             anew.setNumberOfAccess(anew.getNumberOfAccess() + 1);
+            descriptionSetup(anew);
             newsDAO.updateANews(anew);
             List<News> list = newsDAO.selectNewsListByConditions("", "", "active", "", anew.getNewsCategory().getNewsCategoryID(), 0);
             list = getRandomNews(list, 3);
@@ -83,7 +84,20 @@ public class NewDetail extends HttpServlet {
             e.printStackTrace();
         }
     }
-
+    public void descriptionSetup(News anew) {
+            StringBuilder result = new StringBuilder();
+            String descript = anew.getDescription();
+            String regex = "\n";
+            if (!anew.getDescription().contains(regex)) {
+                return ;
+            }
+            String[] des = descript.split(regex);
+            for (String de : des) {
+                result.append(de.trim()).append("<br>");
+            }
+            result.deleteCharAt(result.toString().length() - 1);
+            anew.setDescription(result.toString());
+    }
     public static List<News> getRandomNews(List<News> newsList, int count) {
         // Kiểm tra xem danh sách có đủ tin tức hay không
         if (count > newsList.size()) {

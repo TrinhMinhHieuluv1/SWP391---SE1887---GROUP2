@@ -461,8 +461,14 @@
                 color: #fff;
                 border-radius: 30px;
             }
-
-        </style>
+            .empty-state {
+                text-align: center;
+                padding: 40px 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+             </style>
     </head>
     <body>
         <!-- Sidebar -->
@@ -534,9 +540,9 @@
                                 <option value="${size}" ${pageSize == size ? 'selected' : ''}>${size}</option>
                             </c:forEach>
                         </select>
-                         <span><a href="addAsset.jsp" class="add-btn">Add New Asset</a></span>
+                        <span><a href="addAsset.jsp" class="add-btn">Add New Asset</a></span>
                     </div>
-                   
+
                 </div>
 
                 <!-- Assets Table -->
@@ -553,88 +559,97 @@
                         </tr>
                     </thead>
                     <tbody id="assetsTableBody">
-                        <c:if test="${not empty requestScope.data}" >
-                            <c:forEach items="${requestScope.data}" var="asset">
-                                <tr data-id="${asset.getId()}" data-names="${asset.getTitle()}" data-status="${asset.getStatus()}" data-service="${asset.isUsed()}" data-date="${asset.getCreatedAt()}">
-                                    <td>${asset.getTitle()}</td>
-                                    <td>
-                                        <c:if test="${empty asset.getComments()}">
-                                            Non comment
-                                        </c:if>
-                                        <c:if  test="${asset.getComments()!= null}" >
-                                            <div class="d-flex align-items-center">
-                                                <span 
-                                                    style="max-width: 150px;display: inline-block;overflow: hidden;vertical-align: middle;line-height: normal;text-overflow: ellipsis">
-                                                    Have a Comment
-                                                </span>
-                                                <i class="fas fa-info-circle detail-icon" style="display: inline-block; vertical-align: middle;line-height: normal;cursor: pointer;"
-                                                   data-comment="${fn:escapeXml(asset.getComments())}"
-                                                   onclick="showFullCommentFromElement(this)"
-                                                   title="Full comment"></i>
-                                            </div>
-                                        </c:if>
+                        <c:if test="${empty requestScope.data}">
 
-                                    </td>
-                                    <td>
-                                        <c:if test="${empty asset.getValuationAmount()}">
-                                            Non valuation amount
-                                        </c:if>
-                                        <fmt:formatNumber value="${asset.getValuationAmount()}" 
-                                                          pattern="###,###"/>
-                                    </td>
-                                    <td>${asset.isUsed() ? 'Used' : 'Non-Use'}</td>
-                                    <c:if test="${asset.getStatus()=='Not Processed'}">
-                                        <td><span class="status NotProcessed">${asset.getStatus()}</span></td>
-                                        </c:if>
-                                        <c:if test="${asset.getStatus()!='Not Processed'}">
-                                        <td><span class="status ${asset.getStatus()}">${asset.getStatus()}</span></td>
-                                        </c:if>
-                                    <td>${asset.getCreatedAt()}</td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="view-btn detail-icon-ass" 
+                        <div class="empty-state">
+                            <h2>You don't have any savings goals yet?</h2>
+                            <p>Start by creating your first savings goal.</p>
+                            <a href="goals?action=new" class="button">Create Saving Goal now</a>
+                        </div>
+
+                    </c:if>
+                    <c:if test="${not empty requestScope.data}" >
+                        <c:forEach items="${requestScope.data}" var="asset">
+                            <tr data-id="${asset.getId()}" data-names="${asset.getTitle()}" data-status="${asset.getStatus()}" data-service="${asset.isUsed()}" data-date="${asset.getCreatedAt()}">
+                                <td>${asset.getTitle()}</td>
+                                <td>
+                                    <c:if test="${empty asset.getComments()}">
+                                        Non comment
+                                    </c:if>
+                                    <c:if  test="${asset.getComments()!= null}" >
+                                        <div class="d-flex align-items-center">
+                                            <span 
+                                                style="max-width: 150px;display: inline-block;overflow: hidden;vertical-align: middle;line-height: normal;text-overflow: ellipsis">
+                                                Have a Comment
+                                            </span>
+                                            <i class="fas fa-info-circle detail-icon" style="display: inline-block; vertical-align: middle;line-height: normal;cursor: pointer;"
+                                               data-comment="${fn:escapeXml(asset.getComments())}"
+                                               onclick="showFullCommentFromElement(this)"
+                                               title="Full comment"></i>
+                                        </div>
+                                    </c:if>
+
+                                </td>
+                                <td>
+                                    <c:if test="${empty asset.getValuationAmount()}">
+                                        Non valuation amount
+                                    </c:if>
+                                    <fmt:formatNumber value="${asset.getValuationAmount()}" 
+                                                      pattern="###,###"/>
+                                </td>
+                                <td>${asset.isUsed() ? 'Used' : 'Non-Use'}</td>
+                                <c:if test="${asset.getStatus()=='Not Processed'}">
+                                    <td><span class="status NotProcessed">${asset.getStatus()}</span></td>
+                                    </c:if>
+                                    <c:if test="${asset.getStatus()!='Not Processed'}">
+                                    <td><span class="status ${asset.getStatus()}">${asset.getStatus()}</span></td>
+                                    </c:if>
+                                <td>${asset.getCreatedAt()}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="view-btn detail-icon-ass" 
+                                                data-image="${pageContext.request.contextPath}/${asset.getImage()}"
+                                                data-description="${asset.getDescription()}"
+                                                data-value="<fmt:formatNumber value="${asset.getValue()}" 
+                                                                  pattern="###,###"/>"
+                                                data-created-at="${asset.getCreatedAt()}"
+                                                data-list-pdf='<c:out value="${asset.getListpdfJs()}" escapeXml="true"/>'
+                                                title="Xem chi tiết"
+                                                style="pointer-events: auto;">Detail</button>
+                                        <c:if test="${asset.getStatus() =='Not Processed'||asset.getStatus() == 'Pending'||asset.getStatus() == 'Adjusting' }">
+                                            <button class="edit-btn edit-icon-ass"
+                                                    data-id="${asset.getId()}"
                                                     data-image="${pageContext.request.contextPath}/${asset.getImage()}"
+                                                    data-name ="${asset.getTitle()}"
                                                     data-description="${asset.getDescription()}"
                                                     data-value="<fmt:formatNumber value="${asset.getValue()}" 
                                                                       pattern="###,###"/>"
-                                                    data-created-at="${asset.getCreatedAt()}"
                                                     data-list-pdf='<c:out value="${asset.getListpdfJs()}" escapeXml="true"/>'
-                                                    title="Xem chi tiết"
-                                                    style="pointer-events: auto;">Detail</button>
-                                            <c:if test="${asset.getStatus() =='Not Processed'||asset.getStatus() == 'Pending'||asset.getStatus() == 'Adjusting' }">
-                                                <button class="edit-btn edit-icon-ass"
-                                                        data-id="${asset.getId()}"
-                                                        data-image="${pageContext.request.contextPath}/${asset.getImage()}"
-                                                        data-name ="${asset.getTitle()}"
-                                                        data-description="${asset.getDescription()}"
-                                                        data-value="<fmt:formatNumber value="${asset.getValue()}" 
-                                                                          pattern="###,###"/>"
-                                                        data-list-pdf='<c:out value="${asset.getListpdfJs()}" escapeXml="true"/>'
-                                                        style="pointer-events: auto;"
-                                                        >
-                                                    Edit
-                                                </button>  
-                                            </c:if>
+                                                    style="pointer-events: auto;"
+                                                    >
+                                                Edit
+                                            </button>  
+                                        </c:if>
 
 
-                                            <c:if test="${asset.getStatus()!='Approved'}">
-                                                <form action="myassetsalary" method="post">
-                                                    <input name="ass" value="${asset.getId()}" hidden/>
-                                                    <button class="confirm-btn" type="submit">Send Req</button>
-                                                </form>
-                                            </c:if>
-                                            <c:if test="${asset.getStatus()=='Not Processed'}">
-                                                <form action="myassetsalary" method="Post">
-                                                    <input name="assdelet" value="${asset.getId()}" hidden/>
-                                                    <button class="delete-btn" type="submit">Delete</button>
-                                                </form>
-                                            </c:if>
+                                        <c:if test="${asset.getStatus()!='Approved'}">
+                                            <form action="myassetsalary" method="post">
+                                                <input name="ass" value="${asset.getId()}" hidden/>
+                                                <button class="confirm-btn" type="submit">Send Req</button>
+                                            </form>
+                                        </c:if>
+                                        <c:if test="${asset.getStatus()=='Not Processed'}">
+                                            <form action="myassetsalary" method="Post">
+                                                <input name="assdelet" value="${asset.getId()}" hidden/>
+                                                <button class="delete-btn" type="submit">Delete</button>
+                                            </form>
+                                        </c:if>
 
-                                        </div>
-                                    </td>
-                                </tr>        
-                            </c:forEach>
-                        </c:if>
+                                    </div>
+                                </td>
+                            </tr>        
+                        </c:forEach>
+                    </c:if>
 
                     </tbody>
                 </table>

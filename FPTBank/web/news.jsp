@@ -267,8 +267,6 @@
     function loadMoreNews() {
         currentPage++; // Tăng trang lên 1
         console.log("onclick");
-
-        // Gửi yêu cầu AJAX để lấy thêm tin tức
            const url =`/timibank/loadMoreNews?cateid=`+idCate+`&page=`+currentPage+`&size=`+pageSize;
            console.log("url"+url);
         fetch(url)
