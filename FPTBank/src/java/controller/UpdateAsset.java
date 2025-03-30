@@ -90,7 +90,7 @@ public class UpdateAsset extends HttpServlet {
             if (description != null) {
                 asset.setDescription(description);
             }
-            if (value_raw != null && !value_raw.trim().isEmpty()) {
+            if (value_raw != null && !value_raw.isEmpty()) {
                 String valueR = value_raw.replace(".", "");
                 double value = Double.parseDouble(valueR);
                 asset.setValue(BigDecimal.valueOf(value));

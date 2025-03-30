@@ -100,6 +100,15 @@ public class InsertSalary extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             Customer account = (Customer) session.getAttribute("account");
+                        List<Salary> data = dao.getSalaryByCId(account.getCustomerId());
+            for (Salary salary : data) {
+                if (salary.getTitle().equalsIgnoreCase(name)) {
+                    request.setAttribute("messType", "false");
+                    request.setAttribute("messT", "The title is exist!");
+                    request.getRequestDispatcher("addAsset.jsp").forward(request, response);
+                    return;
+                }
+            }
             Salary a = new Salary();
             a.setCustomer(account);
             a.setTitle(normalizeString(name));
@@ -123,7 +132,7 @@ public class InsertSalary extends HttpServlet {
             boolean succ = dao.insertSalary(a);
             request.setAttribute("messType", "true");
             request.setAttribute("mess", "Successfully add new Salary ");
-            request.getRequestDispatcher("addAsset.jsp").forward(request, response);
+            request.getRequestDispatcher("addSalary.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

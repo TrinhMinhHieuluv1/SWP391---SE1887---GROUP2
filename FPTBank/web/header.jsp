@@ -111,10 +111,13 @@
                                                  <c:if test="${sessionScope.account.getRoleID() == 5}">
                                                  <li><a href="/timibank/historytransaction">History Transaction</a></li>
                                                  </c:if>
-                                                  <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <c:if test="${sessionScope.account.getRoleID() == 5}">
                                                  <li><a href="/timibank/transaction">Tranfer money</a></li>
                                                  </c:if>
-                                                 <c:if test="${sessionScope.account.getRoleID()==4}">
+                                                 <c:if test="${sessionScope.account.getRoleID() == 5}">
+                                                 <li> <a href="savingGoals.jsp">Savings goal</a>  </li>
+                                             </c:if>
+                                             <c:if test="${sessionScope.account.getRoleID()==4}">
                                                  <li><a href="/timibank/insurance/manageInsurance.jsp">Management</a></li>
                                                  </c:if>
                                                  <c:if test="${sessionScope.account.getRoleID()==1}">

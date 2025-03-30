@@ -8,6 +8,7 @@ import dal.CustomerDAO;
 import dal.SavingsGoalsDAO;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.annotation.WebServlet;
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,26 +20,20 @@ import model.Customer;
 import model.Emails;
 import model.SavingsGoal;
 
-/**
- *
- * @author tiend
- */
-@WebServlet(name = "FeeSchedulerListener", urlPatterns = {"/feeServlet"})
+@WebListener
 public class FeeSchedulerListener implements ServletContextListener {
 
     private ScheduledExecutorService scheduler;
     private CustomerDAO customerDAO = new CustomerDAO();
     private SavingsGoalsDAO savingsGoalsDAO = new SavingsGoalsDAO();
-    private final double MAINTENANCE_FEE_INTERATE = 0.0012;
+    private final double MAINTENANCE_FEE_INTERATE = 0.0000012;
     private Emails emails;
     public static String FEE_MESS_1 = "THU PHI DICH VU SAVING GOAL HANG THANG";
     public static String FEE_MESS_2 = "YEU CAU NAP THEM TIEN DE SU DUNG DICH VU SAVING GOAL";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        // Khởi tạo scheduler với 1 thread
-        scheduler = Executors.newScheduledThreadPool(1);
-        // Tác vụ trừ phí định kỳ
+        scheduler = Executors.newScheduledThreadPool(1);    
         Runnable deductFeeTask = () -> {
             try {
                 deductMonthlyFee();
@@ -60,7 +55,7 @@ public class FeeSchedulerListener implements ServletContextListener {
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();
             try {
-                // Đợi các tác vụ hoàn thành trong 5 giây trước khi buộc dừng
+                
                 if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
                     scheduler.shutdownNow();
                 }
@@ -94,17 +89,17 @@ public class FeeSchedulerListener implements ServletContextListener {
                 customerDAO.updateCustomer(customer);
                 String content1 = createMonthlyFeeContent(
                         customer,
-                        fee.doubleValue(), // Số tiền phí
-                        currentMonthYear, // Tháng/Năm
-                        feeDueDate // Ngày thu phí
+                        fee.doubleValue(), 
+                        currentMonthYear, 
+                        feeDueDate 
                 );
                 emails.sendMess(customer.getEmail(), FEE_MESS_1, content1);
             } else {
                 String content2 = createTopupRequestContent(
                         customer,
-                        fee.subtract(customer.getBalance()).doubleValue(), // Số tiền cần nạp thêm
-                        getActiveGoalsNames(list), // Tên mục tiêu
-                        topupDeadline // Hạn nạp tiền
+                        fee.subtract(customer.getBalance()).doubleValue(), 
+                        getActiveGoalsNames(list), 
+                        topupDeadline 
                 );
                 emails.sendMess(customer.getEmail(), FEE_MESS_2, content2);
             }

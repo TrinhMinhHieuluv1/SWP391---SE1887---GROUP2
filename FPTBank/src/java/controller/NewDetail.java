@@ -62,23 +62,41 @@ public class NewDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setDateHeader("Expires", 0); // Proxies
         String id_raw = request.getParameter("newId");
         NewsCategoryDAO dao = new NewsCategoryDAO();
         NewsDAO newsDAO = new NewsDAO();
         try {
             int id = Integer.parseInt(id_raw);
-            
+
             News anew = newsDAO.selectANewsByNewsID(id);
-            anew.setNumberOfAccess(anew.getNumberOfAccess()+1);
+            anew.setNumberOfAccess(anew.getNumberOfAccess() + 1);
+            descriptionSetup(anew);
             newsDAO.updateANews(anew);
             List<News> list = newsDAO.selectNewsListByConditions("", "", "active", "", anew.getNewsCategory().getNewsCategoryID(), 0);
             list = getRandomNews(list, 3);
             request.setAttribute("newdetail", anew);
-             request.setAttribute("data", list);   
+            request.setAttribute("data", list);
             request.getRequestDispatcher("newDetail.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void descriptionSetup(News anew) {
+            StringBuilder result = new StringBuilder();
+            String descript = anew.getDescription();
+            String regex = "\n";
+            if (!anew.getDescription().contains(regex)) {
+                return ;
+            }
+            String[] des = descript.split(regex);
+            for (String de : des) {
+                result.append(de.trim()).append("<br>");
+            }
+            result.deleteCharAt(result.toString().length() - 1);
+            anew.setDescription(result.toString());
     }
     public static List<News> getRandomNews(List<News> newsList, int count) {
         // Kiểm tra xem danh sách có đủ tin tức hay không
@@ -92,6 +110,7 @@ public class NewDetail extends HttpServlet {
         // Lấy ra 3 tin tức đầu tiên
         return newsList.subList(0, count);
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *

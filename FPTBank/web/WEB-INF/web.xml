@@ -102,4 +102,7 @@
     <listener>
         <listener-class>controller.service.LoanPaymentReminder</listener-class>
     </listener>
+    <listener>
+        <listener-class>controller.FeeSchedulerListener</listener-class>
+    </listener>
 </web-app>

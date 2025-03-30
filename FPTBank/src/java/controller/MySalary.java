@@ -75,19 +75,22 @@ public class MySalary extends HttpServlet {
         SalaryDAO dao = new SalaryDAO();
         List<Integer> listOfPageSize = removeDuplicates(calculatePageSize(dao.getSalaryByCId(account.getCustomerId()).size()));
         request.setAttribute("listSize", listOfPageSize);
-         int page = 1; // trang đầu tiên
-        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : listOfPageSize.get(listOfPageSize.size()-1);
+        int page = 1; // trang đầu tiên
+        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : listOfPageSize.get(listOfPageSize.size() - 1);
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
         List<Salary> data = dao.getSalaryByPage(account.getCustomerId(), page, pageSize);
-        descriptionSetup(data);     
         PdfDAO pdfDAO = new PdfDAO();
-        for (Salary sala : data) {
-            List<PdfLis> listPDF = pdfDAO.getpdfBySalaryId(sala.getId());
-            sala.setListpdf(listPDF);
+        if (data != null) {
+            descriptionSetup(data);
+            for (Salary sala : data) {
+                List<PdfLis> listPDF = pdfDAO.getpdfBySalaryId(sala.getId());
+                sala.setListpdf(listPDF);
+            }
         }
+
         int totalUsers = dao.getSalaryByCId(account.getCustomerId()).size();
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
         request.setAttribute("currentPage", page);

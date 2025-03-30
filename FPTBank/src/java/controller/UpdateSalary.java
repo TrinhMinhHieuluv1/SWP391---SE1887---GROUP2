@@ -92,7 +92,7 @@ public class UpdateSalary extends HttpServlet {
             if (description != null) {
                 salary.setDescription(description);
             }
-            if (value_raw != null && !value_raw.trim().isEmpty()) {
+            if (value_raw != null && !value_raw.isEmpty()) {
                 String valueR = value_raw.replace(".", "");
                 double value = Double.parseDouble(valueR);
                 salary.setValue(BigDecimal.valueOf(value));
